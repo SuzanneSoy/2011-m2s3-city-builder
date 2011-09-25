@@ -1,4 +1,7 @@
-/* Triangle T (apex,v₀, v₁)
+/* Implémentation de ROAM
+ * http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.1811&rep=rep1&type=pdf
+ *
+ * Triangle T (apex, vLeft, vRight)
  *               . vApex
  *              /|\
  *             / | \
@@ -34,99 +37,43 @@ typedef struct Vertex {
 	// Ajouter des champs ici.
 } Vertex;
 
+/* Normalement, cette structure suffit, les autres champs sont
+ * récupérables autrement. */
+// typedef struct Triangle {
+// 	Vertex vCenter;
+// 	struct Triangle* tLeftChild;
+// 	struct Triangle* tRightChild;
+// } Triangle;
+
 typedef struct Triangle {
 	Vertex vCenter;
 	struct Triangle* tLeftChild;
 	struct Triangle* tRightChild;
 } Triangle;
 
-/* typedef struct FullTriangle { */
-/* 	Triangle* self; */
-/* 	Vertex* vApex; */
-/* 	Vertex* vLeft; */
-/* 	Vertex* vRight; */
-/* 	Triangle* tLeftNeighbor; */
-/* 	Triangle* tRightNeighbor; */
-/* 	Triangle* tBaseNeighbor; */
-/* } FullTriangle; */
-
-typedef enum bool {
-	TRUE = (0==0),
-	FALSE = (0==1)
-} bool;
-
-typedef struct TraversalStep {
-	bool isLeftChild; // Can be stored inside a pointer (last two bits).
-	Vertex* discarded;
-	Triangle* triangle;
-} TraversalStep;
-
-typedef struct Traversal {
-	int current;
-	TraversalStep recursion[256]; // == max recursion depth.
+int get_z(x,y) {
+	return 0;
 }
 
-void triangle_split(Triangle* T) {
-	if (base(T) is not of same level)
-		triangle_split(base(T));
-	T->vCenter = get_z(coordonnées du centre (calculer en fonction du niveau de détail de la grille et ^2));
-	parent->thischild = create the triangle.
+Triangle* triangle_new() {
+	Triangle* t = malloc(sizeof(Triangle));
+	// TODO
+	return t;
+}
+
+void triangle_split(Triangle* t) {
+	if (t->baseNeighbor != NULL)
+		// T and its base neighbor aren't of the same LOD.
+		if (t->baseNeighbor->baseNeighbor != t)
+			triangle_split(t->baseNeighbor);
+	Vertex c = {
+		// coordonnées du centre (calculer en fonction du niveau de détail de la grille et ^2)
+		.z = get_z(42, 42)
+	};
+	t->tLeftChild = triangle_new();
+	t->tRightChild = triangle_new();
+	// TODO : couper t->baseNeighbor en deux aussi.
 }
 
 void triangle_merge(Triangle* T) {
-}
-
-inline Vertex* triangle_getVCenter(Triangle* T) {
-	return &(T->vCenter);
-}
-
-inline Vertex* triangle_getVApex(Triangle* T) {
-	return triangle_getVCenter(parent);
-}
-
-inline Vertex* triangle_getVLeft(Triangle* T) {
-	return (parent->tLeftChild == T) ? triangle_getVApex(parent) : triangle_getVRight(parent);
-}
-
-inline Vertex* triangle_getVRight(Triangle* T) {
-	return (parent->tLeftChild != T) ? triangle_getVApex(parent) : triangle_getVLeft(parent);
-}
-
-inline Triangle* triangle_getTBaseNeighbor(Triangle* T) {
-	gp = T->parent->parent;
-	if (gp->right == T) {
-		return isDivided(gp->left) ? gp->left->left : gp->left;
-	} else {
-		return isDivided(gp->right) ? gp->right->right : gp->right;
-	}
-}
-
-inline Triangle* triangle_getTLeftNeighbor(Triangle* T) {
-	Triangle p = T->parent;
-	if (p->right == T) {
-		return isDivided(p->left) ? p->left->left : p->left;
-	} else {
-		return isDivided(p->right) ? p->right->right : p->left;
-	}
-}
-
-inline Triangle* triangle_getTRightNeighbor(Triangle* T) {
-	// same as triangle_getTLeftNeighbor, so it's wrong !
-	Triangle p = T->parent;
-	if (p->left == T) {
-		return isDivided(p->left) ? p->left->left : p->left;
-	} else {
-		return isDivided(p->right) ? p->right->right : p->left;
-	}
-}
-
-inline Triangle* triangle_getTLeftChild(Triangle* T) {
-	return T->tLeftChild;
-}
-
-inline Triangle* triangle_getTRightChild(Triangle* T) {
-	return T->tRightChild;
-}
-
-inline Triangle* triangle_getTParent(Triangle* T) {
 }
