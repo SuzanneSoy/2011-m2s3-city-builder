@@ -3,3 +3,6 @@ all: simple-terrain
 
 simple-terrain: simple-terrain.c
 	gcc simple-terrain.c -o simple-terrain
+
+display: display.c
+	gcc -lGL -lSDL display.c -o display
