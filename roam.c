@@ -46,6 +46,8 @@ typedef struct Triangle {
 	struct Triangle* tLeftChild;
 	struct Triangle* tRightChild;
 	struct Triangle* tBaseNeighbor;
+	struct Triangle* tLeftNeighbor;
+	struct Triangle* tRightNeighbor;
 	struct Triangle* tParent;
 } Triangle;
 
@@ -58,19 +60,34 @@ void triangle_split(Triangle* t) {
 		// T and its base neighbor aren't of the same LOD.
 		if (t->baseNeighbor->baseNeighbor != t)
 			triangle_split(t->baseNeighbor);
-	Vertex* c = malloc(sizeof(Vertex));
+	Vertex* c = (Vertex*)malloc(sizeof(Vertex));
 	c->x = (t->vLeft->x + t->vRight->x) / 2;
 	c->y = (t->vLeft->y + t->vRight->y) / 2;
 	c->z = get_z(c->x, c->y);
 
-	t2 = malloc(sizeof(Triangle));
+	Triangle* t1 = (Triangle*)malloc(sizeof(Triangle));
+	t1->vApex = c;
+	t1->vLeft = t->vApex;
+	t1->vRight = t->vLeft;
+	t1->tLeftChild = NULL;
+	t1->tRightChild = NULL;
+	//                           v-- Left or right, doesn't matter.
+	if (t->tParent == NULL) {
+		t1->tBaseNeighbor = NULL;
+	} else {
+		if (t->tParent->tRightChild->tRightChild == NULL) {
+			t1->tBaseNeighbor = t->tParent->tRightChild;
+		} else {
+			t1->tBaseNeighbor = t->tParent->tRightChild->tRightChild;
+		}
+	}
+
+	Triangle* t2 = malloc(sizeof(Triangle));
 	t2->vApex = c;
 	t2->vLeft = t->vRight;
 	t2->vRight = t->vApex;
 	t2->tLeftChild = NULL;
 	t2->tRightChild = NULL;
-	// Attention aux NULL
-	Triangle* parent = t->tParent;*
 	//                          v-- Left or right, doesn't matter.
 	if (t->tParent->tLeftChild->tLeftChild == NULL) {
 		t2->tBaseNeighbor = t->tParent->tLeftChild;
@@ -79,7 +96,38 @@ void triangle_split(Triangle* t) {
 	}
 	t->tLeftChild = t1;
 	t->tRightChild = t2;
-	// TODO : couper t->baseNeighbor en deux aussi.
+
+	// Split tBaseNeighbor
+	Triangle* tb = t->tBaseNeighbor;
+	if (tb == NULL) return;
+
+	Triangle* t1 = malloc(sizeof(Triangle));
+	t1->vApex = c;
+	t1->vLeft = tb->vApex;
+	t1->vRight = tb->vLeft;
+	t1->tLeftChild = NULL;
+	t1->tRightChild = NULL;
+	//                           v-- Left or right, doesn't matter.
+	if (tb->tParent->tRightChild->tRightChild == NULL) {
+		t1->tBaseNeighbor = tb->tParent->tRightChild;
+	} else {
+		t1->tBaseNeighbor = tb->tParent->tRightChild->tRightChild;
+	}
+
+	Triangle* t2 = malloc(sizeof(Triangle));
+	t2->vApex = c;
+	t2->vLeft = tb->vRight;
+	t2->vRight = tb->vApex;
+	t2->tLeftChild = NULL;
+	t2->tRightChild = NULL;
+	//                          v-- Left or right, doesn't matter.
+	if (tb->tParent->tLeftChild->tLeftChild == NULL) {
+		t2->tBaseNeighbor = tb->tParent->tLeftChild;
+	} else {
+		t2->tBaseNeighbor = tb->tParent->tLeftChild->tLeftChild;
+	}
+	tb->tLeftChild = t1;
+	tb->tRightChild = t2;
 }
 
 void triangle_merge(Triangle* T) {
