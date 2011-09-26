@@ -33,32 +33,24 @@
  */
 
 typedef struct Vertex {
+	int x;
+	int y;
 	int z;
 	// Ajouter des champs ici.
 } Vertex;
 
-/* Normalement, cette structure suffit, les autres champs sont
- * récupérables autrement. */
-// typedef struct Triangle {
-// 	Vertex vCenter;
-// 	struct Triangle* tLeftChild;
-// 	struct Triangle* tRightChild;
-// } Triangle;
-
 typedef struct Triangle {
-	Vertex vCenter;
+	Vertex* vApex;
+	Vertex* vLeft;
+	Vertex* vRight;
 	struct Triangle* tLeftChild;
 	struct Triangle* tRightChild;
+	struct Triangle* tBaseNeighbor;
+	struct Triangle* tParent;
 } Triangle;
 
 int get_z(x,y) {
 	return 0;
-}
-
-Triangle* triangle_new() {
-	Triangle* t = malloc(sizeof(Triangle));
-	// TODO
-	return t;
 }
 
 void triangle_split(Triangle* t) {
@@ -66,12 +58,27 @@ void triangle_split(Triangle* t) {
 		// T and its base neighbor aren't of the same LOD.
 		if (t->baseNeighbor->baseNeighbor != t)
 			triangle_split(t->baseNeighbor);
-	Vertex c = {
-		// coordonnées du centre (calculer en fonction du niveau de détail de la grille et ^2)
-		.z = get_z(42, 42)
-	};
-	t->tLeftChild = triangle_new();
-	t->tRightChild = triangle_new();
+	Vertex* c = malloc(sizeof(Vertex));
+	c->x = (t->vLeft->x + t->vRight->x) / 2;
+	c->y = (t->vLeft->y + t->vRight->y) / 2;
+	c->z = get_z(c->x, c->y);
+
+	t2 = malloc(sizeof(Triangle));
+	t2->vApex = c;
+	t2->vLeft = t->vRight;
+	t2->vRight = t->vApex;
+	t2->tLeftChild = NULL;
+	t2->tRightChild = NULL;
+	// Attention aux NULL
+	Triangle* parent = t->tParent;*
+	//                          v-- Left or right, doesn't matter.
+	if (t->tParent->tLeftChild->tLeftChild == NULL) {
+		t2->tBaseNeighbor = t->tParent->tLeftChild;
+	} else {
+		t2->tBaseNeighbor = t->tParent->tLeftChild->tLeftChild;
+	}
+	t->tLeftChild = t1;
+	t->tRightChild = t2;
 	// TODO : couper t->baseNeighbor en deux aussi.
 }
 
