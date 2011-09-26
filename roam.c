@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 /* Implémentation de ROAM
  * http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.1811&rep=rep1&type=pdf
  *
@@ -36,7 +38,7 @@ typedef struct Vertex {
 	int x;
 	int y;
 	int z;
-	// Ajouter des champs ici.
+	/* Ajouter des champs ici. */
 } Vertex;
 
 typedef struct Triangle {
@@ -51,84 +53,141 @@ typedef struct Triangle {
 	struct Triangle* tParent;
 } Triangle;
 
-int get_z(x,y) {
+int get_z(int x, int y) {
+	x = x; /* Unused */
+	y = y; /* Unused */
 	return 0;
 }
 
 void triangle_split(Triangle* t) {
-	if (t->baseNeighbor != NULL)
-		// T and its base neighbor aren't of the same LOD.
-		if (t->baseNeighbor->baseNeighbor != t)
-			triangle_split(t->baseNeighbor);
-	Vertex* c = (Vertex*)malloc(sizeof(Vertex));
+	Triangle* b; /* base neighbor */
+	Vertex* c; /* center vertex */
+	Triangle* subTLeft;
+	Triangle* subTRight;
+	Triangle* subBLeft;
+	Triangle* subBRight;
+
+	b = t->tBaseNeighbor;
+	if (b != NULL)
+		if (b->tBaseNeighbor != t)
+			/* T and its base neighbor aren't of the same LOD. */
+			triangle_split(b);
+
+	c = (Vertex*)malloc(sizeof(Vertex));
 	c->x = (t->vLeft->x + t->vRight->x) / 2;
 	c->y = (t->vLeft->y + t->vRight->y) / 2;
 	c->z = get_z(c->x, c->y);
 
-	Triangle* t1 = (Triangle*)malloc(sizeof(Triangle));
-	t1->vApex = c;
-	t1->vLeft = t->vApex;
-	t1->vRight = t->vLeft;
-	t1->tLeftChild = NULL;
-	t1->tRightChild = NULL;
-	//                           v-- Left or right, doesn't matter.
-	if (t->tParent == NULL) {
-		t1->tBaseNeighbor = NULL;
+	subTLeft = (Triangle*)malloc(sizeof(Triangle));
+	subTRight = (Triangle*)malloc(sizeof(Triangle));
+	if (b != NULL) {
+		subBLeft = (Triangle*)malloc(sizeof(Triangle));
+		subBRight = (Triangle*)malloc(sizeof(Triangle));
 	} else {
-		if (t->tParent->tRightChild->tRightChild == NULL) {
-			t1->tBaseNeighbor = t->tParent->tRightChild;
-		} else {
-			t1->tBaseNeighbor = t->tParent->tRightChild->tRightChild;
-		}
+		subBLeft = NULL;
+		subBRight = NULL;
 	}
 
-	Triangle* t2 = malloc(sizeof(Triangle));
-	t2->vApex = c;
-	t2->vLeft = t->vRight;
-	t2->vRight = t->vApex;
-	t2->tLeftChild = NULL;
-	t2->tRightChild = NULL;
-	//                          v-- Left or right, doesn't matter.
-	if (t->tParent->tLeftChild->tLeftChild == NULL) {
-		t2->tBaseNeighbor = t->tParent->tLeftChild;
-	} else {
-		t2->tBaseNeighbor = t->tParent->tLeftChild->tLeftChild;
+	/* subTLeft */
+	{
+		/* Vertices */
+		subTLeft->vApex = c;
+		subTLeft->vLeft = t->vApex;
+		subTLeft->vRight = t->vLeft;
+		/* Children */
+		subTLeft->tLeftChild = NULL;
+		subTLeft->tRightChild = NULL;
+		/* Neighbors */
+		subTLeft->tBaseNeighbor = t->tLeftNeighbor;
+		subTLeft->tLeftNeighbor = subTRight;
+		subTLeft->tRightNeighbor = subBRight;
+		/* Parent */
+		subTLeft->tParent = t;
 	}
-	t->tLeftChild = t1;
-	t->tRightChild = t2;
-
-	// Split tBaseNeighbor
-	Triangle* tb = t->tBaseNeighbor;
-	if (tb == NULL) return;
-
-	Triangle* t1 = malloc(sizeof(Triangle));
-	t1->vApex = c;
-	t1->vLeft = tb->vApex;
-	t1->vRight = tb->vLeft;
-	t1->tLeftChild = NULL;
-	t1->tRightChild = NULL;
-	//                           v-- Left or right, doesn't matter.
-	if (tb->tParent->tRightChild->tRightChild == NULL) {
-		t1->tBaseNeighbor = tb->tParent->tRightChild;
-	} else {
-		t1->tBaseNeighbor = tb->tParent->tRightChild->tRightChild;
+	/* subTRight */
+	{
+		/* Vertices */
+		subTRight->vApex = c;
+		subTRight->vLeft = t->vRight;
+		subTRight->vRight = t->vApex;
+		/* Children */
+		subTRight->tLeftChild = NULL;
+		subTRight->tRightChild = NULL;
+		/* Neighbors */
+		subTRight->tBaseNeighbor = t->tRightNeighbor;
+		subTRight->tLeftNeighbor = subBLeft;
+		subTRight->tRightNeighbor = subTLeft;
+		/* Parent */
+		subTRight->tParent = t;
 	}
-
-	Triangle* t2 = malloc(sizeof(Triangle));
-	t2->vApex = c;
-	t2->vLeft = tb->vRight;
-	t2->vRight = tb->vApex;
-	t2->tLeftChild = NULL;
-	t2->tRightChild = NULL;
-	//                          v-- Left or right, doesn't matter.
-	if (tb->tParent->tLeftChild->tLeftChild == NULL) {
-		t2->tBaseNeighbor = tb->tParent->tLeftChild;
-	} else {
-		t2->tBaseNeighbor = tb->tParent->tLeftChild->tLeftChild;
+	/* subBLeft */
+	if (b != NULL) {
+		/* Vertices */
+		subBLeft->vApex = c;
+		subBLeft->vLeft = b->vApex;
+		subBLeft->vRight = t->vRight; /* == b->vLeft, mais a plus de chances d'être dans le cache, non ? */
+		/* Children */
+		subBLeft->tLeftChild = NULL;
+		subBLeft->tRightChild = NULL;
+		/* Neighbors */
+		subBLeft->tBaseNeighbor = b->tLeftNeighbor;
+		subBLeft->tLeftNeighbor = subBRight;
+		subBLeft->tRightNeighbor = subTRight;
+		/* Parent */
+		subBLeft->tParent = t;
 	}
-	tb->tLeftChild = t1;
-	tb->tRightChild = t2;
+	/* subBRight */
+	if (b != NULL) {
+		/* Vertices */
+		subBRight->vApex = c;
+		subBRight->vLeft = t->vLeft; /* == b->vRight, mais a plus de chances d'être dans le cache, non ? */
+		subBRight->vRight = b->vApex;
+		/* Children */
+		subBRight->tLeftChild = NULL;
+		subBRight->tRightChild = NULL;
+		/* Neighbors */
+		subBRight->tBaseNeighbor = b->tRightNeighbor;
+		subBRight->tLeftNeighbor = subTLeft;
+		subBRight->tRightNeighbor = subBLeft;
+		/* Parent */
+		subBRight->tParent = t;
+	}
+	t->tLeftChild = subTLeft;
+	t->tRightChild = subTRight;
+	if (b != NULL) {
+		b->tLeftChild = subBLeft;
+		b->tRightChild = subBRight;
+	}
 }
 
 void triangle_merge(Triangle* T) {
+	T = T;
+}
+
+int main() {
+	Triangle* t = (Triangle*)malloc(sizeof(Triangle));
+	Vertex* vApex = (Vertex*)malloc(sizeof(Vertex));
+	Vertex* vLeft = (Vertex*)malloc(sizeof(Vertex));
+	Vertex* vRight = (Vertex*)malloc(sizeof(Vertex));
+	
+	vApex->x  = 1024; vApex->y  = 1024; vApex->z  = 0;
+	vLeft->x  = 0;    vLeft->y  = 0;    vLeft->z  = 0;
+	vRight->x = 2048; vRight->y = 0;    vRight->z = 0;
+	
+	t->vApex = vApex;
+	t->vLeft = vLeft;
+	t->vRight = vRight;
+	t->tLeftChild = NULL;
+	t->tRightChild = NULL;
+	t->tBaseNeighbor = NULL;
+	t->tLeftNeighbor = NULL;
+	t->tRightNeighbor = NULL;
+	t->tParent = NULL;
+
+	triangle_split(t);
+	triangle_split(t->tLeftChild);
+	triangle_split(t->tLeftChild->tLeftChild);
+	triangle_split(t->tLeftChild->tRightChild);
+	
+	return 0;
 }

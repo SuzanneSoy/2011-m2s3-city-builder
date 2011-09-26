@@ -3,13 +3,16 @@
 #include <GL/glu.h>
 
 int main(int argc, char *argv[]) {
+	short continuer;
+	SDL_Event event;
+
+	argc = argc; /* Unused */
+	argv = argv; /* Unused */
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_WM_SetCaption("Mon premier programme OpenGL !",NULL);
 	SDL_SetVideoMode(640, 480, 32, SDL_OPENGL);
 
-	short continuer = 1;
-	SDL_Event event;
-
+	continuer = 1;
 	while (continuer) {
 		SDL_WaitEvent(&event);
 		
