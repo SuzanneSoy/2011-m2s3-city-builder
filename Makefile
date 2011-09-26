@@ -16,7 +16,7 @@ simple-terrain: simple-terrain.c Makefile
 	$(CC) $< -o $@
 
 display: display.c Makefile
-	$(CC) -lGL -lSDL $< $(CFLAGS) -o $@
+	$(CC) -lGL -lSDL -lGLU $< $(CFLAGS) -o $@
 
 roam: roam.c Makefile
 	$(CC) $< $(CFLAGS) -o $@
