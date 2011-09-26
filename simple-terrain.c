@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#define SIZE 1024
+#define SIZE 512
 // best value for MAX_DETAIL is 8
 #define MAX_DETAIL 8
 
@@ -110,11 +110,13 @@ int get_z(int x, int y) {
 int main(int argc, char** argv) {
 	int y;
 	int x;
-	fprintf(stderr, "Aide :\n");
-	fprintf(stderr, "Utilisez ./simple-terrain | display pour visualiser la sortie.\n");
-	fprintf(stderr, "Utilisez ./simple-terrain > fichier.pnm pour sauvegarder.\n");
-        printf("P5 %d %d 255\n", SIZE, SIZE);
-        for (y=SIZE-1; y>=0; y--)
-                for (x=0; x<SIZE; x++)
+	if (argc != 1) {
+		fprintf(stderr, "Aide :\n");
+		fprintf(stderr, "Utilisez ./simple-terrain | display pour visualiser la sortie.\n");
+		fprintf(stderr, "Utilisez ./simple-terrain > fichier.pnm pour sauvegarder.\n");
+	}
+	printf("P5 %d %d 255\n", SIZE, SIZE);
+	for (y=SIZE-1; y>=0; y--)
+		for (x=0; x<SIZE; x++)
 			printf("%c", (char)get_z(x,y));
 }
