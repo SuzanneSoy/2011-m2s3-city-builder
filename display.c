@@ -19,11 +19,16 @@ int main(int argc, char *argv[]) {
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT);
-
+		
+		glMatrixMode( GL_PROJECTION );
+		glLoadIdentity( );
+		gluPerspective(70,(double)640/480,1,1000);
+		gluLookAt(0, 0, -3, 0, 0.75, 0, 0, 1, 0);
+		
 		glBegin(GL_TRIANGLES);
-			glColor3ub(255,0,0);    glVertex2d(-0.75,-0.75);
-			glColor3ub(0,255,0);    glVertex2d(0,0.75);
-			glColor3ub(0,0,255);    glVertex2d(0.75,-0.75);
+			glColor3ub(255,0,0);    glVertex3d(-0.75,-0.75,0);
+			glColor3ub(0,255,0);    glVertex3d(0,0.75,0);
+			glColor3ub(0,0,255);    glVertex3d(0.75,-0.75,0);
 		glEnd();
 
 		glFlush();
