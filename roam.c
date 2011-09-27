@@ -160,8 +160,64 @@ void triangle_split(Triangle* t) {
 	}
 }
 
-void triangle_merge(Triangle* T) {
-	T = T;
+void triangle_merge(Triangle* t, Triangle* b) {
+	t = t;
+	b = b;
+	/* TODO : free récursivement les triangles… Peut-être pas
+	 * nécessaire vu qu'on peut les garbage-collecter en quelque sorte
+	 * lorsqu'on envoie tous les triangles à la carte (on verra ceux
+	 * qu'on n'envoie pas).
+	 */
+	t->tLeftChild = NULL;
+	t->tRightChild = NULL;
+	b->tLeftChild = NULL;
+	b->tRightChild = NULL;
+}
+
+/* TODO : MinMax Heap : http://www.diku.dk/forskning/performance-engineering/Jesper/heaplab/heapsurvey_html/node11.html
+ * TODO : flexible memory usage : http://www.diku.dk/forskning/performance-engineering/Jesper/heaplab/heapsurvey_html/node15.html
+ * TODO : pour l'instant les comparaisons se font sur les adresses !
+ */
+
+/* Index des éléments du tas dans le tableau de stockage.
+ *        0
+ *    1       2
+ *  3   4   5   6
+ * 7 8 9 . . . . .
+ */
+
+#define HEAP_PARENT(x) (((x)-1)/2)
+#define HEAP_LEFT_CHILD(x) ((x)*2+1)
+#define HEAP_RIGHT_CHILD(x) ((x)*2+2)
+#define SWAP(type, a, b) do { type SWAP_temp = (a); (a) = (b); (b) = SWAP_temp; } while (0)
+/* Insère `node` dans `heap`.
+ * @param n : nombre de `node`s déjà dans le `heap`.
+ */
+void maxheap_insert(Triangle** heap, Triangle* node, unsigned int n) {
+	heap[n] = node;
+	unsigned int x = n;
+	while (x != 0 && heap[x] > heap[HEAP_PARENT(x)]) {
+		SWAP(Triangle*, heap[x], heap[HEAP_PARENT(x)]);
+	}
+}
+
+/* Récupère le plus grand élément de `heap`.
+ * @param n : nombre de `node`s déjà dans le `heap`.
+ */
+Triangle* maxheap_pop_max(Triangle** heap, unsigned int n) {
+	Triangle* ret = heap[0];
+	heap[0] = heap[n];
+	unsigned int x = 0;
+	while (x != n &&
+		   (heap[x] < heap[HEAP_LEFT_CHILD(x)] || heap[x] < heap[HEAP_RIGHT_CHILD(x)])) {
+		if (heap[HEAP_LEFT_CHILD(x)] > heap[HEAP_RIGHT_CHILD(x)]) {
+			SWAP(Triangle*, heap[x], heap[HEAP_LEFT_CHILD(x)]);
+		} else {
+			/* échanger right et x */
+			SWAP(Triangle*, heap[x], heap[HEAP_RIGHT_CHILD(x)]);
+		}
+	}
+	return ret;
 }
 
 int main() {
