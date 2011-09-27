@@ -1,21 +1,32 @@
 #include <SDL/SDL.h>
 #include <GL/glew.h>
 #include <GL/glu.h>
+#include "roam.c"
 
+int initWindow();
+int mainLoop();
 void renderScene();
+void displayTree(Triangle *t);
+void Draw_Axes ();
 
-int main(int argc, char *argv[]) {
-	short continuer;
+Triangle *t;
+
+int initWindow() {
+	SDL_Init(SDL_INIT_VIDEO);
+	SDL_WM_SetCaption("Sortie terrain OpenGL",NULL);
+	SDL_SetVideoMode(640, 480, 32, SDL_OPENGL);
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	gluPerspective(70,(double)640/480,1,10000);
+	glEnable(GL_DEPTH_TEST);
+
+	return 0;
+}
+
+int mainLoop() {
+	short continuer = 1;
 	SDL_Event event;
 
-	argc = argc; /* Unused */
-	argv = argv; /* Unused */
-	SDL_Init(SDL_INIT_VIDEO);
-	SDL_WM_SetCaption("Mon premier programme OpenGL !",NULL);
-	SDL_SetVideoMode(640, 480, 32, SDL_OPENGL);
-
-	continuer = 1;
-	
 	while (continuer) {
 		SDL_WaitEvent(&event);
 		
@@ -32,20 +43,64 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
+void drawAxes() {
+	glDisable(GL_TEXTURE_2D);
+	glBegin(GL_LINES);
+	glColor3ub(255,0,0);
+	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
+	glVertex3f(2500.0f, 0.0f, 0.0f); // ending point of the line
+	glEnd( );
+	
+	glBegin(GL_LINES);
+	glColor3ub(0,255,0);
+	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
+	glVertex3f(0.0f, 2500.0f, 0.0f); // ending point of the line
+	glEnd( );
+	
+	glBegin(GL_LINES);
+	glColor3ub(0,0,255);
+	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
+	glVertex3f(0.0f, 0.0f, -2500.0f); // ending point of the line
+	glEnd( );
+}
+
 void renderScene() {
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	
-	glClear(GL_COLOR_BUFFER_BIT);
-	
-	glBegin(GL_TRIANGLES);
-		glColor3ub(255,0,0);    glVertex3d(-0.75,-0.75,0);
-		glColor3ub(0,255,0);    glVertex3d(0,0.75,0);
-		glColor3ub(0,0,255);    glVertex3d(0.75,-0.75,0);
-	glEnd();
+	gluLookAt(500,500,800,500,500,0,0,1,0);
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
+	drawAxes();
+	displayTree(t);
+	
 	glFlush();
 	SDL_GL_SwapBuffers();
+}
+
+void displayTree(Triangle *t) {
+	if(t->tLeftChild == NULL) {
+		glBegin(GL_LINE_LOOP);
+			glColor3ub(255,255,255);
+			glVertex3d(t->vLeft->x,t->vLeft->y,20);
+			glVertex3d(t->vApex->x,t->vApex->y,1);
+			glVertex3d(t->vRight->x,t->vRight->y,0);
+		glEnd();
+	}
+	else {
+		displayTree(t->tLeftChild);
+		displayTree(t->tRightChild);
+	}
+}
+
+int main() {
+	initWindow();
+	t = initDefaultExample();
+	
+	triangle_split(t);
+	triangle_split(t->tLeftChild);
+	triangle_split(t->tLeftChild->tLeftChild);
+	triangle_split(t->tLeftChild->tRightChild);
+	
+	mainLoop();
+	return 0;
 }

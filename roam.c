@@ -220,7 +220,7 @@ Triangle* maxheap_pop_max(Triangle** heap, unsigned int n) {
 	return ret;
 }
 
-int main() {
+Triangle* initDefaultExample() {
 	Triangle* t = (Triangle*)malloc(sizeof(Triangle));
 	Vertex* vApex = (Vertex*)malloc(sizeof(Vertex));
 	Vertex* vLeft = (Vertex*)malloc(sizeof(Vertex));
@@ -239,11 +239,10 @@ int main() {
 	t->tLeftNeighbor = NULL;
 	t->tRightNeighbor = NULL;
 	t->tParent = NULL;
-
-	triangle_split(t);
-	triangle_split(t->tLeftChild);
-	triangle_split(t->tLeftChild->tLeftChild);
-	triangle_split(t->tLeftChild->tRightChild);
 	
+	return t;
+}
+
+int main2() {
 	return 0;
 }
