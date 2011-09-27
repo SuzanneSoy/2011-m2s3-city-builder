@@ -1,5 +1,5 @@
 #include <SDL/SDL.h>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <GL/glu.h>
 
 int main(int argc, char *argv[]) {
@@ -23,10 +23,11 @@ int main(int argc, char *argv[]) {
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		
-		glMatrixMode( GL_PROJECTION );
-		glLoadIdentity( );
-		gluPerspective(70,(double)640/480,1,1000);
-		gluLookAt(0, 0, -3, 0, 0.75, 0, 0, 1, 0);
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
 		
 		glBegin(GL_TRIANGLES);
 			glColor3ub(255,0,0);    glVertex3d(-0.75,-0.75,0);
