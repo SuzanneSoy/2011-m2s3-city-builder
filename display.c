@@ -2,6 +2,8 @@
 #include <GL/glew.h>
 #include <GL/glu.h>
 
+void renderScene();
+
 int main(int argc, char *argv[]) {
 	short continuer;
 	SDL_Event event;
@@ -13,6 +15,7 @@ int main(int argc, char *argv[]) {
 	SDL_SetVideoMode(640, 480, 32, SDL_OPENGL);
 
 	continuer = 1;
+	
 	while (continuer) {
 		SDL_WaitEvent(&event);
 		
@@ -21,25 +24,28 @@ int main(int argc, char *argv[]) {
 				continuer = 0;
 		}
 
-		glClear(GL_COLOR_BUFFER_BIT);
-		
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-
-		
-		glBegin(GL_TRIANGLES);
-			glColor3ub(255,0,0);    glVertex3d(-0.75,-0.75,0);
-			glColor3ub(0,255,0);    glVertex3d(0,0.75,0);
-			glColor3ub(0,0,255);    glVertex3d(0.75,-0.75,0);
-		glEnd();
-
-		glFlush();
-		SDL_GL_SwapBuffers();
+		renderScene();
 	}
 
 	SDL_Quit();
 
 	return 0;
+}
+
+void renderScene() {
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
+	glClear(GL_COLOR_BUFFER_BIT);
+	
+	glBegin(GL_TRIANGLES);
+		glColor3ub(255,0,0);    glVertex3d(-0.75,-0.75,0);
+		glColor3ub(0,255,0);    glVertex3d(0,0.75,0);
+		glColor3ub(0,0,255);    glVertex3d(0.75,-0.75,0);
+	glEnd();
+
+	glFlush();
+	SDL_GL_SwapBuffers();
 }
