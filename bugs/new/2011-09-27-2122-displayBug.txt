@@ -1,0 +1,7 @@
+Bug d'affichage.
+
+Lorsque l'on affiche le résultat de l'algorithme les triangles se 
+trouvant sur le bord de l'écran sont décalées les uns par rapport aux 
+autres.
+
+Peut-être un problème dans la configuration de la perspective.
