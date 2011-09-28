@@ -1,7 +1,7 @@
 #include <SDL/SDL.h>
 #include <GL/glew.h>
 #include <GL/glu.h>
-#include "roam.c"
+#include "roam.h"
 
 int initWindow();
 int mainLoop();
@@ -67,7 +67,7 @@ void drawAxes() {
 void renderScene() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(500,500,800,500,500,0,0,1,0);
+	gluLookAt(1024,512,1356,1024,512,0,0,1,0);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	drawAxes();
@@ -81,9 +81,9 @@ void displayTree(Triangle *t) {
 	if(t->tLeftChild == NULL) {
 		glBegin(GL_LINE_LOOP);
 			glColor3ub(255,255,255);
-			glVertex3d(t->vLeft->x,t->vLeft->y,20);
+			glVertex3d(t->vLeft->x,t->vLeft->y,1);
 			glVertex3d(t->vApex->x,t->vApex->y,1);
-			glVertex3d(t->vRight->x,t->vRight->y,0);
+			glVertex3d(t->vRight->x,t->vRight->y,1);
 		glEnd();
 	}
 	else {
@@ -95,11 +95,6 @@ void displayTree(Triangle *t) {
 int main() {
 	initWindow();
 	t = initDefaultExample();
-	
-	triangle_split(t);
-	triangle_split(t->tLeftChild);
-	triangle_split(t->tLeftChild->tLeftChild);
-	triangle_split(t->tLeftChild->tRightChild);
 	
 	mainLoop();
 	return 0;

@@ -1,3 +1,4 @@
+#include "roam.h"
 #include <stdio.h>
 #include <stdlib.h>
 /* Implémentation de ROAM
@@ -34,25 +35,6 @@
  *
  */
 
-typedef struct Vertex {
-	int x;
-	int y;
-	int z;
-	/* Ajouter des champs ici. */
-} Vertex;
-
-typedef struct Triangle {
-	Vertex* vApex;
-	Vertex* vLeft;
-	Vertex* vRight;
-	struct Triangle* tLeftChild;
-	struct Triangle* tRightChild;
-	struct Triangle* tBaseNeighbor;
-	struct Triangle* tLeftNeighbor;
-	struct Triangle* tRightNeighbor;
-	struct Triangle* tParent;
-} Triangle;
-
 int get_z(int x, int y) {
 	x = x; /* Unused */
 	y = y; /* Unused */
@@ -60,6 +42,7 @@ int get_z(int x, int y) {
 }
 
 void triangle_split(Triangle* t) {
+	printf("split (%d,%d) (%d,%d) (%d,%d)\n", t->vLeft->x, t->vLeft->y, t->vRight->x, t->vRight->y, t->vApex->x, t->vApex->y);
 	Triangle* b; /* base neighbor */
 	Vertex* c; /* center vertex */
 	Triangle* subTLeft;
@@ -72,6 +55,7 @@ void triangle_split(Triangle* t) {
 		if (b->tBaseNeighbor != t)
 			/* T and its base neighbor aren't of the same LOD. */
 			triangle_split(b);
+	b = t->tBaseNeighbor;
 
 	c = (Vertex*)malloc(sizeof(Vertex));
 	c->x = (t->vLeft->x + t->vRight->x) / 2;
@@ -97,12 +81,20 @@ void triangle_split(Triangle* t) {
 		/* Children */
 		subTLeft->tLeftChild = NULL;
 		subTLeft->tRightChild = NULL;
-		/* Neighbors */
+		/* To neighbors */
 		subTLeft->tBaseNeighbor = t->tLeftNeighbor;
 		subTLeft->tLeftNeighbor = subTRight;
 		subTLeft->tRightNeighbor = subBRight;
 		/* Parent */
 		subTLeft->tParent = t;
+		/* From neighbors */
+		if (t->tLeftNeighbor != NULL) {
+			if (t->tLeftNeighbor->tBaseNeighbor == t) {
+				t->tLeftNeighbor->tBaseNeighbor = subTLeft;
+			} else {
+				t->tLeftNeighbor->tRightNeighbor = subTLeft;
+			}
+		}
 	}
 	/* subTRight */
 	{
@@ -113,12 +105,20 @@ void triangle_split(Triangle* t) {
 		/* Children */
 		subTRight->tLeftChild = NULL;
 		subTRight->tRightChild = NULL;
-		/* Neighbors */
+		/* To neighbors */
 		subTRight->tBaseNeighbor = t->tRightNeighbor;
 		subTRight->tLeftNeighbor = subBLeft;
 		subTRight->tRightNeighbor = subTLeft;
 		/* Parent */
 		subTRight->tParent = t;
+		/* From neighbors */
+		if (t->tRightNeighbor != NULL) {
+			if (t->tRightNeighbor->tBaseNeighbor == t) {
+				t->tRightNeighbor->tBaseNeighbor = subTRight;
+			} else {
+				t->tRightNeighbor->tLeftNeighbor = subTRight;
+			}
+		}
 	}
 	/* subBLeft */
 	if (b != NULL) {
@@ -129,12 +129,20 @@ void triangle_split(Triangle* t) {
 		/* Children */
 		subBLeft->tLeftChild = NULL;
 		subBLeft->tRightChild = NULL;
-		/* Neighbors */
+		/* To neighbors */
 		subBLeft->tBaseNeighbor = b->tLeftNeighbor;
 		subBLeft->tLeftNeighbor = subBRight;
 		subBLeft->tRightNeighbor = subTRight;
 		/* Parent */
 		subBLeft->tParent = t;
+		/* From neighbors */
+		if (b->tLeftNeighbor != NULL) {
+			if (b->tLeftNeighbor->tBaseNeighbor == b) {
+				b->tLeftNeighbor->tBaseNeighbor = subBLeft;
+			} else {
+				b->tLeftNeighbor->tRightNeighbor = subBLeft;
+			}
+		}
 	}
 	/* subBRight */
 	if (b != NULL) {
@@ -145,12 +153,20 @@ void triangle_split(Triangle* t) {
 		/* Children */
 		subBRight->tLeftChild = NULL;
 		subBRight->tRightChild = NULL;
-		/* Neighbors */
+		/* To neighbors */
 		subBRight->tBaseNeighbor = b->tRightNeighbor;
 		subBRight->tLeftNeighbor = subTLeft;
 		subBRight->tRightNeighbor = subBLeft;
 		/* Parent */
 		subBRight->tParent = t;
+		/* From neighbors */
+		if (b->tRightNeighbor != NULL) {
+			if (b->tRightNeighbor->tBaseNeighbor == b) {
+				b->tRightNeighbor->tBaseNeighbor = subBRight;
+			} else {
+				b->tRightNeighbor->tLeftNeighbor = subBRight;
+			}
+		}
 	}
 	t->tLeftChild = subTLeft;
 	t->tRightChild = subTRight;
@@ -240,9 +256,10 @@ Triangle* initDefaultExample() {
 	t->tRightNeighbor = NULL;
 	t->tParent = NULL;
 	
+	triangle_split(t);
+	triangle_split(t->tLeftChild);
+	triangle_split(t->tLeftChild->tLeftChild);
+	triangle_split(t->tLeftChild->tRightChild);
+	
 	return t;
-}
-
-int main2() {
-	return 0;
 }

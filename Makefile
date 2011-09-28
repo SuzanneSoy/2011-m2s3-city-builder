@@ -4,23 +4,19 @@ CCWARN=-Wall -Wextra -Werror
 CFLAGS=-O3 $(CCWARN)
 
 .PHONY: all
-all: simple-terrain display roam
+all: display
 
 .PHONY: test
 test: all
-	./simple-terrain | display
+	# ./simple-terrain | display
 	./display
-	./roam
 
-simple-terrain: simple-terrain.c Makefile
+simple-terrain: simple-terrain.c
 	$(CC) $< -o $@
 
-display: display.c Makefile
-	$(CC) -lGLEW -lSDL -lGLU $< $(CFLAGS) -o $@
-
-roam: roam.c Makefile
-	$(CC) $< $(CFLAGS) -o $@
+display: display.o roam.o
+	$(CC) -lGLEW -lSDL -lGLU $^ -o $@
 
 # Create objects from C source code
-%.o: %.c
+%.o: %.c Makefile
 	$(CC) -c $< $(CFLAGS) -o $@
