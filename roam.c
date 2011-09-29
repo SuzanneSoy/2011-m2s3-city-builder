@@ -1,6 +1,5 @@
 #include "roam.h"
-#include <stdio.h>
-#include <stdlib.h>
+
 /* Implémentation de ROAM
  * http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.22.1811&rep=rep1&type=pdf
  *
@@ -34,6 +33,25 @@
  * côté (vApex,vRight).
  *
  */
+
+/* Permet de récupérer la taille de la base du triangle (hypoténuse).*/
+// TODO Optimisze la fonction pour éviter la racine carée.
+int getFirstTriangleSize(Triangle* t) {
+	return sqrt(((t->vRight->x - t->vLeft->x)^2) + ((t->vRight->y - t->vLeft->y)^2));
+}
+
+short** PerlinNoise(Triangle* t) {
+	short **values;
+	int triangleSize = getFirstTriangleSize(t);
+	int i;
+	
+	values = (short**) malloc(sizeof(short*)*triangleSize);
+	for(i=0; i<triangleSize;i++)
+		values[i] = (short*) malloc(sizeof(short)*triangleSize);
+	
+	// TODO Yoann : tout le reste.
+	return values;
+}
 
 int get_z(int x, int y) {
 	x = x; /* Unused */
