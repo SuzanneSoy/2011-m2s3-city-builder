@@ -45,9 +45,11 @@ short** PerlinNoise(Triangle* t) {
 	int triangleSize = getFirstTriangleSize(t);
 	int i;
 	
+	
 	values = (short**) malloc(sizeof(short*)*triangleSize);
 	for(i=0; i<triangleSize;i++)
 		values[i] = (short*) malloc(sizeof(short)*triangleSize);
+	
 	
 	// TODO Yoann : tout le reste.
 	return values;
