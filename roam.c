@@ -33,6 +33,7 @@
  * côté (vApex,vRight).
  *
  */
+ 
 
 /* Permet de récupérer la taille de la base du triangle (hypoténuse).*/
 // TODO Optimisze la fonction pour éviter la racine carée.
@@ -40,16 +41,39 @@ int getFirstTriangleSize(Triangle* t) {
 	return sqrt(((t->vRight->x - t->vLeft->x)^2) + ((t->vRight->y - t->vLeft->y)^2));
 }
 
+// TODO Yoann : Générateur pseudo-aléatoire.
+// Mettre la greaine au carré et récupérer simplement les nombres du centre.
+int getValueForSeed(int seed) {
+	
+	return seed;
+}
+
+/* Interpolation cosinusoïdale entre deux points.*/
+// A optimisze par aproximation.
+int interpolationCos(int x, int y) {
+	x = x;
+	y = y;
+	return 0;
+}
+
 short** PerlinNoise(Triangle* t) {
 	short **values;
 	int triangleSize = getFirstTriangleSize(t);
 	int i;
+	int seed;
+	int x,y;
 	
+	seed = (int)(t->vApex->x / triangleSize + t->vApex->y / triangleSize)*1111;
 	
 	values = (short**) malloc(sizeof(short*)*triangleSize);
 	for(i=0; i<triangleSize;i++)
 		values[i] = (short*) malloc(sizeof(short)*triangleSize);
 	
+	for(i=0; i<8;i++) {
+		x = getValueForSeed(seed);
+		y = getValueForSeed(x);
+		values[x][y] = 255;
+	}
 	
 	// TODO Yoann : tout le reste.
 	return values;
