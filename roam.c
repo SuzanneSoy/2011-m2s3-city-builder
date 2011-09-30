@@ -41,19 +41,33 @@ int getFirstTriangleSize(Triangle* t) {
 	return sqrt(((t->vRight->x - t->vLeft->x)^2) + ((t->vRight->y - t->vLeft->y)^2));
 }
 
-// TODO Yoann : Générateur pseudo-aléatoire.
-// Mettre la greaine au carré et récupérer simplement les nombres du centre.
-int getValueForSeed(int seed) {
-	
-	return seed;
+unsigned int getValueForSeed(unsigned int seed) {
+	unsigned int primeA = 65521; // Plus grand premier < 2^16
+	unsigned int primeB = 4294967291U; // Plus grand premier < 2^32
+	return ((seed * primeA) ^ ((seed+1) * primeB)) + seed; // + seed pour éviter d'avoir uniquement des nombres impairs.
 }
 
-/* Interpolation cosinusoïdale entre deux points.*/
-// A optimisze par aproximation.
-int interpolationCos(int x, int y) {
-	x = x;
-	y = y;
-	return 0;
+/* Interpolation linéaire entre deux points.
+ * (x,y) est le point dont on veut connaître la valeur
+ * (x1,y1)--(x2,y2) est le carré dont on connaît les valeurs
+ * ne,se,so,no sont les valeurs aux coins nord/sud-est/ouest du carré. */
+// A optimiser par aproximation.
+// Optimiser aussi le fait que la distance entre xy1 et xy2 est une puissance de 2, donc on peut faire un simple décalage.
+// Peut être réalisé par une multiplication de matrice (donc sur le GPU) : http://en.wikipedia.org/wiki/Bilinear_interpolation
+int interpolation(int x, int y, int x1, int y1, int x2, int y2, int ne, int se, int so, int no) {
+	int gaucheBas = so * -(x-x2) / (x2-x1);
+	int droiteBas = se * (x-x1) / (x2-x1);
+	int gaucheHaut = no * -(x-x2) / (x2-x1);
+	int droiteHaut = ne * (x-x1) / (x2-x1);
+	
+	int pointBas = gaucheBas + droiteBas;
+	int pointHaut = gaucheHaut + droiteHaut;
+
+	int bas = pointBas * -(y-y1) / (y1-y2);
+	int haut = pointHaut * (y-y2) / (y1-y2);
+	int ret = bas+haut;
+	ret = ret;
+	return ret;
 }
 
 short** PerlinNoise(Triangle* t) {

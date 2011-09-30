@@ -93,9 +93,17 @@ void displayTree(Triangle *t) {
 }
 
 int main() {
-	initWindow();
-	t = initDefaultExample();
+	/* initWindow(); */
+	/* t = initDefaultExample(); */
 	
-	mainLoop();
+	/* mainLoop(); */
+	int x;
+	int y;
+	printf("P5 %d %d 255\n", 256, 256);
+	for (y = 0; y < 256; y++) {
+		for (x = 0; x < 256; x++) {
+			printf("%c", interpolation(x, y, 0, 0, 256, 256, 0, 255, 255, 255));
+		}
+	}
 	return 0;
 }
