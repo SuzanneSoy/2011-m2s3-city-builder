@@ -129,8 +129,6 @@ int get_z(int x, int y) {
 		int x2 = x1 + step;
 		int y2 = y1 + step;
 		z += interpolation(x, y, x1, y1, x2, y2, hash(seed, x2, y1) & zmax, hash(seed, x2, y2) & zmax, hash(seed, x1, y2) & zmax, hash(seed, x1, y1) & zmax);
-		//fprintf(stderr, "x=%d y=%d x1=%d y1=%d x2=%d y2=%d hash(seed, x2, y1)=%d ans&zmax=%d\n", x, y, x1, y1, x2, y2, hash(seed, x2, y1), hash(seed, x2, y1) & zmax);
-		//break;
 	}
 	// ici le résultat est entre 0 (inclues) et 2^(1+maxlevel) (non inclus)
 	// On normalise sur [0,256[ sachant que 256 == 2^8
@@ -142,7 +140,6 @@ int get_z(int x, int y) {
 }
 
 void triangle_split(Triangle* t) {
-	printf("split (%d,%d) (%d,%d) (%d,%d)\n", t->vLeft->x, t->vLeft->y, t->vRight->x, t->vRight->y, t->vApex->x, t->vApex->y);
 	Triangle* b; /* base neighbor */
 	Vertex* c; /* center vertex */
 	Triangle* subTLeft;
@@ -365,7 +362,7 @@ Triangle* initDefaultExample() {
 	t->tRightNeighbor = NULL;
 	t->tParent = NULL;
 	
-	recursiveSplit(t, 10);
+	recursiveSplit(t, 13);
 	/* triangle_split(t); */
 	/* triangle_split(t->tLeftChild); */
 	/* triangle_split(t->tLeftChild->tLeftChild); */

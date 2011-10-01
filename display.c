@@ -67,7 +67,8 @@ void drawAxes() {
 void renderScene() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(1024,512,1356,1024,512,0,0,1,0);
+	//gluLookAt(1024,512,1356,1024,512,0,0,1,0);
+	gluLookAt(1024,-200,500,1024,512,0,0,1,0);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	drawAxes();
