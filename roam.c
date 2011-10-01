@@ -336,10 +336,11 @@ Triangle* maxheap_pop_max(Triangle** heap, unsigned int n) {
 	return ret;
 }
 
-// t must not already be split !
 void recursiveSplit(Triangle* t, int n) {
 	if (n == 0) return;
-	triangle_split(t);
+	if (t->tLeftChild == NULL) { // t is not already split
+		triangle_split(t);
+	}
 	recursiveSplit(t->tLeftChild, n-1);
 	recursiveSplit(t->tRightChild, n-1);
 }
