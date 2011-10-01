@@ -41,10 +41,35 @@ int getFirstTriangleSize(Triangle* t) {
 	return sqrt(((t->vRight->x - t->vLeft->x)^2) + ((t->vRight->y - t->vLeft->y)^2));
 }
 
+// TODO : à supprimer.
 unsigned int getValueForSeed(unsigned int seed) {
 	unsigned int primeA = 65521; // Plus grand premier < 2^16
 	unsigned int primeB = 4294967291U; // Plus grand premier < 2^32
 	return ((seed * primeA) ^ ((seed+1) * primeB)) + seed; // + seed pour éviter d'avoir uniquement des nombres impairs.
+}
+
+// Donne des mauvais résultats (en faisant & 0xff…, on obtient des valeurs répétitives).
+/* unsigned int hash2(unsigned int a, unsigned int b) { */
+/* 	unsigned int primeA = 65521; // Plus grand premier < 2^16 */
+/* 	unsigned int primeB = 4294967291U; // Plus grand premier < 2^32 */
+/* 	return ((a * primeA) + (b * primeB) + a + 43) ^ ((a * primeB) + (b * primeA) + b + 57); */
+/* } */
+
+int hash2(int a, int b) {
+	int i;
+	for (i = 0; i < 5; i++) { // repeat five times
+		b += a; // b = a + b
+		a *= b; // a = a * (a + b)
+		b ^= a; // b = (a + b) ^ (a * (a + b))
+		a += 211; // a = (a * (a + b)) + 5
+		b /= 2; // b = ((a + b) ^ (a * (a + b))) / 2
+	}
+	return (a >> 3); // high bits are never set…
+}
+
+// Un hachage certes un peu primaire mais bon…
+unsigned int hash(unsigned int seed, int x, int y) {
+	return hash2(seed,hash2(x, y));
 }
 
 /* Interpolation linéaire entre deux points.
@@ -55,19 +80,13 @@ unsigned int getValueForSeed(unsigned int seed) {
 // Optimiser aussi le fait que la distance entre xy1 et xy2 est une puissance de 2, donc on peut faire un simple décalage.
 // Peut être réalisé par une multiplication de matrice (donc sur le GPU) : http://en.wikipedia.org/wiki/Bilinear_interpolation
 int interpolation(int x, int y, int x1, int y1, int x2, int y2, int ne, int se, int so, int no) {
-	int gaucheBas = so * -(x-x2) / (x2-x1);
-	int droiteBas = se * (x-x1) / (x2-x1);
-	int gaucheHaut = no * -(x-x2) / (x2-x1);
-	int droiteHaut = ne * (x-x1) / (x2-x1);
-	
-	int pointBas = gaucheBas + droiteBas;
-	int pointHaut = gaucheHaut + droiteHaut;
-
-	int bas = pointBas * -(y-y1) / (y1-y2);
-	int haut = pointHaut * (y-y2) / (y1-y2);
-	int ret = bas+haut;
-	ret = ret;
-	return ret;
+	int ret = 0;
+	// on multiplie chaque coin par la superficie du rectangle formé par (x,y) et ce coin.
+	ret += so * (x2-x) * (y-y1);
+	ret += no * (x2-x) * (y2-y);
+	ret += ne * (x-x1) * (y2-y);
+	ret += se * (x-x1) * (y-y1);
+	return ret / ((x2-x1) * (y2-y1));
 }
 
 short** PerlinNoise(Triangle* t) {
@@ -93,10 +112,33 @@ short** PerlinNoise(Triangle* t) {
 	return values;
 }
 
+// renvoie un z entre 0 et 255
 int get_z(int x, int y) {
+	unsigned int seed = 45;
 	x = x; /* Unused */
 	y = y; /* Unused */
-	return 0;
+	int z = 0;
+	int level;
+	int maxlevel = 7;
+	for (level = maxlevel; level > 0; level--) {
+		int step = (1 << level);
+		int mask = step - 1;
+		int zmax = mask;
+		int x1 = x & ~mask;
+		int y1 = y & ~mask;
+		int x2 = x1 + step;
+		int y2 = y1 + step;
+		z += interpolation(x, y, x1, y1, x2, y2, hash(seed, x2, y1) & zmax, hash(seed, x2, y2) & zmax, hash(seed, x1, y2) & zmax, hash(seed, x1, y1) & zmax);
+		//fprintf(stderr, "x=%d y=%d x1=%d y1=%d x2=%d y2=%d hash(seed, x2, y1)=%d ans&zmax=%d\n", x, y, x1, y1, x2, y2, hash(seed, x2, y1), hash(seed, x2, y1) & zmax);
+		//break;
+	}
+	// ici le résultat est entre 0 (inclues) et 2^(1+maxlevel) (non inclus)
+	// On normalise sur [0,256[ sachant que 256 == 2^8
+	if (maxlevel > 7)
+		z = z >> (-7+maxlevel);
+	else if (maxlevel != 7)
+		z = z << (7-maxlevel);
+	return z;
 }
 
 void triangle_split(Triangle* t) {
@@ -294,6 +336,14 @@ Triangle* maxheap_pop_max(Triangle** heap, unsigned int n) {
 	return ret;
 }
 
+// t must not already be split !
+void recursiveSplit(Triangle* t, int n) {
+	if (n == 0) return;
+	triangle_split(t);
+	recursiveSplit(t->tLeftChild, n-1);
+	recursiveSplit(t->tRightChild, n-1);
+}
+
 Triangle* initDefaultExample() {
 	Triangle* t = (Triangle*)malloc(sizeof(Triangle));
 	Vertex* vApex = (Vertex*)malloc(sizeof(Vertex));
@@ -314,10 +364,11 @@ Triangle* initDefaultExample() {
 	t->tRightNeighbor = NULL;
 	t->tParent = NULL;
 	
-	triangle_split(t);
-	triangle_split(t->tLeftChild);
-	triangle_split(t->tLeftChild->tLeftChild);
-	triangle_split(t->tLeftChild->tRightChild);
+	recursiveSplit(t, 10);
+	/* triangle_split(t); */
+	/* triangle_split(t->tLeftChild); */
+	/* triangle_split(t->tLeftChild->tLeftChild); */
+	/* triangle_split(t->tLeftChild->tRightChild); */
 	
 	return t;
 }

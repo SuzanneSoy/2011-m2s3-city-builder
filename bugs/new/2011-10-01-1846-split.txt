@@ -1,0 +1,1 @@
+Quand on fait un split récursif sur au moins 4-5 niveaux, on voit que le côté gauche des triangles est malformé.

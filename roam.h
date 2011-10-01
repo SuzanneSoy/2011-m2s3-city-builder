@@ -23,3 +23,4 @@ typedef struct Triangle {
 
 Triangle* initDefaultExample();
 int interpolation(int x, int y, int x1, int y1, int x2, int y2, int ne, int se, int so, int no);
+int get_z(int x, int y);

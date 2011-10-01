@@ -81,9 +81,9 @@ void displayTree(Triangle *t) {
 	if(t->tLeftChild == NULL) {
 		glBegin(GL_LINE_LOOP);
 			glColor3ub(255,255,255);
-			glVertex3d(t->vLeft->x,t->vLeft->y,1);
-			glVertex3d(t->vApex->x,t->vApex->y,1);
-			glVertex3d(t->vRight->x,t->vRight->y,1);
+			glVertex3d(t->vLeft->x,t->vLeft->y,t->vLeft->z);
+			glVertex3d(t->vApex->x,t->vApex->y,t->vApex->z);
+			glVertex3d(t->vRight->x,t->vRight->y,t->vRight->z);
 		glEnd();
 	}
 	else {
@@ -93,17 +93,19 @@ void displayTree(Triangle *t) {
 }
 
 int main() {
-	/* initWindow(); */
-	/* t = initDefaultExample(); */
+	initWindow();
+	t = initDefaultExample();
 	
-	/* mainLoop(); */
-	int x;
-	int y;
-	printf("P5 %d %d 255\n", 256, 256);
-	for (y = 0; y < 256; y++) {
-		for (x = 0; x < 256; x++) {
-			printf("%c", interpolation(x, y, 0, 0, 256, 256, 0, 255, 255, 255));
-		}
-	}
+	mainLoop();
+
+	// Pour afficher le terrain :
+	/* int x; */
+	/* int y; */
+	/* printf("P5 %d %d 255\n", 256, 256); */
+	/* for (y = 0; y < 256; y++) { */
+	/* 	for (x = 0; x < 256; x++) { */
+	/* 		printf("%c", get_z(x, y));//interpolation(256+x, 256+y, 256, 256, 512, 512, 0, 255, 255, 255)); */
+	/* 	} */
+	/* } */
 	return 0;
 }
