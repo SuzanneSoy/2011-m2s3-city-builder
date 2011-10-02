@@ -41,23 +41,17 @@ int getFirstTriangleSize(Triangle* t) {
 	return sqrt(((t->vRight->x - t->vLeft->x)^2) + ((t->vRight->y - t->vLeft->y)^2));
 }
 
-// TODO : à supprimer.
-unsigned int getValueForSeed(unsigned int seed) {
-	unsigned int primeA = 65521; // Plus grand premier < 2^16
-	unsigned int primeB = 4294967291U; // Plus grand premier < 2^32
-	return ((seed * primeA) ^ ((seed+1) * primeB)) + seed; // + seed pour éviter d'avoir uniquement des nombres impairs.
-}
-
 // Ce hash donne des bons résultats sur tous les bits de l'entier
 // généré (pas d'artefacts, répartition homogène des 0 et des 1).
 unsigned int hash2(unsigned int a, unsigned int b) {
 	unsigned int h = 1;
 	int i;
 	for (i = 0; i < 32; i+=8) {
-		a *= h;
-		b *= h;
-		h = h * 65599 + ((a >> i) & 0xff);
-		h = h * 65599 + ((b >> i) & 0xff);
+		a = a*h + 1;
+		b = b*h + 1;
+		// marche aussi avec 65521.
+		h = (h << 6) + (h << 16) - h + ((a >> i) & 0xff); // h * 65599 + ieme octet de a
+		h = (h << 6) + (h << 16) - h + ((b >> i) & 0xff); // h * 65599 + ieme octet de b
 	}
 	return h;
 }
@@ -81,29 +75,6 @@ int interpolation(int x, int y, int x1, int y1, int x2, int y2, int ne, int se, 
 	ret += ne * (x-x1) * (y2-y);
 	ret += se * (x-x1) * (y-y1);
 	return ret / ((x2-x1) * (y2-y1));
-}
-
-short** PerlinNoise(Triangle* t) {
-	short **values;
-	int triangleSize = getFirstTriangleSize(t);
-	int i;
-	int seed;
-	int x,y;
-	
-	seed = (int)(t->vApex->x / triangleSize + t->vApex->y / triangleSize)*1111;
-	
-	values = (short**) malloc(sizeof(short*)*triangleSize);
-	for(i=0; i<triangleSize;i++)
-		values[i] = (short*) malloc(sizeof(short)*triangleSize);
-	
-	for(i=0; i<8;i++) {
-		x = getValueForSeed(seed);
-		y = getValueForSeed(x);
-		values[x][y] = 255;
-	}
-	
-	// TODO Yoann : tout le reste.
-	return values;
 }
 
 // renvoie un z entre 0 et 255
@@ -341,9 +312,9 @@ Triangle* initDefaultExample() {
 	Vertex* vLeft = (Vertex*)malloc(sizeof(Vertex));
 	Vertex* vRight = (Vertex*)malloc(sizeof(Vertex));
 	
-	vApex->x  = 1024; vApex->y  = 1024; vApex->z  = 0;
-	vLeft->x  = 0;    vLeft->y  = 0;    vLeft->z  = 0;
-	vRight->x = 2048; vRight->y = 0;    vRight->z = 0;
+	vApex->x  = 1024; vApex->y  = 1024; vApex->z  = get_z(1024,1024);
+	vLeft->x  = 0;    vLeft->y  = 0;    vLeft->z  = get_z(0,0);
+	vRight->x = 2048; vRight->y = 0;    vRight->z = get_z(2048,0);
 	
 	t->vApex = vApex;
 	t->vLeft = vLeft;
