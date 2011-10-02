@@ -312,9 +312,9 @@ Triangle* initDefaultExample() {
 	Vertex* vLeft = (Vertex*)malloc(sizeof(Vertex));
 	Vertex* vRight = (Vertex*)malloc(sizeof(Vertex));
 	
-	vApex->x  = 1024; vApex->y  = 1024; vApex->z  = 0;
-	vLeft->x  = 0;    vLeft->y  = 0;    vLeft->z  = 0;
-	vRight->x = 2048; vRight->y = 0;    vRight->z = 0;
+	vApex->x  = 1024; vApex->y  = 1024; vApex->z  = get_z(1024,1024);
+	vLeft->x  = 0;    vLeft->y  = 0;    vLeft->z  = get_z(0,0);
+	vRight->x = 2048; vRight->y = 0;    vRight->z = get_z(2048,0);
 	
 	t->vApex = vApex;
 	t->vLeft = vLeft;
