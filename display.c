@@ -7,10 +7,13 @@ int initWindow();
 int mainLoop();
 void renderScene();
 void displayTree(Triangle *t);
+void displayTree2();
 void Draw_Axes ();
 
 Triangle *t;
+int *vertices;
 int windowWidth = 1024;
+int nbVertex = 0;
 int windowHeight = 768;
 int xCamera = 1024;
 int yCamera = -800;
@@ -28,6 +31,7 @@ int initWindow() {
 	glLoadIdentity();
 	gluPerspective(70,(double)windowWidth/windowHeight,1,10000);
 	glEnable(GL_DEPTH_TEST);
+	glewInit();
 
 	return 0;
 }
@@ -102,10 +106,51 @@ void renderScene() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	drawAxes();
-	displayTree(t);
+	displayTree2(t,vertices,0);
+	//displayTree(t);
 	
 	glFlush();
 	SDL_GL_SwapBuffers();
+}
+
+int nbTriangles(Triangle *t) {
+	int sum = 0;
+	
+	if(t->tLeftChild == NULL) {
+		return 1;
+	}
+	else {
+		sum += nbTriangles(t->tLeftChild);
+		sum += nbTriangles(t->tRightChild);
+	}
+	
+	return sum;
+}
+
+void insertValues(Triangle *t,int *vertices) {
+	if(t->tLeftChild == NULL) {
+		vertices[9*nbVertex] = t->vLeft->x;
+		vertices[9*nbVertex+1] = t->vLeft->y;
+		vertices[9*nbVertex+2] = t->vLeft->z;
+		vertices[9*nbVertex+3] = t->vApex->x;
+		vertices[9*nbVertex+4] = t->vApex->y;
+		vertices[9*nbVertex+5] = t->vApex->z;
+		vertices[9*nbVertex+6] = t->vRight->x;
+		vertices[9*nbVertex+7] = t->vRight->y;
+		vertices[9*nbVertex+8] = t->vRight->z;
+		nbVertex++;
+	}
+	else {
+		insertValues(t->tLeftChild,vertices);
+		insertValues(t->tRightChild,vertices);
+	}
+}
+
+void displayTree2() {
+	glVertexAttribPointer(0, 3, GL_INT, GL_FALSE, 0, vertices);
+	glEnableVertexAttribArray(0);
+	glColor3ub(255,255,255);
+	glDrawArrays(GL_LINE_LOOP,0, nbVertex*3);
 }
 
 void displayTree(Triangle *t) {
@@ -126,6 +171,10 @@ void displayTree(Triangle *t) {
 int main() {
 	initWindow();
 	t = initDefaultExample();
+	vertices = (int*) malloc(sizeof(int) * nbTriangles(t)*9+1);
+	
+	insertValues(t,vertices);
+	printf("nombre de triangles : %d\n",nbVertex);
 	
 	mainLoop();
 
