@@ -10,14 +10,23 @@ void displayTree(Triangle *t);
 void Draw_Axes ();
 
 Triangle *t;
+int windowWidth = 1024;
+int windowHeight = 768;
+int xCamera = 1024;
+int yCamera = -800;
+int zCamera = 600;
+int xSight = 1024;
+int ySight = 512;
+int zSight = 0;
+int moveDist = 64;
 
 int initWindow() {
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_WM_SetCaption("Sortie terrain OpenGL",NULL);
-	SDL_SetVideoMode(640, 480, 32, SDL_OPENGL);
+	SDL_SetVideoMode(windowWidth, windowHeight, 32, SDL_OPENGL);
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	gluPerspective(70,(double)640/480,1,10000);
+	gluPerspective(70,(double)windowWidth/windowHeight,1,10000);
 	glEnable(GL_DEPTH_TEST);
 
 	return 0;
@@ -33,6 +42,27 @@ int mainLoop() {
 		switch(event.type) {
 			case SDL_QUIT:
 				continuer = 0;
+			case SDL_KEYDOWN:
+				switch(event.key.keysym.sym) {
+					case SDLK_DOWN:
+						yCamera-=moveDist;
+						ySight-=moveDist;
+						break;
+					case SDLK_UP:
+						yCamera+=moveDist;
+						ySight+=moveDist;
+						break;
+					case SDLK_LEFT:
+						xCamera-=moveDist;
+						xSight-=moveDist;
+						break;
+					case SDLK_RIGHT:
+						xCamera+=moveDist;
+						xSight+=moveDist;
+						break;
+					default:
+						break;
+				}
 		}
 
 		renderScene();
@@ -68,7 +98,7 @@ void renderScene() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	//gluLookAt(1024,512,1356,1024,512,0,0,1,0);
-	gluLookAt(1024,-200,500,1024,512,0,0,1,0);
+	gluLookAt(xCamera,yCamera,zCamera,xSight,ySight,zSight,0,1,0);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	drawAxes();
