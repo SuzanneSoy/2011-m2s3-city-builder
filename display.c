@@ -102,10 +102,16 @@ int main() {
 	// Pour afficher le terrain :
 	/* int x; */
 	/* int y; */
-	/* printf("P5 %d %d 255\n", 256, 256); */
-	/* for (y = 0; y < 256; y++) { */
-	/* 	for (x = 0; x < 256; x++) { */
-	/* 		printf("%c", get_z(x, y));//interpolation(256+x, 256+y, 256, 256, 512, 512, 0, 255, 255, 255)); */
+	/* #define SIZE 256 */
+	/* printf("P5 %d %d 255\n", SIZE, SIZE); */
+	/* for (y = 0; y < SIZE; y++) { */
+	/* 	for (x = 0; x < SIZE; x++) { */
+	/* 		//int bit = y / (SIZE/32); */
+	/* 		//int h = hash2(t,hash2(x, y)); */
+	/* 		//if (y % (SIZE/32) == 0) h = 0; */
+	/* 		//printf("%c", ((h >> (31-bit)) & 1) * 255); */
+	/* 		//printf("%c", interpolation(256+x, 256+y, 256, 256, 512, 512, 0, 255, 255, 255)); */
+	/* 		printf("%c", get_z(x,y)); */
 	/* 	} */
 	/* } */
 	return 0;

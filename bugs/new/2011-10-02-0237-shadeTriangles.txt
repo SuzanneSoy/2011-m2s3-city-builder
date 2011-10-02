@@ -1,0 +1,1 @@
+TODO : Remplir et shade les triangles pour que ça soit plus lisible.

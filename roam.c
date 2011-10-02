@@ -48,27 +48,21 @@ unsigned int getValueForSeed(unsigned int seed) {
 	return ((seed * primeA) ^ ((seed+1) * primeB)) + seed; // + seed pour éviter d'avoir uniquement des nombres impairs.
 }
 
-// Donne des mauvais résultats (en faisant & 0xff…, on obtient des valeurs répétitives).
-/* unsigned int hash2(unsigned int a, unsigned int b) { */
-/* 	unsigned int primeA = 65521; // Plus grand premier < 2^16 */
-/* 	unsigned int primeB = 4294967291U; // Plus grand premier < 2^32 */
-/* 	return ((a * primeA) + (b * primeB) + a + 43) ^ ((a * primeB) + (b * primeA) + b + 57); */
-/* } */
-
-int hash2(int a, int b) {
+// Ce hash donne des bons résultats sur tous les bits de l'entier
+// généré (pas d'artefacts, répartition homogène des 0 et des 1).
+unsigned int hash2(unsigned int a, unsigned int b) {
+	unsigned int h = 1;
 	int i;
-	for (i = 0; i < 5; i++) { // repeat five times
-		b += a; // b = a + b
-		a *= b; // a = a * (a + b)
-		b ^= a; // b = (a + b) ^ (a * (a + b))
-		a += 211; // a = (a * (a + b)) + 5
-		b /= 2; // b = ((a + b) ^ (a * (a + b))) / 2
+	for (i = 0; i < 32; i+=8) {
+		a *= h;
+		b *= h;
+		h = h * 65599 + ((a >> i) & 0xff);
+		h = h * 65599 + ((b >> i) & 0xff);
 	}
-	return (a >> 3); // high bits are never set…
+	return h;
 }
 
-// Un hachage certes un peu primaire mais bon…
-unsigned int hash(unsigned int seed, int x, int y) {
+unsigned int hash3(unsigned int seed, int x, int y) {
 	return hash2(seed,hash2(x, y));
 }
 
@@ -114,28 +108,27 @@ short** PerlinNoise(Triangle* t) {
 
 // renvoie un z entre 0 et 255
 int get_z(int x, int y) {
-	unsigned int seed = 45;
 	x = x; /* Unused */
 	y = y; /* Unused */
 	int z = 0;
 	int level;
-	int maxlevel = 7;
-	for (level = maxlevel; level > 0; level--) {
+	int maxlevel = 6;
+	for (level = maxlevel; level >= 0; level--) {
 		int step = (1 << level);
 		int mask = step - 1;
-		int zmax = mask;
+		int zmax = 2*step - 1;
 		int x1 = x & ~mask;
 		int y1 = y & ~mask;
 		int x2 = x1 + step;
 		int y2 = y1 + step;
-		z += interpolation(x, y, x1, y1, x2, y2, hash(seed, x2, y1) & zmax, hash(seed, x2, y2) & zmax, hash(seed, x1, y2) & zmax, hash(seed, x1, y1) & zmax);
+		z += interpolation(x, y, x1, y1, x2, y2, hash3(level, x2, y1) & zmax, hash3(level, x2, y2) & zmax, hash3(level, x1, y2) & zmax, hash3(level, x1, y1) & zmax);
 	}
-	// ici le résultat est entre 0 (inclues) et 2^(1+maxlevel) (non inclus)
-	// On normalise sur [0,256[ sachant que 256 == 2^8
-	if (maxlevel > 7)
-		z = z >> (-7+maxlevel);
-	else if (maxlevel != 7)
-		z = z << (7-maxlevel);
+	// ici le résultat est entre 0 (inclus) et 2^(2+maxlevel) (non inclus)
+	// On normalise sur [0,256[ sachant que 256 == 2^8.
+	if (maxlevel > 6)
+		z = z >> (-6+maxlevel);
+	else if (maxlevel != 6)
+		z = z << (6-maxlevel);
 	return z;
 }
 

@@ -1,0 +1,4 @@
+TODO : trouver une fonction unsigned int hash(uint x, uint y) telle que
+hash(x,y) renvoie toujours la même chose pour les mêmes x et y, et sans
+artefact visuel.
+
