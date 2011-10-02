@@ -17,8 +17,8 @@ int initWindow() {
 	float MatAmb[4] = {0.3f, 0.3f, 0.3f, 1.0f};
 	 
 	float Light1Pos[4] = {0.0f, 0.0f, -1.0f, 0.0f};
-	float Light1Dif[4] = {1.0f, 0.2f, 0.2f, 1.0f};
-	float Light1Spec[4] = {1.0f, 0.2f, 0.2f, 1.0f};
+	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+	float Light1Spec[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 	float Light1Amb[4] = {0.5f, 0.5f, 0.5f, 1.0f};
 
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
