@@ -8,10 +8,32 @@ int initWindow() {
 	glLoadIdentity();
 	gluPerspective(70,(double)windowWidth/windowHeight,1,10000);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING); 	// Active l'éclairage
+  	glEnable(GL_LIGHT0);	// Active la lumière 0;
 	glewInit();
+	
+	float MatSpec[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+	float MatDif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+	float MatAmb[4] = {0.3f, 0.3f, 0.3f, 1.0f};
+	 
+	float Light1Pos[4] = {0.0f, 0.0f, -1.0f, 0.0f};
+	float Light1Dif[4] = {1.0f, 0.2f, 0.2f, 1.0f};
+	float Light1Spec[4] = {1.0f, 0.2f, 0.2f, 1.0f};
+	float Light1Amb[4] = {0.5f, 0.5f, 0.5f, 1.0f};
+
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,MatDif);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,MatAmb);
+
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, Light1Dif);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, Light1Spec);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, Light1Amb);
+	glLightfv(GL_LIGHT0, GL_POSITION, Light1Pos);
+	
 
 	return 0;
 }
+
 
 int mainLoop() {
 	short continuer = 1;
@@ -19,7 +41,6 @@ int mainLoop() {
 
 	while (continuer) {
 		SDL_WaitEvent(&event);
-		
 		switch(event.type) {
 			case SDL_QUIT:
 				continuer = 0;
@@ -54,6 +75,7 @@ int mainLoop() {
 	return 0;
 }
 
+
 void drawAxes() {
 	glDisable(GL_TEXTURE_2D);
 	glBegin(GL_LINES);
@@ -75,6 +97,7 @@ void drawAxes() {
 	glEnd( );
 }
 
+
 void renderScene() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -90,6 +113,7 @@ void renderScene() {
 	SDL_GL_SwapBuffers();
 }
 
+
 int nbTriangles(Triangle *t) {
 	int sum = 0;
 	
@@ -103,6 +127,7 @@ int nbTriangles(Triangle *t) {
 	
 	return sum;
 }
+
 
 void insertValues(Triangle *t,int *vertices) {
 	if(t->tLeftChild == NULL) {
@@ -123,6 +148,7 @@ void insertValues(Triangle *t,int *vertices) {
 	}
 }
 
+
 void displayTree2() {
 	glVertexAttribPointer(0, 3, GL_INT, GL_FALSE, 0, vertices);
 	glEnableVertexAttribArray(0);
@@ -130,8 +156,10 @@ void displayTree2() {
 	glDrawArrays(GL_LINE_LOOP,0, nbVertex*3);
 }
 
+
 void displayTree(Triangle *t) {
 	if(t->tLeftChild == NULL) {
+		glNormal3d(0,1,0);
 		glBegin(GL_LINE_LOOP);
 			glColor3ub(255,255,255);
 			glVertex3d(t->vLeft->x,t->vLeft->y,t->vLeft->z);
@@ -144,6 +172,7 @@ void displayTree(Triangle *t) {
 		displayTree(t->tRightChild);
 	}
 }
+
 
 int main() {
 	initWindow();
