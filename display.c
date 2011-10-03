@@ -103,11 +103,12 @@ void renderScene() {
 	glLoadIdentity();
 	//gluLookAt(1024,512,1356,1024,512,0,0,1,0);
 	gluLookAt(xCamera,yCamera,zCamera,xSight,ySight,zSight,0,1,0);
-
+	
+	//glClearColor(1,1,1,1); // pour un fond blanc
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	drawAxes();
-	displayTree2();
-	//displayTree(t);
+	//displayTree2();
+	displayTree(t);
 	
 	glFlush();
 	SDL_GL_SwapBuffers();

@@ -1,0 +1,8 @@
+Idée :
+
+Lorsqu'on ajoute un vertex, pour éviter une modification brutale de
+l'apparence du terrain, on anime la position du vertex depuis sa position
+interpolée lorsqu'il n'existait pas vers sa position réelle.
+
+Pour effectuer cette animation, on peut faire un vertex shader qui déplace
+le vertex vers sa bonne position en fonction de la distance de la caméra ?
