@@ -12,18 +12,20 @@ int initWindow() {
   	glEnable(GL_LIGHT0);	// Active la lumière 0;
 	glewInit();
 	
-	float MatSpec[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-	float MatDif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-	float MatAmb[4] = {0.3f, 0.3f, 0.3f, 1.0f};
+	float MatSpec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+	float MatDif[4] = {0.0f, 1.0f, 0.0f, 1.0f};
+	float MatAmb[4] = {0.1f, 0.1f, 0.1f, 1.0f};
 	 
 	float Light1Pos[4] = {0.0f, 0.0f, -1.0f, 0.0f};
 	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-	float Light1Spec[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-	float Light1Amb[4] = {0.5f, 0.5f, 0.5f, 1.0f};
+	float Light1Spec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+	float Light1Amb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
+	float shininess = 100.0f;
 
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,MatDif);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,MatAmb);
+	glMaterialfv(GL_FRONT,GL_SHININESS,&shininess);
 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, Light1Dif);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, Light1Spec);
@@ -61,6 +63,12 @@ int mainLoop() {
 					case SDLK_RIGHT:
 						xCamera+=moveDist;
 						xSight+=moveDist;
+						break;
+					case SDLK_y:
+						yAngle += 8;
+						break;
+					case SDLK_x:
+						xAngle += 8;
 						break;
 					default:
 						break;
@@ -106,6 +114,8 @@ void renderScene() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	drawAxes();
+	glRotated(yAngle,0,1,0);
+	glRotated(xAngle,1,0,0);
 	//displayTree2();
 	displayTree(t);
 	
@@ -156,12 +166,47 @@ void displayTree2() {
 	glDrawArrays(GL_LINE_LOOP,0, nbVertex*3);
 }
 
+void setNormals(Triangle *t) {
+	if(t->tLeftChild == NULL) {
+		int ax = t->vLeft->x - t->vApex->x;
+		int ay = t->vLeft->y - t->vApex->y;
+		int az = t->vLeft->z - t->vApex->z;
+		int bx = t->vApex->x - t->vRight->x;
+		int by = t->vApex->y - t->vRight->y;
+		int bz = t->vApex->z - t->vRight->z;
+		
+		int x = (ay * bz) - (az * by);
+		int y = (az * bx) - (ax * bz);
+		int z = (ax * by) - (ay * bx);
+		int length = sqrt((x^2) + (y^2) + (z^2));
+		
+		length = length;
+		x = x/1000;
+		y = y/1000;
+		z = z/1000;
+		
+	printf("%d %d %d\n",x,y,z);
+		t->vLeft->xNormal = x;
+		t->vLeft->yNormal = y;
+		t->vLeft->zNormal = z;
+		t->vRight->xNormal = x;
+		t->vRight->yNormal = y;
+		t->vRight->zNormal = z;
+		t->vApex->xNormal = x;
+		t->vApex->yNormal = y;
+		t->vApex->zNormal = z;
+	}
+	else {
+		setNormals(t->tLeftChild);
+		setNormals(t->tRightChild);
+	}
+}
 
 void displayTree(Triangle *t) {
 	if(t->tLeftChild == NULL) {
-		glNormal3d(0,1,0);
-		glBegin(GL_LINE_LOOP);
-			glColor3ub(255,255,255);
+		glNormal3d(t->vLeft->xNormal,t->vLeft->yNormal,t->vLeft->zNormal);
+		//glNormal3d(0,10000,0);
+		glBegin(GL_TRIANGLES);
 			glVertex3d(t->vLeft->x,t->vLeft->y,t->vLeft->z);
 			glVertex3d(t->vApex->x,t->vApex->y,t->vApex->z);
 			glVertex3d(t->vRight->x,t->vRight->y,t->vRight->z);
@@ -177,9 +222,14 @@ void displayTree(Triangle *t) {
 int main() {
 	initWindow();
 	t = initDefaultExample();
-	vertices = (int*) malloc(sizeof(int) * nbTriangles(t)*9+1);
 	
-	insertValues(t,vertices);
+	// Calcul des normales des traingles.
+	setNormals(t);
+	
+	// Réorganisation des sommets pour l'affichage optimisé.
+	//vertices = (int*) malloc(sizeof(int) * nbTriangles(t)*9+1);
+	//insertValues(t,vertices);
+	
 	printf("nombre de triangles : %d\n",nbVertex);
 	
 	mainLoop();

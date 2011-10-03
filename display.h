@@ -6,6 +6,7 @@
 int initWindow();
 int mainLoop();
 void renderScene();
+void setNormals(Triangle *t);
 void displayTree(Triangle *t);
 void displayTree2();
 void Draw_Axes ();
@@ -21,4 +22,6 @@ int zCamera = 600;
 int xSight = 1024;
 int ySight = 512;
 int zSight = 0;
+int yAngle = 0;
+int xAngle = 0;
 int moveDist = 64;

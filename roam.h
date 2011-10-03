@@ -6,6 +6,9 @@ typedef struct Vertex {
        int x;
        int y;
        int z;
+       int xNormal;
+       int yNormal;
+       int zNormal;
        /* Ajouter des champs ici. */
 } Vertex;
 
