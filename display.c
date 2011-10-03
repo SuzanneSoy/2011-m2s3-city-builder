@@ -8,31 +8,32 @@ int initWindow() {
 	glLoadIdentity();
 	gluPerspective(70,(double)windowWidth/windowHeight,1,10000);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING); 	// Active l'éclairage
-  	glEnable(GL_LIGHT0);	// Active la lumière 0;
 	glewInit();
 	
 	float MatSpec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-	float MatDif[4] = {0.0f, 1.0f, 0.0f, 1.0f};
+	float MatDif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 	float MatAmb[4] = {0.1f, 0.1f, 0.1f, 1.0f};
 	 
 	float Light1Pos[4] = {0.0f, 0.0f, -1.0f, 0.0f};
 	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 	float Light1Spec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	float Light1Amb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
-	float shininess = 100.0f;
+	//float shininess = 128.0f;
 
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,MatDif);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,MatAmb);
-	glMaterialfv(GL_FRONT,GL_SHININESS,&shininess);
+	//glMaterialfv(GL_FRONT,GL_SHININESS,&shininess);
 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, Light1Dif);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, Light1Spec);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, Light1Amb);
 	glLightfv(GL_LIGHT0, GL_POSITION, Light1Pos);
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 	
-
+	glEnable(GL_LIGHTING); 	// Active l'éclairage
+  	glEnable(GL_LIGHT0);	// Active la lumière 0;
+  	
 	return 0;
 }
 
@@ -175,17 +176,18 @@ void setNormals(Triangle *t) {
 		int by = t->vApex->y - t->vRight->y;
 		int bz = t->vApex->z - t->vRight->z;
 		
-		int x = (ay * bz) - (az * by);
-		int y = (az * bx) - (ax * bz);
-		int z = (ax * by) - (ay * bx);
-		int length = sqrt((x^2) + (y^2) + (z^2));
+		float x = (float)((ay * bz) - (az * by));
+		float y = (float)((az * bx) - (ax * bz));
+		float z = (float)((ax * by) - (ay * bx));
+		float length = sqrt(((int)x^2) + ((int)y^2) + ((int)z^2));
 		
-		length = length;
-		x = x/1000;
-		y = y/1000;
-		z = z/1000;
+		length = length*100;
+		x = x/length;
+		y = y/length;
+		z = z/length;
+
 		
-	printf("%d %d %d\n",x,y,z);
+	printf("%f %f %f\n",x,y,z);
 		t->vLeft->xNormal = x;
 		t->vLeft->yNormal = y;
 		t->vLeft->zNormal = z;
@@ -204,8 +206,8 @@ void setNormals(Triangle *t) {
 
 void displayTree(Triangle *t) {
 	if(t->tLeftChild == NULL) {
-		glNormal3d(t->vLeft->xNormal,t->vLeft->yNormal,t->vLeft->zNormal);
-		//glNormal3d(0,10000,0);
+		glNormal3f(t->vLeft->xNormal,t->vLeft->yNormal,t->vLeft->zNormal);
+		//glNormal3d(0,1,0);
 		glBegin(GL_TRIANGLES);
 			glVertex3d(t->vLeft->x,t->vLeft->y,t->vLeft->z);
 			glVertex3d(t->vApex->x,t->vApex->y,t->vApex->z);

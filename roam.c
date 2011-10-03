@@ -326,7 +326,7 @@ Triangle* initDefaultExample() {
 	t->tRightNeighbor = NULL;
 	t->tParent = NULL;
 	
-	recursiveSplit(t, 6);
+	recursiveSplit(t, 13);
 	/* triangle_split(t); */
 	/* triangle_split(t->tLeftChild); */
 	/* triangle_split(t->tLeftChild->tLeftChild); */
