@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GL/glu.h>
 #include "roam.h"
+#include <math.h>
 
 int initWindow();
 int mainLoop();
@@ -17,7 +18,7 @@ int windowWidth = 1024;
 int nbVertex = 0;
 int windowHeight = 768;
 int xCamera = 1024;
-int yCamera = -400;
+int yCamera = 400;
 int zCamera = 1500;
 int xSight = 1024;
 int ySight = 512;
