@@ -3,25 +3,26 @@
 #include <math.h>
 
 typedef struct Vertex {
-       int x;
-       int y;
-       int z;
-       float xNormal;
-       float yNormal;
-       float zNormal;
-       /* Ajouter des champs ici. */
+	int x;
+	int y;
+	int z;
+	float xNormal;
+	float yNormal;
+	float zNormal;
+	int refCount;
+	/* Ajouter des champs ici. */
 } Vertex;
 
 typedef struct Triangle {
-       Vertex* vApex;
-       Vertex* vLeft;
-       Vertex* vRight;
-       struct Triangle* tLeftChild;
-       struct Triangle* tRightChild;
-       struct Triangle* tBaseNeighbor;
-       struct Triangle* tLeftNeighbor;
-       struct Triangle* tRightNeighbor;
-       struct Triangle* tParent;
+	Vertex* vApex;
+	Vertex* vLeft;
+	Vertex* vRight;
+	struct Triangle* tLeftChild;
+	struct Triangle* tRightChild;
+	struct Triangle* tBaseNeighbor;
+	struct Triangle* tLeftNeighbor;
+	struct Triangle* tRightNeighbor;
+	struct Triangle* tParent;
 } Triangle;
 
 Triangle* initDefaultExample();

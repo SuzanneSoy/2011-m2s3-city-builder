@@ -14,7 +14,7 @@ test: all
 simple-terrain: simple-terrain.c
 	$(CC) $< -o $@
 
-display: display.o roam.o
+display: display.o roam.o square.o
 	$(CC) -lGLEW -lSDL -lGLU $^ -o $@
 
 # Create objects from C source code
