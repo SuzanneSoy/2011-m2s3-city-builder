@@ -11,10 +11,10 @@ int initWindow() {
 	glewInit();
 	
 	float MatSpec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-	float MatDif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+	float MatDif[4] = {0.0f, 0.8f, 0.0f, 1.0f};
 	float MatAmb[4] = {0.1f, 0.1f, 0.1f, 1.0f};
 	 
-	float Light1Pos[4] = {0.0f, 0.0f, 1.0f, 0.0f};
+	float Light1Pos[4] = {0.0f, 1.0f, 0.0f, 0.0f};
 	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 	float Light1Spec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	float Light1Amb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
@@ -46,30 +46,25 @@ int mainLoop() {
 		switch(event.type) {
 			case SDL_QUIT:
 				continuer = 0;
+				break;
 			case SDL_KEYDOWN:
 				switch(event.key.keysym.sym) {
-					case SDLK_DOWN:
+					case SDLK_s:
 						yCamera-=moveDist;
-						ySight-=moveDist;
+						break;
+					case SDLK_z:
+						yCamera+=moveDist;
+						break;
+					case SDLK_q:
+						xCamera-=moveDist;
+						break;
+					case SDLK_d:
+						xCamera+=moveDist;
 						break;
 					case SDLK_UP:
-						yCamera+=moveDist;
-						ySight+=moveDist;
+						xAngle += 16;
 						break;
-					case SDLK_LEFT:
-						xCamera-=moveDist;
-						xSight-=moveDist;
-						break;
-					case SDLK_RIGHT:
-						xCamera+=moveDist;
-						xSight+=moveDist;
-						break;
-					case SDLK_y:
-						yAngle += 8;
-						break;
-					case SDLK_x:
-						xAngle += 8;
-						break;
+						
 					default:
 						break;
 				}
@@ -116,9 +111,8 @@ void renderScene() {
 	
 	//glClearColor(1,1,1,1); // pour un fond blanc
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
+	
 	drawAxes();
-	glRotated(yAngle,0,1,0);
-	glRotated(xAngle,1,0,0);
 	//displayTree2();
 	displayTree(t);
 	
@@ -187,34 +181,15 @@ void setNormals(Triangle *t) {
 		
 		float x = (float)((ay * bz) - (az * by));
 		float y = (float)((az * bx) - (ax * bz));
-		float z = (float)((ax * by) - (ay * bx));
+		float z = -(float)((ax * by) - (ay * bx));
 		float length = sqrt(x*x + y*y + z*z);
-z=-z;
+		
 		length = length;
 		x = x/length;
 		y = y/length;
 		z = z/length;
 		
-		float coef;
 		
-		if(max3(x,y,z) == x) {
-			coef = 1-x;
-			x = 1.0f;
-			y += coef;
-			z += coef;
-		}
-		if(max3(x,y,z) == y) {
-			coef = 1-y;
-			y = 1.0f;
-			x += coef;
-			z += coef;
-		}
-		if(max3(x,y,z) == z) {
-			coef = 1-z;
-			z = 1.0f;
-			y += coef;
-			x += coef;
-		}
 		
 	printf("%f %f %f\n",x,y,z);
 		t->vLeft->xNormal = x;
