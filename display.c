@@ -191,7 +191,7 @@ void setNormals(Triangle *t) {
 		
 		
 		
-	printf("%f %f %f\n",x,y,z);
+
 		t->vLeft->xNormal = x;
 		t->vLeft->yNormal = y;
 		t->vLeft->zNormal = z;
