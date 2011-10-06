@@ -61,8 +61,17 @@ int mainLoop() {
 					case SDLK_d:
 						xCamera+=moveDist;
 						break;
+					case SDLK_DOWN:
+						ySight -= moveDist;
+						break;
 					case SDLK_UP:
-						xAngle += 16;
+						ySight += moveDist;
+						break;
+					case SDLK_LEFT:
+						xSight -= moveDist;
+						break;
+					case SDLK_RIGHT:
+						xSight += moveDist;
 						break;
 						
 					default:
@@ -107,7 +116,7 @@ void renderScene() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	//gluLookAt(1024,512,1356,1024,512,0,0,1,0);
-	gluLookAt(xCamera,yCamera,zCamera,xSight,ySight,zSight,0,1,0);
+	gluLookAt(xCamera,yCamera,zCamera,xCamera+xSight,yCamera+ySight,zCamera+zSight,0,1,0);
 	
 	//glClearColor(1,1,1,1); // pour un fond blanc
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
