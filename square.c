@@ -37,6 +37,26 @@ typedef struct QTNode {
 	unsigned int maxLOD;
 } QTNode;
 
+static inline void vertex_link_create(Vertex* a, Vertex* b, QTCardinal directionAB) {
+	if (a != NULL) a->next[directionAB] = b;
+	if (b != NULL) b->next[ROTATE4(directionAB, 2)] = a;
+}
+
+static inline void vertex_link_between(Vertex* vnew, Vertex* a, Vertex* b, QTCardinal directionAB) {
+	vertex_link_create(a, vnew, directionAB);
+	vertex_link_create(vnew, b, directionAB);
+}
+
+static inline void vertex_link_remove(Vertex* v) {
+	vertex_link_create(v->next[QT_S], v->next[QT_N], QT_N);
+	vertex_link_create(v->next[QT_O], v->next[QT_E], QT_E);
+}
+
+static inline void qtnode_link_create(QTNode* a, QTNode* b) {
+	if (a != NULL) a->nextNode = b;
+	if (b != NULL) b->previousNode = a;
+}
+
 void QT_split(QTNode* parent) {
 	// Ne pas split un noeud déjà split.
 	if (parent->children[QT_NE] != NULL) return;
@@ -46,54 +66,20 @@ void QT_split(QTNode* parent) {
 	for (r = 0; r < 4; r++) {
 		q[ROT_NE] = malloc(sizeof(QTNode));
 	}
-
-	/* TODO : À chaque màj d'un champ v1->next[N] = v2, mettre à jour v2->next[S] = v1.
-	 * Pour chaque point de new_vertices (exemple pour new_vertices[N], ssi on le crée) :
-	 * if (parent->center->next[N] != NULL) {
-	 *   // insert new_vertices[N] between parent->center and parent->center->next[N] :
-	 *   new_vertices[N]->next[N] = parent->center->next[N];
-	 *   parent->center->next[N]->next[S] = new_vertices[N];
-	 *
-	 *   new_vertices[N]->next[S] = parent->center;
-	 *   parent->center->next[N] = new_vertices[N];
-	 * } else {
-	 *   if (parent->neighbor[N] != NULL) {
-	 *     new_vertices[N]->next[N] = parent->neighbor[N]->center;
-	 *     parent->neighbor[N]->center->next[S] = new_vertices[N];
-	 *   } else {
-	 *     new_vertices[N]->next[N] = NULL
-	 *   }
-	 *   new_vertices[N]->next[S] = parent->center
-	 * }
-	 * new_vertices[N]->next[E] = parent->vertices[NE]
-	 * new_vertices[N]->next[O] = parent->vertices[NO]
-	 *
-	 * Pour le point center du quart NE :
-	 * if (exists : parent->neighbor[N]->child[SE]->child[SE]) {
-	 *   // child[SE]->vertices[SO] means childrenvertices[S]
-	 *   q[NE]->center->next[N] = parent->neighbor[N]->child[SE]->child[SE]->vertices[SO];
-	 *   parent->neighbor[N]->child[SE]->child[SE]->vertices[SO]->next[S] = q[NE]->center;
-	 * } else {
-	 *   q[NE]->center->next[N] = NULL;
-	 * }
-	 * if (exists : parent->neighbor[E]->child[NO]->child[NO]) {
-	 *   // child[NO]->vertices[SO] means childrenvertices[E]
-	 *   q[NE]->center->next[E] = parent->neighbor[E]->child[NO]->child[NO]->vertices[SO];
-	 *   parent->neighbor[E]->child[NO]->child[NO]->vertices[SO]->next[O] = q[NE]->center;
-	 * } else {
-	 *   q[NE]->center->next[E] = NULL;
-	 * }
-	 * q[NE]->center->next[S] = q[SE]->center
-	 * q[NE]->center->next[O] = q[NO]->center
-	 */
+	
 	Vertex* new_vertices[4];
 	for (r = 0; r < 4; r++) {
 		// réutiliser le vertex existant (parent->top_neighbor->se_child->so ou bien parent->top_neighbor->so_child->se)
 		if (parent->neighbors[ROT_N] != NULL && parent->neighbors[ROT_N]->children[ROT_SE] != NULL) {
 			new_vertices[ROT_N] = parent->neighbors[ROT_N]->children[ROT_SE]->vertices[ROT_SO];
 		} else {
-			new_vertices[ROT_N] = malloc(sizeof(Vertex));
-			switch (r) { // Pourrait être factorisé, mais on y perdrait en clarté !
+			new_vertices[ROT_N] = (Vertex*)malloc(sizeof(Vertex));
+			// Insère le nouveau vertex entre les deux coins de parent.
+			vertex_link_between(new_vertices[ROT_N], parent->vertices[ROT_NO], parent->vertices[ROT_NE], ROT_N);
+			// place le nouveau vertex après center.
+			vertex_link_create(parent->center, new_vertices[ROT_N], ROT_N);
+			// Définit x,y,z et ref_count.
+			switch (r) { // TODO : Devrait être factorisé.
 				case 0: INIT_VERTEX(new_vertices[0], parent->center->x, parent->vertices[QT_NE]->y); break;
 				case 1: INIT_VERTEX(new_vertices[1], parent->vertices[QT_SE]->x, parent->center->y); break;
 				case 2: INIT_VERTEX(new_vertices[2], parent->center->x, parent->vertices[QT_SO]->y); break;
@@ -104,6 +90,7 @@ void QT_split(QTNode* parent) {
 	
 	for (r = 0; r < 4; r++) { // Dans le corps de la boucle, positions pour le quadrant ne.
 		q[ROT_NE]->center = malloc(sizeof(Vertex));
+		// Pas besoin d'insérer center dans une des listes : à sa création il ne sera accédé dans aucun parcours de périmètre.
 		// Coordonnées du centre de qne = moyenne du center et de parent->vertices[QT_NE].
 		INIT_VERTEX(q[ROT_NE]->center, (parent->center->x + parent->vertices[ROT_NE]->x) / 2, (parent->center->y + parent->vertices[ROT_NE]->y) / 2);
 		use_vertex(q[ROT_NE]->center);
@@ -139,38 +126,31 @@ void QT_split(QTNode* parent) {
 		
 		parent->children[ROT_NE] = q[ROT_NE];
 	}
-
-	/* Màj nextNode et previousNode :
-	 * parent->previousNode->nextNode = q[NO];
-	 * q[NO]->nextNode = q[NE];
-	 * q[NE]->nextNode = q[SE];
-	 * q[SE]->nextNode = q[SO];
-	 * q[SO]->nextNode = parent->nextNode;
-
-	 * q[NO]->previousNode = parent->previousNode;
-	 * q[NE]->previousNode = q[NO];
-	 * q[SE]->previousNode = q[NE];
-	 * q[SO]->previousNode = q[SE];
-	 * parent->nextNode->previousNode = q[SO];
-	 */
 	
-	// TODO : set minLOD = maxLOD = ???
+	// remplacer parent par ses quatre enfants dans la liste d'énumération de tous les QTNode feuilles.
+	qtnode_link_create(parent->previousNode, q[QT_NO]);
+	qtnode_link_create(q[QT_NO], q[QT_NE]);
+	qtnode_link_create(q[QT_NE], q[QT_SE]);
+	qtnode_link_create(q[QT_SE], q[QT_SO]);
+	qtnode_link_create(q[QT_SO], parent->nextNode);
+
+	// TODO : set minLOD = maxLOD = parent->LOD + 1; // À moins que ça soit le parcours récursif de màj du mesh qui écrive cette information ?
 }
 
 void QT_merge(QTNode* parent) {
 	// Ne pas merge un noeud sans enfants.
 	if (parent->children[QT_NE] == NULL) return;
 	
+	qtnode_link_create(parent->children[QT_NO]->previousNode, parent);
+	qtnode_link_create(parent, parent->children[QT_SO]->nextNode);
+	
 	int r;
 	for (r = 0; r < 4; r++) {
 		// Merge récursif des enfants.
 		QT_merge(parent->children[ROT_NE]);
 		
-		/* TODO : màj Vertex::next[4], QTNode::nextNode/previousNode, peut-être minLOD/maxLOD ?
-		 * v[NESO] = parent->children[ROT_NE]->vertices[ROT_NO]; // vertex au nord de parent.
-		 * v[N]->next[N]->next[S] = parent->center
-		 * parent->center->next[N] = v[N]->next[N]
-		 */
+		// Supprime les vertex NESO de parent des listes de parcours.
+		vertex_link_remove(parent->children[ROT_NE]->vertices[ROT_NO]);
 		
 		// reset à NULL les voisins qui pointaient vers des enfants.
 		if (parent->neighbors[ROT_N] != NULL)
@@ -193,6 +173,12 @@ void QT_merge(QTNode* parent) {
 QTNode* QT_baseNode() {
 	QTNode* q = malloc(sizeof(QTNode));
 	Vertex** v = malloc(sizeof(Vertex)*5);
+	int i;
+
+	vertex_link_create(v[1], v[2], QT_E);
+	vertex_link_create(v[2], v[3], QT_S);
+	vertex_link_create(v[3], v[4], QT_O);
+	vertex_link_create(v[4], v[1], QT_N);
 	
 	INIT_VERTEX(v[0], 0, 0);
 	INIT_VERTEX(v[1], +1024, +1024);
@@ -202,12 +188,17 @@ QTNode* QT_baseNode() {
 	
 	q->center = use_vertex(v[0]);
 
-	int i;
 	for (i = 0; i < 4; i++) {
-		q->vertices[i] = use_vertex(v[1]);
+		q->vertices[i] = use_vertex(v[i+1]);
 		q->children[i] = NULL;
 		q->neighbors[i] = NULL;
 	}
+
+	qtnode_link_create(q, NULL);
+	qtnode_link_create(NULL, q);
+	
+	q->minLOD = 0;
+	q->maxLOD = 0;
 	
 	return q;
 }
