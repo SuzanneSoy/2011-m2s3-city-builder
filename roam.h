@@ -10,6 +10,7 @@ typedef struct Vertex {
 	float yNormal;
 	float zNormal;
 	int refCount;
+	struct Vertex* next[4];
 	/* Ajouter des champs ici. */
 } Vertex;
 
