@@ -203,6 +203,32 @@ QTNode* QT_baseNode() {
 	return q;
 }
 
+// first est le QTNode le plus en haut à gauche (NO). Par la suite, on
+// pourra créer un first artificiel qui évitera la descente récursive
+// jusqu'au NO le plus petit.
+void QT_enumerate(QTNode* first) {
+	QTNode* n;
+	int r;
+	Vertex* corner[4];
+	Vertex* v;
+	for (n = first; n != NULL; n = n->nextNode) {
+		// GL_Begin(TRIANGLE_FAN_LOOP);
+		// envoyer le vertex central :
+		n->center;
+		// Pour chaque côté
+		for (r = 0; r < 4; r++) {
+			// On parcourt tous les vertices le long du côté.
+			for (v = n->vertices[ROT_NO]; v != n->vertices[ROT_NE]; v = v->next[ROT_E]) {
+				// envoyer un vertex du fan :
+				v;
+			}
+		}
+		// Nécessaire ssi on fait un TRIANGLE_FAN et qu'on ne peut pas lui dire de fermer la boucle.
+		// On renvoie le 1er vertex du bord :
+		n->vertices[QT_NO];
+	}
+}
+
 QTNode* QT_example() {
 	QTNode* q = QT_baseNode();
 	return q;
