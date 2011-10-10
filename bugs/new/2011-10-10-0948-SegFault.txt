@@ -1,0 +1,5 @@
+Erreur de segmentation dans dans la fonction QT_enumerate lors du 
+parcourt des noeuds suivants : for (v = n->vertices[ROT_NO]; v != 
+n->vertices[ROT_NE]; v = v->next[ROT_E]).
+L'accès à v->next remonte une erreur de segmentation sur certains 
+noeuds.
