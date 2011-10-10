@@ -4,9 +4,6 @@
 // Positionne v à (xx,yy) et calcule z. Met ref_count à 0.
 #define INIT_VERTEX(v,xx,yy) do { (v)->refCount=0; (v)->x=(xx); (v)->y=(yy); (v)->z=get_z((xx),(yy)); } while(0);
 
-inline Vertex* use_vertex(Vertex* v) { v->refCount++; return v; }
-inline void unuse_vertex(Vertex* v) { if (--(v->refCount) == 0) free(v); }
-
 // ROTATE4(x,r) == x+r % 4
 #define ROTATE4(x,r) ((x+r) & 3)
 
@@ -55,6 +52,16 @@ static inline void vertex_link_remove(Vertex* v) {
 static inline void qtnode_link_create(QTNode* a, QTNode* b) {
 	if (a != NULL) a->nextNode = b;
 	if (b != NULL) b->previousNode = a;
+}
+
+inline Vertex* use_vertex(Vertex* v) { v->refCount++; return v; }
+inline void unuse_vertex(Vertex* v) {
+	// TODO : assert(v->refCount > 0);
+	if (--(v->refCount) == 0) {
+		// Supprime le vertex des listes de parcours.
+		vertex_link_remove(v);
+		free(v);
+	}
 }
 
 void QT_split(QTNode* parent) {
@@ -149,9 +156,6 @@ void QT_merge(QTNode* parent) {
 		// Merge récursif des enfants.
 		QT_merge(parent->children[ROT_NE]);
 		
-		// Supprime les vertex NESO de parent des listes de parcours.
-		vertex_link_remove(parent->children[ROT_NE]->vertices[ROT_NO]);
-		
 		// reset à NULL les voisins qui pointaient vers des enfants.
 		if (parent->neighbors[ROT_N] != NULL)
 			if (parent->neighbors[ROT_N]->children[ROT_SE] != NULL)
@@ -209,23 +213,22 @@ QTNode* QT_baseNode() {
 void QT_enumerate(QTNode* first) {
 	QTNode* n;
 	int r;
-	Vertex* corner[4];
 	Vertex* v;
 	for (n = first; n != NULL; n = n->nextNode) {
 		// GL_Begin(TRIANGLE_FAN_LOOP);
 		// envoyer le vertex central :
-		n->center;
+		(void)(n->center);
 		// Pour chaque côté
 		for (r = 0; r < 4; r++) {
 			// On parcourt tous les vertices le long du côté.
 			for (v = n->vertices[ROT_NO]; v != n->vertices[ROT_NE]; v = v->next[ROT_E]) {
 				// envoyer un vertex du fan :
-				v;
+				(void)(v);
 			}
 		}
 		// Nécessaire ssi on fait un TRIANGLE_FAN et qu'on ne peut pas lui dire de fermer la boucle.
 		// On renvoie le 1er vertex du bord :
-		n->vertices[QT_NO];
+		(void)(n->vertices[QT_NO]);
 	}
 }
 
