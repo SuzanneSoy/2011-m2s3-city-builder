@@ -20,18 +20,6 @@ typedef enum QTCardinal { QT_N = 0, QT_E = 1, QT_S = 2, QT_O = 3 } QTCardinal;
 #define ROT_S (ROTATE4(QT_S, r))
 #define ROT_O (ROTATE4(QT_O, r))
 
-// QuadTree Node.
-typedef struct QTNode {
-	Vertex* center;
-	Vertex* vertices[4];
-	struct QTNode* children[4];
-	struct QTNode* neighbors[4];
-	// linked list across all nodes, for traversal when we display them.
-	struct QTNode* nextNode;
-	struct QTNode* previousNode;
-	unsigned int minLOD;
-	unsigned int maxLOD;
-} QTNode;
 
 static inline void vertex_link_create(Vertex* a, Vertex* b, QTCardinal directionAB) {
 	if (a != NULL) a->next[directionAB] = b;
@@ -175,9 +163,11 @@ void QT_merge(QTNode* parent) {
 
 QTNode* QT_baseNode() {
 	QTNode* q = malloc(sizeof(QTNode));
-	Vertex** v = malloc(sizeof(Vertex)*5);
+	Vertex** v = (Vertex**) malloc(sizeof(Vertex*)*5);
 	int i;
-
+	for(i=0;i<5;i++)
+		v[i] = (Vertex*) malloc(sizeof(Vertex));
+	
 	vertex_link_create(v[1], v[2], QT_E);
 	vertex_link_create(v[2], v[3], QT_S);
 	vertex_link_create(v[3], v[4], QT_O);
@@ -202,7 +192,7 @@ QTNode* QT_baseNode() {
 	
 	q->minLOD = 0;
 	q->maxLOD = 0;
-	
+
 	return q;
 }
 
