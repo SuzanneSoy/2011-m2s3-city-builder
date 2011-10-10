@@ -7,12 +7,13 @@
 int initWindow();
 int mainLoop();
 void renderScene();
+void displayQTTree(QTNode *qn);
 //void setNormals(Triangle *t);
 //void displayTree(Triangle *t);
 //void displayTree2();
 void Draw_Axes ();
 
-//Triangle *t;
+QTNode *qtn;
 int *vertices;
 int windowWidth = 1024;
 int nbVertex = 0;

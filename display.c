@@ -122,11 +122,14 @@ void renderScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	
 	drawAxes();
-	//displayTree2();
-	//displayTree(t);
+	displayQTTree(qtn);
 	
 	glFlush();
 	SDL_GL_SwapBuffers();
+}
+
+void displayQTTree(QTNode *qn) {
+	QT_enumerate(qn);
 }
 
 /*
@@ -198,9 +201,6 @@ void setNormals(Triangle *t) {
 		y = y/length;
 		z = z/length;
 		
-		
-		
-
 		t->vLeft->xNormal = x;
 		t->vLeft->yNormal = y;
 		t->vLeft->zNormal = z;
@@ -236,7 +236,7 @@ void displayTree(Triangle *t) {
 
 int main() {
 	initWindow();
-	//t = initDefaultExample();
+	qtn = QT_example();
 	//nbVertex = nbTriangles(t);
 	//printf("nombre de triangles : %d\n",nbVertex);
 	

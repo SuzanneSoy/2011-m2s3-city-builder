@@ -203,6 +203,8 @@ void QT_enumerate(QTNode* first) {
 	QTNode* n;
 	int r;
 	Vertex* v;
+	v=NULL;v=v;
+	r=0;r=r;
 	for (n = first; n != NULL; n = n->nextNode) {
 		// GL_Begin(TRIANGLE_FAN_LOOP);
 		// envoyer le vertex central :
@@ -211,8 +213,9 @@ void QT_enumerate(QTNode* first) {
 		for (r = 0; r < 4; r++) {
 			// On parcourt tous les vertices le long du côté.
 			for (v = n->vertices[ROT_NO]; v != n->vertices[ROT_NE]; v = v->next[ROT_E]) {
+				printf("%d\n",r);
 				// envoyer un vertex du fan :
-				(void)(v);
+				//(void)(v);
 			}
 		}
 		// Nécessaire ssi on fait un TRIANGLE_FAN et qu'on ne peut pas lui dire de fermer la boucle.
