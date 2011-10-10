@@ -1,5 +1,4 @@
-// get_z()
-#include "roam.h"
+#include "square.h"
 
 // Positionne v à (xx,yy) et calcule z. Met ref_count à 0.
 #define INIT_VERTEX(v,xx,yy) do { (v)->refCount=0; (v)->x=(xx); (v)->y=(yy); (v)->z=get_z((xx),(yy)); } while(0);

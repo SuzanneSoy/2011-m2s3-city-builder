@@ -123,13 +123,13 @@ void renderScene() {
 	
 	drawAxes();
 	//displayTree2();
-	displayTree(t);
+	//displayTree(t);
 	
 	glFlush();
 	SDL_GL_SwapBuffers();
 }
 
-
+/*
 int nbTriangles(Triangle *t) {
 	int sum = 0;
 	
@@ -142,9 +142,9 @@ int nbTriangles(Triangle *t) {
 	}
 	
 	return sum;
-}
+}*/
 
-
+/*
 void insertValues(Triangle *t,int *vertices) {
 	if(t->tLeftChild == NULL) {
 		vertices[9*nbVertex] = t->vLeft->x;
@@ -162,15 +162,15 @@ void insertValues(Triangle *t,int *vertices) {
 		insertValues(t->tLeftChild,vertices);
 		insertValues(t->tRightChild,vertices);
 	}
-}
+}*/
 
-
+/*
 void displayTree2() {
 	glVertexAttribPointer(0, 3, GL_INT, GL_FALSE, 0, vertices);
 	glEnableVertexAttribArray(0);
 	glColor3ub(255,255,255);
 	glDrawArrays(GL_LINE_LOOP,0, nbVertex*3);
-}
+}*/
 
 int max3(int x,int y,int z) {
 	if(x < y && x < z) return x;
@@ -178,7 +178,7 @@ int max3(int x,int y,int z) {
 	if(z < x && z < y) return z;
 	return 0;
 }
-
+/*
 void setNormals(Triangle *t) {
 	if(t->tLeftChild == NULL) {
 		int ax = t->vLeft->x - t->vApex->x;
@@ -231,17 +231,17 @@ void displayTree(Triangle *t) {
 		displayTree(t->tLeftChild);
 		displayTree(t->tRightChild);
 	}
-}
+}*/
 
 
 int main() {
 	initWindow();
-	t = initDefaultExample();
-	nbVertex = nbTriangles(t);
-	printf("nombre de triangles : %d\n",nbVertex);
+	//t = initDefaultExample();
+	//nbVertex = nbTriangles(t);
+	//printf("nombre de triangles : %d\n",nbVertex);
 	
 	// Calcul des normales des traingles.
-	setNormals(t);
+	//setNormals(t);
 	
 	// Réorganisation des sommets pour l'affichage optimisé.
 	//vertices = (int*) malloc(sizeof(int) * nbTriangles(t)*9+1);
