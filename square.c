@@ -22,6 +22,7 @@ typedef enum QTCardinal { QT_N = 0, QT_E = 1, QT_S = 2, QT_O = 3 } QTCardinal;
 
 
 static inline void vertex_link_create(Vertex* a, Vertex* b, QTCardinal directionAB) {
+	printf("vertex_link_create %x to %x direction %d (N=%d)\n", (int)a, (int)b, directionAB, QT_N);
 	if (a != NULL) a->next[directionAB] = b;
 	if (b != NULL) b->next[ROTATE4(directionAB, 2)] = a;
 }
@@ -69,7 +70,7 @@ void QT_split(QTNode* parent) {
 		} else {
 			new_vertices[ROT_N] = (Vertex*)malloc(sizeof(Vertex));
 			// Insère le nouveau vertex entre les deux coins de parent.
-			vertex_link_between(new_vertices[ROT_N], parent->vertices[ROT_NO], parent->vertices[ROT_NE], ROT_N);
+			vertex_link_between(new_vertices[ROT_N], parent->vertices[ROT_NO], parent->vertices[ROT_NE], ROT_E);
 			// place le nouveau vertex après center.
 			vertex_link_create(parent->center, new_vertices[ROT_N], ROT_N);
 			// Définit x,y,z et ref_count.
@@ -162,22 +163,21 @@ void QT_merge(QTNode* parent) {
 }
 
 QTNode* QT_baseNode() {
-	QTNode* q = malloc(sizeof(QTNode));
-	Vertex** v = (Vertex**) malloc(sizeof(Vertex*)*5);
 	int i;
-	for(i=0;i<5;i++)
-		v[i] = (Vertex*) malloc(sizeof(Vertex));
+	QTNode* q = malloc(sizeof(QTNode));
+	Vertex* _v = (Vertex*) malloc(sizeof(Vertex)*5);
+	Vertex* v[5]; for (i = 0; i < 5; i++) v[i] = &(_v[i]);
 	
-	vertex_link_create(v[1], v[2], QT_E);
-	vertex_link_create(v[2], v[3], QT_S);
-	vertex_link_create(v[3], v[4], QT_O);
-	vertex_link_create(v[4], v[1], QT_N);
+	vertex_link_create(v[1], v[2], QT_S);
+	vertex_link_create(v[2], v[3], QT_O);
+	vertex_link_create(v[3], v[4], QT_N);
+	vertex_link_create(v[4], v[1], QT_E);
 	
 	INIT_VERTEX(v[0], 0, 0);
-	INIT_VERTEX(v[1], +1024, +1024);
-	INIT_VERTEX(v[2], +1024, -1024);
-	INIT_VERTEX(v[3], -1024, -1024);
-	INIT_VERTEX(v[4], -1024, +1024);
+	INIT_VERTEX(v[1], +1024, -1024);
+	INIT_VERTEX(v[2], +1024, +1024);
+	INIT_VERTEX(v[3], -1024, +1024);
+	INIT_VERTEX(v[4], -1024, -1024);
 	
 	q->center = use_vertex(v[0]);
 
@@ -196,24 +196,40 @@ QTNode* QT_baseNode() {
 	return q;
 }
 
+void vertex_print(Vertex* v) {
+	printf("vertex %x(%d,%d,%d) N=%x E=%x S=%x O=%x\n", (unsigned int)v, v->x, v->y, v->z, (int)v->next[QT_N], (int)v->next[QT_E], (int)v->next[QT_S], (int)v->next[QT_O]);
+}
+
+void qtnode_print(QTNode* n) {
+	printf("node %x center=", (unsigned int)n);
+	vertex_print(n->center);
+}
+
 // first est le QTNode le plus en haut à gauche (NO). Par la suite, on
 // pourra créer un first artificiel qui évitera la descente récursive
 // jusqu'au NO le plus petit.
 void QT_enumerate(QTNode* first) {
+	printf("\nFRAME\n\n");
+	while (first->children[QT_NO] != NULL)
+		first = first->children[QT_NO];
+	
 	QTNode* n;
 	int r;
 	Vertex* v;
 	v=NULL;v=v;
 	r=0;r=r;
 	for (n = first; n != NULL; n = n->nextNode) {
+		qtnode_print(n);
 		// GL_Begin(TRIANGLE_FAN_LOOP);
 		// envoyer le vertex central :
 		(void)(n->center);
 		// Pour chaque côté
 		for (r = 0; r < 4; r++) {
+			printf("  r=%d\n",r);
 			// On parcourt tous les vertices le long du côté.
 			for (v = n->vertices[ROT_NO]; v != n->vertices[ROT_NE]; v = v->next[ROT_E]) {
-				printf("%d\n",r);
+				printf("    ");
+				vertex_print(v);
 				// envoyer un vertex du fan :
 				//(void)(v);
 			}
@@ -226,5 +242,6 @@ void QT_enumerate(QTNode* first) {
 
 QTNode* QT_example() {
 	QTNode* q = QT_baseNode();
+	QT_split(q);
 	return q;
 }

@@ -1,7 +1,7 @@
 CC=gcc
 # -ansi -pedantic -Wconversion
 CCWARN=-Wall -Wextra -Werror
-CFLAGS=-O3 $(CCWARN)
+CFLAGS=-O3 $(CCWARN) -g3
 
 .PHONY: all
 all: display
