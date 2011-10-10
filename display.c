@@ -129,6 +129,7 @@ void renderScene() {
 }
 
 void displayQTTree(QTNode *qn) {
+	//QT_split(qn);
 	QT_enumerate(qn);
 }
 
