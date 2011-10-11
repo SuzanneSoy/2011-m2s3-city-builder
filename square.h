@@ -1,5 +1,6 @@
 // get_z()
 #include "roam.h"
+#include <GL/gl.h>
 
 // QuadTree Node.
 typedef struct QTNode {

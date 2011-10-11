@@ -16,14 +16,17 @@ void Draw_Axes ();
 QTNode *qtn;
 int *vertices;
 int windowWidth = 1024;
-int nbVertex = 0;
 int windowHeight = 768;
-float xCamera = 1024;
-float yCamera = 400;
+int nbVertex = 0;
+
+float xCamera = 100;
+float yCamera = 500;
 float zCamera = 1500;
-int xSight = 0;
-int ySight = 112;
+
+int xSight = 100;
+int ySight = -500;
 int zSight = -1500;
+
 float xAngle = 0;
 float yAngle = 0;
 int moveDist = 64;

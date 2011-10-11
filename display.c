@@ -130,6 +130,7 @@ void renderScene() {
 
 void displayQTTree(QTNode *qn) {
 	QT_enumerate(qn);
+	//qn = qn;
 }
 
 /*
@@ -246,7 +247,6 @@ int main() {
 	// Réorganisation des sommets pour l'affichage optimisé.
 	//vertices = (int*) malloc(sizeof(int) * nbTriangles(t)*9+1);
 	//insertValues(t,vertices);
-	
 	
 	mainLoop();
 

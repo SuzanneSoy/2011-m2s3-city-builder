@@ -22,7 +22,7 @@ typedef enum QTCardinal { QT_N = 0, QT_E = 1, QT_S = 2, QT_O = 3 } QTCardinal;
 
 
 static inline void vertex_link_create(Vertex* a, Vertex* b, QTCardinal directionAB) {
-	printf("vertex_link_create %x to %x direction %d (N=%d)\n", (int)a, (int)b, directionAB, QT_N);
+	//printf("vertex_link_create %x to %x direction %d (N=%d)\n", (int)a, (int)b, directionAB, QT_N);
 	if (a != NULL) a->next[directionAB] = b;
 	if (b != NULL) b->next[ROTATE4(directionAB, 2)] = a;
 }
@@ -197,11 +197,12 @@ QTNode* QT_baseNode() {
 }
 
 void vertex_print(Vertex* v) {
-	printf("vertex %x(%d,%d,%d) N=%x E=%x S=%x O=%x\n", (unsigned int)v, v->x, v->y, v->z, (int)v->next[QT_N], (int)v->next[QT_E], (int)v->next[QT_S], (int)v->next[QT_O]);
+	v=v;
+	//printf("vertex %x(%d,%d,%d) N=%x E=%x S=%x O=%x\n", (unsigned int)v, v->x, v->y, v->z, (int)v->next[QT_N], (int)v->next[QT_E], (int)v->next[QT_S], (int)v->next[QT_O]);
 }
 
 void qtnode_print(QTNode* n) {
-	printf("node %x center=", (unsigned int)n);
+	//printf("node %x center=", (unsigned int)n);
 	vertex_print(n->center);
 }
 
@@ -220,20 +221,23 @@ void QT_enumerate(QTNode* first) {
 	r=0;r=r;
 	for (n = first; n != NULL; n = n->nextNode) {
 		qtnode_print(n);
-		// GL_Begin(TRIANGLE_FAN_LOOP);
-		// envoyer le vertex central :
+		glBegin(GL_TRIANGLE_FAN);
+		
+		// envoyer le vertex central
 		(void)(n->center);
+			glVertex3f(n->center->x,n->center->y,n->center->y);
+			
 		// Pour chaque côté
 		for (r = 0; r < 4; r++) {
-			printf("  r=%d\n",r);
 			// On parcourt tous les vertices le long du côté.
 			for (v = n->vertices[ROT_NO]; v != n->vertices[ROT_NE]; v = v->next[ROT_E]) {
 				printf("    ");
-				vertex_print(v);
+				glVertex3f(v->x,v->y,v->z);
 				// envoyer un vertex du fan :
 				//(void)(v);
 			}
 		}
+		glEnd();
 		// Nécessaire ssi on fait un TRIANGLE_FAN et qu'on ne peut pas lui dire de fermer la boucle.
 		// On renvoie le 1er vertex du bord :
 		(void)(n->vertices[QT_NO]);
@@ -242,6 +246,6 @@ void QT_enumerate(QTNode* first) {
 
 QTNode* QT_example() {
 	QTNode* q = QT_baseNode();
-	QT_split(q);
+	//QT_split(q);
 	return q;
 }
