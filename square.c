@@ -222,6 +222,7 @@ void QT_enumerate(QTNode* first) {
 	for (n = first; n != NULL; n = n->nextNode) {
 		qtnode_print(n);
 		glBegin(GL_TRIANGLE_FAN);
+		glNormal3f(0,1,0);
 		
 		// envoyer le vertex central
 		(void)(n->center);
@@ -237,15 +238,17 @@ void QT_enumerate(QTNode* first) {
 				//(void)(v);
 			}
 		}
-		glEnd();
+		
 		// Nécessaire ssi on fait un TRIANGLE_FAN et qu'on ne peut pas lui dire de fermer la boucle.
 		// On renvoie le 1er vertex du bord :
 		(void)(n->vertices[QT_NO]);
+		glVertex3f(n->vertices[QT_NO]->x,n->vertices[QT_NO]->y,n->vertices[QT_NO]->z);
+		glEnd();
 	}
 }
 
 QTNode* QT_example() {
 	QTNode* q = QT_baseNode();
-	//QT_split(q);
+	QT_split(q);
 	return q;
 }

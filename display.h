@@ -21,11 +21,11 @@ int nbVertex = 0;
 
 float xCamera = 100;
 float yCamera = 500;
-float zCamera = 1500;
+float zCamera = 3000;
 
 int xSight = 100;
 int ySight = -500;
-int zSight = -1500;
+int zSight = -3000;
 
 float xAngle = 0;
 float yAngle = 0;
