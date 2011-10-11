@@ -206,6 +206,27 @@ void qtnode_print(QTNode* n) {
 	vertex_print(n->center);
 }
 
+void setNormal(Vertex *center, Vertex *va, Vertex *v) {
+	int ax = va->x - center->x;
+	int ay = va->y - center->y;
+	int az = va->z - center->z;
+	int bx = center->x - v->x;
+	int by = center->y - v->y;
+	int bz = center->z - v->z;
+	
+	float x = (float)((ay * bz) - (az * by));
+	float y = (float)((az * bx) - (ax * bz));
+	float z = -(float)((ax * by) - (ay * bx));
+	float length = sqrt(x*x + y*y + z*z);
+	
+	length = length;
+	x = x/length;
+	y = y/length;
+	z = -z/length;
+	
+	glNormal3f(x,y,z);
+}
+
 // first est le QTNode le plus en haut à gauche (NO). Par la suite, on
 // pourra créer un first artificiel qui évitera la descente récursive
 // jusqu'au NO le plus petit.
@@ -216,23 +237,29 @@ void QT_enumerate(QTNode* first) {
 	
 	QTNode* n;
 	int r;
+	int i=0;
 	Vertex* v;
-	v=NULL;v=v;
-	r=0;r=r;
+	Vertex *center;
+	Vertex *va = NULL;
+
 	for (n = first; n != NULL; n = n->nextNode) {
 		qtnode_print(n);
 		glBegin(GL_TRIANGLE_FAN);
-		glNormal3f(0,1,0);
-		
+		setNormal(n->vertices[QT_NE],n->vertices[QT_NO],n->vertices[QT_SE]);
 		// envoyer le vertex central
-		(void)(n->center);
-			glVertex3f(n->center->x,n->center->y,n->center->y);
+		center = n->center;
+			glVertex3f(center->x,center->y,center->y);
 			
 		// Pour chaque côté
 		for (r = 0; r < 4; r++) {
 			// On parcourt tous les vertices le long du côté.
-			for (v = n->vertices[ROT_NO]; v != n->vertices[ROT_NE]; v = v->next[ROT_E]) {
-				printf("    ");
+			for (v = n->vertices[ROT_NO]; v != n->vertices[ROT_NE]; i++, v = v->next[ROT_E]) {
+				if(i==0) va = v;
+				else {
+					setNormal(center,va,v);
+					va = v;
+				}
+				
 				glVertex3f(v->x,v->y,v->z);
 				// envoyer un vertex du fan :
 				//(void)(v);
@@ -242,6 +269,7 @@ void QT_enumerate(QTNode* first) {
 		// Nécessaire ssi on fait un TRIANGLE_FAN et qu'on ne peut pas lui dire de fermer la boucle.
 		// On renvoie le 1er vertex du bord :
 		(void)(n->vertices[QT_NO]);
+		setNormal(center,va,n->vertices[QT_NO]);
 		glVertex3f(n->vertices[QT_NO]->x,n->vertices[QT_NO]->y,n->vertices[QT_NO]->z);
 		glEnd();
 	}
@@ -249,6 +277,6 @@ void QT_enumerate(QTNode* first) {
 
 QTNode* QT_example() {
 	QTNode* q = QT_baseNode();
-	QT_split(q);
+	//QT_split(q);
 	return q;
 }

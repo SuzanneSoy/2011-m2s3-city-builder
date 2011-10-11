@@ -14,7 +14,7 @@ int initWindow() {
 	float MatDif[4] = {0.0f, 0.8f, 0.0f, 1.0f};
 	float MatAmb[4] = {0.1f, 0.1f, 0.1f, 1.0f};
 	 
-	float Light1Pos[4] = {0.0f, 1.0f, 0.0f, 0.0f};
+	float Light1Pos[4] = {0.0f, 0.0f, -1.0f, 0.0f};
 	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 	float Light1Spec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	float Light1Amb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
