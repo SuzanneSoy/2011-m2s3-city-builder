@@ -18,7 +18,7 @@ int initWindow() {
 	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 	float Light1Spec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	float Light1Amb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
-	float shininess = 10.0f;
+	float shininess = 128.0f;
 
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,MatDif);

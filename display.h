@@ -19,7 +19,7 @@ int windowWidth = 1024;
 int windowHeight = 768;
 int nbVertex = 0;
 
-int cameraDist = 2000;
+int cameraDist = 3000;
 
 int xSight = 0;
 int ySight = 0;

@@ -283,7 +283,7 @@ void QT_enumerate(QTNode* first) {
 		// Nécessaire ssi on fait un TRIANGLE_FAN et qu'on ne peut pas lui dire de fermer la boucle.
 		// On renvoie le 1er vertex du bord :
 		(void)(n->vertices[QT_NO]);
-		//setNormal(center,va,n->vertices[QT_NO]);
+		setNormal(center,va,n->vertices[QT_NO]);
 		glVertex3f(n->vertices[QT_NO]->x,n->vertices[QT_NO]->y,n->vertices[QT_NO]->z);
 		glEnd();
 	}
