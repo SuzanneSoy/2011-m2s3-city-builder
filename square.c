@@ -249,12 +249,15 @@ void QT_enumerate(QTNode* first) {
 		// envoyer le vertex central
 		center = n->center;
 			glVertex3f(center->x,center->y,center->y);
-			
+
 		// Pour chaque côté
 		for (r = 0; r < 4; r++) {
 			// On parcourt tous les vertices le long du côté.
 			for (v = n->vertices[ROT_NO]; v != n->vertices[ROT_NE]; i++, v = v->next[ROT_E]) {
-				if(i==0) va = v;
+				if(i==0){
+					va = v;
+					setNormal(center,n->vertices[QT_SO],v);
+				}
 				else {
 					setNormal(center,va,v);
 					va = v;
