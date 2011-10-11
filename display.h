@@ -19,14 +19,12 @@ int windowWidth = 1024;
 int windowHeight = 768;
 int nbVertex = 0;
 
-float xCamera = 100;
-float yCamera = -500;
-float zCamera = 3000;
+int cameraDist = 2000;
 
-int xSight = 100;
-int ySight = 500;
-int zSight = -3000;
+int xSight = 0;
+int ySight = 0;
+int zSight = 0;
 
 float xAngle = 0;
 float yAngle = 0;
-int moveDist = 64;
+int moveDist = 128;

@@ -245,7 +245,7 @@ void QT_enumerate(QTNode* first) {
 	for (n = first; n != NULL; n = n->nextNode) {
 		qtnode_print(n);
 		glBegin(GL_TRIANGLE_FAN);
-		setNormal(n->vertices[QT_NE],n->vertices[QT_NO],n->vertices[QT_SE]);
+		setNormal(n->vertices[QT_NE],n->vertices[QT_SO],n->vertices[QT_SE]);
 		// envoyer le vertex central
 		center = n->center;
 			glVertex3f(center->x,center->y,center->y);
@@ -280,6 +280,6 @@ void QT_enumerate(QTNode* first) {
 
 QTNode* QT_example() {
 	QTNode* q = QT_baseNode();
-	//QT_split(q);
+	QT_split(q);
 	return q;
 }

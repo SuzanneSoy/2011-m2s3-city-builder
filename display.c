@@ -49,18 +49,6 @@ int mainLoop() {
 				break;
 			case SDL_KEYDOWN:
 				switch(event.key.keysym.sym) {
-					case SDLK_s:
-						yCamera-=moveDist;
-						break;
-					case SDLK_z:
-						yCamera+=moveDist;
-						break;
-					case SDLK_q:
-						xCamera-=moveDist;
-						break;
-					case SDLK_d:
-						xCamera+=moveDist;
-						break;
 					case SDLK_DOWN:
 						ySight -= moveDist;
 						break;
@@ -77,6 +65,16 @@ int mainLoop() {
 					default:
 						break;
 				}
+				break;
+				
+			case SDL_MOUSEMOTION:
+				printf("mouse motion\n");
+				xAngle = ((event.motion.x-windowWidth/2)*180/(windowWidth));
+				yAngle = (event.motion.y-windowHeight/2)*180/(windowHeight);
+				break;
+				
+			default:
+				break;
 		}
 
 		renderScene();
@@ -116,10 +114,15 @@ void renderScene() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	//gluLookAt(1024,512,1356,1024,512,0,0,1,0);
-	gluLookAt(xCamera,yCamera,zCamera,xCamera+xSight,yCamera+ySight,zCamera+zSight,0,1,0);
 	
 	//glClearColor(1,1,1,1); // pour un fond blanc
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
+	
+	//gluLookAt(0,0,cameraDist, 0, 0, 0,0,1,0);
+	glTranslated(-xSight,-ySight,-(zSight+cameraDist));
+	glRotatef(-yAngle,1,0,0);
+	glRotatef(-xAngle,0,0,1);
+	
 	
 	drawAxes();
 	displayQTTree(qtn);
