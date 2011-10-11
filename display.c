@@ -11,8 +11,8 @@ int initWindow() {
 	glewInit();
 	
 	float MatSpec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-	float MatDif[4] = {0.0f, 0.8f, 0.0f, 1.0f};
-	float MatAmb[4] = {0.1f, 0.1f, 0.1f, 1.0f};
+	float MatDif[4] = {0.0f, 0.5f, 0.0f, 1.0f};
+	float MatAmb[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	 
 	float Light1Pos[4] = {0.0f, 1.0f, 0.0f, 0.0f};
 	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -69,8 +69,8 @@ int mainLoop() {
 				
 			case SDL_MOUSEMOTION:
 				printf("mouse motion\n");
-				xAngle = ((event.motion.x-windowWidth/2)*260/(windowWidth));
-				yAngle = (event.motion.y-windowHeight/2)*260/(windowHeight);
+				xAngle = ((event.motion.x-windowWidth/2)*340/(windowWidth));
+				yAngle = (event.motion.y-windowHeight/2)*340/(windowHeight);
 				break;
 				
 			default:

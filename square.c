@@ -222,8 +222,17 @@ void setNormal(Vertex *center, Vertex *va, Vertex *v) {
 	length = length;
 	x = x/length;
 	y = y/length;
-	z = -z/length;
+	z = z/length;
 	
+	/*va = center;
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+	glColor3ub(255,255,255);
+	glBegin(GL_LINES);
+	glVertex3f(va->x,va->y,va->z);
+	glVertex3f(va->x+500*x,va->y+500*y,va->z+500*z);
+	glEnd();
+	glEnable(GL_LIGHTING);*/
 	glNormal3f(x,y,z);
 }
 
@@ -244,19 +253,21 @@ void QT_enumerate(QTNode* first) {
 
 	for (n = first; n != NULL; n = n->nextNode) {
 		qtnode_print(n);
+		glEnable(GL_NORMALIZE);
 		glBegin(GL_TRIANGLE_FAN);
 		setNormal(n->vertices[QT_NE],n->vertices[QT_SO],n->vertices[QT_SE]);
 		// envoyer le vertex central
 		center = n->center;
+		setNormal(center,n->vertices[ROT_NO],n->vertices[ROT_NO]->next[ROT_E]);
 			glVertex3f(center->x,center->y,center->y);
 
 		// Pour chaque côté
-		for (r = 0; r < 4; r++) {
+		for (r = 0, i = 0; r < 4; r++) {
 			// On parcourt tous les vertices le long du côté.
 			for (v = n->vertices[ROT_NO]; v != n->vertices[ROT_NE]; i++, v = v->next[ROT_E]) {
-				if(i==0){
+				if(i <= 2){
 					va = v;
-					setNormal(center,n->vertices[QT_SO],v);
+					//setNormal(center,n->vertices[QT_SO],v);
 				}
 				else {
 					setNormal(center,va,v);
@@ -272,7 +283,7 @@ void QT_enumerate(QTNode* first) {
 		// Nécessaire ssi on fait un TRIANGLE_FAN et qu'on ne peut pas lui dire de fermer la boucle.
 		// On renvoie le 1er vertex du bord :
 		(void)(n->vertices[QT_NO]);
-		setNormal(center,va,n->vertices[QT_NO]);
+		//setNormal(center,va,n->vertices[QT_NO]);
 		glVertex3f(n->vertices[QT_NO]->x,n->vertices[QT_NO]->y,n->vertices[QT_NO]->z);
 		glEnd();
 	}
