@@ -68,7 +68,6 @@ int mainLoop() {
 				break;
 				
 			case SDL_MOUSEMOTION:
-				printf("mouse motion\n");
 				xAngle = ((event.motion.x-windowWidth/2)*340/(windowWidth));
 				yAngle = (event.motion.y-windowHeight/2)*340/(windowHeight);
 				break;

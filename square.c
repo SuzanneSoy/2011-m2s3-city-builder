@@ -253,7 +253,7 @@ void QT_enumerate(QTNode* first) {
 
 	for (n = first; n != NULL; n = n->nextNode) {
 		qtnode_print(n);
-		glEnable(GL_NORMALIZE);
+		
 		glBegin(GL_TRIANGLE_FAN);
 		setNormal(n->vertices[QT_NE],n->vertices[QT_SO],n->vertices[QT_SE]);
 		// envoyer le vertex central
@@ -265,7 +265,7 @@ void QT_enumerate(QTNode* first) {
 		for (r = 0, i = 0; r < 4; r++) {
 			// On parcourt tous les vertices le long du côté.
 			for (v = n->vertices[ROT_NO]; v != n->vertices[ROT_NE]; i++, v = v->next[ROT_E]) {
-				if(i <= 2){
+				if(i <= 1){
 					va = v;
 					//setNormal(center,n->vertices[QT_SO],v);
 				}
