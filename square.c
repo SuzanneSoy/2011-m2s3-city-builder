@@ -1,7 +1,12 @@
 #include "square.h"
 
 // Positionne v à (xx,yy) et calcule z. Met ref_count à 0.
-#define INIT_VERTEX(v,xx,yy) do { (v)->refCount=0; (v)->x=(xx); (v)->y=(yy); (v)->z=get_z((xx),(yy)); } while(0);
+inline void init_vertex(Vertex* v, int x, int y) {
+	v->refCount = 0;
+	v->x = x;
+	v->y = y;
+	v->z = get_z(x,y);
+}
 
 // ROTATE4(x,r) == x+r % 4
 #define ROTATE4(x,r) ((x+r) & 3)
@@ -75,10 +80,10 @@ void QT_split(QTNode* parent) {
 			vertex_link_create(parent->center, new_vertices[ROT_N], ROT_N);
 			// Définit x,y,z et ref_count.
 			switch (r) { // TODO : Devrait être factorisé.
-				case 0: INIT_VERTEX(new_vertices[0], parent->center->x, parent->vertices[QT_NE]->y); break;
-				case 1: INIT_VERTEX(new_vertices[1], parent->vertices[QT_SE]->x, parent->center->y); break;
-				case 2: INIT_VERTEX(new_vertices[2], parent->center->x, parent->vertices[QT_SO]->y); break;
-				case 3: INIT_VERTEX(new_vertices[3], parent->vertices[QT_NO]->x, parent->center->y); break;
+				case 0: init_vertex(new_vertices[0], parent->center->x, parent->vertices[QT_NE]->y); break;
+				case 1: init_vertex(new_vertices[1], parent->vertices[QT_SE]->x, parent->center->y); break;
+				case 2: init_vertex(new_vertices[2], parent->center->x, parent->vertices[QT_SO]->y); break;
+				case 3: init_vertex(new_vertices[3], parent->vertices[QT_NO]->x, parent->center->y); break;
 			}
 		}
 	}
@@ -87,7 +92,7 @@ void QT_split(QTNode* parent) {
 		q[ROT_NE]->center = malloc(sizeof(Vertex));
 		// Pas besoin d'insérer center dans une des listes : à sa création il ne sera accédé dans aucun parcours de périmètre.
 		// Coordonnées du centre de qne = moyenne du center et de parent->vertices[QT_NE].
-		INIT_VERTEX(q[ROT_NE]->center, (parent->center->x + parent->vertices[ROT_NE]->x) / 2, (parent->center->y + parent->vertices[ROT_NE]->y) / 2);
+		init_vertex(q[ROT_NE]->center, (parent->center->x + parent->vertices[ROT_NE]->x) / 2, (parent->center->y + parent->vertices[ROT_NE]->y) / 2);
 		use_vertex(q[ROT_NE]->center);
 		
 		q[ROT_NE]->vertices[ROT_NE] = use_vertex(parent->vertices[ROT_NE]);
@@ -173,11 +178,11 @@ QTNode* QT_baseNode() {
 	vertex_link_create(v[3], v[4], QT_N);
 	vertex_link_create(v[4], v[1], QT_E);
 	
-	INIT_VERTEX(v[0], 0, 0);
-	INIT_VERTEX(v[1], +1024, -1024);
-	INIT_VERTEX(v[2], +1024, +1024);
-	INIT_VERTEX(v[3], -1024, +1024);
-	INIT_VERTEX(v[4], -1024, -1024);
+	init_vertex(v[0], 0, 0);
+	init_vertex(v[1], +1024, -1024);
+	init_vertex(v[2], +1024, +1024);
+	init_vertex(v[3], -1024, +1024);
+	init_vertex(v[4], -1024, -1024);
 	
 	q->center = use_vertex(v[0]);
 
@@ -233,14 +238,14 @@ void setNormal(Vertex *center, Vertex *va, Vertex *v) {
 	glVertex3f(va->x+500*x,va->y+500*y,va->z+500*z);
 	glEnd();
 	glEnable(GL_LIGHTING);*/
-	glNormal3f(x,y,z);
+	glNormal3f(x,y,-z);
 }
 
 // first est le QTNode le plus en haut à gauche (NO). Par la suite, on
 // pourra créer un first artificiel qui évitera la descente récursive
 // jusqu'au NO le plus petit.
 void QT_enumerate(QTNode* first) {
-	printf("\nFRAME\n\n");
+	//printf("\nFRAME\n\n");
 	while (first->children[QT_NO] != NULL)
 		first = first->children[QT_NO];
 	
@@ -259,7 +264,7 @@ void QT_enumerate(QTNode* first) {
 		// envoyer le vertex central
 		center = n->center;
 		setNormal(center,n->vertices[ROT_NO],n->vertices[ROT_NO]->next[ROT_E]);
-			glVertex3f(center->x,center->y,center->y);
+			glVertex3f(center->x,center->y,center->z);
 
 		// Pour chaque côté
 		for (r = 0, i = 0; r < 4; r++) {
@@ -292,5 +297,9 @@ void QT_enumerate(QTNode* first) {
 QTNode* QT_example() {
 	QTNode* q = QT_baseNode();
 	QT_split(q);
+	QT_split(q->children[QT_NO]);
+	QT_split(q->children[QT_NO]->children[QT_SE]);
+	QT_split(q->children[QT_NO]->children[QT_SE]->children[QT_SO]);
+	QT_split(q->children[QT_NO]->children[QT_SE]->children[QT_NE]);
 	return q;
 }
