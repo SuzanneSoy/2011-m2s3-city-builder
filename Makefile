@@ -4,12 +4,16 @@ CCWARN=-Wall -Wextra -Werror
 CFLAGS=-O3 $(CCWARN) -g3
 
 .PHONY: all
-all: display
+all: display roads
 
 .PHONY: test
 test: all
 	# ./simple-terrain | display
 	./display
+
+.PHONY: testroads
+testroads: all
+	./roads | display
 
 simple-terrain: simple-terrain.c
 	$(CC) $< -o $@
