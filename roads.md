@@ -58,11 +58,11 @@ Comme une grille, mais les angles ne sont pas vraiment à 90°, et il y
 a beaucoup de longues rues dans l'une ou l'autre des directions.
 
     .________________________.
-	|   |        |      |    |
-	|___|________|______|____|
-	|         |       |______|
-	|_________|_______|      |
-	|______|__________|______|
+    |   |        |      |    |
+    |___|________|______|____|
+    |         |       |______|
+    |_________|_______|      |
+    |______|__________|______|
 
 TODO : trouver un algo pour générer des « murs »
 
@@ -86,7 +86,7 @@ monter ou descendre très légèrement pour rejoindre une autre ligne.
 
 * Partir d'un point, et choisir le point à X de distance qui minimise
   le dénivellé
-* Condinuer à partir du point ainsi créé, en s'interdisant les retours
+* Continuer à partir du point ainsi créé, en s'interdisant les retours
   en arrière trop brutaux
 * Arrêter la ligne quand le dénivellé devient trop important, ou quand
   on rejoint une autre ligne.
@@ -128,3 +128,8 @@ Intérieur d'un polygone
 Pouvoir sélectionner aléatoirement des points à l'intérieur d'un
 polygone (pour pouvoir faire les centres des réseaux concentriques par
 exemple).
+
+Algo déformation de coordonées
+==============================
+
+Partir d'une grille idéale carrée et appliquer des déformations de coordonnées dessus, plus une fonction de densité de points (taille des bâtiments). Dé-transformer la fonction de densité de points, l'utiliser pour générer la grille parfaite avec des densités différentes, puis transformer cette grille.

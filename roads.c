@@ -30,13 +30,15 @@ int main() {
 	Vertex points[] = {
 		{ .x=10, .y=10 },
 		{ .x=790, .y=10 },
+		{ .x=600, .y=300 },
 		{ .x=790, .y=590 },
 		{ .x=10, .y=590 },
 	};
+	int n = 5;
 	svg_start(800,600);
 	int i;
-	for (i = 0; i < 4; i++) {
-		svg_line(&(points[i]), &(points[(i+1)%4]));
+	for (i = 0; i < n; i++) {
+		svg_line(&(points[i]), &(points[(i+1)%n]));
 	}
 	roads(points);
 	svg_end();
