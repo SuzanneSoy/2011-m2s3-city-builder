@@ -60,8 +60,10 @@ short grid_insertRoadNode(roadNodeY *rn) {
 
 	int i;
 	for(i=0;i<maxNodesInGrid;i++) {
-		nodesGrid[toX(rn->v)][toY(rn->v)][i] = rn;
-		return 1;
+		if(nodesGrid[toX(rn->v)][toY(rn->v)][i] == NULL) {
+			nodesGrid[toX(rn->v)][toY(rn->v)][i] = rn;
+			return 1;
+		}
 	}
 	
 	return 0;
@@ -82,13 +84,38 @@ void addRoadNode(roadPointY *rp, roadNodeY *rn) {
 	rp->next = rpp;
 }
 
-int distBetween(Vertex *v, Vertex *u) {
-	//return sqrt((v->x-u->x)*(v->x-u->x)+(v->y-u->y)*(v->y*u->y));
-	return v->x+u->x;
+roadNodeY* grid_getNearestRoadNode(Vertex *v) {
+	roadNodeY **nr = grid_getNearNodes(v);
+	roadNodeY *nearestNode = NULL;
+	roadNodeY *tmp = nr[0];
+	int distance = distBetween(v,tmp->v);
+	
+	if(tmp == NULL)
+		return NULL;
+	
+	nearestNode = tmp;
+	int i = 0;
+
+	do {
+		int dist = distBetween(v,tmp->v);
+		if(dist < distance) {
+			distance = dist;
+			nearestNode = tmp;
+		}
+		
+		i++;
+		tmp = nr[i];
+	} while(tmp != NULL);
+	
+	return nearestNode;
 }
 
-roadNodeY** grid_getNearNodes(roadNodeY *rn) {
-	return nodesGrid[toX(rn->v)][toY(rn->v)];
+int distBetween(Vertex *v, Vertex *u) {
+	return sqrt((v->x-u->x)*(v->x-u->x)+(v->y-u->y)*(v->y-u->y));
+}
+
+roadNodeY** grid_getNearNodes(Vertex *v) {
+	return nodesGrid[toX(v)][toY(v)];
 }
 
 void carreY() {
@@ -113,14 +140,16 @@ void carreY() {
 		addRoadNode(roada,rn);
 	}
 	
-	for(i=0;i<40;i++) {
+	for(i=0;i<30;i++) {
 		rn = (roadNodeY*)malloc(sizeof(roadNodeY));
 		v = (Vertex*) malloc(sizeof(Vertex));
 		
 		v->x = (i+1)*22;
 		v->y = ((i+1)%5)*(61%(i+2))+160;
 		rn->v = v;
-		if(i == 12) rn = common;
+		if(i%5) if(grid_getNearestRoadNode(v) != NULL)
+			rn = grid_getNearestRoadNode(v);
+			//rn = common;
 		addRoadNode(roadb,rn);
 	}
 	
