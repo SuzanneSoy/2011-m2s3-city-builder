@@ -28,11 +28,27 @@ void roads(Polygon* quartier) {
 }
 
 /* Fonctions de Yoann suffixée par "Y" */
+/* Cette structure définie un noad de route. Les champs next et previous permettent d'avancer
+ * ou de reculler sur la route tant que l'on ne rencontre pas d'intersections avec une ou 
+ * plusieurs autre routes. Dans ce dernier cas next er previous se retrouvent à NULL.
+ */
 typedef struct roadNodeY {
 	Vertex *v;
 	struct roadNodeY *next;
 	struct roadNodeY *previous;
+	short nbIntersec;
+	struct intersection *intersec;
 } roadNodeY;
+
+/* Définition d'une intersection. Permet de savoir quelle route est concernée par cette intersection.
+ * Elle permet également de changer la navigation por parcourir une nouvelle route.
+ * */
+typedef struct intersection {
+	roadNodeY roadId;			// Premier nœd de la route qui lui sert d'identifiant.
+	roadNodeY *next;			// Nœd de la route juste après l'intersection.
+	roadNodeY *previous;		// Nœd de la route juste avant l'intersection.
+	int zIndex;					// Index sur l'axe z de la route.
+} intersection;
 
 const int maxSubDivision = 6;	// Nombre de subdivisions max en hauteur et largeur.
 
