@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef struct Vertex {
-	int x;
-	int y;
-} Vertex;
-
-typedef Vertex Polygon;
+#include "roads.h"
 
 void svg_start(int w, int h) {
 	printf("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
@@ -35,42 +27,44 @@ void roads(Polygon* quartier) {
  * le nombre et les portions de routes auxquelles il appartient.
  */
 
-/* Cette structure définie un nœd de route. Le nœd contient la liste de toute les intersections.
- */
-typedef struct roadNodeY {
-	Vertex *v;
-	short nbIntersec;
-	struct intersectionY *intersec;
-} roadNodeY;
-
-/* Définition d'une intersection. Permet de savoir quelle route est concernée par cette intersection.
- * Elle permet également de changer la navigation por parcourir une nouvelle route.
- * */
-typedef struct intersectionY {
-	roadNodeY roadId;			// Premier nœd de la route qui lui sert d'identifiant.
-	roadNodeY *next;			// Nœd de la route juste après l'intersection.
-	roadNodeY *previous;		// Nœd de la route juste avant l'intersection.
-	int zIndex;					// Index sur l'axe z de la route.
-} intersectionY;
-
-typedef struct roadPointY {
-	struct roadPointY *first;
-	struct roadPointY *next;
-	struct roadPointY *previous;
-	roadNodeY *rn;
-} roadPointY;
-
-const int maxSubDivision = 6;	// Nombre de subdivisions max en hauteur et largeur.
-
 // TODO Fusionner les deux fonctions et retourner une paire de valeurs.
 // Transforme des coordonnées du plan en coordonées du tableau sur x.
-int toX(int x) {
-	return x/maxSubDivision;
+int toX(Vertex *v) {
+	return v->x*(maxSubDivision-1)/quarterSize;
 }
 
 // Transforme des coordonnées du plan en coordonées du tableau sur y.
-int toY(int y) {
-	return y/maxSubDivision;
+int toY(Vertex *v) {
+	return v->x*(maxSubDivision-1)/quarterSize;
+}
+
+void grid_initNodesGrid(int size) {
+	nodesGrid = (roadNodeY****) malloc(sizeof(roadNodeY***)*size);
+	int i,j,k;
+	
+	maxSubDivision = size;
+
+	for(i=0;i<size;i++) {
+		nodesGrid[i] = (roadNodeY***) malloc(sizeof(roadNodeY**)*size);
+		for(j=0;j<size;j++) {
+			nodesGrid[i][j] = (roadNodeY**) malloc(sizeof(roadNodeY*)*maxNodesInGrid);
+			for(k=0;k<maxNodesInGrid;k++)
+				nodesGrid[i][j][k] = NULL;
+		}
+	}
+}
+
+short grid_insertRoadNode(roadNodeY *rn) {
+	if(rn == NULL || rn->v == NULL)
+		return 0;
+
+	int i;
+	for(i=0;i<maxNodesInGrid;i++) {
+		nodesGrid[toX(rn->v)][toY(rn->v)][i] = rn;
+		return 1;
+	}
+	
+	return 0;
 }
 
 void addRoadNode(roadPointY *rp, roadNodeY *rn) {
@@ -88,23 +82,24 @@ void addRoadNode(roadPointY *rp, roadNodeY *rn) {
 	rp->next = rpp;
 }
 
+int distBetween(Vertex *v, Vertex *u) {
+	//return sqrt((v->x-u->x)*(v->x-u->x)+(v->y-u->y)*(v->y*u->y));
+	return v->x+u->x;
+}
+
+roadNodeY** grid_getNearNodes(roadNodeY *rn) {
+	return nodesGrid[toX(rn->v)][toY(rn->v)];
+}
+
 void carreY() {
-	roadNodeY ***nodesGrid = (roadNodeY***) malloc(sizeof(roadNodeY**)*maxSubDivision);
-	int i = 0;
-	int j = 0;
 	int size = 500;
-	for(i=0;i<maxSubDivision;i++) {
-		nodesGrid[i] = (roadNodeY**) malloc(sizeof(roadNodeY*)*maxSubDivision);
-		for(j=0;j<maxSubDivision;j++) {
-			nodesGrid[i][j] = NULL;
-		}
-	}
-	
+	grid_initNodesGrid(6);
 	roadPointY *roada = (roadPointY*) malloc(sizeof(roadPointY));
 	roadPointY *roadb = (roadPointY*) malloc(sizeof(roadPointY));
 	roadNodeY *rn;
 	Vertex *v;
 	roadNodeY *common = NULL;
+	int i;
 	
 	for(i=0;i<40;i++) {
 		rn = (roadNodeY*)malloc(sizeof(roadNodeY));
@@ -114,6 +109,7 @@ void carreY() {
 		v->y = ((i+1)%3)*(61%(i+1))+100;
 		rn->v = v;
 		if(i == 18) common = rn;
+		grid_insertRoadNode(rn);
 		addRoadNode(roada,rn);
 	}
 	
