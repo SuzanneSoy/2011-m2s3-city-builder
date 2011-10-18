@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct Vertex {
 	int x;
@@ -26,19 +27,80 @@ void roads(Polygon* quartier) {
 	svg_line(&center, &(quartier[0]));
 }
 
+/* Fonctions de Yoann suffixée par "Y" */
+typedef struct roadNodeY {
+	Vertex *v;
+	struct roadNodeY *next;
+	struct roadNodeY *previous;
+} roadNodeY;
+
+const int maxSubDivision = 6;	// Nombre de subdivisions max en hauteur et largeur.
+
+// TODO Fusionner les deux fonctions et retourner une paire de valeurs.
+// Transforme des coordonnées du plan en coordonées du tableau sur x.
+int toX(int x) {
+	return x/maxSubDivision;
+}
+
+// Transforme des coordonnées du plan en coordonées du tableau sur y.
+int toY(int y) {
+	return y/maxSubDivision;
+}
+
+void carreY() {
+	roadNodeY ***nodesGrid = (roadNodeY***) malloc(sizeof(roadNodeY**)*maxSubDivision);
+	int i = 0;
+	int j = 0;
+	int size = 500;
+	for(i=0;i<maxSubDivision;i++) {
+		nodesGrid[i] = (roadNodeY**) malloc(sizeof(roadNodeY*)*maxSubDivision);
+		for(j=0;j<maxSubDivision;j++) {
+			roadNodeY *rn = (roadNodeY*) malloc(sizeof(roadNodeY));
+			rn->v = (Vertex*) malloc(sizeof(Vertex));
+			rn->v->x = i*size/maxSubDivision;
+			rn->v->y = j*size/maxSubDivision;
+			rn->next = NULL;
+			rn->previous = NULL;
+			nodesGrid[i][j] = rn;
+		}
+	}
+	
+	int a,b;
+	for(i=0;i<maxSubDivision;i++) {
+		for(j=0;j<maxSubDivision;j++) {
+			roadNodeY *rn = nodesGrid[i][j];
+			while(rn != NULL) {
+				for(a=i-1;a<=i+1;a++) {
+					for(b=j-1;b<=j+1;b++) {
+						if(a >= 0 && a < maxSubDivision && b >= 0 && b < maxSubDivision) {
+							svg_line(rn->v,nodesGrid[a][b]->v);
+						}
+					}
+				}
+				rn = NULL;
+			}
+		}
+	}
+}
+
 int main() {
 	Vertex points[] = {
 		{ .x=10, .y=10 },
 		{ .x=790, .y=10 },
+		{ .x=600, .y=300 },
 		{ .x=790, .y=590 },
 		{ .x=10, .y=590 },
 	};
+	int n = 5;
 	svg_start(800,600);
-	int i;
-	for (i = 0; i < 4; i++) {
-		svg_line(&(points[i]), &(points[(i+1)%4]));
-	}
-	roads(points);
+	carreY();
+	//int i;
+	//for (i = 0; i < n; i++) {
+//		svg_line(&(points[i]), &(points[(i+1)%n]));
+//	}
+n=n;
+	//roads(points);
+	points[0] = points[0];
 	svg_end();
 	return 0;
 }

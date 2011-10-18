@@ -25,7 +25,8 @@ Algo 1
 
 * Choisir un angle.
 * Tracer des routes suivant cet angle et cet angle + 90°.
-* Les routes doivent pouvoir être assez longues (le tracé doit survivre à une intersection).
+* Les routes doivent pouvoir être assez longues (le tracé doit
+  survivre à une intersection).
 
 Algo 2
 
@@ -58,11 +59,11 @@ Comme une grille, mais les angles ne sont pas vraiment à 90°, et il y
 a beaucoup de longues rues dans l'une ou l'autre des directions.
 
     .________________________.
-	|   |        |      |    |
-	|___|________|______|____|
-	|         |       |______|
-	|_________|_______|      |
-	|______|__________|______|
+    |   |        |      |    |
+    |___|________|______|____|
+    |         |       |______|
+    |_________|_______|      |
+    |______|__________|______|
 
 TODO : trouver un algo pour générer des « murs »
 
@@ -86,7 +87,7 @@ monter ou descendre très légèrement pour rejoindre une autre ligne.
 
 * Partir d'un point, et choisir le point à X de distance qui minimise
   le dénivellé
-* Condinuer à partir du point ainsi créé, en s'interdisant les retours
+* Continuer à partir du point ainsi créé, en s'interdisant les retours
   en arrière trop brutaux
 * Arrêter la ligne quand le dénivellé devient trop important, ou quand
   on rejoint une autre ligne.
@@ -142,4 +143,14 @@ exemple).
 Angles et vecteurs
 ------------------
 
-Pouvoir ajouter un vecteur à un point, appliquer une rotation sur le vecteur…
+Pouvoir ajouter un vecteur à un point, appliquer une rotation sur le
+vecteur…
+
+Algo déformation de coordonées
+==============================
+
+Partir d'une grille idéale carrée et appliquer des déformations de
+coordonnées dessus, plus une fonction de densité de points (taille des
+bâtiments). Dé-transformer la fonction de densité de points,
+l'utiliser pour générer la grille parfaite avec des densités
+différentes, puis transformer cette grille.
