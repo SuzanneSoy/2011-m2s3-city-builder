@@ -101,20 +101,41 @@ void carreY() {
 	}
 	
 	roadPointY *roada = (roadPointY*) malloc(sizeof(roadPointY));
+	roadPointY *roadb = (roadPointY*) malloc(sizeof(roadPointY));
 	roadNodeY *rn;
 	Vertex *v;
+	roadNodeY *common = NULL;
 	
-	for(i=0;i<30;i++) {
+	for(i=0;i<40;i++) {
 		rn = (roadNodeY*)malloc(sizeof(roadNodeY));
 		v = (Vertex*) malloc(sizeof(Vertex));
 		
 		v->x = (i+1)*16;
 		v->y = ((i+1)%3)*(61%(i+1))+100;
 		rn->v = v;
+		if(i == 18) common = rn;
 		addRoadNode(roada,rn);
 	}
 	
+	for(i=0;i<40;i++) {
+		rn = (roadNodeY*)malloc(sizeof(roadNodeY));
+		v = (Vertex*) malloc(sizeof(Vertex));
+		
+		v->x = (i+1)*22;
+		v->y = ((i+1)%5)*(61%(i+2))+160;
+		rn->v = v;
+		if(i == 12) rn = common;
+		addRoadNode(roadb,rn);
+	}
+	
 	roadPointY *rd = roada;
+	while(rd->next != NULL) {
+		svg_line(rd->rn->v,rd->next->rn->v);
+		
+		rd = rd->next;
+	}
+	
+	rd = roadb;
 	while(rd->next != NULL) {
 		svg_line(rd->rn->v,rd->next->rn->v);
 		
