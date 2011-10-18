@@ -21,6 +21,9 @@ simple-terrain: simple-terrain.c
 display: display.o roam.o square.o
 	$(CC) -lGLEW -lSDL -lGLU $^ -o $@
 
+roads: roads.o
+	$(CC) -lm $^ -o $@
+
 # Create objects from C source code
 %.o: %.c Makefile
 	$(CC) -c $< $(CFLAGS) -o $@
