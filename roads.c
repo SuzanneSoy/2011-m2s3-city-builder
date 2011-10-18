@@ -27,7 +27,14 @@ void roads(Polygon* quartier) {
 	svg_line(&center, &(quartier[0]));
 }
 
+
 /* Fonctions de Yoann suffixée par "Y" */
+
+/* La route est constituée d'une série de points, chaque point contient un nœd de route qui peut-être propre à cette route comme
+ * appartenir à plusieurs routes. Le nœd contient un Vertex qui permet de le positionner sur la carte. Il contient également
+ * le nombre et les portions de routes auxquelles il appartient.
+ */
+
 /* Cette structure définie un nœd de route. Le nœd contient la liste de toute les intersections.
  */
 typedef struct roadNodeY {
