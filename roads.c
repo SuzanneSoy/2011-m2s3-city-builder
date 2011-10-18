@@ -28,27 +28,30 @@ void roads(Polygon* quartier) {
 }
 
 /* Fonctions de Yoann suffixée par "Y" */
-/* Cette structure définie un noad de route. Les champs next et previous permettent d'avancer
- * ou de reculler sur la route tant que l'on ne rencontre pas d'intersections avec une ou 
- * plusieurs autre routes. Dans ce dernier cas next er previous se retrouvent à NULL.
+/* Cette structure définie un nœd de route. Le nœd contient la liste de toute les intersections.
  */
 typedef struct roadNodeY {
 	Vertex *v;
-	struct roadNodeY *next;
-	struct roadNodeY *previous;
 	short nbIntersec;
-	struct intersection *intersec;
+	struct intersectionY *intersec;
 } roadNodeY;
 
 /* Définition d'une intersection. Permet de savoir quelle route est concernée par cette intersection.
  * Elle permet également de changer la navigation por parcourir une nouvelle route.
  * */
-typedef struct intersection {
+typedef struct intersectionY {
 	roadNodeY roadId;			// Premier nœd de la route qui lui sert d'identifiant.
 	roadNodeY *next;			// Nœd de la route juste après l'intersection.
 	roadNodeY *previous;		// Nœd de la route juste avant l'intersection.
 	int zIndex;					// Index sur l'axe z de la route.
-} intersection;
+} intersectionY;
+
+typedef struct roadPointY {
+	struct roadPointY *first;
+	struct roadPointY *next;
+	struct roadPointY *previous;
+	roadNodeY *rn;
+} roadPointY;
 
 const int maxSubDivision = 6;	// Nombre de subdivisions max en hauteur et largeur.
 
@@ -63,6 +66,21 @@ int toY(int y) {
 	return y/maxSubDivision;
 }
 
+void addRoadNode(roadPointY *rp, roadNodeY *rn) {
+	if(rp->rn == NULL) {
+		rp->next = NULL;
+		rp->rn = rn;
+		return;
+	}
+	while(rp->next != NULL)
+		rp = rp->next;
+		
+	roadPointY *rpp = (roadPointY*) malloc(sizeof(roadPointY));
+	rpp->next = NULL;
+	rpp->rn = rn;
+	rp->next = rpp;
+}
+
 void carreY() {
 	roadNodeY ***nodesGrid = (roadNodeY***) malloc(sizeof(roadNodeY**)*maxSubDivision);
 	int i = 0;
@@ -71,32 +89,32 @@ void carreY() {
 	for(i=0;i<maxSubDivision;i++) {
 		nodesGrid[i] = (roadNodeY**) malloc(sizeof(roadNodeY*)*maxSubDivision);
 		for(j=0;j<maxSubDivision;j++) {
-			roadNodeY *rn = (roadNodeY*) malloc(sizeof(roadNodeY));
-			rn->v = (Vertex*) malloc(sizeof(Vertex));
-			rn->v->x = i*size/maxSubDivision;
-			rn->v->y = j*size/maxSubDivision;
-			rn->next = NULL;
-			rn->previous = NULL;
-			nodesGrid[i][j] = rn;
+			nodesGrid[i][j] = NULL;
 		}
 	}
 	
-	int a,b;
-	for(i=0;i<maxSubDivision;i++) {
-		for(j=0;j<maxSubDivision;j++) {
-			roadNodeY *rn = nodesGrid[i][j];
-			while(rn != NULL) {
-				for(a=i-1;a<=i+1;a++) {
-					for(b=j-1;b<=j+1;b++) {
-						if(a >= 0 && a < maxSubDivision && b >= 0 && b < maxSubDivision) {
-							svg_line(rn->v,nodesGrid[a][b]->v);
-						}
-					}
-				}
-				rn = NULL;
-			}
-		}
+	roadPointY *roada = (roadPointY*) malloc(sizeof(roadPointY));
+	roadNodeY *rn;
+	Vertex *v;
+	
+	for(i=0;i<30;i++) {
+		rn = (roadNodeY*)malloc(sizeof(roadNodeY));
+		v = (Vertex*) malloc(sizeof(Vertex));
+		
+		v->x = (i+1)*16;
+		v->y = ((i+1)%3)*(61%(i+1))+100;
+		rn->v = v;
+		addRoadNode(roada,rn);
 	}
+	
+	roadPointY *rd = roada;
+	while(rd->next != NULL) {
+		svg_line(rd->rn->v,rd->next->rn->v);
+		
+		rd = rd->next;
+	}
+	
+	size=size;
 }
 
 int main() {
