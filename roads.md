@@ -25,7 +25,8 @@ Algo 1
 
 * Choisir un angle.
 * Tracer des routes suivant cet angle et cet angle + 90°.
-* Les routes doivent pouvoir être assez longues (le tracé doit survivre à une intersection).
+* Les routes doivent pouvoir être assez longues (le tracé doit
+  survivre à une intersection).
 
 Algo 2
 
@@ -106,7 +107,7 @@ routes.
 Points proches
 --------------
 
-Énumérer les points et lignes proches d'un point donné.
+Énumérer les points proches d'un point donné.
 
 Pour cela, faire un quadtree (un arbre avec 4 fils à chaque noeud)
 représentant des carrés composés de quatre carrés, et stocker dans
@@ -115,12 +116,22 @@ noeuds feuille listent les points qu'ils contiennent. Quand on dépasse
 un certain seuil pour le nombre de points contenus dans un noeud
 feuille, on le subdivise.
 
+Lignes proches
+--------------
+
+Énumérer les lignes proches d'un point donné.
+
 Quand on ajoute un point au graphe des routes, on l'insère à la bonne
 position dans le quadtree.
 
 Quand on trace un segment entre deux points, on indique sa présence
 dans tous les noeuds qu'il traverse. *TODO* : cela coûte cher en temps
 et en espace !
+
+Autre possibilité : forcer les routes à être sur le bord de polygones
+(comme les rivières). Quand on veut tracer une route quelque part, on
+subdivise le polygone contenant pour que le nouveau point soit sommet
+d'au moins un des polygones, et la route côté de ce polygone.
 
 Intérieur d'un polygone
 --------------------
@@ -129,7 +140,17 @@ Pouvoir sélectionner aléatoirement des points à l'intérieur d'un
 polygone (pour pouvoir faire les centres des réseaux concentriques par
 exemple).
 
+Angles et vecteurs
+------------------
+
+Pouvoir ajouter un vecteur à un point, appliquer une rotation sur le
+vecteur…
+
 Algo déformation de coordonées
 ==============================
 
-Partir d'une grille idéale carrée et appliquer des déformations de coordonnées dessus, plus une fonction de densité de points (taille des bâtiments). Dé-transformer la fonction de densité de points, l'utiliser pour générer la grille parfaite avec des densités différentes, puis transformer cette grille.
+Partir d'une grille idéale carrée et appliquer des déformations de
+coordonnées dessus, plus une fonction de densité de points (taille des
+bâtiments). Dé-transformer la fonction de densité de points,
+l'utiliser pour générer la grille parfaite avec des densités
+différentes, puis transformer cette grille.
