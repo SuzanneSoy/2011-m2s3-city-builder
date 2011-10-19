@@ -34,8 +34,7 @@ void roads(Polygon* quartier) {
 // TODO Fusionner les deux fonctions et retourner une paire de valeurs.
 // Transforme des coordonnées du plan en coordonées du tableau sur x.
 int toX(Vertex *v) {
-	fprintf(stderr,"%d\n",nbXSubDivision);
-	int x = v->x*(nbYSubDivision-1)/quarterWidth;
+	int x = v->x*(nbXSubDivision)/quarterWidth;
 	if(x >= nbXSubDivision)
 		fprintf(stderr,"depassement du tableau sur x\n");
 	return x;
@@ -43,7 +42,7 @@ int toX(Vertex *v) {
 
 // Transforme des coordonnées du plan en coordonées du tableau sur y.
 int toY(Vertex *v) {
-	int y =  v->x*(nbYSubDivision-1)/quarterHeight;
+	int y =  v->y*(nbYSubDivision)/quarterHeight;
 	if(y >= nbYSubDivision)
 		fprintf(stderr,"Depassement du tableau sur y\n");
 	return y;
@@ -157,13 +156,12 @@ roadNodeY** grid_getNearNodes(Vertex *v) {
 }
 
 void carreY() {
-	int size = 500;
 	grid_initNodesGrid(800,600,10);
 	roadPointY *roada = (roadPointY*) malloc(sizeof(roadPointY));
 	roadPointY *roadb = (roadPointY*) malloc(sizeof(roadPointY));
 	roadNodeY *rn;
 	Vertex *v;
-	roadNodeY *common = NULL;
+	//roadNodeY *common = NULL;
 	int i;
 	
 	for(i=0;i<36;i++) {
@@ -173,7 +171,8 @@ void carreY() {
 		v->x = (i+1)*16;
 		v->y = ((i+1)%3)*(61%(i+1))+100;
 		rn->v = v;
-		if(i == 18) common = rn;
+		fprintf(stderr,"x : %d  y : %d\n",toX(v),toY(v));
+
 		grid_insertRoadNode(rn);
 		addRoadNode(roada,rn);
 	}
@@ -183,12 +182,13 @@ void carreY() {
 		v = (Vertex*) malloc(sizeof(Vertex));
 		
 		v->x = (i+1)*22;
-		v->y = ((i+1)%5)*(61%(i+2))+150;
+		v->y = ((i+1)%5)*(61%(i+2))+112;
 		rn->v = v;
+		if(i==4) {fprintf(stderr,"x : %d  y : %d\n",toX(v),toY(v));}
 		if(v->x < 800 && v->y < 600) {
-			if(i%5 == 0) if(grid_getNearestRoadNode(v) != NULL)
+			if(i != 0) if(grid_getNearestRoadNode(v) != NULL)
 				rn = grid_getNearestRoadNode(v);
-				//rn = common;
+				//rn = rn;
 			addRoadNode(roadb,rn);
 		}
 	}
@@ -206,8 +206,6 @@ void carreY() {
 		
 		rd = rd->next;
 	}
-	
-	size=size;
 }
 
 int main() {
