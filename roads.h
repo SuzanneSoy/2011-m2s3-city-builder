@@ -35,15 +35,19 @@ typedef struct roadPointY {
 } roadPointY;
 
 roadNodeY ****nodesGrid;
-short maxSubDivision;
+short nbXSubDivision;
+short nbYSubDivision;
+short maxSegmentSize;
 short maxNodesInGrid = 10;
-int quarterSize = 600;
+int quarterWidth;
+int quarterHeight;
 
 int toX(Vertex*);
 int toY(Vertex*);
-void grid_initNodesGrid(int size);
+void grid_initNodesGrid(int w, int h, int maxSegmentSize);
 short grid_insertRoadNode(roadNodeY *rn);
 void addRoadNode(roadPointY *rp, roadNodeY *rn);
 int distBetween(Vertex *v, Vertex *u);
 roadNodeY** grid_getNearNodes(Vertex *v);
 roadNodeY* grid_getNearestRoadNode(Vertex *v);
+void grid_drawGrid();

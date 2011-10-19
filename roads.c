@@ -30,28 +30,62 @@ void roads(Polygon* quartier) {
 // TODO Fusionner les deux fonctions et retourner une paire de valeurs.
 // Transforme des coordonnées du plan en coordonées du tableau sur x.
 int toX(Vertex *v) {
-	return v->x*(maxSubDivision-1)/quarterSize;
+	fprintf(stderr,"%d\n",nbXSubDivision);
+	int x = v->x*(nbYSubDivision-1)/quarterWidth;
+	if(x >= nbXSubDivision)
+		fprintf(stderr,"depassement du tableau sur x\n");
+	return x;
 }
 
 // Transforme des coordonnées du plan en coordonées du tableau sur y.
 int toY(Vertex *v) {
-	return v->x*(maxSubDivision-1)/quarterSize;
+	int y =  v->x*(nbYSubDivision-1)/quarterHeight;
+	if(y >= nbYSubDivision)
+		fprintf(stderr,"Depassement du tableau sur y\n");
+	return y;
 }
 
-void grid_initNodesGrid(int size) {
-	nodesGrid = (roadNodeY****) malloc(sizeof(roadNodeY***)*size);
+/* Initialise la grille de nœds.
+ * @param int width : Largeur du quartier à remplir.
+ * @param int height : Hauteur du quartier à remplir.
+ * @param int maxSegmentSize : Taille maximale d'un segment de route.
+ */
+void grid_initNodesGrid(int width, int height, int segmentSize) {
+	int xSize, ySize;
+	xSize = (int)(width/segmentSize);
+	ySize = (int)(height/segmentSize);
+	
+	nodesGrid = (roadNodeY****) malloc(sizeof(roadNodeY***)*xSize);
 	int i,j,k;
 	
-	maxSubDivision = size;
+	maxSegmentSize = segmentSize;
+	nbXSubDivision = xSize;
+	nbYSubDivision = ySize;
+	quarterWidth = width;
+	quarterHeight = height;
 
-	for(i=0;i<size;i++) {
-		nodesGrid[i] = (roadNodeY***) malloc(sizeof(roadNodeY**)*size);
-		for(j=0;j<size;j++) {
+	for(i=0;i<xSize;i++) {
+		nodesGrid[i] = (roadNodeY***) malloc(sizeof(roadNodeY**)*ySize);
+		for(j=0;j<ySize;j++) {
 			nodesGrid[i][j] = (roadNodeY**) malloc(sizeof(roadNodeY*)*maxNodesInGrid);
 			for(k=0;k<maxNodesInGrid;k++)
 				nodesGrid[i][j][k] = NULL;
 		}
 	}
+}
+
+void grid_drawGrid() {
+	int i, j;
+	
+	for(i=0;i<nbXSubDivision-1;i++)
+		for(j=0;j<nbYSubDivision-1;j++) {
+			Vertex v = {i*maxSegmentSize,j*maxSegmentSize};
+			Vertex u = {(i+1)*maxSegmentSize,j*maxSegmentSize};
+			svg_line(&v,&u);
+			u.x = i*maxSegmentSize;
+			u.y = (j+1)*maxSegmentSize;
+			svg_line(&v,&u);
+		}
 }
 
 short grid_insertRoadNode(roadNodeY *rn) {
@@ -87,11 +121,11 @@ void addRoadNode(roadPointY *rp, roadNodeY *rn) {
 roadNodeY* grid_getNearestRoadNode(Vertex *v) {
 	roadNodeY **nr = grid_getNearNodes(v);
 	roadNodeY *nearestNode = NULL;
+	if(nr[0] == NULL)
+		return NULL;
+		
 	roadNodeY *tmp = nr[0];
 	int distance = distBetween(v,tmp->v);
-	
-	if(tmp == NULL)
-		return NULL;
 	
 	nearestNode = tmp;
 	int i = 0;
@@ -120,7 +154,7 @@ roadNodeY** grid_getNearNodes(Vertex *v) {
 
 void carreY() {
 	int size = 500;
-	grid_initNodesGrid(6);
+	grid_initNodesGrid(800,600,10);
 	roadPointY *roada = (roadPointY*) malloc(sizeof(roadPointY));
 	roadPointY *roadb = (roadPointY*) malloc(sizeof(roadPointY));
 	roadNodeY *rn;
@@ -128,7 +162,7 @@ void carreY() {
 	roadNodeY *common = NULL;
 	int i;
 	
-	for(i=0;i<40;i++) {
+	for(i=0;i<36;i++) {
 		rn = (roadNodeY*)malloc(sizeof(roadNodeY));
 		v = (Vertex*) malloc(sizeof(Vertex));
 		
@@ -140,17 +174,19 @@ void carreY() {
 		addRoadNode(roada,rn);
 	}
 	
-	for(i=0;i<30;i++) {
+	for(i=0;i<20;i++) {
 		rn = (roadNodeY*)malloc(sizeof(roadNodeY));
 		v = (Vertex*) malloc(sizeof(Vertex));
 		
 		v->x = (i+1)*22;
-		v->y = ((i+1)%5)*(61%(i+2))+160;
+		v->y = ((i+1)%5)*(61%(i+2))+150;
 		rn->v = v;
-		if(i%5) if(grid_getNearestRoadNode(v) != NULL)
-			rn = grid_getNearestRoadNode(v);
-			//rn = common;
-		addRoadNode(roadb,rn);
+		if(v->x < 800 && v->y < 600) {
+			if(i%5 == 0) if(grid_getNearestRoadNode(v) != NULL)
+				rn = grid_getNearestRoadNode(v);
+				//rn = common;
+			addRoadNode(roadb,rn);
+		}
 	}
 	
 	roadPointY *rd = roada;
@@ -185,6 +221,9 @@ int main() {
 	//for (i = 0; i < n; i++) {
 //		svg_line(&(points[i]), &(points[(i+1)%n]));
 //	}
+	
+	grid_drawGrid();
+	
 n=n;
 	//roads(points);
 	points[0] = points[0];
