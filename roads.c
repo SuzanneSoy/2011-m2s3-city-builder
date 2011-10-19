@@ -13,6 +13,10 @@ void svg_line(Vertex* a, Vertex* b) {
 	printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\" />", a->x, a->y, b->x, b->y);
 }
 
+void svg_grey_line(Vertex* a, Vertex* b) {
+	printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"grey\" />", a->x, a->y, b->x, b->y);
+}
+
 void roads(Polygon* quartier) {
 	quartier = quartier;
 	Vertex center = { .x=400, .y=300 };
@@ -81,10 +85,10 @@ void grid_drawGrid() {
 		for(j=0;j<nbYSubDivision-1;j++) {
 			Vertex v = {i*maxSegmentSize,j*maxSegmentSize};
 			Vertex u = {(i+1)*maxSegmentSize,j*maxSegmentSize};
-			svg_line(&v,&u);
+			svg_grey_line(&v,&u);
 			u.x = i*maxSegmentSize;
 			u.y = (j+1)*maxSegmentSize;
-			svg_line(&v,&u);
+			svg_grey_line(&v,&u);
 		}
 }
 
