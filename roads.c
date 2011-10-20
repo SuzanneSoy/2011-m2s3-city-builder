@@ -122,27 +122,34 @@ void addRoadNode(roadPointY *rp, roadNodeY *rn) {
 }
 
 roadNodeY* grid_getNearestRoadNode(Vertex *v) {
-	roadNodeY **nr = grid_getNearNodes(v);
+	roadNodeY **nr;
 	roadNodeY *nearestNode = NULL;
-	if(nr[0] == NULL)
-		return NULL;
-		
-	roadNodeY *tmp = nr[0];
-	int distance = distBetween(v,tmp->v);
-	
-	nearestNode = tmp;
-	int i = 0;
-
-	do {
-		int dist = distBetween(v,tmp->v);
-		if(dist < distance) {
-			distance = dist;
-			nearestNode = tmp;
+	int i,j;
+	int x = toX(v);
+	int y = toY(v);
+	int distance = maxSegmentSize*2;
+	roadNodeY *tmp = NULL;
+	int count = 0;
+	fprintf(stderr,"colones : %d\n",nbXSubDivision);
+	fprintf(stderr,"lignes : %d\n",nbYSubDivision);
+	for(i=x-1; i<x+2; i++) {
+		for(j=y-1; j<y+2; j++,count++) {
+			if(i >= 0 && i < nbXSubDivision && y >= 0 && y < nbYSubDivision) {
+				nr = grid_getNearNodes2(i,j);
+				tmp = nr[0];
+				fprintf(stderr,"passage %d\t\t %d %d\n",count,i,j);
+				while(tmp != NULL) {
+					int dist = distBetween(v,tmp->v);
+					if(dist < distance) {
+						distance = dist;
+						nearestNode = tmp;
+					}
+					
+					tmp = nr[i];
+				}
+			}
 		}
-		
-		i++;
-		tmp = nr[i];
-	} while(tmp != NULL);
+	}
 	
 	return nearestNode;
 }
@@ -153,6 +160,10 @@ int distBetween(Vertex *v, Vertex *u) {
 
 roadNodeY** grid_getNearNodes(Vertex *v) {
 	return nodesGrid[toX(v)][toY(v)];
+}
+
+roadNodeY** grid_getNearNodes2(int x, int y) {
+	return nodesGrid[x][y];
 }
 
 void carreY() {
@@ -171,7 +182,6 @@ void carreY() {
 		v->x = (i+1)*16;
 		v->y = ((i+1)%3)*(61%(i+1))+100;
 		rn->v = v;
-		fprintf(stderr,"x : %d  y : %d\n",toX(v),toY(v));
 
 		grid_insertRoadNode(rn);
 		addRoadNode(roada,rn);

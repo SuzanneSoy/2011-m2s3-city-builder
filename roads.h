@@ -49,5 +49,6 @@ short grid_insertRoadNode(roadNodeY *rn);
 void addRoadNode(roadPointY *rp, roadNodeY *rn);
 int distBetween(Vertex *v, Vertex *u);
 roadNodeY** grid_getNearNodes(Vertex *v);
+roadNodeY** grid_getNearNodes2(int x, int y);
 roadNodeY* grid_getNearestRoadNode(Vertex *v);
 void grid_drawGrid();
