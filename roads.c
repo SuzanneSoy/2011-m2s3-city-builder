@@ -9,22 +9,25 @@ void svg_end() {
 	printf("</svg>");
 }
 
-void svg_line(Vertex* a, Vertex* b) {
-	printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\" />", a->x, a->y, b->x, b->y);
+void svg_line(Vertex* a, Vertex* b,short color) {
+	if(color == 0)
+		printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"grey\" />", a->x, a->y, b->x, b->y);
+	else if(color == 1)
+		printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"#A0A000\" />", a->x, a->y, b->x, b->y);
+	else if(color == 2)
+		printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"blue\" />", a->x, a->y, b->x, b->y);
+	else
+		printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\" />", a->x, a->y, b->x, b->y);
 }
 
 void svg_circle(int x, int y, int r) {
 	printf("<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke=\"black\" stroke-width=\"2\" fill=\"red\"/>",x,y,r);
 }
 
-void svg_grey_line(Vertex* a, Vertex* b) {
-	printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"grey\" />", a->x, a->y, b->x, b->y);
-}
-
 void roads(Polygon* quartier) {
 	quartier = quartier;
 	Vertex center = { .x=400, .y=300 };
-	svg_line(&center, &(quartier[0]));
+	svg_line(&center, &(quartier[0]),6);
 }
 
 
@@ -88,10 +91,10 @@ void grid_drawGrid() {
 		for(j=0;j<nbYSubDivision-1;j++) {
 			Vertex v = {i*maxSegmentSize,j*maxSegmentSize};
 			Vertex u = {(i+1)*maxSegmentSize,j*maxSegmentSize};
-			svg_grey_line(&v,&u);
+			svg_line(&v,&u,0);
 			u.x = i*maxSegmentSize;
 			u.y = (j+1)*maxSegmentSize;
-			svg_grey_line(&v,&u);
+			svg_line(&v,&u,0);
 		}
 }
 
@@ -178,13 +181,10 @@ roadNodeY* insertRoadSegment(roadPointY *road, roadNodeY *rnb, roadNodeY *rne, i
 	
 	if(nearestNode != NULL && distBetween(nearestNode->v,rne->v) < lag)
 		rne = nearestNode;
-	fprintf(stderr,"--AA\n");
+		
 	grid_insertRoadNode(rnb);
-	fprintf(stderr,"--BB\n");
 	grid_insertRoadNode(rne);
-	fprintf(stderr,"--CC\n");
 	addRoadNode(road,rne);
-	fprintf(stderr,"--DD\n");
 	return rne;
 }
 
@@ -244,15 +244,15 @@ void carreY() {
 	
 	roadPointY *rd = roada;
 	while(rd->next != NULL) {
-		svg_line(rd->rn->v,rd->next->rn->v);
-		svg_circle(rd->rn->v->x,rd->rn->v->y,2);
+		svg_line(rd->rn->v,rd->next->rn->v,1);
+		svg_circle(rd->rn->v->x,rd->rn->v->y,1);
 		rd = rd->next;
 	}
 	
 	rd = roadb;
 	while(rd->next != NULL) {
-		svg_line(rd->rn->v,rd->next->rn->v);
-		svg_circle(rd->rn->v->x,rd->rn->v->y,2);
+		svg_line(rd->rn->v,rd->next->rn->v,2);
+		svg_circle(rd->rn->v->x,rd->rn->v->y,1);
 		rd = rd->next;
 	}
 }
