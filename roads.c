@@ -13,6 +13,10 @@ void svg_line(Vertex* a, Vertex* b) {
 	printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\" />", a->x, a->y, b->x, b->y);
 }
 
+void svg_circle(int x, int y, int r) {
+	printf("<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke=\"black\" stroke-width=\"2\" fill=\"red\"/>",x,y,r);
+}
+
 void svg_grey_line(Vertex* a, Vertex* b) {
 	printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"grey\" />", a->x, a->y, b->x, b->y);
 }
@@ -135,10 +139,14 @@ roadNodeY* grid_getNearestRoadNode(Vertex *v) {
 	for(i=x-1; i<x+2; i++) {
 		for(j=y-1; j<y+2; j++,count++) {
 			if(i >= 0 && i < nbXSubDivision && y >= 0 && y < nbYSubDivision) {
+				
 				nr = grid_getNearNodes2(i,j);
-				tmp = nr[0];
+				
+				int ind;
+				//tmp = nr[0];
 				fprintf(stderr,"passage %d\t\t %d %d\n",count,i,j);
-				while(tmp != NULL) {
+				for(tmp = nr[0], ind = 0; tmp != NULL && ind < maxNodesInGrid; tmp = nr[ind++]) {
+					fprintf(stderr,"noed\n");
 					int dist = distBetween(v,tmp->v);
 					if(dist < distance) {
 						distance = dist;
@@ -187,15 +195,16 @@ void carreY() {
 		addRoadNode(roada,rn);
 	}
 	
-	for(i=0;i<20;i++) {
+	for(i=0;i<30;i++) {
 		rn = (roadNodeY*)malloc(sizeof(roadNodeY));
 		v = (Vertex*) malloc(sizeof(Vertex));
 		
 		v->x = (i+1)*22;
-		v->y = ((i+1)%5)*(61%(i+2))+112;
+		v->y = ((i+1)%5)*(61%(i+2))+120;
 		rn->v = v;
 		if(i==4) {fprintf(stderr,"x : %d  y : %d\n",toX(v),toY(v));}
 		if(v->x < 800 && v->y < 600) {
+			fprintf(stderr,"Noed : %d\n",i);
 			if(i != 0) if(grid_getNearestRoadNode(v) != NULL)
 				rn = grid_getNearestRoadNode(v);
 				//rn = rn;
@@ -206,14 +215,14 @@ void carreY() {
 	roadPointY *rd = roada;
 	while(rd->next != NULL) {
 		svg_line(rd->rn->v,rd->next->rn->v);
-		
+		svg_circle(rd->rn->v->x,rd->rn->v->y,2);
 		rd = rd->next;
 	}
 	
 	rd = roadb;
 	while(rd->next != NULL) {
 		svg_line(rd->rn->v,rd->next->rn->v);
-		
+		svg_circle(rd->rn->v->x,rd->rn->v->y,2);
 		rd = rd->next;
 	}
 }

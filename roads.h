@@ -38,7 +38,7 @@ roadNodeY ****nodesGrid;
 short nbXSubDivision;
 short nbYSubDivision;
 short maxSegmentSize;
-short maxNodesInGrid = 10;
+short maxNodesInGrid = 16;
 int quarterWidth;
 int quarterHeight;
 
