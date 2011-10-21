@@ -79,7 +79,7 @@ polarCoord* ctp(Vertex *origin, Vertex *end) {
 	
 	return pc;
 }
- 
+
 /* Initialise la grille de nœds.
  * @param int width : Largeur du quartier à remplir.
  * @param int height : Hauteur du quartier à remplir.
@@ -153,6 +153,11 @@ void addRoadNode(roadPointY *rp, roadNodeY *rn) {
 	rp->next = rpp;
 }
 
+/* Retourne le nœd le plus proche dans un certain voisinage. Si aucun nœd n'est trouvé alors 
+ * la fonction renvoie NULL.
+ * @param Vertex *v : Le nœd pour lequel on souhaite trouver un nœd proche.
+ * @return roadNodeY* : le nœd de route le plus proche.
+ */
 roadNodeY* grid_getNearestRoadNode(Vertex *v) {
 	roadNodeY **nr;
 	roadNodeY *nearestNode = NULL;
@@ -190,6 +195,21 @@ roadNodeY* grid_getNearestRoadNode(Vertex *v) {
 	return nearestNode;
 }
 
+/* Ajoute un segment de route à la fin d'une route.
+ * Le point d'origine du segment est le dernier de la route actuellement en place. Il est passé en paramètre pour
+ * éviter le parcour de la route entière pour le trouver.
+ * Le point d'arrivé peut-etre modifié suivant deux règles principales.
+ * - Un nœd de route existe proche de l'endroit ou doit ce terminer le segment dans ce cas
+ * on "fusionne" les deux le point existant devient le point d'arrivé du segment.
+ * - Un segment se trouve sur le chemin du segment que l'on souhaite placer. Dans ce cas le segment
+ * que l'on souhaite placer sera sectionné à l'intersection des deux segments et le points d'intersections sera 
+ * le point d'arrivé du segment à placer.
+ * @param roadPointY *road : La route à laquelle on veut ajouter le segmetn.
+ * @param roadNodeY *rnb : Le nœd de départ du segment.
+ * @param roadNodeY *rne : Le nœd d'arrivé du segment.
+ * @param int lag : le décalage maximal autorisé pour le placement du nœd d'arrivé.
+ * @return roadNodeY* : Le nœd d'arrivé du vecteur potentiellement modifié.
+ */
 roadNodeY* insertRoadSegment(roadPointY *road, roadNodeY *rnb, roadNodeY *rne, int lag) {
 	int segLength = distBetween(rnb->v, rne->v);
 	float coef = ((float)segLength-lag)/(float)segLength;
