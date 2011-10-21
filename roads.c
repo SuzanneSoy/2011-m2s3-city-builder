@@ -162,6 +162,32 @@ roadNodeY* grid_getNearestRoadNode(Vertex *v) {
 	return nearestNode;
 }
 
+roadNodeY* insertRoadSegment(roadPointY *road, roadNodeY *rnb, roadNodeY *rne, int lag) {
+	int segLength = distBetween(rnb->v, rne->v);
+	float coef = ((float)segLength-lag)/(float)segLength;
+	roadNodeY *nearestNode = NULL;
+	Vertex tmpEnd;
+	tmpEnd.x = rnb->v->x+coef*(rne->v->x - rnb->v->x);
+	tmpEnd.y = rnb->v->y+coef*(rne->v->y - rnb->v->y);
+	fprintf(stderr,"segLength : %d\n",segLength);
+	fprintf(stderr," ostart : %d %d\t oend : %d %d\n",rnb->v->x,rnb->v->y,rne->v->x,rne->v->y);
+	fprintf(stderr," end : %d %d\n",tmpEnd.x,tmpEnd.y);
+	nearestNode = grid_getNearestRoadNode(&tmpEnd);
+	
+	fprintf(stderr,"--11\n");
+	
+	if(nearestNode != NULL && distBetween(nearestNode->v,rne->v) < lag)
+		rne = nearestNode;
+	fprintf(stderr,"--AA\n");
+	grid_insertRoadNode(rnb);
+	fprintf(stderr,"--BB\n");
+	grid_insertRoadNode(rne);
+	fprintf(stderr,"--CC\n");
+	addRoadNode(road,rne);
+	fprintf(stderr,"--DD\n");
+	return rne;
+}
+
 int distBetween(Vertex *v, Vertex *u) {
 	return sqrt((v->x-u->x)*(v->x-u->x)+(v->y-u->y)*(v->y-u->y));
 }
@@ -180,7 +206,7 @@ void carreY() {
 	roadPointY *roadb = (roadPointY*) malloc(sizeof(roadPointY));
 	roadNodeY *rn;
 	Vertex *v;
-	//roadNodeY *common = NULL;
+	roadNodeY *lastNode = NULL;
 	int i;
 	
 	for(i=0;i<36;i++) {
@@ -205,10 +231,14 @@ void carreY() {
 		if(i==4) {fprintf(stderr,"x : %d  y : %d\n",toX(v),toY(v));}
 		if(v->x < 800 && v->y < 600) {
 			fprintf(stderr,"Noed : %d\n",i);
-			if(i != 0) if(grid_getNearestRoadNode(v) != NULL)
-				rn = grid_getNearestRoadNode(v);
-				//rn = rn;
-			addRoadNode(roadb,rn);
+			if(i==0) {
+				addRoadNode(roadb,rn);
+				lastNode = rn;
+			}
+			else {
+				insertRoadSegment(roadb,lastNode,rn,10);
+				lastNode = rn;
+			}
 		}
 	}
 	
