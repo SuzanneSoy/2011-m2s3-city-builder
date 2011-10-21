@@ -42,19 +42,44 @@ void roads(Polygon* quartier) {
 // Transforme des coordonnées du plan en coordonées du tableau sur x.
 int toX(Vertex *v) {
 	int x = v->x*(nbXSubDivision)/quarterWidth;
-	if(x >= nbXSubDivision)
-		fprintf(stderr,"depassement du tableau sur x\n");
+	if(x >= nbXSubDivision) return 0;
 	return x;
 }
 
 // Transforme des coordonnées du plan en coordonées du tableau sur y.
 int toY(Vertex *v) {
 	int y =  v->y*(nbYSubDivision)/quarterHeight;
-	if(y >= nbYSubDivision)
-		fprintf(stderr,"Depassement du tableau sur y\n");
+	if(y >= nbYSubDivision) return 0;
 	return y;
 }
 
+/* Convertion de coordonnées polaires en coordonnées cartésiennes.
+ * @param Vertex* origin : Origine du vecteur.
+ * @param short angle : Angle.
+ * @param short length : Taille du vecteur.
+ * @return struct cartesianCoord* : Les coordonnées cartésiennes du point d'arrivée.
+ */
+cartesianCoord* ptc(Vertex *origin, short angle, short length) {
+	cartesianCoord *cc = (cartesianCoord*) malloc(sizeof(cartesianCoord));
+	cc->x = origin->x + cos(M_PI*angle/180)*length;
+	cc->y = origin->y + sin(M_PI*angle/180)*length;
+	
+	return cc;
+}
+
+/* Convertion de coordonnées cartésiennes en coordonnées polaires.
+ * @param Vertex* origin : Origine du vecteur.
+ * * @param Vertex* end : Fin du vecteur.
+ * @return struct polarCoord* : Les coordonnées polaires du point d'arrivée.
+ */
+polarCoord* ctp(Vertex *origin, Vertex *end) {
+	polarCoord *pc = (polarCoord*) malloc(sizeof(polarCoord));
+	pc->length = distBetween(origin,end);
+	pc->angle = acos((end->x-origin->x)/pc->length);
+	
+	return pc;
+}
+ 
 /* Initialise la grille de nœds.
  * @param int width : Largeur du quartier à remplir.
  * @param int height : Hauteur du quartier à remplir.
