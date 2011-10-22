@@ -120,7 +120,6 @@ void grid_initNodesGrid(int width, int height, int segmentSize) {
  */
 Vertex* intersectionBetween(Vertex *va, Vertex *vb, Vertex *ua, Vertex *ub) {
 	Vertex *inter = (Vertex*) malloc(sizeof(Vertex));
-	//int ix, iy;		// Coordonnées du point d'intersection.
 	float m, k; 		// Coordonnées de l'intersection des vecteurs sur les droites.
 	int Ix, Iy, Jx, Jy;		// Vecteur I et J corespondant au segment v et u;
 	
@@ -131,37 +130,13 @@ Vertex* intersectionBetween(Vertex *va, Vertex *vb, Vertex *ua, Vertex *ub) {
 
 	m = (float)(-(-Ix*va->y+Ix*ua->y+Iy*va->x-Iy*ua->x))/(float)(Ix*Jy-Iy*Jx);
 	k = (float)(-(va->x*Jy-ua->x*Jy-Jx*va->y+Jx*ua->y))/(float)(Ix*Jy-Iy*Jx);
-	fprintf(stderr,"k , m : %f %f\n",k,m);
+
 	if(m < 1 && m > 0 && k < 1 && k > 0) {
 		inter->x = va->x + k * Ix;
 		inter->y = va->y + k * Iy;
 	}
 	else
 		return NULL;
-	
-	 /* Une solution, mais ne fonctionne peut-être pas dans toutes les conditions (si B<A).
-	 if(va->x == vb->x) {
-		if(va->y == vb->y)
-			return NULL;
-		else {
-			ix = va->x;
-			iy = ((ua->y-ub->y)/(ua->x-ub->x))*(va->x-ua->x) + ua->y;
-		}
-	}
-	else {
-		if(ua->x == ub->x) {
-			ix = ua->x;
-			iy = ((va->y-vb->y)/(va->x-vb->x))*(ua->x-va->x) + va->y;
-		}
-		else {
-			double pCD = (ua->y-ub->y)/(ua->x-ub->x);
-			double pAB = (va->y-vb->y)/(va->x-vb->x);
-			double oCD = ua->y-pCD*ya->x;
-			double oAB = va->y-pAB*va->x;
-			ix = (oAB-oCD)/(pCD-pAB);
-			iy = pCD*ix+oCD;
-		}
-	}*/
 
 	return inter;
  }
@@ -272,17 +247,37 @@ roadNodeY* insertRoadSegment(roadPointY *road, roadNodeY *rnb, roadNodeY *rne, i
 	float coef = ((float)segLength-lag)/(float)segLength;
 	roadNodeY *nearestNode = NULL;
 	Vertex tmpEnd;
-	tmpEnd.x = rnb->v->x+coef*(rne->v->x - rnb->v->x);
-	tmpEnd.y = rnb->v->y+coef*(rne->v->y - rnb->v->y);
-	fprintf(stderr,"segLength : %d\n",segLength);
-	fprintf(stderr," ostart : %d %d\t oend : %d %d\n",rnb->v->x,rnb->v->y,rne->v->x,rne->v->y);
-	fprintf(stderr," end : %d %d\n",tmpEnd.x,tmpEnd.y);
-	nearestNode = grid_getNearestRoadNode(&tmpEnd);
 	
-	fprintf(stderr,"--11\n");
+	// ------- TODO à compléter et à vérifier.
+	Segment **segs = grid_getNearSegments(rnb->v->x,rnb->v->y);
+	Segment *seg = segs[0];
+	int s = 0;
+	int intersec = 0; // Booléen si intersection = 1 sinon = 0;
 	
-	if(nearestNode != NULL && distBetween(nearestNode->v,rne->v) < lag)
-		rne = nearestNode;
+	while(seg != NULL) {
+		Vertex *intersection = intersectionBetween(rnb->v,rne->v,seg->u,seg->v);
+		
+		if(intersection != NULL) {
+			// Créer un nœd, l'insérer au segment qui à causé l'intersection.
+			// Ce nœd deviens le point d'arriver du segment à placer : rne;
+			intersec = 1;
+		}
+		seg = segs[s++];
+	}
+	// -------
+	if(intersec == 0) {
+		tmpEnd.x = rnb->v->x+coef*(rne->v->x - rnb->v->x);
+		tmpEnd.y = rnb->v->y+coef*(rne->v->y - rnb->v->y);
+		fprintf(stderr,"segLength : %d\n",segLength);
+		fprintf(stderr," ostart : %d %d\t oend : %d %d\n",rnb->v->x,rnb->v->y,rne->v->x,rne->v->y);
+		fprintf(stderr," end : %d %d\n",tmpEnd.x,tmpEnd.y);
+		nearestNode = grid_getNearestRoadNode(&tmpEnd);
+		
+		fprintf(stderr,"--11\n");
+		
+		if(nearestNode != NULL && distBetween(nearestNode->v,rne->v) < lag)
+			rne = nearestNode;
+	}
 		
 	grid_insertRoadNode(rnb);
 	grid_insertRoadNode(rne);
@@ -300,6 +295,44 @@ roadNodeY** grid_getNearNodes(Vertex *v) {
 
 roadNodeY** grid_getNearNodes2(int x, int y) {
 	return nodesGrid[x][y];
+}
+
+/* Récupère tout les segement potentiellement sécant avec un segment ayant pour arrivée x et y.
+ */
+Segment** grid_getNearSegments(int x, int y) {
+	roadNodeY **nr, *tmpnr;
+	Segment** segs = (Segment**) malloc(sizeof(Segment)*9*maxNodesInGrid);
+	int i, j, s, k, l;
+	
+	s = 0;
+	
+	for(i=x-1;i<x+2;i++) {
+		for(j=y-1;j<y+2;j++) {
+			if(x >= 0 && x < nbXSubDivision && y >= 0 && y < nbYSubDivision) {
+				nr = grid_getNearNodes2(i,j);
+				k = 0;
+				tmpnr = nr[0];
+				
+				// TODO Tester si le segment existe déjà dans la liste pour ne pas l'insérer en double.
+				
+				while(tmpnr != NULL) {
+					for(l=0;l<tmpnr->nbIntersec;l++) {
+						if(tmpnr->intersec[l]->next != NULL) {
+							segs[s]->u = tmpnr->v;
+							segs[s]->v = tmpnr->intersec[l]->next->v;
+						}
+						s++;
+						if(tmpnr->intersec[l]->previous != NULL) {
+							segs[s]->u = tmpnr->v;
+							segs[s]->v = tmpnr->intersec[l]->previous->v;
+						}
+					}
+					tmpnr = nr[k++];
+				}
+			}
+		}
+	}
+	return segs;
 }
 
 void carreY() {
