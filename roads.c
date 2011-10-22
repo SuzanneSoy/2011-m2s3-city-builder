@@ -42,17 +42,42 @@ void roads(Polygon* quartier) {
 // Transforme des coordonnées du plan en coordonées du tableau sur x.
 int toX(Vertex *v) {
 	int x = v->x*(nbXSubDivision)/quarterWidth;
-	if(x >= nbXSubDivision)
-		fprintf(stderr,"depassement du tableau sur x\n");
+	if(x >= nbXSubDivision) return 0;
 	return x;
 }
 
 // Transforme des coordonnées du plan en coordonées du tableau sur y.
 int toY(Vertex *v) {
 	int y =  v->y*(nbYSubDivision)/quarterHeight;
-	if(y >= nbYSubDivision)
-		fprintf(stderr,"Depassement du tableau sur y\n");
+	if(y >= nbYSubDivision) return 0;
 	return y;
+}
+
+/* Convertion de coordonnées polaires en coordonnées cartésiennes.
+ * @param Vertex* origin : Origine du vecteur.
+ * @param short angle : Angle.
+ * @param short length : Taille du vecteur.
+ * @return struct cartesianCoord* : Les coordonnées cartésiennes du point d'arrivée.
+ */
+cartesianCoord* ptc(Vertex *origin, short angle, short length) {
+	cartesianCoord *cc = (cartesianCoord*) malloc(sizeof(cartesianCoord));
+	cc->x = origin->x + cos(M_PI*angle/180)*length;
+	cc->y = origin->y + sin(M_PI*angle/180)*length;
+	
+	return cc;
+}
+
+/* Convertion de coordonnées cartésiennes en coordonnées polaires.
+ * @param Vertex* origin : Origine du vecteur.
+ * * @param Vertex* end : Fin du vecteur.
+ * @return struct polarCoord* : Les coordonnées polaires du point d'arrivée.
+ */
+polarCoord* ctp(Vertex *origin, Vertex *end) {
+	polarCoord *pc = (polarCoord*) malloc(sizeof(polarCoord));
+	pc->length = distBetween(origin,end);
+	pc->angle = acos((end->x-origin->x)/pc->length);
+	
+	return pc;
 }
 
 /* Initialise la grille de nœds.
@@ -67,7 +92,7 @@ void grid_initNodesGrid(int width, int height, int segmentSize) {
 	
 	nodesGrid = (roadNodeY****) malloc(sizeof(roadNodeY***)*xSize);
 	int i,j,k;
-	
+
 	maxSegmentSize = segmentSize;
 	nbXSubDivision = xSize;
 	nbYSubDivision = ySize;
@@ -84,6 +109,63 @@ void grid_initNodesGrid(int width, int height, int segmentSize) {
 	}
 }
 
+/* Détermine si il existe une intersection entre deux segments de droite. Dans le cas 
+ * ou une intersection existe les coordonnées du point d'intersection sont retournées.
+ * Dans le cas contraire la fonction retourne NULL.
+ * @param Vertex *va : Point de départ du premier segment.
+ * @param Vertex *vb : Point d'arrivé du premier segment.
+ * @param Vertex *ua : Point de départ du second segment.
+ * @param Vertex *vb : Point d'arrivé du second segment.
+ * @return Vertex* : Coordonnées du point d'intersection si il existe, sinon NULL.
+ */
+Vertex* intersectionBetween(Vertex *va, Vertex *vb, Vertex *ua, Vertex *ub) {
+	Vertex *inter = (Vertex*) malloc(sizeof(Vertex));
+	//int ix, iy;		// Coordonnées du point d'intersection.
+	float m, k; 		// Coordonnées de l'intersection des vecteurs sur les droites.
+	int Ix, Iy, Jx, Jy;		// Vecteur I et J corespondant au segment v et u;
+	
+	Ix = vb->x - va->x;
+	Iy = vb->y - va->y;
+	Jx = ub->x - ua->x;
+	Jy = ub->y - ua->y;
+
+	m = (float)(-(-Ix*va->y+Ix*ua->y+Iy*va->x-Iy*ua->x))/(float)(Ix*Jy-Iy*Jx);
+	k = (float)(-(va->x*Jy-ua->x*Jy-Jx*va->y+Jx*ua->y))/(float)(Ix*Jy-Iy*Jx);
+	fprintf(stderr,"k , m : %f %f\n",k,m);
+	if(m < 1 && m > 0 && k < 1 && k > 0) {
+		inter->x = va->x + k * Ix;
+		inter->y = va->y + k * Iy;
+	}
+	else
+		return NULL;
+	
+	 /* Une solution, mais ne fonctionne peut-être pas dans toutes les conditions (si B<A).
+	 if(va->x == vb->x) {
+		if(va->y == vb->y)
+			return NULL;
+		else {
+			ix = va->x;
+			iy = ((ua->y-ub->y)/(ua->x-ub->x))*(va->x-ua->x) + ua->y;
+		}
+	}
+	else {
+		if(ua->x == ub->x) {
+			ix = ua->x;
+			iy = ((va->y-vb->y)/(va->x-vb->x))*(ua->x-va->x) + va->y;
+		}
+		else {
+			double pCD = (ua->y-ub->y)/(ua->x-ub->x);
+			double pAB = (va->y-vb->y)/(va->x-vb->x);
+			double oCD = ua->y-pCD*ya->x;
+			double oAB = va->y-pAB*va->x;
+			ix = (oAB-oCD)/(pCD-pAB);
+			iy = pCD*ix+oCD;
+		}
+	}*/
+
+	return inter;
+ }
+ 
 void grid_drawGrid() {
 	int i, j;
 	
@@ -128,6 +210,11 @@ void addRoadNode(roadPointY *rp, roadNodeY *rn) {
 	rp->next = rpp;
 }
 
+/* Retourne le nœd le plus proche dans un certain voisinage. Si aucun nœd n'est trouvé alors 
+ * la fonction renvoie NULL.
+ * @param Vertex *v : Le nœd pour lequel on souhaite trouver un nœd proche.
+ * @return roadNodeY* : le nœd de route le plus proche.
+ */
 roadNodeY* grid_getNearestRoadNode(Vertex *v) {
 	roadNodeY **nr;
 	roadNodeY *nearestNode = NULL;
@@ -165,6 +252,21 @@ roadNodeY* grid_getNearestRoadNode(Vertex *v) {
 	return nearestNode;
 }
 
+/* Ajoute un segment de route à la fin d'une route.
+ * Le point d'origine du segment est le dernier de la route actuellement en place. Il est passé en paramètre pour
+ * éviter le parcour de la route entière pour le trouver.
+ * Le point d'arrivé peut-etre modifié suivant deux règles principales.
+ * - Un nœd de route existe proche de l'endroit ou doit ce terminer le segment dans ce cas
+ * on "fusionne" les deux le point existant devient le point d'arrivé du segment.
+ * - Un segment se trouve sur le chemin du segment que l'on souhaite placer. Dans ce cas le segment
+ * que l'on souhaite placer sera sectionné à l'intersection des deux segments et le points d'intersections sera 
+ * le point d'arrivé du segment à placer.
+ * @param roadPointY *road : La route à laquelle on veut ajouter le segmetn.
+ * @param roadNodeY *rnb : Le nœd de départ du segment.
+ * @param roadNodeY *rne : Le nœd d'arrivé du segment.
+ * @param int lag : le décalage maximal autorisé pour le placement du nœd d'arrivé.
+ * @return roadNodeY* : Le nœd d'arrivé du vecteur potentiellement modifié.
+ */
 roadNodeY* insertRoadSegment(roadPointY *road, roadNodeY *rnb, roadNodeY *rne, int lag) {
 	int segLength = distBetween(rnb->v, rne->v);
 	float coef = ((float)segLength-lag)/(float)segLength;
@@ -268,6 +370,17 @@ int main() {
 	int n = 5;
 	svg_start(800,600);
 	carreY();
+	Vertex a = {1,1};
+	Vertex b = {4,1};
+	Vertex c = {1,2};
+	Vertex d = {4,0};
+	
+	Vertex *inter = intersectionBetween(&a,&b,&c,&d);
+	if(inter == NULL)
+		fprintf(stderr,"Pas d'intersection\n");
+	else
+		fprintf(stderr,"intersection : %d %d\n",inter->x,inter->y);
+	
 	//int i;
 	//for (i = 0; i < n; i++) {
 //		svg_line(&(points[i]), &(points[(i+1)%n]));

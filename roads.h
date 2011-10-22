@@ -34,6 +34,16 @@ typedef struct roadPointY {
 	roadNodeY *rn;
 } roadPointY;
 
+typedef struct cartesianCoord {
+	int x;			// Coordonnées sur x.
+	int y;			// Coordonnées sur y.
+} cartesianCoord;
+
+typedef struct polarCoord {
+	int angle;		// Angle en degrès.
+	int length;		// Norme du vecteur.
+} polarCoord;
+
 roadNodeY ****nodesGrid;
 short nbXSubDivision;
 short nbYSubDivision;
@@ -52,3 +62,5 @@ roadNodeY** grid_getNearNodes(Vertex *v);
 roadNodeY** grid_getNearNodes2(int x, int y);
 roadNodeY* grid_getNearestRoadNode(Vertex *v);
 void grid_drawGrid();
+cartesianCoord* ptc(Vertex *origin, short angle, short length);
+polarCoord* ctp(Vertex *origin, Vertex *end);
