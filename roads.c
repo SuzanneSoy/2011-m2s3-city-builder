@@ -121,7 +121,7 @@ void grid_initNodesGrid(int width, int height, int segmentSize) {
 Vertex* intersectionBetween(Vertex *va, Vertex *vb, Vertex *ua, Vertex *ub) {
 	Vertex *inter = (Vertex*) malloc(sizeof(Vertex));
 	//int ix, iy;		// Coordonnées du point d'intersection.
-	int m, k; 		// Coordonnées de l'intersection des vecteurs sur les droites.
+	float m, k; 		// Coordonnées de l'intersection des vecteurs sur les droites.
 	int Ix, Iy, Jx, Jy;		// Vecteur I et J corespondant au segment v et u;
 	
 	Ix = vb->x - va->x;
@@ -129,9 +129,9 @@ Vertex* intersectionBetween(Vertex *va, Vertex *vb, Vertex *ua, Vertex *ub) {
 	Jx = ub->x - ua->x;
 	Jy = ub->y - ua->y;
 
-	m = -(-Ix*va->y+Ix*ua->y+Iy*va->x-Iy*ua->x)/(Ix*Jy-Iy*Jx);
-	k = -(va->x*Jy-ua->x*Jy-Jx*va->y+Jx*ua->y)/(Ix*Jy-Iy*Jx);
-	
+	m = (float)(-(-Ix*va->y+Ix*ua->y+Iy*va->x-Iy*ua->x))/(float)(Ix*Jy-Iy*Jx);
+	k = (float)(-(va->x*Jy-ua->x*Jy-Jx*va->y+Jx*ua->y))/(float)(Ix*Jy-Iy*Jx);
+	fprintf(stderr,"k , m : %f %f\n",k,m);
 	if(m < 1 && m > 0 && k < 1 && k > 0) {
 		inter->x = va->x + k * Ix;
 		inter->y = va->y + k * Iy;
@@ -370,7 +370,17 @@ int main() {
 	int n = 5;
 	svg_start(800,600);
 	carreY();
-
+	Vertex a = {1,1};
+	Vertex b = {4,1};
+	Vertex c = {1,2};
+	Vertex d = {4,0};
+	
+	Vertex *inter = intersectionBetween(&a,&b,&c,&d);
+	if(inter == NULL)
+		fprintf(stderr,"Pas d'intersection\n");
+	else
+		fprintf(stderr,"intersection : %d %d\n",inter->x,inter->y);
+	
 	//int i;
 	//for (i = 0; i < n; i++) {
 //		svg_line(&(points[i]), &(points[(i+1)%n]));
