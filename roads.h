@@ -22,22 +22,22 @@ typedef struct roadNodeY {
 	struct intersectionY **intersec;
 } roadNodeY;
 
-/* Définition d'une intersection. Permet de savoir quelle route est concernée par cette intersection.
- * Elle permet également de changer la navigation por parcourir une nouvelle route.
- * */
-typedef struct intersectionY {
-	roadNodeY *roadId;			// Premier nœd de la route qui lui sert d'identifiant.
-	roadNodeY *next;			// Nœd de la route juste après l'intersection.
-	roadNodeY *previous;		// Nœd de la route juste avant l'intersection.
-	int zIndex;					// Index sur l'axe z de la route.
-} intersectionY;
-
 typedef struct roadPointY {
 	struct roadPointY *first;
 	struct roadPointY *next;
 	struct roadPointY *previous;
 	roadNodeY *rn;
 } roadPointY;
+
+/* Définition d'une intersection. Permet de savoir quelle route est concernée par cette intersection.
+ * Elle permet également de changer la navigation por parcourir une nouvelle route.
+ * */
+typedef struct intersectionY {
+	roadPointY *roadId;			// Premier point de la route qui lui sert d'identifiant.
+	roadNodeY *next;			// Nœd de la route juste après l'intersection.
+	roadNodeY *previous;		// Nœd de la route juste avant l'intersection.
+	int zIndex;					// Index sur l'axe z de la route.
+} intersectionY;
 
 typedef struct cartesianCoord {
 	int x;			// Coordonnées sur x.

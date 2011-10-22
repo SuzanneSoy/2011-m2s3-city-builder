@@ -69,7 +69,7 @@ cartesianCoord* ptc(Vertex *origin, short angle, short length) {
 
 /* Convertion de coordonnées cartésiennes en coordonnées polaires.
  * @param Vertex* origin : Origine du vecteur.
- * * @param Vertex* end : Fin du vecteur.
+ * @param Vertex* end : Fin du vecteur.
  * @return struct polarCoord* : Les coordonnées polaires du point d'arrivée.
  */
 polarCoord* ctp(Vertex *origin, Vertex *end) {
@@ -80,7 +80,7 @@ polarCoord* ctp(Vertex *origin, Vertex *end) {
 	return pc;
 }
 
-/* Initialise la grille de nœds.
+/* Initialise la grille de nœuds.
  * @param int width : Largeur du quartier à remplir.
  * @param int height : Hauteur du quartier à remplir.
  * @param int maxSegmentSize : Taille maximale d'un segment de route.
@@ -120,8 +120,8 @@ void grid_initNodesGrid(int width, int height, int segmentSize) {
  */
 Vertex* intersectionBetween(Vertex *va, Vertex *vb, Vertex *ua, Vertex *ub) {
 	Vertex *inter = (Vertex*) malloc(sizeof(Vertex));
-	float m, k; 		// Coordonnées de l'intersection des vecteurs sur les droites.
-	int Ix, Iy, Jx, Jy;		// Vecteur I et J corespondant au segment v et u;
+	float m, k;         // Coordonnées de l'intersection des vecteurs sur les droites.
+	int Ix, Iy, Jx, Jy; // Vecteur I et J corespondant au segment v et u;
 	
 	Ix = vb->x - va->x;
 	Iy = vb->y - va->y;
@@ -183,6 +183,8 @@ void addRoadNode(roadPointY *rp, roadNodeY *rn) {
 	rpp->next = NULL;
 	rpp->rn = rn;
 	rp->next = rpp;
+	// TODO : previous
+	// TODO modif les intersections de previous.
 }
 
 /* Retourne le nœd le plus proche dans un certain voisinage. Si aucun nœd n'est trouvé alors 
@@ -390,6 +392,10 @@ void carreY() {
 		svg_circle(rd->rn->v->x,rd->rn->v->y,1);
 		rd = rd->next;
 	}
+}
+
+void genroads() {
+	
 }
 
 int main() {

@@ -154,3 +154,19 @@ coordonnées dessus, plus une fonction de densité de points (taille des
 bâtiments). Dé-transformer la fonction de densité de points,
 l'utiliser pour générer la grille parfaite avec des densités
 différentes, puis transformer cette grille.
+
+Algo champs de force
+====================
+
+* Choisir des champs de force. `f(x,y,vecteur,n)` renvoie le nième
+  vecteur de routes qu'on peut faire partir du point `(x,y)`,
+  lorsqu'on y arrive par la direction vecteur.
+* Initialiser `fifo` à vide.
+* Choisir un point de départ aléatoire, une direction aléatoire, et
+  insérer `(x,y,vecteur,0)` dans `fifo`.
+* Tant qu'on n'a pas suffisemment créé de routes :
+  * Prendre le point `(x,y,vecteur,n)` en tête de `fifo`.
+  * new = f(x,y,vecteur,n).
+  * Si new != NULL, tracer le segment `(x,y)--(new)`.
+  * insérer `(x,y,vecteur,n+1)` dans `fifo` si new dit que n+1 existe.
+  * insérer `(new,(x,y)--(new),0) dans `fifo`.
