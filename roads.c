@@ -92,7 +92,7 @@ void grid_initNodesGrid(int width, int height, int segmentSize) {
 	
 	nodesGrid = (roadNodeY****) malloc(sizeof(roadNodeY***)*xSize);
 	int i,j,k;
-	
+
 	maxSegmentSize = segmentSize;
 	nbXSubDivision = xSize;
 	nbYSubDivision = ySize;
@@ -109,6 +109,63 @@ void grid_initNodesGrid(int width, int height, int segmentSize) {
 	}
 }
 
+/* Détermine si il existe une intersection entre deux segments de droite. Dans le cas 
+ * ou une intersection existe les coordonnées du point d'intersection sont retournées.
+ * Dans le cas contraire la fonction retourne NULL.
+ * @param Vertex *va : Point de départ du premier segment.
+ * @param Vertex *vb : Point d'arrivé du premier segment.
+ * @param Vertex *ua : Point de départ du second segment.
+ * @param Vertex *vb : Point d'arrivé du second segment.
+ * @return Vertex* : Coordonnées du point d'intersection si il existe, sinon NULL.
+ */
+Vertex* intersectionBetween(Vertex *va, Vertex *vb, Vertex *ua, Vertex *ub) {
+	Vertex *inter = (Vertex*) malloc(sizeof(Vertex));
+	//int ix, iy;		// Coordonnées du point d'intersection.
+	int m, k; 		// Coordonnées de l'intersection des vecteurs sur les droites.
+	int Ix, Iy, Jx, Jy;		// Vecteur I et J corespondant au segment v et u;
+	
+	Ix = vb->x - va->x;
+	Iy = vb->y - va->y;
+	Jx = ub->x - ua->x;
+	Jy = ub->y - ua->y;
+
+	m = -(-Ix*va->y+Ix*ua->y+Iy*va->x-Iy*ua->x)/(Ix*Jy-Iy*Jx);
+	k = -(va->x*Jy-ua->x*Jy-Jx*va->y+Jx*ua->y)/(Ix*Jy-Iy*Jx);
+	
+	if(m < 1 && m > 0 && k < 1 && k > 0) {
+		inter->x = va->x + k * Ix;
+		inter->y = va->y + k * Iy;
+	}
+	else
+		return NULL;
+	
+	 /* Une solution, mais ne fonctionne peut-être pas dans toutes les conditions (si B<A).
+	 if(va->x == vb->x) {
+		if(va->y == vb->y)
+			return NULL;
+		else {
+			ix = va->x;
+			iy = ((ua->y-ub->y)/(ua->x-ub->x))*(va->x-ua->x) + ua->y;
+		}
+	}
+	else {
+		if(ua->x == ub->x) {
+			ix = ua->x;
+			iy = ((va->y-vb->y)/(va->x-vb->x))*(ua->x-va->x) + va->y;
+		}
+		else {
+			double pCD = (ua->y-ub->y)/(ua->x-ub->x);
+			double pAB = (va->y-vb->y)/(va->x-vb->x);
+			double oCD = ua->y-pCD*ya->x;
+			double oAB = va->y-pAB*va->x;
+			ix = (oAB-oCD)/(pCD-pAB);
+			iy = pCD*ix+oCD;
+		}
+	}*/
+
+	return inter;
+ }
+ 
 void grid_drawGrid() {
 	int i, j;
 	
@@ -313,6 +370,7 @@ int main() {
 	int n = 5;
 	svg_start(800,600);
 	carreY();
+
 	//int i;
 	//for (i = 0; i < n; i++) {
 //		svg_line(&(points[i]), &(points[(i+1)%n]));
