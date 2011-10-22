@@ -158,9 +158,9 @@ différentes, puis transformer cette grille.
 Algo champs de force
 ====================
 
-* Choisir des champs de force. `f(x,y,vecteur,n)` renvoie le nième
-  vecteur de routes qu'on peut faire partir du point `(x,y)`,
-  lorsqu'on y arrive par la direction vecteur.
+* Choisir des champs de force. `f(x,y,vecteur)` renvoie tous les
+  vecteurs de routes qu'on peut faire partir du point `(x,y)`,
+  lorsqu'on y arrive par la direction `vecteur`.
 * Initialiser `fifo` à vide.
 * Choisir un point de départ aléatoire, une direction aléatoire, et
   insérer `(x,y,vecteur,0)` dans `fifo`.

@@ -394,8 +394,59 @@ void carreY() {
 	}
 }
 
-void genroads() {
-	
+// Algo « champs de force »
+typedef struct Vector { float x; float y; };
+typedef struct VectorListItem { Vector v; struct VectorNext* next; };
+typedef struct VectorList { VectorListItem* head; VectorListItem* tail; };
+inline VectorListItem vectorList_pop(VectorList l) {
+	VectorListItem vn = l->head;
+	if (vn != NULL) l->head = vn->next;
+	if (l->head == NULL) l->tail = NULL;
+	return vn;
+}
+// Append `b` after `a`. `b` is modified and damaged.
+inline void vectorList_append(VectorList a, VectorList b) {
+	if (b->head == NULL) return;
+	if (a->tail == NULL) {
+		a->head = b->head;
+		a->tail = b->tail;
+	} else {
+		a->tail->next = b->head;
+		a->tail = b->tail;
+	}
+}
+
+/* Choisir des champs de force. `f(x,y,vecteur)` renvoie tous les
+ * vecteurs de routes qu'on peut faire partir du point `(x,y)`,
+ * lorsqu'on y arrive par la direction `vecteur`. */
+// champ de force "ligne droite".
+// TODO : devrait prendre un segment en paramètre.
+VectorList f(Vector xy, Vector previous) {
+	VectorListItem vli = malloc(sizeof(VectorListItem));
+	vli.v = vecteur;
+	vli.next = NULL;
+	return { .head = vli, .tail = vli };
+	// TODO : tracer chaque segment créé ici.
+	// TODO : les insérer dans fifo ici.
+}
+
+void forceFields() {
+	/* Initialiser `fifo` à vide. */
+	/* Choisir un point de départ aléatoire, une direction aléatoire,
+	 * et insérer `(x,y,vecteur)` dans `fifo`. */
+	Vector origin = { .x = 0, .y = 0 };
+	Vector origin_direction = { .x = 1, .y = 0 };
+	VectorList fifoA = { .head = &origin, .tail = &origin };
+	VectorList fifoB = { .head = &origin_direction, .tail = &origin_direction };
+	/* Tant qu'on n'a pas suffisemment créé de routes : */
+	int i;
+	for (i = 0; i < 1000; i++) {
+		/* Prendre le point `(x,y,vecteur)` en tête de `fifo`. */
+		Vector* xy = vectorList_pop(fifoA);
+		Vector* previous = vectorList_pop(fifoB);
+		/* new = f(x,y,vecteur,n). */
+		f(xy, previous);
+	}
 }
 
 int main() {
