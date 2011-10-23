@@ -9,7 +9,7 @@ void svg_end() {
 	printf("</svg>");
 }
 
-void svg_line(Vertex* a, Vertex* b,short color) {
+void svg_line(Vertex* a, Vertex* b, short color) {
 	if(color == 0)
 		printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"grey\" />", a->x, a->y, b->x, b->y);
 	else if(color == 1)
@@ -395,25 +395,26 @@ void carreY() {
 }
 
 // Algo « champs de force »
-typedef struct Vector { float x; float y; };
-typedef struct VectorListItem { Vector v; struct VectorNext* next; };
-typedef struct VectorList { VectorListItem* head; VectorListItem* tail; };
-inline VectorListItem vectorList_pop(VectorList l) {
-	VectorListItem vn = l->head;
-	if (vn != NULL) l->head = vn->next;
-	if (l->head == NULL) l->tail = NULL;
-	return vn;
+typedef struct FVector { float x; float y; } FVector;
+inline FVector fVector_substract(FVector a, FVector b) { return (FVector){ .x = a.x - b.x, .y = a.y - b.y }; }
+inline FVector fVector_add(FVector a, FVector b) { return (FVector){ .x = a.x + b.x, .y = a.y + b.y }; }
+inline FVector fVector_rotate90(FVector v) { return (FVector){ .x = -v.y, .y = v.x }; }
+
+typedef struct FSegment { FVector from; FVector to; } FSegment;
+inline void fsegment_display(FSegment s) {
+	printf("<line x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" stroke=\"black\" />", s.from.x, s.from.y, s.to.x, s.to.y);
 }
-// Append `b` after `a`. `b` is modified and damaged.
-inline void vectorList_append(VectorList a, VectorList b) {
-	if (b->head == NULL) return;
-	if (a->tail == NULL) {
-		a->head = b->head;
-		a->tail = b->tail;
-	} else {
-		a->tail->next = b->head;
-		a->tail = b->tail;
-	}
+
+// TODO : dimensionner correctement le tableau.
+#define FSegmentArray_SIZE 1024
+typedef struct FSegmentArray { FSegment seg[FSegmentArray_SIZE]; int firstUnseen; int firstFree; /* + CollisionGrid collision; */ } FSegmentArray;
+inline void fSegmentArray_push(FSegmentArray* a, FSegment s) {
+	// TODO : check for collisions.
+	if (a->firstFree >= FSegmentArray_SIZE) return;
+	a->seg[a->firstFree++] = s;
+}
+inline FSegment fSegmentArray_pop(FSegmentArray* a) {
+	return a->seg[a->firstUnseen++];
 }
 
 /* Choisir des champs de force. `f(x,y,vecteur)` renvoie tous les
@@ -421,31 +422,45 @@ inline void vectorList_append(VectorList a, VectorList b) {
  * lorsqu'on y arrive par la direction `vecteur`. */
 // champ de force "ligne droite".
 // TODO : devrait prendre un segment en paramètre.
-VectorList f(Vector xy, Vector previous) {
-	VectorListItem vli = malloc(sizeof(VectorListItem));
-	vli.v = vecteur;
-	vli.next = NULL;
-	return { .head = vli, .tail = vli };
-	// TODO : tracer chaque segment créé ici.
-	// TODO : les insérer dans fifo ici.
+void f(FSegment s, FSegmentArray* a) {
+	FVector delta = fVector_substract(s.to, s.from);
+	FSegment newS = {
+		.from = s.to,
+		.to = fVector_add(s.to, delta),
+	};
+	// TODO : s'accrocher aux points proches, et ne pas ajouter le segment à la queue si on s'accroche à un point existant.
+	// TODO : ne pas utiliser des segments dans la file d'attente, mais juste des vertex, dont on peut énumérer les segments.
+	fSegmentArray_push(a, newS);
+	FSegment newS2 = {
+		.from = s.to,
+		.to = fVector_add(s.to, fVector_rotate90(delta)),
+	};
+	newS2.to.y += 3;
+	fSegmentArray_push(a, newS2);
 }
 
 void forceFields() {
 	/* Initialiser `fifo` à vide. */
 	/* Choisir un point de départ aléatoire, une direction aléatoire,
 	 * et insérer `(x,y,vecteur)` dans `fifo`. */
-	Vector origin = { .x = 0, .y = 0 };
-	Vector origin_direction = { .x = 1, .y = 0 };
-	VectorList fifoA = { .head = &origin, .tail = &origin };
-	VectorList fifoB = { .head = &origin_direction, .tail = &origin_direction };
-	/* Tant qu'on n'a pas suffisemment créé de routes : */
+	FSegmentArray a;
+	a.seg[0] = (FSegment){
+		.from = { .x = 100, .y = 100 },
+		.to = { .x = 90, .y = 100 }
+	};
+	a.firstUnseen = 0;
+	a.firstFree = 1;
+	
+	grid_initNodesGrid(800, 600, 20);
+	
 	int i;
-	for (i = 0; i < 1000; i++) {
-		/* Prendre le point `(x,y,vecteur)` en tête de `fifo`. */
-		Vector* xy = vectorList_pop(fifoA);
-		Vector* previous = vectorList_pop(fifoB);
-		/* new = f(x,y,vecteur,n). */
-		f(xy, previous);
+	for (i = 0; i < FSegmentArray_SIZE; i++) {
+		f(fSegmentArray_pop(&a), &a);
+	}
+
+	grid_drawGrid();
+	for (i = 0; i < FSegmentArray_SIZE; i++) {
+		fsegment_display(a.seg[i]);
 	}
 }
 
@@ -459,7 +474,8 @@ int main() {
 	};
 	int n = 5;
 	svg_start(800,600);
-	carreY();
+	//carreY();
+	forceFields();
 	Vertex a = {1,1};
 	Vertex b = {4,1};
 	Vertex c = {1,2};
@@ -476,7 +492,7 @@ int main() {
 //		svg_line(&(points[i]), &(points[(i+1)%n]));
 //	}
 	
-	grid_drawGrid();
+//	grid_drawGrid();
 	
 n=n;
 	//roads(points);

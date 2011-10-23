@@ -170,3 +170,13 @@ Algo champs de force
   * Si new != NULL, tracer le segment `(x,y)--(new)`.
   * insérer `(x,y,vecteur,n+1)` dans `fifo` si new dit que n+1 existe.
   * insérer `(new,(x,y)--(new),0) dans `fifo`.
+
+Représentation simpliste des segments et routes
+===============================================
+
+* Dans chaque vertex, avoir un pointeur vers un des segments auxquels
+  il appartient.
+* Dans chaque segment, avoir un pointeur vers le segment de même
+  origine suivant dans le sens des aiguilles d'une montre.
+* Dans chaque segment, avoir un pointeur vers le segment de même
+  extrémité suivant dans le sens des aiguilles d'une montre.
