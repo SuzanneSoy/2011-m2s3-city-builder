@@ -158,22 +158,40 @@ différentes, puis transformer cette grille.
 Algo champs de force
 ====================
 
-* On choisit un certain nombre de champs de force
-  sur le quartier à subdiviser (centre, rayon,
-  type = fonction(x,y,vecteur en cours)).
-* On a un champ de force par défaut qui s'applique 
-  sur toute la zone.
-* On part d'un point avec un vecteur aléatoire.
-* On demande à fonction(x,y,vecteur) la direction
-  à prendre et la longueur à suivre. La fonction
-  peut renvoyer plusieurs directions/longueurs à
-  prendre pour faire un split.
-* Quand le segment donné par fonction s'intersecte
-  avec un autre segment, on s'arrête là, et quand
-  il y a un point suffisemment proche, on peut s'y
-  raccrocher avec une certaine probabilité.
-* Quand on a plusieurs routes en cours de
-  construction en parallèle (split), on les met
-  dans une file d'attente round-robin, et on sort
-  à chaque fois la tête de liste pour la faire
-  avancer, puis on la remet à la fin.
+* Choisir des champs de force. `f(x,y,vecteur)` renvoie tous les
+  vecteurs de routes qu'on peut faire partir du point `(x,y)`,
+  lorsqu'on y arrive par la direction `vecteur`.
+* Initialiser `fifo` à vide.
+* Choisir un point de départ aléatoire, une direction aléatoire, et
+  insérer `(x,y,vecteur,0)` dans `fifo`.
+* Tant qu'on n'a pas suffisemment créé de routes :
+  * Prendre le point `(x,y,vecteur,n)` en tête de `fifo`.
+  * new = f(x,y,vecteur,n).
+  * Si new != NULL, tracer le segment `(x,y)--(new)`.
+  * insérer `(x,y,vecteur,n+1)` dans `fifo` si new dit que n+1 existe.
+  * insérer `(new,(x,y)--(new),0) dans `fifo`.
+
+Représentation simpliste des segments et routes
+===============================================
+
+* Dans chaque vertex, avoir un pointeur vers un des segments auxquels
+  il appartient.
+* Dans chaque segment, avoir un pointeur vers le segment de même
+  origine suivant dans le sens des aiguilles d'une montre.
+* Dans chaque segment, avoir un pointeur vers le segment de même
+  extrémité suivant dans le sens des aiguilles d'une montre.
+
+Algorithme de maintien des polygones
+====================================
+
+* Partir du périmètre du polygone de base.
+* Lorsqu'on ajoute un segment partant d'un point de ce périmètre,
+  étendre ce périmètre pour qu'il fasse l'aller-retour sur le segment.
+* Lorsqu'on ajoute un segment reliant deux points existants du
+  périmètre, séparer le périmètre en deux : le périmètre passant par
+  le côté gauche du segment, et celui passant par le côté droit du
+  segment.
+* TODO : gestion possible des « trous » ? (càd quand on ajoute un
+  segment qui n'est pas relié au périmètre). Serait pratique pour
+  pouvoir ajouter certains gros bâtiments avant la création des
+  routes.
