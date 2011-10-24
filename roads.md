@@ -154,3 +154,26 @@ coordonnées dessus, plus une fonction de densité de points (taille des
 bâtiments). Dé-transformer la fonction de densité de points,
 l'utiliser pour générer la grille parfaite avec des densités
 différentes, puis transformer cette grille.
+
+Algo champs de force
+====================
+
+* On choisit un certain nombre de champs de force
+  sur le quartier à subdiviser (centre, rayon,
+  type = fonction(x,y,vecteur en cours)).
+* On a un champ de force par défaut qui s'applique 
+  sur toute la zone.
+* On part d'un point avec un vecteur aléatoire.
+* On demande à fonction(x,y,vecteur) la direction
+  à prendre et la longueur à suivre. La fonction
+  peut renvoyer plusieurs directions/longueurs à
+  prendre pour faire un split.
+* Quand le segment donné par fonction s'intersecte
+  avec un autre segment, on s'arrête là, et quand
+  il y a un point suffisemment proche, on peut s'y
+  raccrocher avec une certaine probabilité.
+* Quand on a plusieurs routes en cours de
+  construction en parallèle (split), on les met
+  dans une file d'attente round-robin, et on sort
+  à chaque fois la tête de liste pour la faire
+  avancer, puis on la remet à la fin.
