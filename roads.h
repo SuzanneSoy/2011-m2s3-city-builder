@@ -68,7 +68,6 @@ int toX(Vertex*);
 int toY(Vertex*);
 void grid_initNodesGrid(int w, int h, int maxSegmentSize);
 short grid_insertRoadNode(roadNodeY *rn);
-roadStep* addRoadNode(roadPointY *rp, roadPointY *rpc, roadNodeY *rn);
 int distBetween(Vertex *v, Vertex *u);
 roadNodeY** grid_getNearNodes(Vertex *v);
 roadNodeY** grid_getNearNodes2(int x, int y);

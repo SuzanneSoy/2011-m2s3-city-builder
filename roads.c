@@ -31,35 +31,9 @@ void roads(Polygon* quartier) {
 }
 
 
+
+
 /* Fonctions de Yoann suffixée par "Y" */
-
-/* !!!!!!!! Modification de façon de gérer les routes.
- * Au départ : 
- * - Une liste de routes vide.
- * - Une grille de nœd de routes vide qui contiendra les nœds de de toutes les routes.
- * Initialisation :
- * - On initialise la grille avec la taille de la zone à remplir et le nombre max de nœds dans chaque cases.
- * - On crée une ou plusieurs routes sue l'on insère dans la liste de routes et on place les nœds de 
- * ces routes dans la grille.
- * Fonctionnement :
- * -- La fonction addRoadNode :
- * Ajoute un nœed à la route depuis un certain point de route. Si ce point de route n'est pas le dernier
- * autrement dit si on crée une division de route alors la nouvelle voie créée constitue une nouvelle route. Et le 
- * point de route situé à l'intersection est le point d'origine de la nouvelle route.
- */
- /* ForceField revision :
-  * - Initialisation de la grille en fonction de la zone à couvrir.
-  * - Création d'une ou plusieurs routes de départ et insertion dan sla liste de routes.
-  * - Création d'un file (fifo) permettant l'avancé parrallèle de la création de routes.
-  *   Cette liste sera constituée de structures à deux champs, l'identifiant de la route et le nœd où on s'est arrêté.
-  * - Tant que l'on à pas atteint la fin de la file on utilise le premier point de route non vu.
-  *   Et on ajoute à la route le ou les nouveau segments retournées par la fonction f potentiellement filtrée.
-  *   Ces nouveau morceaux de routes seraont également ajouté dans la file pour qu'il puissent faire l'objet d'un 
-  *   nouveau départ de route(s). Si une route est créer par division de route existante alors cette route sera ajoutée dans la liste de routes.
-  * ...
-  * !!!!!!!!! */
-
-
 
 /* Initialisation de la liste de routes.
  */
@@ -73,7 +47,6 @@ void initRoadslIst(int nb){
  * le nombre et les portions de routes auxquelles il appartient.
  */
 
-// TODO Fusionner les deux fonctions et retourner une paire de valeurs.
 // Transforme des coordonnées du plan en coordonées du tableau sur x.
 int toX(Vertex *v) {
 	int x = v->x*(nbXSubDivision)/quarterWidth;
@@ -158,8 +131,10 @@ void grid_initNodesGrid(int width, int height, int segmentSize) {
  * @param Vertex *vb : Point d'arrivé du second segment.
  * @return Vertex* : Coordonnées du point d'intersection si il existe, sinon NULL.
  */
-Vertex* intersectionBetween(Vertex *va, Vertex *vb, Vertex *ua, Vertex *ub) {
-	Vertex *inter = (Vertex*) malloc(sizeof(Vertex));
+Vertex* intersectionBetween(Segment *sega, Segment *segb) {
+	sega = sega;
+	segb = segb;
+	/*Vertex *inter = (Vertex*) malloc(sizeof(Vertex));
 	float m, k;         // Coordonnées de l'intersection des vecteurs sur les droites.
 	int Ix, Iy, Jx, Jy; // Vecteur I et J corespondant au segment v et u;
 	
@@ -177,8 +152,8 @@ Vertex* intersectionBetween(Vertex *va, Vertex *vb, Vertex *ua, Vertex *ub) {
 	}
 	else
 		return NULL;
-
-	return inter;
+	*/
+	return NULL; //return inter;
 }
 
  
@@ -210,42 +185,6 @@ short grid_insertRoadNode(roadNodeY *rn) {
 	}
 	
 	return 0;
-}
-
-
-roadStep* addRoadNode(roadPointY *rp, roadPointY *rpc, roadNodeY *rn) {
-	roadStep * rStep = (roadStep*) malloc(sizeof(roadStep));
-	
-	if(rpc == rp) {
-		rp->next = NULL;
-		rp->previous = NULL;
-		rp->rn = rn;
-		rStep->roadId = rp;
-		rStep->rpc = rp;
-		return rStep;
-	}
-	
-	roadPointY *rpp = (roadPointY*) malloc(sizeof(roadPointY));
-	rpp->next = NULL;
-	
-	if(rpc->next != NULL) {
-		rpp->previous = NULL;
-		rpp->rn = rn;
-		rStep->roadId = rpp;
-		rStep->rpc = rpp;
-		return rStep;
-	}
-	else {
-		rpp->previous = rpc;
-		rpp->rn = rn;
-		rpc->next = rpp;
-		rStep->roadId = rp;
-		rStep->rpc = rpp;
-	}
-	
-	return rStep;
-	
-	// TODO modif les intersections de previous.
 }
 
 
@@ -292,30 +231,15 @@ roadNodeY* grid_getNearestRoadNode(Vertex *v) {
 }
 
 
-/* Ajoute un segment de route à la fin d'une route.
- * Le point d'origine du segment est le dernier de la route actuellement en place. Il est passé en paramètre pour
- * éviter le parcour de la route entière pour le trouver.
- * Le point d'arrivé peut-etre modifié suivant deux règles principales.
- * - Un nœd de route existe proche de l'endroit ou doit ce terminer le segment dans ce cas
- * on "fusionne" les deux le point existant devient le point d'arrivé du segment.
- * - Un segment se trouve sur le chemin du segment que l'on souhaite placer. Dans ce cas le segment
- * que l'on souhaite placer sera sectionné à l'intersection des deux segments et le points d'intersections sera 
- * le point d'arrivé du segment à placer.
- * @param roadPointY *road : La route à laquelle on veut ajouter le segmetn.
- * @param roadNodeY *rnb : Le nœd de départ du segment.
- * @param roadNodeY *rne : Le nœd d'arrivé du segment.
- * @param int lag : le décalage maximal autorisé pour le placement du nœd d'arrivé.
- * @return roadNodeY* : Le nœd d'arrivé du vecteur potentiellement modifié.
- */
-roadStep* insertRoadSegment(roadPointY *road, roadPointY *rpb, roadNodeY *rne, int lag) {
-	int segLength = distBetween(rpb->rn->v, rne->v);
-	float coef = ((float)segLength-lag)/(float)segLength;
-	roadNodeY *nearestNode = NULL;
-	Vertex tmpEnd;
-	roadStep * rstep;
-	
+Vertex* insertRoadSegment(Segment *seg, int lag) {
+	//int segLength = distBetween(seg->u, seg->v);
+	//float coef = ((float)segLength-lag)/(float)segLength;
+	//Vertex *nearestV = NULL;
+	//Vertex tmpEnd;
+	seg = seg;
+	lag = lag;
 	// ------- TODO à compléter et à vérifier.
-	Segment **segs = grid_getNearSegments(rpb->rn->v->x,rpb->rn->v->y);
+	/*Segment **segs = grid_getNearSegments(rpb->rn->v->x,rpb->rn->v->y);
 	Segment *seg = segs[0];
 	int s = 0;
 	int intersec = 0; // Booléen si intersection = 1 sinon = 0;
@@ -329,25 +253,25 @@ roadStep* insertRoadSegment(roadPointY *road, roadPointY *rpb, roadNodeY *rne, i
 			intersec = 1;
 		}
 		seg = segs[s++];
-	}
+	}*/
 	// -------
-	if(intersec == 0) {
+	/*if(intersec == 0) {
 		tmpEnd.x = rpb->rn->v->x+coef*(rne->v->x - rpb->rn->v->x);
 		tmpEnd.y = rpb->rn->v->y+coef*(rne->v->y - rpb->rn->v->y);
-		fprintf(stderr,"segLength : %d\n",segLength);
-		fprintf(stderr," ostart : %d %d\t oend : %d %d\n",rpb->rn->v->x,rpb->rn->v->y,rne->v->x,rne->v->y);
-		fprintf(stderr," end : %d %d\n",tmpEnd.x,tmpEnd.y);
+		//fprintf(stderr,"segLength : %d\n",segLength);
+		//fprintf(stderr," ostart : %d %d\t oend : %d %d\n",rpb->rn->v->x,rpb->rn->v->y,rne->v->x,rne->v->y);
+		//fprintf(stderr," end : %d %d\n",tmpEnd.x,tmpEnd.y);
 		nearestNode = grid_getNearestRoadNode(&tmpEnd);
 		
-		fprintf(stderr,"--11\n");
+		//fprintf(stderr,"--11\n");
 		
 		if(nearestNode != NULL && distBetween(nearestNode->v,rne->v) < lag)
 			rne = nearestNode;
 	}
 		
-	grid_insertRoadNode(rne);
-	rstep = addRoadNode(road,rpb,rne);
-	return rstep;
+	grid_insertRoadNode(rne);*/
+	//rstep = addRoadNode(road,rpb,rne);
+	return NULL;
 }
 
 
@@ -494,16 +418,6 @@ int main() {
 	svg_start(800,600);
 	//carreY();
 	forceFields();
-	Vertex a = {1,1};
-	Vertex b = {4,1};
-	Vertex c = {1,2};
-	Vertex d = {4,0};
-	
-	Vertex *inter = intersectionBetween(&a,&b,&c,&d);
-	if(inter == NULL)
-		fprintf(stderr,"Pas d'intersection\n");
-	else
-		fprintf(stderr,"intersection : %d %d\n",inter->x,inter->y);
 	
 	//int i;
 	//for (i = 0; i < n; i++) {
