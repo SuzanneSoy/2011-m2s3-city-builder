@@ -180,3 +180,18 @@ Représentation simpliste des segments et routes
   origine suivant dans le sens des aiguilles d'une montre.
 * Dans chaque segment, avoir un pointeur vers le segment de même
   extrémité suivant dans le sens des aiguilles d'une montre.
+
+Algorithme de maintien des polygones
+====================================
+
+* Partir du périmètre du polygone de base.
+* Lorsqu'on ajoute un segment partant d'un point de ce périmètre,
+  étendre ce périmètre pour qu'il fasse l'aller-retour sur le segment.
+* Lorsqu'on ajoute un segment reliant deux points existants du
+  périmètre, séparer le périmètre en deux : le périmètre passant par
+  le côté gauche du segment, et celui passant par le côté droit du
+  segment.
+* TODO : gestion possible des « trous » ? (càd quand on ajoute un
+  segment qui n'est pas relié au périmètre). Serait pratique pour
+  pouvoir ajouter certains gros bâtiments avant la création des
+  routes.
