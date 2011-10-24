@@ -195,3 +195,17 @@ Algorithme de maintien des polygones
   segment qui n'est pas relié au périmètre). Serait pratique pour
   pouvoir ajouter certains gros bâtiments avant la création des
   routes.
+
+Snapping des segments de route
+==============================
+
+Invariants :
+* Un segment qui part d'une case arrive forcément dans une des cases
+  adjacentes.
+* Il n'y a qu'un seul vertex par case.
+
+Maintien des invariants :
+* Si nécessaire, ralonger ou raccourcir les segments.
+* Lorsqu'un segment atterrit dans une des cases voisines, s'il y a
+  déjà un vertex, il s'y raccroche, sinon on crée l'unique vertex de
+  la case.
