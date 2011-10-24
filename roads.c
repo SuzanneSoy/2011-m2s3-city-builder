@@ -33,6 +33,41 @@ void roads(Polygon* quartier) {
 
 /* Fonctions de Yoann suffixée par "Y" */
 
+/* !!!!!!!! Modification de façon de gérer les routes.
+ * Au départ : 
+ * - Une liste de routes vide.
+ * - Une grille de nœd de routes vide qui contiendra les nœds de de toutes les routes.
+ * Initialisation :
+ * - On initialise la grille avec la taille de la zone à remplir et le nombre max de nœds dans chaque cases.
+ * - On crée une ou plusieurs routes sue l'on insère dans la liste de routes et on place les nœds de 
+ * ces routes dans la grille.
+ * Fonctionnement :
+ * -- La fonction addRoadNode :
+ * Ajoute un nœed à la route depuis un certain point de route. Si ce point de route n'est pas le dernier
+ * autrement dit si on crée une division de route alors la nouvelle voie créée constitue une nouvelle route. Et le 
+ * point de route situé à l'intersection est le point d'origine de la nouvelle route.
+ */
+ /* ForceField revision :
+  * - Initialisation de la grille en fonction de la zone à couvrir.
+  * - Création d'une ou plusieurs routes de départ et insertion dan sla liste de routes.
+  * - Création d'un file (fifo) permettant l'avancé parrallèle de la création de routes.
+  *   Cette liste sera constituée de structures à deux champs, l'identifiant de la route et le nœd où on s'est arrêté.
+  * - Tant que l'on à pas atteint la fin de la file on utilise le premier point de route non vu.
+  *   Et on ajoute à la route le ou les nouveau segments retournées par la fonction f potentiellement filtrée.
+  *   Ces nouveau morceaux de routes seraont également ajouté dans la file pour qu'il puissent faire l'objet d'un 
+  *   nouveau départ de route(s). Si une route est créer par division de route existante alors cette route sera ajoutée dans la liste de routes.
+  * ...
+  * !!!!!!!!! */
+
+
+
+/* Initialisation de la liste de routes.
+ */
+void initRoadslIst(int nb){
+	roadsList = (roadPointY**) malloc(sizeof(roadPointY*)*nb);
+}
+
+
 /* La route est constituée d'une série de points, chaque point contient un nœd de route qui peut-être propre à cette route comme
  * appartenir à plusieurs routes. Le nœd contient un Vertex qui permet de le positionner sur la carte. Il contient également
  * le nombre et les portions de routes auxquelles il appartient.
@@ -46,12 +81,14 @@ int toX(Vertex *v) {
 	return x;
 }
 
+
 // Transforme des coordonnées du plan en coordonées du tableau sur y.
 int toY(Vertex *v) {
 	int y =  v->y*(nbYSubDivision)/quarterHeight;
 	if(y >= nbYSubDivision) return 0;
 	return y;
 }
+
 
 /* Convertion de coordonnées polaires en coordonnées cartésiennes.
  * @param Vertex* origin : Origine du vecteur.
@@ -67,6 +104,7 @@ cartesianCoord* ptc(Vertex *origin, short angle, short length) {
 	return cc;
 }
 
+
 /* Convertion de coordonnées cartésiennes en coordonnées polaires.
  * @param Vertex* origin : Origine du vecteur.
  * @param Vertex* end : Fin du vecteur.
@@ -79,6 +117,7 @@ polarCoord* ctp(Vertex *origin, Vertex *end) {
 	
 	return pc;
 }
+
 
 /* Initialise la grille de nœuds.
  * @param int width : Largeur du quartier à remplir.
@@ -108,6 +147,7 @@ void grid_initNodesGrid(int width, int height, int segmentSize) {
 		}
 	}
 }
+
 
 /* Détermine si il existe une intersection entre deux segments de droite. Dans le cas 
  * ou une intersection existe les coordonnées du point d'intersection sont retournées.
@@ -139,7 +179,8 @@ Vertex* intersectionBetween(Vertex *va, Vertex *vb, Vertex *ua, Vertex *ub) {
 		return NULL;
 
 	return inter;
- }
+}
+
  
 void grid_drawGrid() {
 	int i, j;
@@ -154,6 +195,7 @@ void grid_drawGrid() {
 			svg_line(&v,&u,0);
 		}
 }
+
 
 short grid_insertRoadNode(roadNodeY *rn) {
 	if(rn == NULL || rn->v == NULL)
@@ -170,22 +212,42 @@ short grid_insertRoadNode(roadNodeY *rn) {
 	return 0;
 }
 
-void addRoadNode(roadPointY *rp, roadNodeY *rn) {
-	if(rp->rn == NULL) {
+
+roadStep* addRoadNode(roadPointY *rp, roadPointY *rpc, roadNodeY *rn) {
+	roadStep * rStep = (roadStep*) malloc(sizeof(roadStep));
+	
+	if(rpc == rp) {
 		rp->next = NULL;
+		rp->previous = NULL;
 		rp->rn = rn;
-		return;
+		rStep->roadId = rp;
+		rStep->rpc = rp;
+		return rStep;
 	}
-	while(rp->next != NULL)
-		rp = rp->next;
-		
+	
 	roadPointY *rpp = (roadPointY*) malloc(sizeof(roadPointY));
 	rpp->next = NULL;
-	rpp->rn = rn;
-	rp->next = rpp;
-	// TODO : previous
+	
+	if(rpc->next != NULL) {
+		rpp->previous = NULL;
+		rpp->rn = rn;
+		rStep->roadId = rpp;
+		rStep->rpc = rpp;
+		return rStep;
+	}
+	else {
+		rpp->previous = rpc;
+		rpp->rn = rn;
+		rpc->next = rpp;
+		rStep->roadId = rp;
+		rStep->rpc = rpp;
+	}
+	
+	return rStep;
+	
 	// TODO modif les intersections de previous.
 }
+
 
 /* Retourne le nœd le plus proche dans un certain voisinage. Si aucun nœd n'est trouvé alors 
  * la fonction renvoie NULL.
@@ -229,6 +291,7 @@ roadNodeY* grid_getNearestRoadNode(Vertex *v) {
 	return nearestNode;
 }
 
+
 /* Ajoute un segment de route à la fin d'une route.
  * Le point d'origine du segment est le dernier de la route actuellement en place. Il est passé en paramètre pour
  * éviter le parcour de la route entière pour le trouver.
@@ -244,20 +307,21 @@ roadNodeY* grid_getNearestRoadNode(Vertex *v) {
  * @param int lag : le décalage maximal autorisé pour le placement du nœd d'arrivé.
  * @return roadNodeY* : Le nœd d'arrivé du vecteur potentiellement modifié.
  */
-roadNodeY* insertRoadSegment(roadPointY *road, roadNodeY *rnb, roadNodeY *rne, int lag) {
-	int segLength = distBetween(rnb->v, rne->v);
+roadStep* insertRoadSegment(roadPointY *road, roadPointY *rpb, roadNodeY *rne, int lag) {
+	int segLength = distBetween(rpb->rn->v, rne->v);
 	float coef = ((float)segLength-lag)/(float)segLength;
 	roadNodeY *nearestNode = NULL;
 	Vertex tmpEnd;
+	roadStep * rstep;
 	
 	// ------- TODO à compléter et à vérifier.
-	Segment **segs = grid_getNearSegments(rnb->v->x,rnb->v->y);
+	Segment **segs = grid_getNearSegments(rpb->rn->v->x,rpb->rn->v->y);
 	Segment *seg = segs[0];
 	int s = 0;
 	int intersec = 0; // Booléen si intersection = 1 sinon = 0;
 	
 	while(seg != NULL) {
-		Vertex *intersection = intersectionBetween(rnb->v,rne->v,seg->u,seg->v);
+		Vertex *intersection = intersectionBetween(rpb->rn->v,rne->v,seg->u,seg->v);
 		
 		if(intersection != NULL) {
 			// Créer un nœd, l'insérer au segment qui à causé l'intersection.
@@ -268,10 +332,10 @@ roadNodeY* insertRoadSegment(roadPointY *road, roadNodeY *rnb, roadNodeY *rne, i
 	}
 	// -------
 	if(intersec == 0) {
-		tmpEnd.x = rnb->v->x+coef*(rne->v->x - rnb->v->x);
-		tmpEnd.y = rnb->v->y+coef*(rne->v->y - rnb->v->y);
+		tmpEnd.x = rpb->rn->v->x+coef*(rne->v->x - rpb->rn->v->x);
+		tmpEnd.y = rpb->rn->v->y+coef*(rne->v->y - rpb->rn->v->y);
 		fprintf(stderr,"segLength : %d\n",segLength);
-		fprintf(stderr," ostart : %d %d\t oend : %d %d\n",rnb->v->x,rnb->v->y,rne->v->x,rne->v->y);
+		fprintf(stderr," ostart : %d %d\t oend : %d %d\n",rpb->rn->v->x,rpb->rn->v->y,rne->v->x,rne->v->y);
 		fprintf(stderr," end : %d %d\n",tmpEnd.x,tmpEnd.y);
 		nearestNode = grid_getNearestRoadNode(&tmpEnd);
 		
@@ -281,11 +345,11 @@ roadNodeY* insertRoadSegment(roadPointY *road, roadNodeY *rnb, roadNodeY *rne, i
 			rne = nearestNode;
 	}
 		
-	grid_insertRoadNode(rnb);
 	grid_insertRoadNode(rne);
-	addRoadNode(road,rne);
-	return rne;
+	rstep = addRoadNode(road,rpb,rne);
+	return rstep;
 }
+
 
 int distBetween(Vertex *v, Vertex *u) {
 	return sqrt((v->x-u->x)*(v->x-u->x)+(v->y-u->y)*(v->y-u->y));
@@ -295,9 +359,11 @@ roadNodeY** grid_getNearNodes(Vertex *v) {
 	return nodesGrid[toX(v)][toY(v)];
 }
 
+
 roadNodeY** grid_getNearNodes2(int x, int y) {
 	return nodesGrid[x][y];
 }
+
 
 /* Récupère tout les segement potentiellement sécant avec un segment ayant pour arrivée x et y.
  */
@@ -337,62 +403,10 @@ Segment** grid_getNearSegments(int x, int y) {
 	return segs;
 }
 
-void carreY() {
-	grid_initNodesGrid(800,600,10);
-	roadPointY *roada = (roadPointY*) malloc(sizeof(roadPointY));
-	roadPointY *roadb = (roadPointY*) malloc(sizeof(roadPointY));
-	roadNodeY *rn;
-	Vertex *v;
-	roadNodeY *lastNode = NULL;
-	int i;
-	
-	for(i=0;i<36;i++) {
-		rn = (roadNodeY*)malloc(sizeof(roadNodeY));
-		v = (Vertex*) malloc(sizeof(Vertex));
-		
-		v->x = (i+1)*16;
-		v->y = ((i+1)%3)*(61%(i+1))+100;
-		rn->v = v;
 
-		grid_insertRoadNode(rn);
-		addRoadNode(roada,rn);
-	}
-	
-	for(i=0;i<30;i++) {
-		rn = (roadNodeY*)malloc(sizeof(roadNodeY));
-		v = (Vertex*) malloc(sizeof(Vertex));
-		
-		v->x = (i+1)*22;
-		v->y = ((i+1)%5)*(61%(i+2))+120;
-		rn->v = v;
-		if(i==4) {fprintf(stderr,"x : %d  y : %d\n",toX(v),toY(v));}
-		if(v->x < 800 && v->y < 600) {
-			fprintf(stderr,"Noed : %d\n",i);
-			if(i==0) {
-				addRoadNode(roadb,rn);
-				lastNode = rn;
-			}
-			else {
-				insertRoadSegment(roadb,lastNode,rn,10);
-				lastNode = rn;
-			}
-		}
-	}
-	
-	roadPointY *rd = roada;
-	while(rd->next != NULL) {
-		svg_line(rd->rn->v,rd->next->rn->v,1);
-		svg_circle(rd->rn->v->x,rd->rn->v->y,1);
-		rd = rd->next;
-	}
-	
-	rd = roadb;
-	while(rd->next != NULL) {
-		svg_line(rd->rn->v,rd->next->rn->v,2);
-		svg_circle(rd->rn->v->x,rd->rn->v->y,1);
-		rd = rd->next;
-	}
-}
+
+
+
 
 // Algo « champs de force »
 typedef struct FVector { float x; float y; } FVector;
@@ -405,6 +419,7 @@ inline void fsegment_display(FSegment s) {
 	printf("<line x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" stroke=\"black\" />", s.from.x, s.from.y, s.to.x, s.to.y);
 }
 
+
 // TODO : dimensionner correctement le tableau.
 #define FSegmentArray_SIZE 1024
 typedef struct FSegmentArray { FSegment seg[FSegmentArray_SIZE]; int firstUnseen; int firstFree; /* + CollisionGrid collision; */ } FSegmentArray;
@@ -416,6 +431,7 @@ inline void fSegmentArray_push(FSegmentArray* a, FSegment s) {
 inline FSegment fSegmentArray_pop(FSegmentArray* a) {
 	return a->seg[a->firstUnseen++];
 }
+
 
 /* Choisir des champs de force. `f(x,y,vecteur)` renvoie tous les
  * vecteurs de routes qu'on peut faire partir du point `(x,y)`,
@@ -439,19 +455,20 @@ void f(FSegment s, FSegmentArray* a) {
 	fSegmentArray_push(a, newS2);
 }
 
+
 void forceFields() {
 	/* Initialiser `fifo` à vide. */
 	/* Choisir un point de départ aléatoire, une direction aléatoire,
 	 * et insérer `(x,y,vecteur)` dans `fifo`. */
 	FSegmentArray a;
 	a.seg[0] = (FSegment){
-		.from = { .x = 100, .y = 100 },
-		.to = { .x = 90, .y = 100 }
+		.from = { .x = 400, .y = 300 },
+		.to = { .x = 360, .y = 300 }
 	};
 	a.firstUnseen = 0;
 	a.firstFree = 1;
 	
-	grid_initNodesGrid(800, 600, 20);
+	grid_initNodesGrid(800, 600, 40);
 	
 	int i;
 	for (i = 0; i < FSegmentArray_SIZE; i++) {
@@ -463,6 +480,7 @@ void forceFields() {
 		fsegment_display(a.seg[i]);
 	}
 }
+
 
 int main() {
 	Vertex points[] = {

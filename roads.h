@@ -49,7 +49,14 @@ typedef struct polarCoord {
 	int length;		// Norme du vecteur.
 } polarCoord;
 
+typedef struct roadSet {
+	roadPointY *roadId;		// Identifiant de la route.
+	roadPointY *rpc; 		// Nœd courrant.
+} roadStep;
+
+
 roadNodeY ****nodesGrid;
+roadPointY **roadsList;
 short nbXSubDivision;
 short nbYSubDivision;
 short maxSegmentSize;
@@ -61,7 +68,7 @@ int toX(Vertex*);
 int toY(Vertex*);
 void grid_initNodesGrid(int w, int h, int maxSegmentSize);
 short grid_insertRoadNode(roadNodeY *rn);
-void addRoadNode(roadPointY *rp, roadNodeY *rn);
+roadStep* addRoadNode(roadPointY *rp, roadPointY *rpc, roadNodeY *rn);
 int distBetween(Vertex *v, Vertex *u);
 roadNodeY** grid_getNearNodes(Vertex *v);
 roadNodeY** grid_getNearNodes2(int x, int y);
