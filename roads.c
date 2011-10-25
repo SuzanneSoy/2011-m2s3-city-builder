@@ -394,12 +394,6 @@ typedef struct Map {
 	// vertices.
 } Map;
 
-void fv(Map* m, Vertex* v) {
-	// TODO : tracer une ou des routes, en utilisant segment_to
-	v=v;
-	m=m;
-}
-
 Vertex* vertex_init(Map* m, int x, int y) {
 	// TODO : s'il y a déjà un point dans la case de la grille pour
 	// `(x,y)`, le renvoyer sans rien modifier.
@@ -428,6 +422,24 @@ Segment* segment_to(Map* m, Vertex* u, int x, int y) {
 	Vertex* v = vertex_init(m, x, y);
 	Segment* s = segment_init(m, u, v);
 	return s;
+}
+
+void fv(Map* m, Vertex* from) {
+	v=v;
+	m=m;
+	// Tracer une ou des routes, en utilisant segment_to.
+	
+	// Vertex existing = (v->s->u == from ? v->s->v : v->s->u);
+	
+	// Segment dans la continuation
+	// Vertex new1 = vertex_add(from, vertex_substract(from, existing)); // from + (from - existing)
+	// segment_to(m, from, new1.x, new2.y);
+	
+	// Segment perpendiculaire
+	// polar = ctp(from, existing)
+	// polar.angle += 90;
+	// Vertex new2 = ptc(polar);
+	// segment_to(m, from, new2.x, new2.y);
 }
 
 void segment_display(Segment* s) {
