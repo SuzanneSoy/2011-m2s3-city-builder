@@ -158,19 +158,28 @@ différentes, puis transformer cette grille.
 Algo champs de force
 ====================
 
-* Choisir des champs de force. `f(x,y,vecteur)` renvoie tous les
-  vecteurs de routes qu'on peut faire partir du point `(x,y)`,
-  lorsqu'on y arrive par la direction `vecteur`.
-* Initialiser `fifo` à vide.
-* Choisir un point de départ aléatoire, une direction aléatoire, et
-  insérer `(x,y,vecteur,0)` dans `fifo`.
-* Tant qu'on n'a pas suffisemment créé de routes :
-  * Prendre le point `(x,y,vecteur,n)` en tête de `fifo`.
-  * new = f(x,y,vecteur,n).
-  * Si new != NULL, tracer le segment `(x,y)--(new)`.
-  * insérer `(x,y,vecteur,n+1)` dans `fifo` si new dit que n+1 existe.
-  * insérer `(new,(x,y)--(new),0) dans `fifo`.
+Variables :
+* `vertices` est le tableau des vertices. Il se comporte comme une
+  fifo : les vertex qui y sont ajoutés sont en attente de traitement.
+* `segments` est le tableau des segments de route.
 
+Algo :
+* Choisir des champs de force. `f(vertex)` ajoutes aux tableaux les
+  segments de route qu'on peut faire partir du point `(x,y)`.
+* Initialiser le tableau de stockage des vertices `vertices` à vide.
+* Initialiser le tableau de stockage des segments `segments` à vide.
+* Choisir un point de départ aléatoire, et insérer `(x,y)` dans
+  `vertices`.
+* Tant qu'on n'a pas traité tous les vertices :
+  * Prendre le premier point `(x,y)` non traité de `vertices`.
+  * f(x,y).
+
+Algo de f(x,y) :
+* Pour chaque segment que l'on souhaite ajouter à partir de `(x,y)` :
+  * Insérer le nouveau vertex dans la grille ou en prendre l'existant.
+  * Si on inère le vertex, l'ajouter à `vertices`.
+  * Ajouter le segment à `segments`.
+	  
 Représentation simpliste des segments et routes
 ===============================================
 
@@ -209,3 +218,8 @@ Maintien des invariants :
 * Lorsqu'un segment atterrit dans une des cases voisines, s'il y a
   déjà un vertex, il s'y raccroche, sinon on crée l'unique vertex de
   la case.
+
+Idées en vrac :
+* Densité de probabilité de split (= créer de nouvelles routes à
+  partir du point). Par exemple : 10% de chance de faire un split par
+  mètre = en moyenne, un split tous les 10 mètres ?
