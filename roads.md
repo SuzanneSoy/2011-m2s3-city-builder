@@ -164,7 +164,7 @@ Variables :
 * `segments` est le tableau des segments de route.
 
 Algo :
-* Choisir des champs de force. `f(vertex)` ajoutes aux tableaux les
+* Choisir des champs de force. `f(vertex)` ajoute aux tableaux les
   segments de route qu'on peut faire partir du point `(x,y)`.
 * Initialiser le tableau de stockage des vertices `vertices` à vide.
 * Initialiser le tableau de stockage des segments `segments` à vide.
