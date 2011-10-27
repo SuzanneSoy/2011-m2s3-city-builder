@@ -162,8 +162,8 @@ void grid_drawGrid() {
 	
 	for(i=0;i<nbXSubDivision-1;i++)
 		for(j=0;j<nbYSubDivision-1;j++) {
-			Vertex v = {i*maxSegmentSize,j*maxSegmentSize};
-			Vertex u = {(i+1)*maxSegmentSize,j*maxSegmentSize};
+			Vertex v = { .x = i*maxSegmentSize, .y = j*maxSegmentSize };
+			Vertex u = { .x = (i+1)*maxSegmentSize, .y = j*maxSegmentSize };
 			svg_line(&v,&u,0);
 			u.x = i*maxSegmentSize;
 			u.y = (j+1)*maxSegmentSize;
@@ -379,32 +379,96 @@ void f(FSegment s, FSegmentArray* a) {
 	fSegmentArray_push(a, newS2);
 }
 
+/* ***************************** */
+// Nouvelle version :
+
+#define vertices_array_size 1024
+#define segments_array_size 1024
+typedef struct Map {
+	Vertex vertices[vertices_array_size];
+	Segment segments[segments_array_size];
+	int vertices_firstUnseen;
+	int vertices_firstFree;
+	int segments_firstFree;
+	// TODO : champ grid & co. On peut même l'utiliser à la place de
+	// vertices.
+} Map;
+
+Vertex* vertex_init(Map* m, int x, int y) {
+	// TODO : s'il y a déjà un point dans la case de la grille pour
+	// `(x,y)`, le renvoyer sans rien modifier.
+	Vertex* v = &(m->vertices[m->vertices_firstFree++]);
+	// TODO : insérer v dans la grille de m.
+	m=m;
+	
+	v->x = x;
+	v->y = y;
+	v->s = NULL;
+	return v;
+}
+
+Segment* segment_init(Map* m, Vertex* u, Vertex* v) {
+	Segment* s = &(m->segments[m->segments_firstFree++]);
+	s->u = u;
+	s->v = v;
+	s->nextU = u->s;
+	s->nextV = v->s;
+	u->s = s;
+	v->s = s;
+	return s;
+}
+
+Segment* segment_to(Map* m, Vertex* u, int x, int y) {
+	Vertex* v = vertex_init(m, x, y);
+	Segment* s = segment_init(m, u, v);
+	return s;
+}
+
+void fv(Map* m, Vertex* from) {
+	v=v;
+	m=m;
+	// Tracer une ou des routes, en utilisant segment_to.
+	
+	// Vertex existing = (v->s->u == from ? v->s->v : v->s->u);
+	
+	// Segment dans la continuation
+	// Vertex new1 = vertex_add(from, vertex_substract(from, existing)); // from + (from - existing)
+	// segment_to(m, from, new1.x, new2.y);
+	
+	// Segment perpendiculaire
+	// polar = ctp(from, existing)
+	// polar.angle += 90;
+	// Vertex new2 = ptc(polar);
+	// segment_to(m, from, new2.x, new2.y);
+}
+
+void segment_display(Segment* s) {
+	printf("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\" />",
+		   s->u->x, s->u->y, s->v->x, s->v->y);
+}
 
 void forceFields() {
-	/* Initialiser `fifo` à vide. */
-	/* Choisir un point de départ aléatoire, une direction aléatoire,
-	 * et insérer `(x,y,vecteur)` dans `fifo`. */
-	FSegmentArray a;
-	a.seg[0] = (FSegment){
-		.from = { .x = 400, .y = 300 },
-		.to = { .x = 360, .y = 300 }
-	};
-	a.firstUnseen = 0;
-	a.firstFree = 1;
+	Map m;
+	m.vertices[0] = (Vertex){ .x = 400, .y = 300, .s = NULL};
+	m.vertices_firstUnseen = 0;
+	m.vertices_firstFree = 1;
+	m.segments_firstFree = 0;
 	
 	grid_initNodesGrid(800, 600, 40);
+	// TODO : insérer vertices[0] dans la grille.
 	
 	int i;
-	for (i = 0; i < FSegmentArray_SIZE; i++) {
-		f(fSegmentArray_pop(&a), &a);
+	for (i = 0; i < vertices_array_size; i++) {
+		if (m.vertices_firstUnseen >= m.vertices_firstFree)
+			break;
+		fv(&m, &(m.vertices[m.vertices_firstUnseen++]));
 	}
 
 	grid_drawGrid();
-	for (i = 0; i < FSegmentArray_SIZE; i++) {
-		fsegment_display(a.seg[i]);
+	for (i = 0; i < m.segments_firstFree; i++) {
+		segment_display(&(m.segments[i]));
 	}
 }
-
 
 int main() {
 	Vertex points[] = {

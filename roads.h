@@ -5,11 +5,14 @@
 typedef struct Vertex {
 	int x;
 	int y;
+	struct Segment* s;
 } Vertex;
 
 typedef struct Segment {
 	Vertex *u;
 	Vertex *v;
+	struct Segment* nextU;
+	struct Segment* nextV;
 } Segment;
 
 typedef Vertex Polygon;
