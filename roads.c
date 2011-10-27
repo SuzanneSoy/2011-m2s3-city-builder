@@ -101,8 +101,8 @@ void grid_initNodesGrid(int width, int height, int segmentSize) {
 	int xSize, ySize;
 	xSize = (int)(width/segmentSize);
 	ySize = (int)(height/segmentSize);
-	
-	nodesGrid = (roadNodeY****) malloc(sizeof(roadNodeY***)*xSize);
+
+	vGrid = (Vertex****) malloc(sizeof(Vertex***)*xSize);
 	int i,j,k;
 
 	maxSegmentSize = segmentSize;
@@ -112,11 +112,11 @@ void grid_initNodesGrid(int width, int height, int segmentSize) {
 	quarterHeight = height;
 
 	for(i=0;i<xSize;i++) {
-		nodesGrid[i] = (roadNodeY***) malloc(sizeof(roadNodeY**)*ySize);
+		vGrid[i] = (Vertex***) malloc(sizeof(Vertex**)*ySize);
 		for(j=0;j<ySize;j++) {
-			nodesGrid[i][j] = (roadNodeY**) malloc(sizeof(roadNodeY*)*maxNodesInGrid);
+			vGrid[i][j] = (Vertex**) malloc(sizeof(Vertex*)*maxNodesInGrid);
 			for(k=0;k<maxNodesInGrid;k++)
-				nodesGrid[i][j][k] = NULL;
+				vGrid[i][j][k] = NULL;
 		}
 	}
 }

@@ -55,7 +55,7 @@ typedef struct roadSet {
 } roadStep;
 
 
-roadNodeY ****nodesGrid;
+Vertex ****vGrid;
 roadPointY **roadsList;
 short nbXSubDivision;
 short nbYSubDivision;
