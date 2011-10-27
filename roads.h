@@ -70,12 +70,14 @@ int quarterHeight;
 int toX(Vertex*);
 int toY(Vertex*);
 void grid_initNodesGrid(int w, int h, int maxSegmentSize);
-short grid_insertRoadNode(roadNodeY *rn);
+short grid_insertVertex(Vertex *rn);
 int distBetween(Vertex *v, Vertex *u);
-roadNodeY** grid_getNearNodes(Vertex *v);
-roadNodeY** grid_getNearNodes2(int x, int y);
-roadNodeY* grid_getNearestRoadNode(Vertex *v);
+Vertex** grid_getNearVertices(Vertex *v);
+Vertex** grid_getNearVertices2(int x, int y);
+Vertex* grid_getNearestVertex(Vertex *v);
 void grid_drawGrid();
+
 cartesianCoord* ptc(Vertex *origin, short angle, short length);
 polarCoord* ctp(Vertex *origin, Vertex *end);
+
 Segment** grid_getNearSegments(int x, int y);
