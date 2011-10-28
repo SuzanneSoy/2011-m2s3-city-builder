@@ -73,7 +73,7 @@ cartesianCoord* ptc(Vertex *origin, short angle, short length) {
 	cartesianCoord *cc = (cartesianCoord*) malloc(sizeof(cartesianCoord));
 	cc->x = origin->x + cos(M_PI*angle/180)*length;
 	cc->y = origin->y + sin(M_PI*angle/180)*length;
-	
+
 	return cc;
 }
 
@@ -86,8 +86,8 @@ cartesianCoord* ptc(Vertex *origin, short angle, short length) {
 polarCoord* ctp(Vertex *origin, Vertex *end) {
 	polarCoord *pc = (polarCoord*) malloc(sizeof(polarCoord));
 	pc->length = distBetween(origin,end);
-	pc->angle = acos((end->x-origin->x)/pc->length);
-	
+	pc->angle = acos((end->x-origin->x)/pc->length)*180/M_PI;
+
 	return pc;
 }
 
@@ -122,7 +122,7 @@ void grid_initvGrid(int width, int height, int segmentSize) {
 }
 
 
-/* Détermine si il existe une intersection entre deux segments de droite. Dans le cas 
+/* Détermine si il existe une intersection entre deux segments de droite. Dans le cas
  * ou une intersection existe les coordonnées du point d'intersection sont retournées.
  * Dans le cas contraire la fonction retourne NULL.
  * @param Vertex *va : Point de départ du premier segment.
@@ -138,12 +138,12 @@ Vertex* intersectionBetween(Segment *sega, Segment *segb) {
 	float m, k;         // Coordonnées de l'intersection des vecteurs sur les droites.
 	int Ix, Iy, Jx, Jy; // Vecteur I et J corespondant au segment v et u;
 	Vertex *va, *vb, *ua, *ub;
-	
+
 	va = sega->u;
 	vb = sega->v;
 	ua = segb->u;
 	ub = segb->v;
-	
+
 	Ix = vb->x - va->x;
 	Iy = vb->y - va->y;
 	Jx = ub->x - ua->x;
@@ -158,14 +158,14 @@ Vertex* intersectionBetween(Segment *sega, Segment *segb) {
 	}
 	else
 		return NULL;
-	
+
 	return NULL; //return inter;
 }
 
- 
+
 void grid_drawGrid() {
 	int i, j;
-	
+
 	for(i=0;i<nbXSubDivision-1;i++)
 		for(j=0;j<nbYSubDivision-1;j++) {
 			Vertex v = { .x = i*maxSegmentSize, .y = j*maxSegmentSize };
@@ -189,12 +189,12 @@ short grid_insertVertex(Vertex *vtx) {
 			return 1;
 		}
 	}
-	
+
 	return 0;
 }
 
 
-/* Retourne le nœd le plus proche dans un certain voisinage. Si aucun nœd n'est trouvé alors 
+/* Retourne le nœd le plus proche dans un certain voisinage. Si aucun nœd n'est trouvé alors
  * la fonction renvoie NULL.
  * @param Vertex *v : Le nœd pour lequel on souhaite trouver un nœd proche.
  * @return roadNodeY* : le nœd de route le plus proche.
@@ -213,9 +213,9 @@ Vertex* grid_getNearestVertex(Vertex *v) {
 	for(i=x-1; i<x+2; i++) {
 		for(j=y-1; j<y+2; j++,count++) {
 			if(i >= 0 && i < nbXSubDivision && y >= 0 && y < nbYSubDivision) {
-				
+
 				vtx = grid_getNearVertices2(i,j);
-				
+
 				int ind;
 
 				fprintf(stderr,"passage %d\t\t %d %d\n",count,i,j);
@@ -226,13 +226,13 @@ Vertex* grid_getNearestVertex(Vertex *v) {
 						distance = dist;
 						nearestVertex = tmp;
 					}
-					
+
 					tmp = vtx[i];
 				}
 			}
 		}
 	}
-	
+
 	return nearestVertex;
 }
 
@@ -243,20 +243,20 @@ Vertex* insertSegment(Segment *seg, int lag) {
 	Vertex *nearestVertex = NULL;
 	Vertex tmpEnd, *va, *vb;
 	int intersec = 0; // Booléen si intersection = 1 sinon = 0;
-	
+
 	va = seg->u;
 	vb = seg->v;
-	
+
 	seg = seg;
 	lag = lag;
 	// ------- TODO à compléter et à vérifier.
 	/*Segment **segs = grid_getNearSegments(rpb->rn->v->x,rpb->rn->v->y);
 	Segment *seg = segs[0];
 	int s = 0;
-	
+
 	while(seg != NULL) {
 		Vertex *intersection = intersectionBetween(rpb->rn->v,rne->v,seg->u,seg->v);
-		
+
 		if(intersection != NULL) {
 			// Créer un nœd, l'insérer au segment qui à causé l'intersection.
 			// Ce nœd deviens le point d'arriver du segment à placer : rne;
@@ -268,13 +268,13 @@ Vertex* insertSegment(Segment *seg, int lag) {
 	if(intersec == 0) {
 		tmpEnd.x = va->x + coef*(vb->x - va->x);
 		tmpEnd.y = va->y + coef*(vb->y - va->y);
-		
+
 		nearestVertex = grid_getNearestVertex(&tmpEnd);
-		
+
 		if(nearestVertex != NULL && distBetween(nearestVertex,vb) < lag)
 			vb = nearestVertex;
 	}
-		
+
 	grid_insertVertex(va);
 	grid_insertVertex(vb);
 	return NULL;
@@ -313,7 +313,7 @@ Segment** grid_getNearSegments(int x, int y) {
 				tmpVtx = vtx[0];
 				/*
 				// TODO Tester si le segment existe déjà dans la liste pour ne pas l'insérer en double.
-				
+
 				while(tmpVtx != NULL) {
 					for(l=0;l<tmpVtx->nbIntersec;l++) {
 						if(tmpVtx->intersec[l]->next != NULL) {
@@ -389,7 +389,7 @@ void f(FSegment s, FSegmentArray* a) {
 /* ***************************** */
 // Nouvelle version :
 
-#define vertices_array_size 40
+#define vertices_array_size 1024
 #define segments_array_size 1024
 typedef struct Map {
 	Vertex vertices[vertices_array_size];
@@ -407,7 +407,7 @@ Vertex* vertex_init(Map* m, int x, int y) {
 	Vertex* v = &(m->vertices[m->vertices_firstFree++]);
 	// TODO : insérer v dans la grille de m.
 	m=m;
-	
+
 	v->x = x;
 	v->y = y;
 	v->s = NULL;
@@ -418,9 +418,9 @@ Segment* segment_init(Map* m, Vertex* u, Vertex* v) {
 	Segment* s = &(m->segments[m->segments_firstFree++]);
 	s->u = u;
 	s->v = v;
-	s->nextU = u->s;
+	/*s->nextU = u->s;
 	s->nextV = v->s;
-	u->s = s;
+	u->s = s;*/
 	v->s = s;
 	return s;
 }
@@ -435,7 +435,7 @@ void fv(Map* m, Vertex *from) {
 	// Tracer une ou des routes, en utilisant segment_to.
 	if(from->s == NULL)
 		return;
-		
+
 	Vertex *existing = from->s->u == from ? from->s->v : from->s->u;
 	//fprintf(stderr,"bonjour\n");
 	// Segment dans la continuation
@@ -443,9 +443,9 @@ void fv(Map* m, Vertex *from) {
 	 Vertex new1 = { .x = from->x + (from->x - existing->x),
 					 .y = from->y + (from->y - existing->y),
 					 .s = NULL };
-	
+
 	segment_to(m, from, new1.x, new1.y);
-	
+
 	// Segment perpendiculaire
 	polarCoord *polar = ctp(from, existing);
 	polar->angle += 90;
@@ -463,27 +463,31 @@ void segment_display(Segment* s) {
 void forceFields() {
 	Map m;
 	m.vertices[0] = (Vertex){ .x = 400, .y = 300, .s = NULL};
-	m.vertices[1] = (Vertex){ .x = 410, .y = 310, .s = NULL};
+	m.vertices[1] = (Vertex){ .x = 410, .y = 290, .s = NULL};
 	m.vertices_firstUnseen = 1;
 	m.vertices_firstFree = 2;
 
 	m.segments[0] = (Segment){ .u = &(m.vertices[0]), .v = &(m.vertices[1]), .nextU = NULL, .nextV = NULL};
-	m.vertices[0].s = &(m.segments[0]);
+	m.vertices[0].s = NULL;
 	m.vertices[1].s = &(m.segments[0]);
 	m.segments_firstFree = 1;
-	
-	grid_initvGrid(800, 600, 40);
+
+	//grid_initvGrid(800, 600, 40);
 	// TODO : insérer vertices[0] dans la grille.
-	
+
 	int i;
-	for (i = 0; i < vertices_array_size; i++) {
-		if (m.vertices_firstUnseen >= m.vertices_firstFree)
+	while(m.vertices_firstFree < vertices_array_size-2) {
+		//fprintf(stderr,"passage %d\n",i);
+		if(m.vertices_firstUnseen >= m.vertices_firstFree) {
 			break;
+		}
+
 		fv(&m, &(m.vertices[m.vertices_firstUnseen++]));
 	}
-	
+
 	grid_drawGrid();
 	for (i = 0; i < m.segments_firstFree; i++) {
+		//fprintf(stderr,"Dessin du segment %d\n",i);
 		segment_display(&(m.segments[i]));
 	}
 }
@@ -500,14 +504,14 @@ int main() {
 	svg_start(800,600);
 	//carreY();
 	forceFields();
-	
+
 	//int i;
 	//for (i = 0; i < n; i++) {
 //		svg_line(&(points[i]), &(points[(i+1)%n]));
 //	}
-	
+
 //	grid_drawGrid();
-	
+
 n=n;
 	//roads(points);
 	points[0] = points[0];
