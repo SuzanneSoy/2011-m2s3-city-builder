@@ -133,6 +133,9 @@ void grid_initvGrid(int width, int height, int segmentSize) {
  * @return Vertex* : Coordonnées du point d'intersection si il existe, sinon NULL.
  */
 Vertex* intersectionBetween(Segment *sega, Segment *segb) {
+	if(sega == NULL || segb == NULL)
+        return NULL;
+
 	sega = sega;
 	segb = segb;
 	Vertex *inter = (Vertex*) malloc(sizeof(Vertex));
@@ -160,7 +163,7 @@ Vertex* intersectionBetween(Segment *sega, Segment *segb) {
 	else
 		return NULL;
 
-	return NULL; //return inter;
+	return inter;
 }
 
 
@@ -297,11 +300,18 @@ Vertex** grid_getNearVertices2(int x, int y) {
  */
 Segment** grid_getNearSegments(int x, int y) {
 	Vertex **vtx, *tmpVtx;
-	Segment** segs = (Segment**) malloc(sizeof(Segment)*9*maxNodesInGrid);
-	int i, j, s, k, l;
-	l=0;
-	l=l;
+Segment** segs = (Segment**) malloc(sizeof(Segment*)*9*maxNodesInGrid+1);
+	Segment *tmpSegs;
+	int segCount = 0;
+	int i, j, s, k;
+	for(i=0;i<9*maxNodesInGrid+1;i++) {
+		segs[i] = NULL;
+    }
+
 	s = 0;
+	Vertex vv = {.x = x, .y = y};
+	x = toX(&vv);
+	y = toY(&vv);
 
 	for(i=x-1;i<x+2;i++) {
 		for(j=y-1;j<y+2;j++) {
@@ -309,26 +319,25 @@ Segment** grid_getNearSegments(int x, int y) {
 				vtx = grid_getNearVertices2(i,j);
 				k = 0;
 				tmpVtx = vtx[0];
-				/*
+				fprintf(stderr,"Bonjour\n");
 				// TODO Tester si le segment existe déjà dans la liste pour ne pas l'insérer en double.
 
 				while(tmpVtx != NULL) {
-					for(l=0;l<tmpVtx->nbIntersec;l++) {
-						if(tmpVtx->intersec[l]->next != NULL) {
-							segs[s]->u = tmpVtx->v;
-							segs[s]->v = tmpVtx->intersec[l]->next->v;
-						}
-						s++;
-						if(tmpvtx->intersec[l]->previous != NULL) {
-							segs[s]->u = tmpVtx->v;
-							segs[s]->v = tmpVtx->intersec[l]->previous->v;
-						}
+					for(tmpSegs = tmpVtx->s; tmpSegs != NULL; tmpSegs = tmpSegs->nextU) {
+                            segs[segCount++] = tmpSegs;
 					}
+
+					for(tmpSegs = tmpVtx->s; tmpSegs != NULL; tmpSegs = tmpSegs->nextV) {
+						    fprintf(stderr,"- Bonjour %d\n",segCount);
+                            segs[segCount++] = tmpSegs;
+					}
+
 					tmpVtx = vtx[k++];
-				}*/
+				}
 			}
 		}
 	}
+	fprintf(stderr,"Casse toi\n");
 	return segs;
 }
 
@@ -387,7 +396,7 @@ void f(FSegment s, FSegmentArray* a) {
 /* ***************************** */
 // Nouvelle version :
 
-#define vertices_array_size 1024
+#define vertices_array_size 800
 #define segments_array_size 1024
 typedef struct Map {
 	Vertex vertices[vertices_array_size];
@@ -399,33 +408,53 @@ typedef struct Map {
 	// vertices.
 } Map;
 
-Vertex* vertex_init(Map* m, int x, int y) {
+
+Segment* segment_to(Map* m, Vertex* u, int x, int y) {
 	if(m->vertices_firstFree >= vertices_array_size)
 		return NULL;
-		
+
 	Vertex* v;
 	Vertex tmp = { .x = x, .y = y};
 	Vertex *nearest = grid_getNearestVertex(&tmp);
 
-	if(nearest != NULL && distBetween(&tmp,nearest) < 4)
+	if(nearest != NULL && distBetween(&tmp,nearest) < 5) {
 		v = nearest;
-	else
+		v->x = x;
+		v->y = y;
+		v->s = NULL;
+	}
+	else {
 		v = &(m->vertices[m->vertices_firstFree++]);
-	
-	// TODO : insérer v dans la grille de m.
-	m=m;
+		v->x = x;
+		v->y = y;
+		v->s = NULL;
+		grid_insertVertex(v);
+	}
 
-	v->x = x;
-	v->y = y;
-	v->s = NULL;
-	grid_insertVertex(v);
-	return v;
-}
-
-Segment* segment_init(Map* m, Vertex* u, Vertex* v) {
 	if(v == NULL || m->segments_firstFree >= segments_array_size)
 		return NULL;
-		
+
+	// Code pour le calcul d'intersections.
+	/*Segment **nearSegments = grid_getNearSegments(u->x,u->y);
+
+	int distance = 1000;
+	Segment *ns = nearSegments[0];
+	Segment tmpSeg = { .u = u, .v = v};
+	Segment *segmentCut = NULL;
+
+	int i;
+	for(i = 0, ns = nearSegments[0]; ns != NULL; ns = nearSegments[i++])  {
+		fprintf(stderr,"Tu fait chier\n");
+		Vertex *intersection = intersectionBetween(ns,&tmpSeg);
+		if(intersection != NULL && distBetween(u,intersection) < distance) {
+			distance = distBetween(u, intersection);
+			segmentCut = ns;
+		}
+	}
+
+	free(nearSegments);
+	*/
+
 	Segment* s = &(m->segments[m->segments_firstFree++]);
 	s->u = u;
 	s->v = v;
@@ -433,12 +462,7 @@ Segment* segment_init(Map* m, Vertex* u, Vertex* v) {
 	s->nextV = v->s;
 	u->s = s;*/
 	v->s = s;
-	return s;
-}
 
-Segment* segment_to(Map* m, Vertex* u, int x, int y) {
-	Vertex* v = vertex_init(m, x, y);
-	Segment* s = segment_init(m, u, v);
 	return s;
 }
 
@@ -459,11 +483,11 @@ void fv(Map* m, Vertex *from) {
 	polarCoord *polar = ctp(existing,from);
 	fprintf(stderr,"polar : %d %d\n",polar->angle,polar->length);
 	polar->angle += 90;
-	
+
 	cartesianCoord *c = ptc(from,polar->angle,polar->length);
 	Vertex new2 = { .x = c->x, .y = c->y};
 fprintf(stderr,"from new2 %d %d %d %d\n",from->x,from->y, new2.x,new2.y);
-	
+
 	segment_to(m, from, new1.x, new1.y);
 	segment_to(m, from, new2.x, new2.y);
 }
@@ -476,7 +500,7 @@ void segment_display(Segment* s) {
 void forceFields() {
 	Map m;
 	m.vertices[0] = (Vertex){ .x = 400, .y = 300, .s = NULL};
-	m.vertices[1] = (Vertex){ .x = 400, .y = 310, .s = NULL};
+	m.vertices[1] = (Vertex){ .x = 401, .y = 309, .s = NULL};
 	m.vertices_firstUnseen = 1;
 	m.vertices_firstFree = 2;
 
@@ -516,7 +540,7 @@ int main() {
 		{ .x=10, .y=590 },
 	};
 	int n = 5;
-	
+
 	svg_start(800,600);
 	//carreY();
 	forceFields();
