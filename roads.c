@@ -208,8 +208,7 @@ Vertex* grid_getNearestVertex(Vertex *v) {
 	int distance = maxSegmentSize*2;
 	Vertex *tmp = NULL;
 	int count = 0;
-	fprintf(stderr,"colones : %d\n",nbXSubDivision);
-	fprintf(stderr,"lignes : %d\n",nbYSubDivision);
+
 	for(i=x-1; i<x+2; i++) {
 		for(j=y-1; j<y+2; j++,count++) {
 			if(i >= 0 && i < nbXSubDivision && y >= 0 && y < nbYSubDivision) {
@@ -218,9 +217,7 @@ Vertex* grid_getNearestVertex(Vertex *v) {
 
 				int ind;
 
-				fprintf(stderr,"passage %d\t\t %d %d\n",count,i,j);
 				for(tmp = vtx[0], ind = 0; tmp != NULL && ind < maxNodesInGrid; tmp = vtx[ind++]) {
-					fprintf(stderr,"noed\n");
 					int dist = distBetween(v,tmp);
 					if(dist < distance) {
 						distance = dist;
@@ -402,19 +399,33 @@ typedef struct Map {
 } Map;
 
 Vertex* vertex_init(Map* m, int x, int y) {
-	// TODO : s'il y a déjà un point dans la case de la grille pour
-	// `(x,y)`, le renvoyer sans rien modifier.
-	Vertex* v = &(m->vertices[m->vertices_firstFree++]);
+	if(m->vertices_firstFree >= vertices_array_size)
+		return NULL;
+		
+	Vertex* v;
+	Vertex tmp = { .x = x, .y = y};
+	Vertex *nearest = grid_getNearestVertex(&tmp);
+
+	if(nearest != NULL && distBetween(&tmp,nearest) < 2)
+		v = nearest;
+		//v = &(m->vertices[m->vertices_firstFree++]);
+	else
+		v = &(m->vertices[m->vertices_firstFree++]);
+	
 	// TODO : insérer v dans la grille de m.
 	m=m;
 
 	v->x = x;
 	v->y = y;
 	v->s = NULL;
+	grid_insertVertex(v);
 	return v;
 }
 
 Segment* segment_init(Map* m, Vertex* u, Vertex* v) {
+	if(v == NULL || m->segments_firstFree >= segments_array_size)
+		return NULL;
+		
 	Segment* s = &(m->segments[m->segments_firstFree++]);
 	s->u = u;
 	s->v = v;
@@ -463,7 +474,7 @@ void segment_display(Segment* s) {
 void forceFields() {
 	Map m;
 	m.vertices[0] = (Vertex){ .x = 400, .y = 300, .s = NULL};
-	m.vertices[1] = (Vertex){ .x = 410, .y = 290, .s = NULL};
+	m.vertices[1] = (Vertex){ .x = 400, .y = 290, .s = NULL};
 	m.vertices_firstUnseen = 1;
 	m.vertices_firstFree = 2;
 
@@ -472,8 +483,10 @@ void forceFields() {
 	m.vertices[1].s = &(m.segments[0]);
 	m.segments_firstFree = 1;
 
-	//grid_initvGrid(800, 600, 40);
+	grid_initvGrid(800, 600, 10);
 	// TODO : insérer vertices[0] dans la grille.
+	grid_insertVertex(&(m.vertices[0]));
+	grid_insertVertex(&(m.vertices[1]));
 
 	int i;
 	while(m.vertices_firstFree < vertices_array_size-2) {
