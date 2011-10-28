@@ -86,8 +86,9 @@ cartesianCoord* ptc(Vertex *origin, short angle, short length) {
 polarCoord* ctp(Vertex *origin, Vertex *end) {
 	polarCoord *pc = (polarCoord*) malloc(sizeof(polarCoord));
 	pc->length = distBetween(origin,end);
-	pc->angle = acos((end->x-origin->x)/pc->length)*180/M_PI;
-
+	pc->angle = acos((float)(end->x-origin->x)/(float)pc->length)*180/M_PI;
+	if(end->y < origin->y)
+		pc->angle = 360-pc->angle;
 	return pc;
 }
 
@@ -406,9 +407,8 @@ Vertex* vertex_init(Map* m, int x, int y) {
 	Vertex tmp = { .x = x, .y = y};
 	Vertex *nearest = grid_getNearestVertex(&tmp);
 
-	if(nearest != NULL && distBetween(&tmp,nearest) < 2)
+	if(nearest != NULL && distBetween(&tmp,nearest) < 4)
 		v = nearest;
-		//v = &(m->vertices[m->vertices_firstFree++]);
 	else
 		v = &(m->vertices[m->vertices_firstFree++]);
 	
@@ -448,21 +448,23 @@ void fv(Map* m, Vertex *from) {
 		return;
 
 	Vertex *existing = from->s->u == from ? from->s->v : from->s->u;
-	//fprintf(stderr,"bonjour\n");
+	fprintf(stderr,"from existing %d %d %d %d\n",from->x,from->y, existing->x,existing->y);
 	// Segment dans la continuation
 	 //Vertex new1 = vertex_add(from, vertex_substract(from, existing)); // from + (from - existing)
 	 Vertex new1 = { .x = from->x + (from->x - existing->x),
 					 .y = from->y + (from->y - existing->y),
 					 .s = NULL };
 
-	segment_to(m, from, new1.x, new1.y);
-
 	// Segment perpendiculaire
-	polarCoord *polar = ctp(from, existing);
+	polarCoord *polar = ctp(existing,from);
+	fprintf(stderr,"polar : %d %d\n",polar->angle,polar->length);
 	polar->angle += 90;
+	
 	cartesianCoord *c = ptc(from,polar->angle,polar->length);
 	Vertex new2 = { .x = c->x, .y = c->y};
-
+fprintf(stderr,"from new2 %d %d %d %d\n",from->x,from->y, new2.x,new2.y);
+	
+	segment_to(m, from, new1.x, new1.y);
 	segment_to(m, from, new2.x, new2.y);
 }
 
@@ -474,7 +476,7 @@ void segment_display(Segment* s) {
 void forceFields() {
 	Map m;
 	m.vertices[0] = (Vertex){ .x = 400, .y = 300, .s = NULL};
-	m.vertices[1] = (Vertex){ .x = 400, .y = 290, .s = NULL};
+	m.vertices[1] = (Vertex){ .x = 400, .y = 310, .s = NULL};
 	m.vertices_firstUnseen = 1;
 	m.vertices_firstFree = 2;
 
@@ -514,6 +516,7 @@ int main() {
 		{ .x=10, .y=590 },
 	};
 	int n = 5;
+	
 	svg_start(800,600);
 	//carreY();
 	forceFields();
