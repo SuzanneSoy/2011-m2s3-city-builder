@@ -57,6 +57,19 @@ typedef struct roadSet {
 	roadPointY *rpc; 		// Nœd courrant.
 } roadStep;
 
+#define vertices_array_size 800
+#define segments_array_size 1024
+typedef struct Map {
+	Vertex vertices[vertices_array_size];
+	Segment segments[segments_array_size];
+	Segment* segments2[segments_array_size];		// Stockage temporaire d'un sous ensemble de segments.
+	int vertices_firstUnseen;
+	int vertices_firstFree;
+	int segments_firstFree;
+	int segments2_firstFree;
+	// TODO : champ grid & co. On peut même l'utiliser à la place de
+	// vertices.
+} Map;
 
 Vertex ****vGrid;
 roadPointY **roadsList;
@@ -80,4 +93,4 @@ void grid_drawGrid();
 cartesianCoord* ptc(Vertex *origin, short angle, short length);
 polarCoord* ctp(Vertex *origin, Vertex *end);
 
-Segment** grid_getNearSegments(int x, int y);
+void grid_getNearSegments(Map*, int x, int y);

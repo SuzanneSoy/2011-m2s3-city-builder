@@ -298,20 +298,17 @@ Vertex** grid_getNearVertices2(int x, int y) {
 
 /* Récupère tout les segement potentiellement sécant avec un segment ayant pour arrivée x et y.
  */
-Segment** grid_getNearSegments(int x, int y) {
+void grid_getNearSegments(Map *m, int x, int y) {
 	Vertex **vtx, *tmpVtx;
-Segment** segs = (Segment**) malloc(sizeof(Segment*)*9*maxNodesInGrid+1);
 	Segment *tmpSegs;
-	int segCount = 0;
 	int i, j, s, k;
-	for(i=0;i<9*maxNodesInGrid+1;i++) {
-		segs[i] = NULL;
-    }
 
 	s = 0;
 	Vertex vv = {.x = x, .y = y};
 	x = toX(&vv);
 	y = toY(&vv);
+	
+	m->segments2_firstFree = 0;
 
 	for(i=x-1;i<x+2;i++) {
 		for(j=y-1;j<y+2;j++) {
@@ -319,17 +316,19 @@ Segment** segs = (Segment**) malloc(sizeof(Segment*)*9*maxNodesInGrid+1);
 				vtx = grid_getNearVertices2(i,j);
 				k = 0;
 				tmpVtx = vtx[0];
-				fprintf(stderr,"Bonjour\n");
+				//fprintf(stderr,"Bonjour\n");
 				// TODO Tester si le segment existe déjà dans la liste pour ne pas l'insérer en double.
 
 				while(tmpVtx != NULL) {
+					if(m->segments_firstFree >= segments_array_size)
+						return;
+						
 					for(tmpSegs = tmpVtx->s; tmpSegs != NULL; tmpSegs = tmpSegs->nextU) {
-                            segs[segCount++] = tmpSegs;
+                            m->segments2[m->segments2_firstFree++] = tmpSegs;
 					}
 
 					for(tmpSegs = tmpVtx->s; tmpSegs != NULL; tmpSegs = tmpSegs->nextV) {
-						    fprintf(stderr,"- Bonjour %d\n",segCount);
-                            segs[segCount++] = tmpSegs;
+                            m->segments2[m->segments2_firstFree++] = tmpSegs;
 					}
 
 					tmpVtx = vtx[k++];
@@ -337,8 +336,6 @@ Segment** segs = (Segment**) malloc(sizeof(Segment*)*9*maxNodesInGrid+1);
 			}
 		}
 	}
-	fprintf(stderr,"Casse toi\n");
-	return segs;
 }
 
 
@@ -396,18 +393,6 @@ void f(FSegment s, FSegmentArray* a) {
 /* ***************************** */
 // Nouvelle version :
 
-#define vertices_array_size 800
-#define segments_array_size 1024
-typedef struct Map {
-	Vertex vertices[vertices_array_size];
-	Segment segments[segments_array_size];
-	int vertices_firstUnseen;
-	int vertices_firstFree;
-	int segments_firstFree;
-	// TODO : champ grid & co. On peut même l'utiliser à la place de
-	// vertices.
-} Map;
-
 
 Segment* segment_to(Map* m, Vertex* u, int x, int y) {
 	if(m->vertices_firstFree >= vertices_array_size)
@@ -435,25 +420,44 @@ Segment* segment_to(Map* m, Vertex* u, int x, int y) {
 		return NULL;
 
 	// Code pour le calcul d'intersections.
-	/*Segment **nearSegments = grid_getNearSegments(u->x,u->y);
-
+	
 	int distance = 1000;
-	Segment *ns = nearSegments[0];
+	int i;
 	Segment tmpSeg = { .u = u, .v = v};
 	Segment *segmentCut = NULL;
+	Vertex *coordInter = NULL;
 
-	int i;
-	for(i = 0, ns = nearSegments[0]; ns != NULL; ns = nearSegments[i++])  {
-		fprintf(stderr,"Tu fait chier\n");
-		Vertex *intersection = intersectionBetween(ns,&tmpSeg);
+	grid_getNearSegments(m,u->x,u->y);
+	
+	for(i = 0; i < m->segments2_firstFree; i++) {
+		Vertex *intersection = intersectionBetween(m->segments2[i],&tmpSeg);
 		if(intersection != NULL && distBetween(u,intersection) < distance) {
 			distance = distBetween(u, intersection);
-			segmentCut = ns;
+			segmentCut = m->segments2[i];
+			coordInter = intersection;
 		}
 	}
-
-	free(nearSegments);
-	*/
+	
+	if(segmentCut != NULL) {
+		Vertex *vInter = &(m->vertices[m->vertices_firstFree++]);
+		Segment *segmentPartA = segmentCut;
+		Segment *segmentPartB = &(m->segments[m->segments_firstFree++]);
+		
+		vInter->x = coordInter->x;
+		vInter->y = coordInter->y;
+		
+		segmentPartA->v = vInter;
+		
+		segmentPartB->u = vInter;
+		segmentPartB->nextU = NULL;
+		segmentPartB->v = segmentPartA->v;
+		segmentPartB->nextV = segmentPartA->nextV;
+		
+		segmentPartA->nextV = NULL;
+		
+		v = vInter;
+		m->vertices_firstFree--;
+	}
 
 	Segment* s = &(m->segments[m->segments_firstFree++]);
 	s->u = u;
@@ -472,7 +476,6 @@ void fv(Map* m, Vertex *from) {
 		return;
 
 	Vertex *existing = from->s->u == from ? from->s->v : from->s->u;
-	fprintf(stderr,"from existing %d %d %d %d\n",from->x,from->y, existing->x,existing->y);
 	// Segment dans la continuation
 	 //Vertex new1 = vertex_add(from, vertex_substract(from, existing)); // from + (from - existing)
 	 Vertex new1 = { .x = from->x + (from->x - existing->x),
@@ -481,12 +484,10 @@ void fv(Map* m, Vertex *from) {
 
 	// Segment perpendiculaire
 	polarCoord *polar = ctp(existing,from);
-	fprintf(stderr,"polar : %d %d\n",polar->angle,polar->length);
 	polar->angle += 90;
 
 	cartesianCoord *c = ptc(from,polar->angle,polar->length);
 	Vertex new2 = { .x = c->x, .y = c->y};
-fprintf(stderr,"from new2 %d %d %d %d\n",from->x,from->y, new2.x,new2.y);
 
 	segment_to(m, from, new1.x, new1.y);
 	segment_to(m, from, new2.x, new2.y);
@@ -499,6 +500,7 @@ void segment_display(Segment* s) {
 
 void forceFields() {
 	Map m;
+	m.segments2_firstFree = 0;
 	m.vertices[0] = (Vertex){ .x = 400, .y = 300, .s = NULL};
 	m.vertices[1] = (Vertex){ .x = 401, .y = 309, .s = NULL};
 	m.vertices_firstUnseen = 1;
