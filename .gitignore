@@ -2,4 +2,6 @@ simple-terrain
 display
 roam
 roads
+rules
 *.o
+.*.d

@@ -38,3 +38,12 @@ Erosion
 -------
 
 Modélisation correcte : trop lent. À la place, outil "courbes" de gimp.
+
+Rivières
+========
+
+[Pathfinding pour créer des rivières](http://www.umbrarumregnum.net/articles/creating-rivers).
+Si on utilise une méthode de coût qui favorise de passer par un petit
+bout de bruit plutôt que de le contourner, mais favorise le
+contournement pour une grosse accumulation de bruit, on pourra même
+simuler l'érosion qui efface les méandres trop petits.
