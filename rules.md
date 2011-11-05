@@ -9,28 +9,7 @@ rectangle suffisemment petit, commercial → magasin
 
 // TODO : faire pour des angles entre 70° et 110°.
 
-// RectangleRoutes(Vertex coins[4]) est un quadrilatère de routes avec des angles aux coins égaux à 90°.
 // TODO : distinguer à la création les RectangleRoutes avec (all sides length > 10) et les autres cas.
-struct RectangleRoutes {
-  Vertex ne;
-  Vertex se;
-  Vertex so;
-  Vertex no;
-  // TODO : prendre en compte les entrées/sorties.
-  IO n;
-  IO e;
-  IO s;
-  IO o;
-  int seed;
-}
-
-int randomInRange(int seed, int n, int a, int b) {
-	return (hash(seed, n) % (b - a)) + a;
-}
-
-int newSeed(int seed, int n) {
-	return hash(seed, n);
-}
 
 RectangleRoutes r (all sides length > 10) {
   Vertex split = { .x = randomInRange(r.seed, 0, r.no.x+5, r.ne.x-5), .y = randomInRange(r.seed, 1, r.no.x+5, r.ne.x-5) };
