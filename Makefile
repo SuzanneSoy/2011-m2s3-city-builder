@@ -3,7 +3,7 @@ CXX=g++
 CCWARN=-Wall -Wextra -Werror
 CFLAGS=-O3 $(CCWARN) -g3
 
-OBJECTS = rules.o hash.o segment.o vertex.o rules/rectangleroutes.o rules/route.o rules/carrefour.o
+OBJECTS = main.o hash.o segment.o vertex.o io.o rules/rectangleroutes.o rules/route.o rules/carrefour.o
 EXECUTABLE = city
 
 .PHONY: test

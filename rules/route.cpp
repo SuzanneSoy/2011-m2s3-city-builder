@@ -1,6 +1,6 @@
 #include "route.hh"
 #include "../vertex.hh"
-#include "../rules.hh"
+#include "../directions.hh"
 
 Route::Route(Vertex ne, Vertex se, Vertex sw, Vertex nw) {
 	corners[NE]=ne;

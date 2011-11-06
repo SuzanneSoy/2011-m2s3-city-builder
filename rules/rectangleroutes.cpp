@@ -1,6 +1,6 @@
 #include "rectangleroutes.hh"
 #include "../vertex.hh"
-#include "../rules.hh"
+#include "../directions.hh"
 #include "../hash.hh"
 
 #include "carrefour.hh"
@@ -30,10 +30,10 @@ void RectangleRoutes::subdivide() {
 	Route rs(roadEndS.add(+1,0), roadEndS.add(-1,0), split.add(-1,-1), split.add(+1,-1));
 	Route rw(roadEndW.add(0,-1), roadEndW.add(0,+1), split.add(-1,+1), split.add(-1,-1));
 	// Sous-quartiers
-	RectangleRoutes(this->ne, re.corners[NW], newSeed(this->seed, 2));
-	RectangleRoutes(re.corners[SE], rs.corners[SE], newSeed(this->seed, 3));
-	RectangleRoutes(rs.corners[NW], this->sw, newSeed(this->seed, 4));
-	RectangleRoutes(Vertex(this->sw.x, this->ne.y), rn.corners[SW], newSeed(this->seed, 5));
+	RectangleRoutes rrne(this->ne, re.corners[NW], newSeed(this->seed, 2));
+	RectangleRoutes rrse(re.corners[SE], rs.corners[SE], newSeed(this->seed, 3));
+	RectangleRoutes rrsw(rs.corners[NW], this->sw, newSeed(this->seed, 4));
+	RectangleRoutes rrnw(Vertex(this->sw.x, this->ne.y), rn.corners[SW], newSeed(this->seed, 5));
 }
 
 std::ostream& operator<<(std::ostream& os, const RectangleRoutes* r) {

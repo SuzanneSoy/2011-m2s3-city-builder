@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "../vertex.hh"
-#include "../rules.hh"
+#include "../directions.hh"
 
 class Carrefour {
 public:

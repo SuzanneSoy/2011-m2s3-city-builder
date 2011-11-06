@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include "../vertex.hh"
-#include "../rules.hh"
+#include "../directions.hh"
+#include "../io.hh"
 
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
 class RectangleRoutes {

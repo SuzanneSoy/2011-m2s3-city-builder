@@ -1,5 +1,5 @@
-#ifndef _RULES_HH_
-#define _RULES_HH_
+#ifndef _DIRECTIONS_HH_
+#define _DIRECTIONS_HH_
 
 typedef enum Cardinaux {
 	N = 0,
@@ -14,10 +14,5 @@ typedef enum Diagonales {
 	SW = 2,
 	NW = 3
 } Diagonales;
-
-typedef struct IO {
-	int in;
-	int out;
-} IO;
 
 #endif
