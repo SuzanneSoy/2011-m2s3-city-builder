@@ -2,6 +2,7 @@ simple-terrain
 display
 roam
 roads
-rules
+city
 *.o
+*.d
 .*.d

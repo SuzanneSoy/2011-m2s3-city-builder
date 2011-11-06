@@ -3,17 +3,24 @@ CXX=g++
 CCWARN=-Wall -Wextra -Werror
 CFLAGS=-O3 $(CCWARN) -g3
 
+OBJECTS = rules.o hash.o segment.o vertex.o rules/rectangleroutes.o rules/route.o rules/carrefour.o
+EXECUTABLE = city
+
+.PHONY: test
+test: all
+	./$(EXECUTABLE)
+
 .PHONY: all
-all: rules
+all: $(EXECUTABLE)
 
 .PHONY: clean
 clean:
-	rm rules *.o .*.d
+	rm -f $(EXECUTABLE) $(OBJECTS) $(OBJECTS:.o=.d)
 
-rules: rules.o hash.o
+city: $(OBJECTS)
 	$(CXX) -lm $^ -o $@
 
--include .*.d
+-include $(OBJECTS:.o=.d)
 
 %.o: %.cpp Makefile
-	$(CXX) -MMD -MF .$(@:.o=.d) -c $< $(CFLAGS) -o $@
+	$(CXX) -MMD -MF $(@:.o=.d) -c $< $(CFLAGS) -o $@
