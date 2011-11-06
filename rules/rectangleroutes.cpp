@@ -34,6 +34,8 @@ void RectangleRoutes::subdivide() {
 	RectangleRoutes rrse(re.corners[SE], rs.corners[SE], newSeed(this->seed, 3));
 	RectangleRoutes rrsw(rs.corners[NW], this->sw, newSeed(this->seed, 4));
 	RectangleRoutes rrnw(Vertex(this->sw.x, this->ne.y), rn.corners[SW], newSeed(this->seed, 5));
+	// Entrées/sorties par mètre carré en fonction du type de terrain ?
+	// rrnw.io[N].in += …;
 }
 
 std::ostream& operator<<(std::ostream& os, const RectangleRoutes* r) {
