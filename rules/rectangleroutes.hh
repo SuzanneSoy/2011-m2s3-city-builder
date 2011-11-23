@@ -1,26 +1,25 @@
 #ifndef _RULES_RECTANGLEROUTES_HH_
 #define _RULES_RECTANGLEROUTES_HH_
 
-#include <iostream>
-#include "../vertex.hh"
-#include "../directions.hh"
-#include "../io.hh"
+#include "all_includes.hh"
 
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
-class RectangleRoutes {
+class RectangleRoutes : Chose {
 public:
 	Vertex ne;
 	Vertex sw;
-	IO io [4];
-	int seed;
 public:
-	RectangleRoutes(Vertex ne, Vertex sw, int seed);
+	RectangleRoutes(Vertex ne, Vertex sw);
 	int width();
 	int height();
-	void subdivide();
+	virtual void subdivide();
+	virtual void triangulation();
+private:
+	Chose* sub(Vertex ne, Vertex sw);
+public:
+	friend std::ostream& operator<<(std::ostream& os, const RectangleRoutes& r);
+	friend std::ostream& operator<<(std::ostream& os, const RectangleRoutes* r);
 };
 
-std::ostream& operator<<(std::ostream& os, const RectangleRoutes& r);
-std::ostream& operator<<(std::ostream& os, const RectangleRoutes* r);
 
 #endif

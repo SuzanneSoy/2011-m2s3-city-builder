@@ -1,12 +1,8 @@
-#include "rectangleroutes.hh"
-#include "../vertex.hh"
-#include "../directions.hh"
-#include "../hash.hh"
+#include "all_includes.hh"
 
-#include "carrefour.hh"
-#include "route.hh"
-
-RectangleRoutes::RectangleRoutes(Vertex ne, Vertex sw, int seed) : ne(ne), sw(sw), seed(seed) {
+RectangleRoutes::RectangleRoutes(Vertex ne, Vertex sw) : ne(ne), sw(sw) {
+	addEntropy(ne);
+	addEntropy(sw);
 	std::cout << this << std::endl;
 }
 
@@ -30,12 +26,31 @@ void RectangleRoutes::subdivide() {
 	Route rs(roadEndS.add(+1,0), roadEndS.add(-1,0), split.add(-1,-1), split.add(+1,-1));
 	Route rw(roadEndW.add(0,-1), roadEndW.add(0,+1), split.add(-1,+1), split.add(-1,-1));
 	// Sous-quartiers
-	RectangleRoutes rrne(this->ne, re.corners[NW], newSeed(this->seed, 2));
-	RectangleRoutes rrse(re.corners[SE], rs.corners[SE], newSeed(this->seed, 3));
-	RectangleRoutes rrsw(rs.corners[NW], this->sw, newSeed(this->seed, 4));
-	RectangleRoutes rrnw(Vertex(this->sw.x, this->ne.y), rn.corners[SW], newSeed(this->seed, 5));
-	// Entrées/sorties par mètre carré en fonction du type de terrain ?
-	// rrnw.io[N].in += …;
+	Chose* rrne = sub(this->ne, re.corners[NW]);
+	Chose* rrse = sub(re.corners[SE], rs.corners[SE]);
+	Chose* rrsw = sub(rs.corners[NW], this->sw);
+	Chose* rrnw = sub(Vertex(this->sw.x, this->ne.y), rn.corners[SW]);
+	// TODO : stocker ces objets quelque part.
+	(void)rrne;
+	(void)rrse;
+	(void)rrsw;
+	(void)rrnw;
+}
+
+void RectangleRoutes::triangulation() {
+	Vertex nw(this->sw.x, this->ne.y);
+	Vertex se(this->ne.x, this->sw.y);
+	new Triangle(this->sw, nw, this->ne);
+	new Triangle(this->sw, se, this->ne);
+}
+
+Chose* RectangleRoutes::sub(Vertex ne, Vertex sw) {
+	Segment rect = Segment(ne,sw);
+	if (rect.width() < 10 || rect.height() < 10) {
+		return new Batiment(ne, sw);
+	} else {
+		return new RectangleRoutes(ne, sw);
+	}
 }
 
 std::ostream& operator<<(std::ostream& os, const RectangleRoutes* r) {

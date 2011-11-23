@@ -12,8 +12,13 @@ public:
 	Vertex();
 	Vertex(int x, int y);
 	Vertex add(int dx, int dy);
+public:
+	friend std::ostream& operator<<(std::ostream& os, const Vertex& v);
+	friend Vertex operator+(const Vertex& u, const Vertex& v);
+	friend Vertex operator-(const Vertex& u, const Vertex& v);
+	friend Vertex operator-(const Vertex& v);
+	friend Vertex operator*(const Vertex& v, const int n);
+	friend Vertex operator/(const Vertex& v, const int n);
 };
-
-std::ostream& operator<<(std::ostream& os, const Vertex& v);
 
 #endif
