@@ -7,11 +7,10 @@ class Vertex {
 public:
 	int x;
 	int y;
-	//int z;
+	int z;
 public:
 	Vertex();
-	Vertex(int x, int y);
-	Vertex add(int dx, int dy);
+	Vertex(int x, int y, int z);
 public:
 	friend std::ostream& operator<<(std::ostream& os, const Vertex& v);
 	friend Vertex operator+(const Vertex& u, const Vertex& v);

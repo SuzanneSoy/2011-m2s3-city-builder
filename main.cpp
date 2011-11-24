@@ -9,8 +9,8 @@
 
 int main() {
 	// Générer une tile de base
-	Vertex ne(100, 100);
-	Vertex sw(0, 0);
+	Vertex ne(100, 100, 0);
+	Vertex sw(0, 0, 0);
 	RectangleRoutes r(ne, sw);
 	r.subdivide();
 	// tile.subdivide tant qu'on n'a pas le niveau de détail désiré.
