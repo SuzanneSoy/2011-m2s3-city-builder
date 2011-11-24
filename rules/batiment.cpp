@@ -27,16 +27,16 @@ void Batiment::triangulation() {
 	Vertex toit = (ah + bh + ch + dh) / 4 + Vertex(0,0,h/5);
 
 	// 4 Murs
-	new Triangle(a,bh,ah); new Triangle(a,b,bh); // a-b-bh-ah
-	new Triangle(b,dh,bh); new Triangle(b,d,dh); // b-d-dh-bh
-	new Triangle(d,ch,dh); new Triangle(d,c,ch); // d-c-ch-dh
-	new Triangle(c,ah,ch); new Triangle(c,a,ah); // c-a-ah-ch
+	addTriangle(new Triangle(a,bh,ah)); addTriangle(new Triangle(a,b,bh)); // a-b-bh-ah
+	addTriangle(new Triangle(b,dh,bh)); addTriangle(new Triangle(b,d,dh)); // b-d-dh-bh
+	addTriangle(new Triangle(d,ch,dh)); addTriangle(new Triangle(d,c,ch)); // d-c-ch-dh
+	addTriangle(new Triangle(c,ah,ch)); addTriangle(new Triangle(c,a,ah)); // c-a-ah-ch
 
 	// 1 Toit
-	new Triangle(ah,toit,bh);
-	new Triangle(bh,toit,dh);
-	new Triangle(dh,toit,ch);
-	new Triangle(ch,toit,ah);
+	addTriangle(new Triangle(ah,toit,bh));
+	addTriangle(new Triangle(bh,toit,dh));
+	addTriangle(new Triangle(dh,toit,ch));
+	addTriangle(new Triangle(ch,toit,ah));
 }
 
 std::ostream& operator<<(std::ostream& os, const Batiment* r) {

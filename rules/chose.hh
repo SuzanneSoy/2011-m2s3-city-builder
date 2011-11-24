@@ -8,6 +8,8 @@ class Chose {
 public:
 	static const unsigned int initialSeed = 42;
 	unsigned int seed;
+	std::vector<Chose*> children;
+	std::vector<Triangle*> triangles;
 public:
 	Chose();
 	inline void addEntropy(unsigned int x1) { seed = hash2(seed, x1); }
@@ -18,6 +20,8 @@ public:
 	inline void addEntropy(Vertex v1, Vertex v2) { addEntropy(v1); addEntropy(v2); }
 	inline void addEntropy(Vertex v1, Vertex v2, Vertex v3) { addEntropy(v1, v2); addEntropy(v3); }
 	inline void addEntropy(Vertex v1, Vertex v2, Vertex v3, Vertex v4) { addEntropy(v1, v2); addEntropy(v3, v4); }
+	void addChild(Chose* c);
+	void addTriangle(Triangle* t);
 	virtual void subdivide() = 0;
 	virtual void triangulation() = 0;
 };

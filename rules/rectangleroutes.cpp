@@ -16,27 +16,24 @@ void RectangleRoutes::subdivide() {
 		hashInRange(this->seed, 1, this->sw.y + this->height()*1/4, this->sw.y + this->height()*3/4),
 		0 // TODO
 	);
-	Carrefour c(split + Vertex(1,1,0), split + Vertex(1,-1,0), split + Vertex(-1,-1,0), split + Vertex(-1,1,0));
+	// TODO : addChild(…);
+	new Carrefour(split + Vertex(1,1,0), split + Vertex(1,-1,0), split + Vertex(-1,-1,0), split + Vertex(-1,1,0));
 	// routes au NESW du carrefour
 	// TODO : la plupart des zéros en z sont faux…
 	Vertex roadEndN(this->ne.y, split.x, 0);
 	Vertex roadEndE(this->ne.x, split.y, 0);
 	Vertex roadEndS(this->sw.y, split.x, 0);
 	Vertex roadEndW(this->sw.x, split.y, 0);
-	Route rn(roadEndN + Vertex(-1,0,0), roadEndN + Vertex(+1,0,0), split + Vertex(+1,+1,0), split + Vertex(-1,+1,0));
-	Route re(roadEndE + Vertex(0,+1,0), roadEndE + Vertex(0,-1,0), split + Vertex(+1,-1,0), split + Vertex(+1,+1,0));
-	Route rs(roadEndS + Vertex(+1,0,0), roadEndS + Vertex(-1,0,0), split + Vertex(-1,-1,0), split + Vertex(+1,-1,0));
-	Route rw(roadEndW + Vertex(0,-1,0), roadEndW + Vertex(0,+1,0), split + Vertex(-1,+1,0), split + Vertex(-1,-1,0));
+	// TODO : addChild(…);
+	Route* rn = new Route(roadEndN + Vertex(-1,0,0), roadEndN + Vertex(+1,0,0), split + Vertex(+1,+1,0), split + Vertex(-1,+1,0)); // N
+	Route* re = new Route(roadEndE + Vertex(0,+1,0), roadEndE + Vertex(0,-1,0), split + Vertex(+1,-1,0), split + Vertex(+1,+1,0)); // E
+	Route* rs = new Route(roadEndS + Vertex(+1,0,0), roadEndS + Vertex(-1,0,0), split + Vertex(-1,-1,0), split + Vertex(+1,-1,0)); // S
+	Route* rw = new Route(roadEndW + Vertex(0,-1,0), roadEndW + Vertex(0,+1,0), split + Vertex(-1,+1,0), split + Vertex(-1,-1,0)); // W
 	// Sous-quartiers
-	Chose* rrne = sub(this->ne, re.corners[NW]);
-	Chose* rrse = sub(re.corners[SE], rs.corners[SE]);
-	Chose* rrsw = sub(rs.corners[NW], this->sw);
-	Chose* rrnw = sub(Vertex(this->sw.x, this->ne.y, 0), rn.corners[SW]);
-	// TODO : stocker ces objets quelque part.
-	(void)rrne;
-	(void)rrse;
-	(void)rrsw;
-	(void)rrnw;
+	addChild(sub(rn->corners[NE], re->corners[NE])); // sous-quartier NE
+	addChild(sub(re->corners[SE], rs->corners[SE])); // sous-quartier SE
+	addChild(sub(rs->corners[SW], rw->corners[SW])); // sous-quartier SW
+	addChild(sub(rw->corners[NW], rn->corners[NW])); // sous-quartier NW
 }
 
 void RectangleRoutes::triangulation() {

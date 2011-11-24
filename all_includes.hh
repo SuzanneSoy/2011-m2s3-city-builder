@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <vector>
 
 #include "vertex.hh"
 #include "segment.hh"
