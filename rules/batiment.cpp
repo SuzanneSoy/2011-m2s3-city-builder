@@ -13,6 +13,8 @@ void Batiment::subdivide() {
 }
 
 void Batiment::triangulation() {
+	initTriangles(12);
+	
 	// abcd sont les quatre coins du bâtiment.
 	Vertex a = this->ne;
 	Vertex b = Vertex(this->ne.x, this->sw.y, 0);

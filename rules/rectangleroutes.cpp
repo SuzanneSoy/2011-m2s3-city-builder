@@ -11,6 +11,8 @@ int RectangleRoutes::width() { return this->ne.x - this->sw.x; }
 int RectangleRoutes::height() { return this->ne.y - this->sw.y; }
 
 void RectangleRoutes::subdivide() {
+	initChildren(9);
+	
 	Vertex split(
 		hashInRange(this->seed, 0, this->sw.x + this->width()*1/4, this->sw.x + this->width()*3/4),
 		hashInRange(this->seed, 1, this->sw.y + this->height()*1/4, this->sw.y + this->height()*3/4),
@@ -37,10 +39,11 @@ void RectangleRoutes::subdivide() {
 }
 
 void RectangleRoutes::triangulation() {
+	initTriangles(2);
 	Vertex nw(this->sw.x, this->ne.y, 0);
 	Vertex se(this->ne.x, this->sw.y, 0);
-	new Triangle(this->sw, nw, this->ne);
-	new Triangle(this->sw, se, this->ne);
+	addTriangle(new Triangle(this->sw, nw, this->ne));
+	addTriangle(new Triangle(this->sw, se, this->ne));
 }
 
 Chose* RectangleRoutes::sub(Vertex ne, Vertex sw) {

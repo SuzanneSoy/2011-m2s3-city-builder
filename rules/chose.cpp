@@ -11,6 +11,14 @@ std::ostream& operator<<(std::ostream& os, const Chose& r) {
 	return os << "Chose";
 }
 
+void Chose::initChildren(int n) {
+	children = std::vector<Chose*>(n);
+}
+
+void Chose::initTriangles(int n) {
+	triangles = std::vector<Triangle*>(n);
+}
+
 void Chose::addChild(Chose* c) {
 	children.insert(children.end(), c);
 	// TODO : Ajouter c dans une file d'attente des éléments pouvant être split.
