@@ -20,11 +20,11 @@ void Chose::initTriangles(int n) {
 }
 
 void Chose::addChild(Chose* c) {
-	children.insert(children.end(), c);
+	children.push_back(c);
 	// TODO : Ajouter c dans une file d'attente des éléments pouvant être split.
 }
 
 void Chose::addTriangle(Triangle* t) {
-	triangles.insert(triangles.end(), t);
+	triangles.push_back(t);
 	// TODO : Ajouter t dans la liste des triangles à envoyer au GPU.
 }

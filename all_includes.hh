@@ -2,7 +2,8 @@
 #define _ALL_INCLUDES_HH_
 
 #include <iostream>
-#include <math.h>
+#include <cstdlib>
+#include <cmath>
 #include <vector>
 
 #include "vertex.hh"

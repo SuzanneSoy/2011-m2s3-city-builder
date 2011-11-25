@@ -6,9 +6,9 @@ RectangleRoutes::RectangleRoutes(Vertex ne, Vertex sw) : ne(ne), sw(sw) {
 	std::cout << this << std::endl;
 }
 
-int RectangleRoutes::width() { return this->ne.x - this->sw.x; }
+int RectangleRoutes::width() { return std::abs(this->ne.x - this->sw.x); }
 
-int RectangleRoutes::height() { return this->ne.y - this->sw.y; }
+int RectangleRoutes::height() { return std::abs(this->ne.y - this->sw.y); }
 
 void RectangleRoutes::subdivide() {
 	initChildren(9);
@@ -22,9 +22,9 @@ void RectangleRoutes::subdivide() {
 	new Carrefour(split + Vertex(1,1,0), split + Vertex(1,-1,0), split + Vertex(-1,-1,0), split + Vertex(-1,1,0));
 	// routes au NESW du carrefour
 	// TODO : la plupart des zéros en z sont faux…
-	Vertex roadEndN(this->ne.y, split.x, 0);
+	Vertex roadEndN(split.x, this->ne.y, 0);
 	Vertex roadEndE(this->ne.x, split.y, 0);
-	Vertex roadEndS(this->sw.y, split.x, 0);
+	Vertex roadEndS(split.x, this->sw.y, 0);
 	Vertex roadEndW(this->sw.x, split.y, 0);
 	// TODO : addChild(…);
 	Route* rn = new Route(roadEndN + Vertex(-1,0,0), roadEndN + Vertex(+1,0,0), split + Vertex(+1,+1,0), split + Vertex(-1,+1,0)); // N

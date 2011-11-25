@@ -1,7 +1,4 @@
-#include <time.h>
-unsigned int random() {
-	return (unsigned int)time((time_t*)0);
-}
+#include "all_includes.hh"
 
 // Ce hash donne des bons résultats sur tous les bits de l'entier
 // généré (pas d'artefacts, répartition homogène des 0 et des 1).
