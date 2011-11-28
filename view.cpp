@@ -64,7 +64,7 @@ void View::displayAxes() {
 	glVertex3f(0.0f, 0.0f, 2500.0f); // ending point of the line
 	glEnd( );
 
-	Vertex dest = Vertex::fromSpherical(100, xAngle, yAngle);
+	Vertex dest = Vertex::fromSpherical(100, yAngle, xAngle);
 	glBegin(GL_LINES);
 	glColor3ub(255,0,255);
 	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
