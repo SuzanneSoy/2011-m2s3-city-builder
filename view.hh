@@ -15,6 +15,9 @@ private:
 	
 	static const int windowWidth = 1024;
 	static const int windowHeight = 768;
+
+	Vertex cameraCenter;
+	
 	int cameraDist;
 	
 	int xSight;

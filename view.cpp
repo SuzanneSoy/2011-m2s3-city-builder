@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), cameraDist(300), xSight(0), ySight(0), zSight(0), xAngle(0), yAngle(0), moveDist(10) {
+View::View(Chose* root) : root(root), cameraCenter(500,500,10), cameraDist(300), xSight(0), ySight(0), zSight(0), xAngle(0), yAngle(0), moveDist(10) {
 	initWindow();
 	mainLoop();
 }
@@ -59,6 +59,21 @@ void View::displayAxes() {
 	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
 	glVertex3f(0.0f, 0.0f, -2500.0f); // ending point of the line
 	glEnd( );
+
+	Vertex dest = Vertex::fromSpherical(100, xAngle, yAngle);
+	glBegin(GL_LINES);
+	glColor3ub(255,0,255);
+	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
+	glVertex3d(dest.x, dest.y, dest.z); // ending point of the line
+	glEnd( );
+	
+	dest = cameraCenter - dest;
+	glBegin(GL_LINES);
+	glColor3ub(255,255,0);
+	glVertex3d(cameraCenter.x, cameraCenter.y, cameraCenter.z); // origin of the line
+	glVertex3d(dest.x, dest.y, dest.z); // ending point of the line
+	glEnd( );
+	
 	glEnable(GL_LIGHTING);
 }
 
@@ -71,9 +86,10 @@ void View::renderScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	
 	//gluLookAt(0,0,cameraDist, 0, 0, 0,0,1,0);
-	glTranslated(-xSight,-ySight,-(zSight+cameraDist));
+	// glTranslated(-xSight,-ySight,-(zSight+cameraDist));
 	glRotatef(-yAngle,1,0,0);
 	glRotatef(-xAngle,0,0,1);
+	glTranslated(-cameraCenter.x, -cameraCenter.y, -cameraCenter.z);
 	
 	displayAxes();
 	glBegin(GL_TRIANGLES);
@@ -83,7 +99,6 @@ void View::renderScene() {
 	glFlush();
 	SDL_GL_SwapBuffers();
 }
-
 
 void View::mainLoop() {
 	short continuer = 1;
@@ -98,18 +113,11 @@ void View::mainLoop() {
 			case SDL_KEYDOWN:
 				switch(event.key.keysym.sym) {
 					case SDLK_DOWN:
-						ySight -= moveDist;
+						cameraCenter = cameraCenter + Vertex::fromSpherical(10, xAngle, yAngle);
 						break;
 					case SDLK_UP:
-						ySight += moveDist;
+						cameraCenter = cameraCenter - Vertex::fromSpherical(10, xAngle, yAngle);
 						break;
-					case SDLK_LEFT:
-						xSight -= moveDist;
-						break;
-					case SDLK_RIGHT:
-						xSight += moveDist;
-						break;
-						
 					default:
 						break;
 				}

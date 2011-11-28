@@ -1,7 +1,7 @@
 #ifndef _VERTEX_HH_
 #define _VERTEX_HH_
 
-#include <iostream>
+#include "all_includes.hh"
 
 class Vertex {
 public:
@@ -11,6 +11,7 @@ public:
 public:
 	Vertex();
 	Vertex(int x, int y, int z);
+	static Vertex fromSpherical(float r, float xAngle, float yAngle);
 public:
 	friend std::ostream& operator<<(std::ostream& os, const Vertex& v);
 	friend Vertex operator+(const Vertex& u, const Vertex& v);
