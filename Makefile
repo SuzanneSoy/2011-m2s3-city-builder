@@ -4,7 +4,8 @@ CCWARN=-Wall -Wextra -Werror
 # -flto (nécessite GCC 4.5) -m32 ou -m64
 CFLAGS=-O3 -g3 -I. $(CCWARN)
 
-OBJECTS = main.o hash.o segment.o vertex.o triangle.o rules/chose.o rules/rectangleroutes.o rules/route.o rules/carrefour.o rules/batiment.o
+OBJECTS = main.o view.o hash.o segment.o vertex.o triangle.o rules/chose.o rules/rectangleroutes.o rules/route.o rules/carrefour.o rules/batiment.o
+LIBS = -lm -lGL -lGLU -lSDL -lGLEW
 EXECUTABLE = city
 
 .PHONY: test
@@ -18,8 +19,8 @@ all: $(EXECUTABLE)
 clean:
 	rm -f $(EXECUTABLE) $(OBJECTS) $(OBJECTS:.o=.d)
 
-city: $(OBJECTS)
-	$(CXX) -lm $^ -o $@
+$(EXECUTABLE): $(OBJECTS)
+	$(CXX) $(LIBS) $^ -o $@
 
 -include $(OBJECTS:.o=.d)
 

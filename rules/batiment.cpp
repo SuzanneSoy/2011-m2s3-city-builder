@@ -1,19 +1,21 @@
 #include "all_includes.hh"
 
-Batiment::Batiment(Vertex ne, Vertex sw) : ne(ne), sw(sw) {
-	std::cout << this << std::endl;
+Batiment::Batiment(Vertex ne, Vertex sw) : Chose(), ne(ne), sw(sw) {
+	addEntropy(ne, sw);
+	triangulation();
 }
 
 int Batiment::width() { return this->ne.x - this->sw.x; }
 
 int Batiment::height() { return this->ne.y - this->sw.y; }
 
-void Batiment::subdivide() {
+bool Batiment::subdivide() {
 	// TODO : rien ?
+	return false;
 }
 
 void Batiment::triangulation() {
-	initTriangles(12);
+	triangles.reserve(12);
 	
 	// abcd sont les quatre coins du bâtiment.
 	Vertex a = this->ne;

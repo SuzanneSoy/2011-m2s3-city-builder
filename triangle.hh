@@ -8,9 +8,12 @@ public:
 	Vertex a;
 	Vertex b;
 	Vertex c;
+	Vertex normal;
 public:
 	Triangle(Vertex a, Vertex b, Vertex c);
+	void display();
 public:
+	friend std::ostream& operator<<(std::ostream& os, const Triangle* t);
 	friend std::ostream& operator<<(std::ostream& os, const Triangle& t);
 };
 

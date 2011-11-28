@@ -3,12 +3,12 @@
 
 #include "all_includes.hh"
 
-class Route : Chose {
+class Route : public Chose {
 public:
 	Vertex corners[4];
 public:
 	Route(Vertex ne, Vertex se, Vertex sw, Vertex nw);
-	virtual void subdivide();
+	virtual bool subdivide();
 	virtual void triangulation();
 public:
 	friend std::ostream& operator<<(std::ostream& os, const Route& r);

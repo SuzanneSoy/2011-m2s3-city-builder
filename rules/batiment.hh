@@ -13,7 +13,7 @@ public:
 	Batiment(Vertex ne, Vertex sw);
 	int width();
 	int height();
-	virtual void subdivide();
+	virtual bool subdivide();
 	virtual void triangulation();
 };
 

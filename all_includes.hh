@@ -8,11 +8,17 @@ class Chose;
 #include <cmath>
 #include <vector>
 
+#include <SDL/SDL.h>
+#include <GL/glew.h>
+#include <GL/glu.h>
+#include <GL/gl.h>
+
 #include "vertex.hh"
 #include "segment.hh"
 #include "triangle.hh"
 #include "directions.hh"
 #include "hash.hh"
+#include "view.hh"
 
 #include "rules/chose.hh"
 #include "rules/batiment.hh"

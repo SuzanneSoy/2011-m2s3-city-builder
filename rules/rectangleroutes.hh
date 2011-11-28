@@ -4,7 +4,7 @@
 #include "all_includes.hh"
 
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
-class RectangleRoutes : Chose {
+class RectangleRoutes : public Chose {
 public:
 	Vertex ne;
 	Vertex sw;
@@ -12,7 +12,7 @@ public:
 	RectangleRoutes(Vertex ne, Vertex sw);
 	int width();
 	int height();
-	virtual void subdivide();
+	virtual bool subdivide();
 	virtual void triangulation();
 private:
 	Chose* sub(Vertex ne, Vertex sw);
