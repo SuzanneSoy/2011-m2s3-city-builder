@@ -1,10 +1,8 @@
 #include "all_includes.hh"
 
-RectangleRoutes::RectangleRoutes(Vertex ne, Vertex sw) : Chose(), ne(ne), sw(sw) {
+RectangleRoutes::RectangleRoutes(Vertex ne, Vertex sw) : ne(ne), sw(sw) {
 	addEntropy(ne);
 	addEntropy(sw);
-	triangulation();
-	setErrorVolume((std::abs(ne.x - sw.x)) * (std::abs(ne.y - sw.y)) * 20); // l*L*h, 20=hauteur max d'un bâtiment.
 	std::cout << this << std::endl;
 }
 

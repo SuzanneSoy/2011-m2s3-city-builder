@@ -3,7 +3,7 @@
 
 #include "all_includes.hh"
 
-class Carrefour : public Chose {
+class Carrefour : Chose {
 public:
 	Vertex corners[4];
 public:

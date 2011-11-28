@@ -1,11 +1,7 @@
 #include "all_includes.hh"
 
 Triangle::Triangle(Vertex a, Vertex b, Vertex c): a(a), b(b), c(c) {
-	// TODO : calcul de la normale.
-}
-
-std::ostream& operator<<(std::ostream& os, const Triangle* t) {
-	return os << *t;
+	std::cout << this << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const Triangle& t) {

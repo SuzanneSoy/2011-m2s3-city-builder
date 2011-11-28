@@ -6,14 +6,18 @@
 #include <cmath>
 #include <vector>
 
-class Chose;
-
 #include "vertex.hh"
 #include "segment.hh"
 #include "triangle.hh"
 #include "directions.hh"
+#include "io.hh"
 #include "hash.hh"
-#include "gputriangles.hh"
+
+class Chose;
+// class Batiment;
+// class Carrefour;
+// class Route;
+// class RectangleRoutes;
 
 #include "rules/chose.hh"
 #include "rules/batiment.hh"

@@ -10,8 +10,9 @@ public:
 	unsigned int seed;
 	std::vector<Chose*> children;
 	std::vector<Triangle*> triangles;
-	float errorSurfacePerTriangle;
-	float gainErrorSurfacePerTriangle;
+	static Triangle* resetGPUTriangles(int n);
+	static int nGPUTriangles;
+	static Triangle* GPUTriangles;
 public:
 	Chose();
 	inline void addEntropy(unsigned int x1) { seed = hash2(seed, x1); }
@@ -26,17 +27,12 @@ public:
 	void initTriangles(int n);
 	void addChild(Chose* c);
 	void addTriangle(Triangle* t);
-	void setErrorVolume(int errorVolume);
-	int gainScreenSurfacePerTriangle(Vertex camera);
-	void use(); // triangulation() doit déjà avoir été appelé.
-	void unuse();
+	void useTriangles(); // triangulation() doit déjà avoir été appelé.
 	virtual void subdivide() = 0;
 	virtual void triangulation() = 0;
-	virtual float distanceMin(Vertex v);
-	virtual float distanceMax(Vertex v);
 };
 
-std::ostream& operator<<(std::ostream& os, const Chose& c);
-std::ostream& operator<<(std::ostream& os, const Chose* c);
+std::ostream& operator<<(std::ostream& os, const Chose& r);
+std::ostream& operator<<(std::ostream& os, const Chose* r);
 
 #endif

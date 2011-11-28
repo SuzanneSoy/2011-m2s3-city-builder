@@ -1,12 +1,10 @@
 #include "carrefour.hh"
 
-Carrefour::Carrefour(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose() {
+Carrefour::Carrefour(Vertex ne, Vertex se, Vertex sw, Vertex nw) {
 	corners[NE]=ne;
 	corners[SE]=se;
 	corners[SW]=sw;
 	corners[NW]=nw;
-	triangulation();
-	setErrorVolume(0);
 	std::cout << this << std::endl;
 }
 

@@ -11,7 +11,6 @@ public:
 public:
 	Triangle(Vertex a, Vertex b, Vertex c);
 public:
-	friend std::ostream& operator<<(std::ostream& os, const Triangle* t);
 	friend std::ostream& operator<<(std::ostream& os, const Triangle& t);
 };
 

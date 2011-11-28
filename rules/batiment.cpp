@@ -1,11 +1,6 @@
 #include "all_includes.hh"
 
-Batiment::Batiment(Vertex ne, Vertex sw) : Chose(), ne(ne), sw(sw) {
-	triangulation();
-	// TODO : cet errorVolume est celui d'un bâtiment non détaillé
-	// (juste un cube), donc il nous faut un niveau de détail
-	// supplémentaire pour la triangulation actuelle.
-	setErrorVolume((std::abs(ne.x - sw.x)) * (std::abs(ne.y - sw.y)) * (6 + 6/5)); // l*L*h
+Batiment::Batiment(Vertex ne, Vertex sw) : ne(ne), sw(sw) {
 	std::cout << this << std::endl;
 }
 
@@ -52,11 +47,4 @@ std::ostream& operator<<(std::ostream& os, const Batiment* r) {
 
 std::ostream& operator<<(std::ostream& os, const Batiment& r) {
 	return os << "Batiment " << r.ne << "-" << r.sw;
-}
-
-virtual float distanceMin(Vertex v) {
-	
-}
-
-virtual float distanceMax(Vertex v) {
 }
