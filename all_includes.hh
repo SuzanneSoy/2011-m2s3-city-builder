@@ -1,6 +1,8 @@
 #ifndef _ALL_INCLUDES_HH_
 #define _ALL_INCLUDES_HH_
 
+class Chose;
+
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
@@ -10,14 +12,7 @@
 #include "segment.hh"
 #include "triangle.hh"
 #include "directions.hh"
-#include "io.hh"
 #include "hash.hh"
-
-class Chose;
-// class Batiment;
-// class Carrefour;
-// class Route;
-// class RectangleRoutes;
 
 #include "rules/chose.hh"
 #include "rules/batiment.hh"
