@@ -102,6 +102,7 @@ void View::renderScene() {
 void View::mainLoop() {
 	short continuer = 1;
 	SDL_Event event;
+	SDL_EnableKeyRepeat(100,100);
 
 	while (continuer) {
 		while ( SDL_PollEvent(&event) ) {
