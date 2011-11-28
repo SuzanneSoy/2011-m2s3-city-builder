@@ -1,9 +1,7 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), cameraCenter(500,-500,100), cameraDist(300), xSight(0), ySight(0), zSight(0), xAngle(0), yAngle(0), moveDist(10) {
-	xSight = cameraCenter.x + 20;
-	ySight = cameraCenter.y;
-	zSight = cameraCenter.z;
+View::View(Chose* root) : root(root), cameraCenter(500,-500,100), xAngle(0), yAngle(0), moveDist(40) {
+	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
 	initWindow();
 	mainLoop();
 }
@@ -86,14 +84,11 @@ void View::displayAxes() {
 void View::renderScene() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	//gluLookAt(1024,512,1356,1024,512,0,0,1,0);
 	
-	//glClearColor(1,1,1,1); // pour un fond blanc
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	
-	Vertex sight;
-	sight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
-	gluLookAt(cameraCenter.x,cameraCenter.y,cameraCenter.z, sight.x, sight.y, sight.z,0,0,1);
+	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
+	gluLookAt(cameraCenter.x,cameraCenter.y,cameraCenter.z, cameraSight.x, cameraSight.y, cameraSight.z,0,0,1);
 	
 	displayAxes();
 	glBegin(GL_TRIANGLES);
@@ -117,10 +112,10 @@ void View::mainLoop() {
 			case SDL_KEYDOWN:
 				switch(event.key.keysym.sym) {
 					case SDLK_DOWN:
-						cameraCenter = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
+						cameraCenter = cameraCenter - Vertex::fromSpherical(moveDist, yAngle, xAngle);
 						break;
 					case SDLK_UP:
-						cameraCenter = cameraCenter - Vertex::fromSpherical(100, yAngle, xAngle);
+						cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, yAngle, xAngle);
 						break;
 					default:
 						break;
@@ -128,8 +123,8 @@ void View::mainLoop() {
 				break;
 				
 			case SDL_MOUSEMOTION:
-				xAngle = (event.motion.x - (windowWidth/2))*340/windowWidth;
-				yAngle = (event.motion.y - (windowHeight/2))*340/windowHeight;
+				xAngle = 90 - (event.motion.x - (windowWidth/2))*340/windowWidth;
+				yAngle = 90 + (event.motion.y - (windowHeight/2))*340/windowHeight;
 				break;
 				
 			default:

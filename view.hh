@@ -10,24 +10,20 @@
 // Prendre en compte tous les évènements X en attente avant de relancer le rendu.
 
 class View {
-private:
+	private:
 	Chose* root;
 	
 	static const int windowWidth = 1024;
 	static const int windowHeight = 768;
 
 	Vertex cameraCenter;
-	
-	int cameraDist;
-	
-	int xSight;
-	int ySight;
-	int zSight;
+	Vertex cameraSight;
 	
 	float xAngle;
 	float yAngle;
 	int moveDist;
-public:
+
+	public:
 	View(Chose* root);
 	void initWindow();
 	void mainLoop();
