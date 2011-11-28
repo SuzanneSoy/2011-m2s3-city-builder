@@ -104,31 +104,32 @@ void View::mainLoop() {
 	SDL_Event event;
 
 	while (continuer) {
-		SDL_WaitEvent(&event);
-		switch(event.type) {
-			case SDL_QUIT:
-				continuer = 0;
-				break;
-			case SDL_KEYDOWN:
-				switch(event.key.keysym.sym) {
-					case SDLK_DOWN:
-						cameraCenter = cameraCenter - Vertex::fromSpherical(moveDist, yAngle, xAngle);
-						break;
-					case SDLK_UP:
-						cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, yAngle, xAngle);
-						break;
-					default:
-						break;
-				}
-				break;
-				
-			case SDL_MOUSEMOTION:
-				xAngle = 90 - (event.motion.x - (windowWidth/2))*340/windowWidth;
-				yAngle = 90 + (event.motion.y - (windowHeight/2))*340/windowHeight;
-				break;
-				
-			default:
-				break;
+		while ( SDL_PollEvent(&event) ) {
+			switch(event.type) {
+				case SDL_QUIT:
+					continuer = 0;
+					break;
+				case SDL_KEYDOWN:
+					switch(event.key.keysym.sym) {
+						case SDLK_DOWN:
+							cameraCenter = cameraCenter - Vertex::fromSpherical(moveDist, yAngle, xAngle);
+							break;
+						case SDLK_UP:
+							cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, yAngle, xAngle);
+							break;
+						default:
+							break;
+					}
+					break;
+					
+				case SDL_MOUSEMOTION:
+					xAngle = 90 - (event.motion.x - (windowWidth/2))*340/windowWidth;
+					yAngle = 90 + (event.motion.y - (windowHeight/2))*340/windowHeight;
+					break;
+					
+				default:
+					break;
+			}
 		}
 
 		renderScene();
