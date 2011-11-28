@@ -23,43 +23,46 @@ int main() {
 	// mettre à jour la triangulation de notre tile.
 	
 	// Invariants :
-	// * tile.errorVolume ≤ somme(tile.children.errorVolume)
+	// * tile.errorVolume < somme(tile.children.errorVolume) // TODO : pour ordonner deux tiles égales, on prend en compte leur profondeur.
 	// * tile.nbTriangles < somme(tile.children.nbTriangles)
 
-	// Pour calculer le gain d'une Chose :
-	// Lorsqu'on utilise une Chose c, on la split d'abbord (on n'utilisera pas les fils tout de suite, donc pas de récursion),
-	//   Calculer c.errorVolume dans le constructeur (idem pour chaque fils donc).
-	//   // Calcul d'une approximation de la surface d'erreur, en considérant que l'objet est plaqué sur un plan perpendiculaire au sol.
-	//   gainVolumeErreurParTriangle = (c.errorVolume / c.nbTriangles) - sum(x in c.children : x.errorVolume / x.nbTriangles)
-	//   c.gainSurfaceErreurParTriangle = pow(volumeErreurParTriangle, 2.f/3.f);
-	// Pour calculer son gain :
-	// int gainParTriangle(distance)
-	//   // Calcul de la surface de la projection de la surface d'erreur sur l'écran :
-	//   return c.gainSurfaceErreurParTriangle * (frontFrustumDist * frontFrustumDist) / (dist * dist)
-	
 	// Pour trouver le split() qui rapportera le plus :
-	// Set<Chose*> ensemble = { racine }
-	//   Calculer le gain min et max des fils de toutes les Chose d'ensemble.
-	//   Chose* best = la Chose avec le plus grand gain max
-	//   if (best est une feuille) return best;
-	//   ensemble = { c | c.max ≥ best.min }
+	// findMaxSplit(Vertex camera) {
+	//   std::set<Chose*> ensemble(); // TODO : mettre un comparateur qui trie les éléments selon leur gain max, en ordre décroissant.
+	//   std::set<Chose*>::iterator it;
+	//   ensemble.insert(this);
+	//   for (it = ensemble.begin(); it != ensemble.end(); it++) {
+	//     // TODO : Calculer le gain min et max des fils de toutes les Chose d'ensemble.
+	//     // Pour cela, écrire et utiliser int Chose::gainMinScreenSurfacePerTriangle(Vertex camera)
+	//     // et int Chose::gainMax… qui calculeront le gain en utilisant la distance
+	//     // du point le plus proche et le plus éloigné de la chose et de ses children.
+	//     gainScreenSurfacePerTriangle(camera);
+	//   }
+	//   Chose* best = ensemble.begin(); // la Chose avec le plus grand gain max
+	//   if (best->isLeafNode) return best;
+	//   
+	//   ensemble = std::set<Chose*>(ensemble.begin(), ensemble.upper_bound(best->gainMin)); // { c | c.max ≥ best.min } // TODO : comparateur
+	// }
 
 	// Pour optimiser les Chose :
-	// while (42) {
-	//   Trouver la Chose dont le split() rapportera le plus
-	//   if (GPUTriangles::current + nbNewTriangles > GPUTriangles::aim) {
-	//     Trouver les choses avec le merge() qui coûtera le moins,
-	//     En ayant suffisemment de triangles pour que
-	//     (GPUTriangles::current + nbNewTriangles - nbDeleteTriangles <= GPUTriangles::aim)
-	//     Faire autant de split() (qui rapportent le plus) que possible sans dépasser le nombre de triangles autorisés
-	//     => De cette manière, si on a dû faire un gros merge() qui coûte cher, il sera peut-être compensé par plein de petits split().
-	//     if (somme des coûts >= gain) {
-	//       break; // while (42)
-	//     }
-	//   }
-	//   Supprimer les triangles du tableau, en les insérant dans une freelist
-	//   Ajouter les triangles en consommant de la freelist
+	// GPUTriangles* gpu = new GPUTriangles(10);
+	// while(!gpu->canCommit()) {
+	//   gpu->remove(findMinMerge());
+	//   gpu->commit();
 	// }
-	// Consommer la freeList en créant des triangles "bidon" (les trois sommets en (0,0,0) par ex.)
+	// while (42) {
+	//   gpu->add(findMaxSplit());
+	//   while(!gpu->canCommit()) {
+	//     gpu->remove(findMinMerge());
+	//   }
+	//   while ((s = findMaxSplit()) && gpu->canAdd(s)) {
+	//     gpu->add(s);
+	//   }
+	//   if (gpu->isImprovement()) {
+	//     gpu->commit();
+	//   } else {
+	//     break; // while (42)
+	//   }
+	// }
 	return 0;
 }

@@ -4,7 +4,7 @@ CCWARN=-Wall -Wextra -Werror
 # -flto (nécessite GCC 4.5) -m32 ou -m64
 CFLAGS=-O3 -g3 -I. $(CCWARN)
 
-OBJECTS = main.o hash.o segment.o vertex.o triangle.o io.o rules/chose.o rules/rectangleroutes.o rules/route.o rules/carrefour.o rules/batiment.o
+OBJECTS = main.o hash.o segment.o vertex.o triangle.o gputriangles.o rules/chose.o rules/rectangleroutes.o rules/route.o rules/carrefour.o rules/batiment.o
 EXECUTABLE = city
 
 .PHONY: test

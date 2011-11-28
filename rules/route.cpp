@@ -2,11 +2,13 @@
 #include "../vertex.hh"
 #include "../directions.hh"
 
-Route::Route(Vertex ne, Vertex se, Vertex sw, Vertex nw) {
+Route::Route(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose() {
 	corners[NE]=ne;
 	corners[SE]=se;
 	corners[SW]=sw;
 	corners[NW]=nw;
+	triangulation();
+	setErrorVolume(0);
 	std::cout << this << std::endl;
 }
 

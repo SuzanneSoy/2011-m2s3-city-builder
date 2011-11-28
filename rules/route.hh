@@ -3,7 +3,7 @@
 
 #include "all_includes.hh"
 
-class Route : Chose {
+class Route : public Chose {
 public:
 	Vertex corners[4];
 public:
