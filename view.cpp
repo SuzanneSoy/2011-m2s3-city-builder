@@ -1,9 +1,13 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), cameraCenter(500,500,10), cameraDist(300), xSight(0), ySight(0), zSight(0), xAngle(0), yAngle(0), moveDist(10) {
+View::View(Chose* root) : root(root), cameraCenter(500,-500,100), cameraDist(300), xSight(0), ySight(0), zSight(0), xAngle(0), yAngle(0), moveDist(10) {
+	xSight = cameraCenter.x + 20;
+	ySight = cameraCenter.y;
+	zSight = cameraCenter.z;
 	initWindow();
 	mainLoop();
 }
+
 
 void View::initWindow() {
 	SDL_Init(SDL_INIT_VIDEO);
@@ -42,6 +46,8 @@ void View::initWindow() {
 void View::displayAxes() {
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
+	glEnable(GL_LINE_SMOOTH);
+    glLineWidth(2);
 	glBegin(GL_LINES);
 	glColor3ub(255,0,0);
 	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
@@ -57,7 +63,7 @@ void View::displayAxes() {
 	glBegin(GL_LINES);
 	glColor3ub(0,0,255);
 	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
-	glVertex3f(0.0f, 0.0f, -2500.0f); // ending point of the line
+	glVertex3f(0.0f, 0.0f, 2500.0f); // ending point of the line
 	glEnd( );
 
 	Vertex dest = Vertex::fromSpherical(100, xAngle, yAngle);
@@ -85,11 +91,9 @@ void View::renderScene() {
 	//glClearColor(1,1,1,1); // pour un fond blanc
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	
-	//gluLookAt(0,0,cameraDist, 0, 0, 0,0,1,0);
-	// glTranslated(-xSight,-ySight,-(zSight+cameraDist));
-	glRotatef(-yAngle,1,0,0);
-	glRotatef(-xAngle,0,0,1);
-	glTranslated(-cameraCenter.x, -cameraCenter.y, -cameraCenter.z);
+	Vertex sight;
+	sight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
+	gluLookAt(cameraCenter.x,cameraCenter.y,cameraCenter.z, sight.x, sight.y, sight.z,0,0,1);
 	
 	displayAxes();
 	glBegin(GL_TRIANGLES);
@@ -113,10 +117,10 @@ void View::mainLoop() {
 			case SDL_KEYDOWN:
 				switch(event.key.keysym.sym) {
 					case SDLK_DOWN:
-						cameraCenter = cameraCenter + Vertex::fromSpherical(10, xAngle, yAngle);
+						cameraCenter = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
 						break;
 					case SDLK_UP:
-						cameraCenter = cameraCenter - Vertex::fromSpherical(10, xAngle, yAngle);
+						cameraCenter = cameraCenter - Vertex::fromSpherical(100, yAngle, xAngle);
 						break;
 					default:
 						break;
@@ -124,8 +128,8 @@ void View::mainLoop() {
 				break;
 				
 			case SDL_MOUSEMOTION:
-				xAngle = ((event.motion.x-windowWidth/2)*340/(windowWidth));
-				yAngle = (event.motion.y-windowHeight/2)*340/(windowHeight);
+				xAngle = (event.motion.x - (windowWidth/2))*340/windowWidth;
+				yAngle = (event.motion.y - (windowHeight/2))*340/windowHeight;
 				break;
 				
 			default:
