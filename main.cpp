@@ -18,7 +18,7 @@ int main() {
 	// Générer une tile de base
 	Vertex ne(50, 50, 0);
 	Vertex sw(0, 0, 0);
-	Chose* c = new RectangleRoutes(ne, sw);
+	Chose* c = new RectangleRoutes(ne,sw);//new RectangleRoutes(ne, sw);
 	recursiveSubdivide(c);
 
 	new View(c);

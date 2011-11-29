@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), cameraCenter(120,-120,50), xAngle(135), yAngle(102), moveDist(4) {
+View::View(Chose* root) : root(root), cameraCenter(127,14,128), xAngle(44), yAngle(101), moveDist(4) {
 	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
 	initWindow();
 	mainLoop();
@@ -23,7 +23,7 @@ void View::initWindow() {
 	
 	float MatSpec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	float MatDif[4] = {0.5f, 0.5f, 0.5f, 1.0f};
-	float MatAmb[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+	float MatAmb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
 	float shininess = 128.0f;
 	 
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
@@ -36,10 +36,10 @@ void View::initWindow() {
 }
 
 void View::setLight() {
-	float Light1Pos[4] = {0.5f, 1.0f, 0.0f, 0.0f};
+	float Light1Pos[4] = {0.5f, 1.0f, 1.0f, 0.0f};
 	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 	float Light1Spec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-	float Light1Amb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
+	float Light1Amb[4] = {0.2f, 0.2f, 0.2f, 1.0f};
 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, Light1Dif);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, Light1Spec);
@@ -124,6 +124,11 @@ void View::mainLoop() {
 							continuer = 0;
 							break;
 						default:
+							if (SDL_GetKeyName(event.key.keysym.sym)[0] == 'q')
+								continuer = 0;
+							if (SDL_GetKeyName(event.key.keysym.sym)[0] == 'p') { // _Print _Position
+								std::cout << "Camera = " << cameraCenter << " xAngle = " << xAngle << " yAngle = " << yAngle << std::endl;
+							}
 							break;
 					}
 					break;

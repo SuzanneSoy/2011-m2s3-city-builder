@@ -34,3 +34,5 @@ void Chose::display() {
 		}
 	}
 }
+
+unsigned int Chose::initialSeed = random_seed();

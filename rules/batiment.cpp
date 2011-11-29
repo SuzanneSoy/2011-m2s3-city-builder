@@ -31,10 +31,10 @@ void Batiment::triangulation() {
 	Vertex toit = (ah + bh + ch + dh) / 4 + Vertex(0,0,h/2);
 
 	// 4 Murs
-	addTriangle(new Triangle(a,bh,ah,0xf1,0xe3,0xad)); addTriangle(new Triangle(a,b,bh,0xf1,0xe3,0xad)); // a-b-bh-ah
-	addTriangle(new Triangle(b,dh,bh,0xf1,0xe3,0xad)); addTriangle(new Triangle(b,d,dh,0xf1,0xe3,0xad)); // b-d-dh-bh
-	addTriangle(new Triangle(d,ch,dh,0xf1,0xe3,0xad)); addTriangle(new Triangle(d,c,ch,0xf1,0xe3,0xad)); // d-c-ch-dh
-	addTriangle(new Triangle(c,ah,ch,0xf1,0xe3,0xad)); addTriangle(new Triangle(c,a,ah,0xf1,0xe3,0xad)); // c-a-ah-ch
+	addTriangle(new Triangle(ah,bh,a,0xf1,0xe3,0xad)); addTriangle(new Triangle(bh,b,a,0xf1,0xe3,0xad)); // a-b-bh-ah
+	addTriangle(new Triangle(bh,dh,b,0xf1,0xe3,0xad)); addTriangle(new Triangle(dh,d,b,0xf1,0xe3,0xad)); // b-d-dh-bh
+	addTriangle(new Triangle(dh,ch,d,0xf1,0xe3,0xad)); addTriangle(new Triangle(ch,c,d,0xf1,0xe3,0xad)); // d-c-ch-dh
+	addTriangle(new Triangle(ch,ah,c,0xf1,0xe3,0xad)); addTriangle(new Triangle(ah,a,c,0xf1,0xe3,0xad)); // c-a-ah-ch
 
 	// 1 Toit
 	addTriangle(new Triangle(ah,toit,bh,0x8a,0x48,0x3c));

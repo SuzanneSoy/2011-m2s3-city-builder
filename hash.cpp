@@ -26,3 +26,12 @@ int hashInRange(int seed, int n, int a, int b) {
 int newSeed(int seed, int n) {
 	return hash2(seed, n);
 }
+
+int random_seed() {
+	static bool initialized = false;
+	if (!initialized) {
+		initialized = true;
+		srand(time(NULL));
+	}
+	return rand();
+}

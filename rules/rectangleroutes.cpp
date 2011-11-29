@@ -11,9 +11,13 @@ int RectangleRoutes::height() { return std::abs(this->ne.y - this->sw.y); }
 
 bool RectangleRoutes::subdivide() {
 	children.reserve(9);
+	int splitXMin = this->sw.x + std::max(4, this->width()*1/4);
+	int splitXMax = this->ne.x - std::max(4, this->width()*1/4);
+	int splitYMin = this->sw.y + std::max(4, this->height()*1/4);
+	int splitYMax = this->ne.y - std::max(4, this->height()*1/4);
 	Vertex split(
-		hashInRange(this->seed, 0, this->sw.x + this->width()*1/4, this->sw.x + this->width()*3/4),
-		hashInRange(this->seed, 1, this->sw.y + this->height()*1/4, this->sw.y + this->height()*3/4),
+		hashInRange(this->seed, 0, splitXMin, splitXMax),
+		hashInRange(this->seed, 1, splitYMin, splitYMax),
 		0 // TODO
 	);
 	// TODO : addChild(…);
@@ -45,7 +49,7 @@ void RectangleRoutes::triangulation() {
 	triangles.reserve(2);
 	Vertex nw(this->sw.x, this->ne.y, 0);
 	Vertex se(this->ne.x, this->sw.y, 0);
-	addTriangle(new Triangle(this->sw, nw, this->ne, 0xc0, 0xc0, 0xc0));
+	addTriangle(new Triangle(this->ne, nw, this->sw, 0xc0, 0xc0, 0xc0));
 	addTriangle(new Triangle(this->sw, se, this->ne, 0xc0, 0xc0, 0xc0));
 }
 

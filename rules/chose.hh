@@ -6,7 +6,7 @@
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
 class Chose {
 public:
-	static const unsigned int initialSeed = 42;
+	static unsigned int initialSeed;
 	unsigned int seed;
 	std::vector<Chose*> children;
 	std::vector<Triangle*> triangles;
