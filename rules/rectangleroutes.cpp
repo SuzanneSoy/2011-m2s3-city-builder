@@ -25,19 +25,19 @@ bool RectangleRoutes::subdivide() {
 	Vertex roadEndS(split.x, this->sw.y, 0);
 	Vertex roadEndW(this->sw.x, split.y, 0);
 	// TODO : addChild(…);
-	Route* rn = new Route(roadEndN + Vertex(-1,0,0), roadEndN + Vertex(+1,0,0), split + Vertex(+1,+1,0), split + Vertex(-1,+1,0)); // N
+	Route* rn = new Route(roadEndN + Vertex(+1,0,0), split + Vertex(+1,+1,0), split + Vertex(-1,+1,0), roadEndN + Vertex(-1,0,0)); // N
 	Route* re = new Route(roadEndE + Vertex(0,+1,0), roadEndE + Vertex(0,-1,0), split + Vertex(+1,-1,0), split + Vertex(+1,+1,0)); // E
-	Route* rs = new Route(roadEndS + Vertex(+1,0,0), roadEndS + Vertex(-1,0,0), split + Vertex(-1,-1,0), split + Vertex(+1,-1,0)); // S
-	Route* rw = new Route(roadEndW + Vertex(0,-1,0), roadEndW + Vertex(0,+1,0), split + Vertex(-1,+1,0), split + Vertex(-1,-1,0)); // W
+	Route* rs = new Route(split + Vertex(+1,-1,0), roadEndS + Vertex(+1,0,0), roadEndS + Vertex(-1,0,0), split + Vertex(-1,-1,0)); // S
+	Route* rw = new Route(split + Vertex(-1,+1,0), split + Vertex(-1,-1,0), roadEndW + Vertex(0,-1,0), roadEndW + Vertex(0,+1,0)); // W
 	addChild(rn);
 	addChild(re);
 	addChild(rs);
 	addChild(rw);
 	// Sous-quartiers
-	addChild(sub(rn->corners[NE], re->corners[NE])); // sous-quartier NE
-	addChild(sub(re->corners[SE], rs->corners[SE])); // sous-quartier SE
-	addChild(sub(rs->corners[SW], rw->corners[SW])); // sous-quartier SW
-	addChild(sub(rw->corners[NW], rn->corners[NW])); // sous-quartier NW
+	addChild(sub(ne, re->nw)); // sous-quartier NE
+	addChild(sub(re->se, rs->se)); // sous-quartier SE
+	addChild(sub(rs->nw, sw)); // sous-quartier SW
+	addChild(sub(rn->nw, rw->nw)); // sous-quartier NW
 	return true;
 }
 
@@ -51,7 +51,6 @@ void RectangleRoutes::triangulation() {
 
 Chose* RectangleRoutes::sub(Vertex ne, Vertex sw) {
 	Segment rect = Segment(ne,sw);
-	std::cout << this << " ne=" << ne << " sw=" << sw << std::endl;
 	if (rect.width() < 10 || rect.height() < 10) {
 		return new Batiment(ne, sw);
 	} else {

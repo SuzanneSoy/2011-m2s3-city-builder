@@ -5,7 +5,10 @@
 
 class Carrefour : public Chose {
 public:
-	Vertex corners[4];
+	Vertex ne;
+	Vertex se;
+	Vertex sw;
+	Vertex nw;
 public:
 	Carrefour(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual bool subdivide();

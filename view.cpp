@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), cameraCenter(500,-500,100), xAngle(135), yAngle(102), moveDist(10) {
+View::View(Chose* root) : root(root), cameraCenter(100,-100,30), xAngle(135), yAngle(102), moveDist(10) {
 	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
 	initWindow();
 	mainLoop();

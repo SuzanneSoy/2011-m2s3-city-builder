@@ -1,10 +1,7 @@
 #include "carrefour.hh"
 
-Carrefour::Carrefour(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose() {
-	corners[NE]=ne;
-	corners[SE]=se;
-	corners[SW]=sw;
-	corners[NW]=nw;
+Carrefour::Carrefour(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
+	addEntropy(ne,se,sw,nw);
 	triangulation();
 }
 
@@ -18,11 +15,11 @@ std::ostream& operator<<(std::ostream& os, const Carrefour* c) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Carrefour& c) {
-	return os << "Carrefour " << c.corners[NE] << "-" << c.corners[SE] << "-" << c.corners[NW] << "-" << c.corners[SW];
+	return os << "Carrefour " << c.ne << "-" << c.se << "-" << c.sw << "-" << c.nw;
 }
 
 void Carrefour::triangulation() {
 	triangles.reserve(2);
-	addTriangle(new Triangle(corners[SW], corners[NW], corners[NE], 0x80, 0x80, 0x80));
-	addTriangle(new Triangle(corners[SW], corners[SE], corners[NE], 0x80, 0x80, 0x80));
+	addTriangle(new Triangle(sw, nw, ne, 0x80, 0x80, 0x80));
+	addTriangle(new Triangle(sw, se, ne, 0x80, 0x80, 0x80));
 }

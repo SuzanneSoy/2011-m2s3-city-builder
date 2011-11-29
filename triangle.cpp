@@ -14,13 +14,11 @@ std::ostream& operator<<(std::ostream& os, const Triangle& t) {
 }
 
 void Triangle::display() {
-	//glColor3ub(r, g, b);
 	View::setColor(r,g,b);
-	//std::cout << (int)r << "," << (int)g << "," << (int)b << std::endl;
 	glNormal3d(normal.x,normal.y,normal.z);
 	glBegin(GL_TRIANGLES);
-	glVertex3d(v1.x,v1.y,v1.z);
-	glVertex3d(v2.x,v2.y,v2.z);
-	glVertex3d(v3.x,v3.y,v3.z);
+	glVertex3d(v1.x*10,v1.y*10,v1.z*10);
+	glVertex3d(v2.x*10,v2.y*10,v2.z*10);
+	glVertex3d(v3.x*10,v3.y*10,v3.z*10);
 	glEnd();
 }

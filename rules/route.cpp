@@ -2,11 +2,7 @@
 #include "../vertex.hh"
 #include "../directions.hh"
 
-Route::Route(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose() {
-	corners[NE]=ne;
-	corners[SE]=se;
-	corners[SW]=sw;
-	corners[NW]=nw;
+Route::Route(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
 	triangulation();
 }
 
@@ -20,11 +16,11 @@ std::ostream& operator<<(std::ostream& os, const Route* r) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Route& r) {
-	return os << "Route " << r.corners[NE] << "-" << r.corners[SE] << "-" << r.corners[NW] << "-" << r.corners[SW];
+	return os << "Route " << r.ne << "-" << r.se << "-" << r.sw << "-" << r.nw;
 }
 
 void Route::triangulation() {
 	triangles.reserve(2);
-	addTriangle(new Triangle(corners[SW], corners[NW], corners[NE], 0x6c, 0x6c, 0x6c));
-	addTriangle(new Triangle(corners[SW], corners[SE], corners[NE], 0x6c, 0x6c, 0x6c));
+	addTriangle(new Triangle(sw, nw, ne, 0x6c, 0x6c, 0x6c));
+	addTriangle(new Triangle(sw, se, ne, 0x6c, 0x6c, 0x6c));
 }

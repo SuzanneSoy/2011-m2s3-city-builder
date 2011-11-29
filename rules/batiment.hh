@@ -8,7 +8,6 @@ class Batiment : public Chose {
 public:
 	Vertex ne;
 	Vertex sw;
-	int seed;
 public:
 	Batiment(Vertex ne, Vertex sw);
 	int width();

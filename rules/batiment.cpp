@@ -22,13 +22,13 @@ void Batiment::triangulation() {
 	Vertex b = Vertex(this->ne.x, this->sw.y, 0);
 	Vertex c = Vertex(this->sw.x, this->ne.y, 0);
 	Vertex d = this->sw;
-	
-	int h = 6;
+
+	int h = hashInRange(seed,0,4,8);
 	Vertex ah = a + Vertex(0,0,h);
 	Vertex bh = b + Vertex(0,0,h);
 	Vertex ch = c + Vertex(0,0,h);
 	Vertex dh = d + Vertex(0,0,h);
-	Vertex toit = (ah + bh + ch + dh) / 4 + Vertex(0,0,h/5);
+	Vertex toit = (ah + bh + ch + dh) / 4 + Vertex(0,0,h/2);
 
 	// 4 Murs
 	addTriangle(new Triangle(a,bh,ah,0xf1,0xe3,0xad)); addTriangle(new Triangle(a,b,bh,0xf1,0xe3,0xad)); // a-b-bh-ah
