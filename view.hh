@@ -31,6 +31,9 @@ class View {
 	void displayAxes();
 
 	static void setColor(unsigned char r, unsigned char g, unsigned char b);
+	
+	private:
+	void setLight();
 };
 
 #endif

@@ -30,8 +30,13 @@ void View::initWindow() {
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,MatDif);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,MatAmb);
 	glMaterialfv(GL_FRONT,GL_SHININESS,&shininess);
+	
+	glEnable(GL_LIGHTING); 	// Active l'éclairage
+  	glEnable(GL_LIGHT0);	// Active la lumière 0;
+}
 
-	float Light1Pos[4] = {0.0f, 1.0f, 0.0f, 0.0f};
+void View::setLight() {
+	float Light1Pos[4] = {0.5f, 1.0f, 0.0f, 0.0f};
 	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 	float Light1Spec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	float Light1Amb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
@@ -40,9 +45,6 @@ void View::initWindow() {
 	glLightfv(GL_LIGHT0, GL_SPECULAR, Light1Spec);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, Light1Amb);
 	glLightfv(GL_LIGHT0, GL_POSITION, Light1Pos);
-	
-	glEnable(GL_LIGHTING); 	// Active l'éclairage
-  	glEnable(GL_LIGHT0);	// Active la lumière 0;
 }
 
 void View::displayAxes() {
@@ -79,7 +81,7 @@ void View::renderScene() {
 	
 	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
 	gluLookAt(cameraCenter.x,cameraCenter.y,cameraCenter.z, cameraSight.x, cameraSight.y, cameraSight.z,0,0,1);
-	
+	setLight();
 	displayAxes();
 	root->display();
 	
