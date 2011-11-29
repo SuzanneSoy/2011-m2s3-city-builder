@@ -6,6 +6,10 @@ View::View(Chose* root) : root(root), cameraCenter(500,-500,100), xAngle(135), y
 	mainLoop();
 }
 
+void View::setColor(unsigned char r, unsigned char g, unsigned char b) {
+	float MatDif[4] = {r/255.f, g/255.f, b/255.f, 1.0f};
+	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,MatDif);
+}
 
 void View::initWindow() {
 	SDL_Init(SDL_INIT_VIDEO);
@@ -18,19 +22,19 @@ void View::initWindow() {
 	glewInit();
 	
 	float MatSpec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-	float MatDif[4] = {0.0f, 0.5f, 0.0f, 1.0f};
+	float MatDif[4] = {0.5f, 0.5f, 0.5f, 1.0f};
 	float MatAmb[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-	 
-	float Light1Pos[4] = {0.0f, 1.0f, 0.0f, 0.0f};
-	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-	float Light1Spec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-	float Light1Amb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
 	float shininess = 128.0f;
-
+	 
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,MatDif);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,MatAmb);
 	glMaterialfv(GL_FRONT,GL_SHININESS,&shininess);
+
+	float Light1Pos[4] = {0.0f, 1.0f, 0.0f, 0.0f};
+	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+	float Light1Spec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+	float Light1Amb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, Light1Dif);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, Light1Spec);

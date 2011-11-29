@@ -29,6 +29,8 @@ class View {
 	void mainLoop();
 	void renderScene();
 	void displayAxes();
+
+	static void setColor(unsigned char r, unsigned char g, unsigned char b);
 };
 
 #endif

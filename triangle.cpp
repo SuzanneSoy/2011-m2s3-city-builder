@@ -14,7 +14,8 @@ std::ostream& operator<<(std::ostream& os, const Triangle& t) {
 }
 
 void Triangle::display() {
-	glColor3ub(r, g, b);
+	//glColor3ub(r, g, b);
+	View::setColor(r,g,b);
 	//std::cout << (int)r << "," << (int)g << "," << (int)b << std::endl;
 	glNormal3d(normal.x,normal.y,normal.z);
 	glBegin(GL_TRIANGLES);
