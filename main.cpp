@@ -16,12 +16,12 @@ void recursiveSubdivide(Chose* c) {
 
 int main() {
 	// Générer une tile de base
-	Vertex ne(1000, 1000, 0);
+	Vertex ne(50, 50, 0);
 	Vertex sw(0, 0, 0);
-	RectangleRoutes* r = new RectangleRoutes(ne, sw);
-	recursiveSubdivide(r);
+	Chose* c = new RectangleRoutes(ne, sw);
+	recursiveSubdivide(c);
 
-	new View(r);
+	new View(c);
 	// tile.subdivide tant qu'on n'a pas le niveau de détail désiré.
 	return 0;
 }

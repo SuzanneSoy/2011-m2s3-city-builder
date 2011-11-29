@@ -20,8 +20,8 @@ void Batiment::triangulation() {
 	// abcd sont les quatre coins du bâtiment.
 	Vertex a = this->ne;
 	Vertex b = Vertex(this->ne.x, this->sw.y, 0);
-	Vertex c = this->sw;
-	Vertex d = Vertex(this->sw.x, this->ne.y, 0);
+	Vertex c = Vertex(this->sw.x, this->ne.y, 0);
+	Vertex d = this->sw;
 	
 	int h = 6;
 	Vertex ah = a + Vertex(0,0,h);
@@ -31,16 +31,16 @@ void Batiment::triangulation() {
 	Vertex toit = (ah + bh + ch + dh) / 4 + Vertex(0,0,h/5);
 
 	// 4 Murs
-	addTriangle(new Triangle(a,bh,ah)); addTriangle(new Triangle(a,b,bh)); // a-b-bh-ah
-	addTriangle(new Triangle(b,dh,bh)); addTriangle(new Triangle(b,d,dh)); // b-d-dh-bh
-	addTriangle(new Triangle(d,ch,dh)); addTriangle(new Triangle(d,c,ch)); // d-c-ch-dh
-	addTriangle(new Triangle(c,ah,ch)); addTriangle(new Triangle(c,a,ah)); // c-a-ah-ch
+	addTriangle(new Triangle(a,bh,ah,0xf1,0xe3,0xad)); addTriangle(new Triangle(a,b,bh,0xf1,0xe3,0xad)); // a-b-bh-ah
+	addTriangle(new Triangle(b,dh,bh,0xf1,0xe3,0xad)); addTriangle(new Triangle(b,d,dh,0xf1,0xe3,0xad)); // b-d-dh-bh
+	addTriangle(new Triangle(d,ch,dh,0xf1,0xe3,0xad)); addTriangle(new Triangle(d,c,ch,0xf1,0xe3,0xad)); // d-c-ch-dh
+	addTriangle(new Triangle(c,ah,ch,0xf1,0xe3,0xad)); addTriangle(new Triangle(c,a,ah,0xf1,0xe3,0xad)); // c-a-ah-ch
 
 	// 1 Toit
-	addTriangle(new Triangle(ah,toit,bh));
-	addTriangle(new Triangle(bh,toit,dh));
-	addTriangle(new Triangle(dh,toit,ch));
-	addTriangle(new Triangle(ch,toit,ah));
+	addTriangle(new Triangle(ah,toit,bh,0x8a,0x48,0x3c));
+	addTriangle(new Triangle(bh,toit,dh,0x8a,0x48,0x3c));
+	addTriangle(new Triangle(dh,toit,ch,0x8a,0x48,0x3c));
+	addTriangle(new Triangle(ch,toit,ah,0x8a,0x48,0x3c));
 }
 
 std::ostream& operator<<(std::ostream& os, const Batiment* r) {

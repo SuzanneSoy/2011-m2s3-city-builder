@@ -9,9 +9,9 @@ int Segment::length() {
 }
 
 int Segment::width() {
-	return u.x - v.x;
+	return std::abs(u.x - v.x);
 }
 
 int Segment::height() {
-	return u.y - v.y;
+	return std::abs(u.y - v.y);
 }

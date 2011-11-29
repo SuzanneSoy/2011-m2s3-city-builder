@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), cameraCenter(500,-500,100), xAngle(0), yAngle(0), moveDist(40) {
+View::View(Chose* root) : root(root), cameraCenter(500,-500,100), xAngle(135), yAngle(102), moveDist(40) {
 	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
 	initWindow();
 	mainLoop();
@@ -64,20 +64,6 @@ void View::displayAxes() {
 	glVertex3f(0.0f, 0.0f, 2500.0f); // ending point of the line
 	glEnd( );
 
-	Vertex dest = Vertex::fromSpherical(100, yAngle, xAngle);
-	glBegin(GL_LINES);
-	glColor3ub(255,0,255);
-	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
-	glVertex3d(dest.x, dest.y, dest.z); // ending point of the line
-	glEnd( );
-	
-	dest = cameraCenter - dest;
-	glBegin(GL_LINES);
-	glColor3ub(255,255,0);
-	glVertex3d(cameraCenter.x, cameraCenter.y, cameraCenter.z); // origin of the line
-	glVertex3d(dest.x, dest.y, dest.z); // ending point of the line
-	glEnd( );
-	
 	glEnable(GL_LIGHTING);
 }
 
@@ -91,9 +77,7 @@ void View::renderScene() {
 	gluLookAt(cameraCenter.x,cameraCenter.y,cameraCenter.z, cameraSight.x, cameraSight.y, cameraSight.z,0,0,1);
 	
 	displayAxes();
-	glBegin(GL_TRIANGLES);
 	root->display();
-	glEnd();
 	
 	glFlush();
 	SDL_GL_SwapBuffers();

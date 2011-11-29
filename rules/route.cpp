@@ -25,6 +25,6 @@ std::ostream& operator<<(std::ostream& os, const Route& r) {
 
 void Route::triangulation() {
 	triangles.reserve(2);
-	addTriangle(new Triangle(corners[SW], corners[NW], corners[NE]));
-	addTriangle(new Triangle(corners[SW], corners[SE], corners[NE]));
+	addTriangle(new Triangle(corners[SW], corners[NW], corners[NE], 0x6c, 0x6c, 0x6c));
+	addTriangle(new Triangle(corners[SW], corners[SE], corners[NE], 0x6c, 0x6c, 0x6c));
 }

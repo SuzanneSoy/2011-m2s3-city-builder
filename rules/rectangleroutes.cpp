@@ -45,12 +45,13 @@ void RectangleRoutes::triangulation() {
 	triangles.reserve(2);
 	Vertex nw(this->sw.x, this->ne.y, 0);
 	Vertex se(this->ne.x, this->sw.y, 0);
-	addTriangle(new Triangle(this->sw, nw, this->ne));
-	addTriangle(new Triangle(this->sw, se, this->ne));
+	addTriangle(new Triangle(this->sw, nw, this->ne, 0xc0, 0xc0, 0xc0));
+	addTriangle(new Triangle(this->sw, se, this->ne, 0xc0, 0xc0, 0xc0));
 }
 
 Chose* RectangleRoutes::sub(Vertex ne, Vertex sw) {
 	Segment rect = Segment(ne,sw);
+	std::cout << this << " ne=" << ne << " sw=" << sw << std::endl;
 	if (rect.width() < 10 || rect.height() < 10) {
 		return new Batiment(ne, sw);
 	} else {
