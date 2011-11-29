@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), cameraCenter(100,-100,30), xAngle(135), yAngle(102), moveDist(10) {
+View::View(Chose* root) : root(root), cameraCenter(120,-120,50), xAngle(135), yAngle(102), moveDist(4) {
 	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
 	initWindow();
 	mainLoop();
@@ -90,7 +90,7 @@ void View::renderScene() {
 void View::mainLoop() {
 	short continuer = 1;
 	SDL_Event event;
-	SDL_EnableKeyRepeat(100,100);
+	SDL_EnableKeyRepeat(40,40);
 
 	while (continuer) {
 		while ( SDL_PollEvent(&event) ) {
@@ -113,10 +113,13 @@ void View::mainLoop() {
 							cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, yAngle + 90, xAngle);
 							break;
 						case SDLK_LEFT:
-							cameraCenter = cameraCenter - Vertex::fromSpherical(moveDist, yAngle, xAngle - 90);
+							cameraCenter = cameraCenter - Vertex::fromSpherical(moveDist, 90, xAngle - 90);
 							break;
 						case SDLK_RIGHT:
-							cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, yAngle, xAngle - 90);
+							cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, 90, xAngle - 90);
+							break;
+						case SDLK_ESCAPE:
+							continuer = 0;
 							break;
 						default:
 							break;
