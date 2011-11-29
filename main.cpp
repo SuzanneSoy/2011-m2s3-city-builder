@@ -16,9 +16,9 @@ void recursiveSubdivide(Chose* c) {
 
 int main() {
 	// Générer une tile de base
-	Vertex ne(50, 50, 0);
+	Vertex ne(10, 10, 0);
 	Vertex sw(0, 0, 0);
-	Chose* c = new RectangleRoutes(ne, sw);
+	Chose* c = new Batiment(ne, sw);//new RectangleRoutes(ne, sw);
 	recursiveSubdivide(c);
 
 	new View(c);

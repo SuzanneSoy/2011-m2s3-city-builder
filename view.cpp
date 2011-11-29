@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), cameraCenter(500,-500,100), xAngle(135), yAngle(102), moveDist(40) {
+View::View(Chose* root) : root(root), cameraCenter(500,-500,100), xAngle(135), yAngle(102), moveDist(10) {
 	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
 	initWindow();
 	mainLoop();
@@ -105,6 +105,18 @@ void View::mainLoop() {
 							break;
 						case SDLK_UP:
 							cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, yAngle, xAngle);
+							break;
+						case SDLK_PAGEUP:
+							cameraCenter = cameraCenter - Vertex::fromSpherical(moveDist, yAngle + 90, xAngle);
+							break;
+						case SDLK_PAGEDOWN:
+							cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, yAngle + 90, xAngle);
+							break;
+						case SDLK_LEFT:
+							cameraCenter = cameraCenter - Vertex::fromSpherical(moveDist, yAngle, xAngle - 90);
+							break;
+						case SDLK_RIGHT:
+							cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, yAngle, xAngle - 90);
 							break;
 						default:
 							break;
