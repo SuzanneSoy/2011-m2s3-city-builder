@@ -9,6 +9,8 @@
 // Calcul correct des normales dans triangle.cpp
 // Prendre en compte tous les évènements X en attente avant de relancer le rendu.
 
+class Camera;
+
 class View {
 	private:
 	Chose* root;
@@ -37,4 +39,20 @@ class View {
 	void setLight();
 };
 
+class Camera {
+	private:
+	Vertex cameraCenter;
+	Vertex cameraSight;
+	float xAngle;
+	float yAngle;
+	int moveDist;
+	float mouseSensitivity;
+	
+	public:
+	Camera(Vertex pos, float xA, float yA, int moveSensitivity, float mouseSensitivity);
+	void setCamera() const;
+	void mouseMotion(const SDL_MouseMotionEvent &event);
+	void keyboard(const SDL_KeyboardEvent &event);
+	void animation() const;
+};
 #endif
