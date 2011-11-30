@@ -31,8 +31,8 @@ void Batiment::triangulation() {
 	addTriangle(new Triangle(nwh,neh,nw,0xf1,0xe3,0xad)); addTriangle(new Triangle(neh,ne,nw,0xf1,0xe3,0xad)); // nw-ne-neh-nwh
 
 	// 1 Toit
-	addTriangle(new Triangle(neh,toit,seh,0x8a,0x48,0x3c));
-	addTriangle(new Triangle(seh,toit,swh,0x8a,0x48,0x3c));
-	addTriangle(new Triangle(swh,toit,nwh,0x8a,0x48,0x3c));
-	addTriangle(new Triangle(nwh,toit,neh,0x8a,0x48,0x3c));
+	addTriangle(new Triangle(neh,toit,seh,0x9a,0x48,0x3c));
+	addTriangle(new Triangle(seh,toit,swh,0x9a,0x48,0x3c));
+	addTriangle(new Triangle(swh,toit,nwh,0x9a,0x48,0x3c));
+	addTriangle(new Triangle(nwh,toit,neh,0x9a,0x48,0x3c));
 }
