@@ -7,16 +7,15 @@
 class Batiment : public Chose {
 public:
 	Vertex ne;
+	Vertex se;
 	Vertex sw;
+	Vertex nw;
 public:
-	Batiment(Vertex ne, Vertex sw);
+	Batiment(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	int width();
 	int height();
 	virtual bool subdivide();
 	virtual void triangulation();
 };
-
-std::ostream& operator<<(std::ostream& os, const Batiment& r);
-std::ostream& operator<<(std::ostream& os, const Batiment* r);
 
 #endif

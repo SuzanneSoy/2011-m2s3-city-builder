@@ -56,7 +56,7 @@ void RectangleRoutes::triangulation() {
 Chose* RectangleRoutes::sub(Vertex ne, Vertex sw) {
 	Segment rect = Segment(ne,sw);
 	if (rect.width() < 10 || rect.height() < 10) {
-		return new Batiment(ne, sw);
+		return new Batiment(ne, Vertex(ne.x, sw.y, 0), sw, Vertex(sw.x, ne.y, 0));
 	} else {
 		return new RectangleRoutes(ne, sw);
 	}
