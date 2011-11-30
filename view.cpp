@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), cameraCenter(127,14,128), xAngle(44), yAngle(101), moveDist(4) {
+View::View(Chose* root) : root(root), cameraCenter(127,14,128), xAngle(44), yAngle(101), moveDist(4), mouseSensitivity(0.4) {
 	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
 	initWindow();
 	mainLoop();
@@ -93,6 +93,9 @@ void View::mainLoop() {
 	short continuer = 1;
 	SDL_Event event;
 	SDL_EnableKeyRepeat(40,40);
+	SDL_WM_GrabInput(SDL_GRAB_ON);
+    SDL_ShowCursor(SDL_DISABLE);
+
 
 	while (continuer) {
 		while ( SDL_PollEvent(&event) ) {
@@ -134,8 +137,12 @@ void View::mainLoop() {
 					break;
 					
 				case SDL_MOUSEMOTION:
-					xAngle = 90 - (event.motion.x - (windowWidth/2))*340/windowWidth;
-					yAngle = 90 + (event.motion.y - (windowHeight/2))*340/windowHeight;
+					xAngle -= event.motion.xrel*mouseSensitivity;
+					yAngle += event.motion.yrel*mouseSensitivity;
+					if(yAngle > 179)
+						yAngle = 179;
+					else if(yAngle < 1)
+						yAngle = 1;
 					break;
 					
 				default:

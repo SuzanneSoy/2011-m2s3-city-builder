@@ -22,6 +22,7 @@ class View {
 	float xAngle;
 	float yAngle;
 	int moveDist;
+	float mouseSensitivity;
 
 	public:
 	View(Chose* root);
