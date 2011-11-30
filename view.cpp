@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), camera(Camera(Vertexf(127,14,128),44,101,40,0.6)) {
+View::View(Chose* root) : root(root), camera(Camera(Vertexf(127,0,128),180,-20,40,0.6)) {
 	initWindow();
 	mainLoop();
 }
