@@ -2,11 +2,6 @@
 #define _TRIANGLE_HH_
 
 #include "all_includes.hh"
-struct Vertexf {
-	float x;
-	float y;
-	float z;
-};
 
 class Triangle {
 	public:

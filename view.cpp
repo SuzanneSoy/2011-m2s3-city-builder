@@ -1,7 +1,6 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), cameraCenter(127,14,128), xAngle(44), yAngle(101), moveDist(4), mouseSensitivity(0.4) {
-	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
+View::View(Chose* root) : root(root), camera(Camera(Vertexf(127,14,128),44,101,40,0.6)) {
 	initWindow();
 	mainLoop();
 }
@@ -73,14 +72,15 @@ void View::displayAxes() {
 	glEnable(GL_LIGHTING);
 }
 
-void View::renderScene() {
+void View::renderScene(int lastTime, int currentTime) {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 	
-	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
-	gluLookAt(cameraCenter.x,cameraCenter.y,cameraCenter.z, cameraSight.x, cameraSight.y, cameraSight.z,0,0,1);
+	camera.animation(currentTime-lastTime);
+	camera.setCamera();
+	
 	setLight();
 	displayAxes();
 	root->display();
@@ -96,15 +96,21 @@ void View::mainLoop() {
 	SDL_WM_GrabInput(SDL_GRAB_ON);
     SDL_ShowCursor(SDL_DISABLE);
 
-
+	int lastTime = SDL_GetTicks() - 30;
+	int currentTime = 0;
+	
 	while (continuer) {
+		lastTime = currentTime;
+		currentTime = SDL_GetTicks();
 		while ( SDL_PollEvent(&event) ) {
 			switch(event.type) {
 				case SDL_QUIT:
 					continuer = 0;
 					break;
 				case SDL_KEYDOWN:
-					switch(event.key.keysym.sym) {
+				case SDL_KEYUP:
+					camera.keyboard(event.key);
+					/*switch(event.key.keysym.sym) {
 						case SDLK_DOWN:
 							cameraCenter = cameraCenter - Vertex::fromSpherical(moveDist, yAngle, xAngle);
 							break;
@@ -133,16 +139,11 @@ void View::mainLoop() {
 								std::cout << "Camera = " << cameraCenter << " xAngle = " << xAngle << " yAngle = " << yAngle << std::endl;
 							}
 							break;
-					}
+					}*/
 					break;
 					
 				case SDL_MOUSEMOTION:
-					xAngle -= event.motion.xrel*mouseSensitivity;
-					yAngle += event.motion.yrel*mouseSensitivity;
-					if(yAngle > 179)
-						yAngle = 179;
-					else if(yAngle < 1)
-						yAngle = 1;
+					camera.mouseMotion(event.motion);
 					break;
 					
 				default:
@@ -150,8 +151,76 @@ void View::mainLoop() {
 			}
 		}
 
-		renderScene();
+		renderScene(lastTime,currentTime);
 	}
 
 	SDL_Quit();
+}
+
+Camera::Camera(Vertexf pos, float xA, float yA, int moveSensitivity, float mouseSensitivity) {
+	cameraCenter = pos;
+	xAngle = xA;
+	yAngle = yA;
+	cameraSight = cameraCenter + Vertexf::fromSpherical(100,yA,xA);
+	moveDist = moveSensitivity;
+	this->mouseSensitivity = mouseSensitivity;
+}
+
+void Camera::setCamera() {
+	cameraSight = cameraCenter + Vertexf::fromSpherical(100, yAngle, xAngle);
+	gluLookAt(cameraCenter.x,cameraCenter.y,cameraCenter.z, cameraSight.x, cameraSight.y, cameraSight.z,0,0,1);
+}
+
+void Camera::mouseMotion(const SDL_MouseMotionEvent &event) {
+	xAngle -= event.xrel*mouseSensitivity;
+	yAngle += event.yrel*mouseSensitivity;
+	if(yAngle > 179)
+		yAngle = 179;
+	else if(yAngle < 1)
+		yAngle = 1;
+}
+
+void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
+	switch(eventKey.keysym.sym) {
+		case SDLK_UP:
+			up = (eventKey.type == SDL_KEYDOWN);
+			break;
+		case SDLK_DOWN:
+			down = (eventKey.type == SDL_KEYDOWN);
+			break;
+		case SDLK_LEFT:
+			left = (eventKey.type == SDL_KEYDOWN);
+			break;
+		case SDLK_RIGHT:
+			right = (eventKey.type == SDL_KEYDOWN);
+			break;
+		case SDLK_PAGEUP:
+			pageUp = (eventKey.type == SDL_KEYDOWN);
+			break;
+		case SDLK_PAGEDOWN:
+			pageDown = (eventKey.type == SDL_KEYDOWN);
+			break;
+		case SDLK_ESCAPE:
+			exit(0);
+			break;
+		default :
+			break;
+	}
+}
+
+void Camera::animation(int elapsedTime) {
+	float diff = ((float)(elapsedTime+1)/1000.)*(float)moveDist;
+	
+	if(up)
+		cameraCenter = cameraCenter + Vertexf::fromSpherical(diff, yAngle, xAngle);
+	if(down)
+		cameraCenter = cameraCenter - Vertexf::fromSpherical(diff, yAngle, xAngle);
+	if(left)
+		cameraCenter = cameraCenter - Vertexf::fromSpherical(diff, 90, xAngle - 90);
+	if(right)
+		cameraCenter = cameraCenter + Vertexf::fromSpherical(diff, 90, xAngle - 90);
+	if(pageUp)
+		cameraCenter = cameraCenter - Vertexf::fromSpherical(diff, yAngle + 90, xAngle);
+	if(pageDown)
+		cameraCenter = cameraCenter + Vertexf::fromSpherical(diff, yAngle + 90, xAngle);
 }
