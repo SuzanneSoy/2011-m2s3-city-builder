@@ -25,5 +25,6 @@ class Chose;
 #include "rules/carrefour.hh"
 #include "rules/route.hh"
 #include "rules/rectangleroutes.hh"
+#include "rules/quadroutes.hh"
 
 #endif

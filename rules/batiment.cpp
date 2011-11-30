@@ -1,7 +1,7 @@
 #include "all_includes.hh"
 
 Batiment::Batiment(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
-	addEntropy(ne, sw);
+	addEntropy(ne, se, sw, nw);
 	triangulation();
 }
 

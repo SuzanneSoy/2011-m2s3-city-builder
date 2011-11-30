@@ -3,7 +3,7 @@
 
 #include "all_includes.hh"
 
-// RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
+// RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°, et des côtés de longueur >= 10.
 class RectangleRoutes : public Chose {
 public:
 	Vertex ne;
