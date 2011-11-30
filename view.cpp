@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), camera(Camera(Vertexf(127,0,128),180,-20,40,0.6)) {
+View::View(Chose* root) : root(root), camera(Camera(Vertexf(420,468,151),230,108,40,0.6)) {
 	initWindow();
 	mainLoop();
 }
@@ -84,7 +84,7 @@ void View::renderScene(int lastTime, int currentTime) {
 	camera.setCamera();
 	
 	setLight();
-	displayAxes();
+	//displayAxes();
 	root->display();
 	
 	glFlush();
@@ -97,6 +97,7 @@ void View::mainLoop() {
 	SDL_EnableKeyRepeat(40,40);
 	SDL_WM_GrabInput(SDL_GRAB_ON);
     SDL_ShowCursor(SDL_DISABLE);
+	while ( SDL_PollEvent(&event) ); // empty queue.
 
 	int lastTime = SDL_GetTicks() - 30;
 	int currentTime = 0;
@@ -112,60 +113,35 @@ void View::mainLoop() {
 				case SDL_KEYDOWN:
 				case SDL_KEYUP:
 					camera.keyboard(event.key);
-					/*switch(event.key.keysym.sym) {
-						case SDLK_DOWN:
-							cameraCenter = cameraCenter - Vertex::fromSpherical(moveDist, yAngle, xAngle);
-							break;
-						case SDLK_UP:
-							cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, yAngle, xAngle);
-							break;
-						case SDLK_PAGEUP:
-							cameraCenter = cameraCenter - Vertex::fromSpherical(moveDist, yAngle + 90, xAngle);
-							break;
-						case SDLK_PAGEDOWN:
-							cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, yAngle + 90, xAngle);
-							break;
-						case SDLK_LEFT:
-							cameraCenter = cameraCenter - Vertex::fromSpherical(moveDist, 90, xAngle - 90);
-							break;
-						case SDLK_RIGHT:
-							cameraCenter = cameraCenter + Vertex::fromSpherical(moveDist, 90, xAngle - 90);
-							break;
-						case SDLK_ESCAPE:
-							continuer = 0;
-							break;
-						default:
-							if (SDL_GetKeyName(event.key.keysym.sym)[0] == 'q')
-								continuer = 0;
-							if (SDL_GetKeyName(event.key.keysym.sym)[0] == 'p') { // _Print _Position
-								std::cout << "Camera = " << cameraCenter << " xAngle = " << xAngle << " yAngle = " << yAngle << std::endl;
-							}
-							break;
-					}*/
 					break;
-					
 				case SDL_MOUSEMOTION:
 					camera.mouseMotion(event.motion);
 					break;
-					
 				default:
 					break;
 			}
 		}
-
 		renderScene(lastTime,currentTime);
 	}
 
 	SDL_Quit();
 }
 
-Camera::Camera(Vertexf pos, float xA, float yA, int moveSensitivity, float mouseSensitivity) {
-	cameraCenter = pos;
-	xAngle = xA;
-	yAngle = yA;
-	cameraSight = cameraCenter + Vertexf::fromSpherical(100,yA,xA);
-	moveDist = moveSensitivity;
-	this->mouseSensitivity = mouseSensitivity;
+Camera::Camera(Vertexf pos, float xA, float yA, int moveSensitivity, float mouseSensitivity)
+	: cameraCenter(pos),
+	  cameraSight(cameraCenter + Vertexf::fromSpherical(100,yA,xA)),
+	  xAngle(xA),
+	  yAngle(yA),
+	  moveDist(moveSensitivity),
+	  mouseSensitivity(mouseSensitivity),
+	  up(false), down(false), left(false), right(false),
+	  pageUp(false), pageDown(false)
+{
+}
+
+std::ostream& Camera::print(std::ostream& os) const {
+	return os << "Camera = " << cameraCenter << " xAngle = "
+			  << xAngle << " yAngle = " << yAngle;
 }
 
 void Camera::setCamera() {
@@ -206,6 +182,15 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 			exit(0);
 			break;
 		default :
+			switch(SDL_GetKeyName(eventKey.keysym.sym)[0]) {
+				case 'q':
+					exit(0);
+					break;
+				case 'p': // _Print _Position
+					std::cout << *this << std::endl;
+				default:
+					break;
+			}
 			break;
 	}
 }

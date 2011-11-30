@@ -38,7 +38,7 @@ class Vertexf {
 	static Vertexf fromSpherical(float r, float xAngle, float yAngle);
 
 	public:
-	friend std::ostream& operator<<(std::ostream& os, const Vertex& v);
+	friend std::ostream& operator<<(std::ostream& os, const Vertexf& v);
 	friend Vertexf operator+(const Vertexf& u, const Vertexf& v);
 	friend Vertexf operator-(const Vertexf& u, const Vertexf& v);
 	friend Vertexf operator-(const Vertexf& v);

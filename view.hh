@@ -30,6 +30,8 @@ class Camera {
 	void mouseMotion(const SDL_MouseMotionEvent &event);
 	void keyboard(const SDL_KeyboardEvent &event);
 	void animation(int elapsedTime);
+	std::ostream& print(std::ostream& os) const;
+	friend std::ostream& operator<<(std::ostream& os, const Camera& c) { return c.print(os); }
 };
 
 
