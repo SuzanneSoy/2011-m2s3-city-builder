@@ -13,6 +13,7 @@ class Vertex {
 	public:
 	Vertex();
 	Vertex(int x, int y, int z);
+	float norm();
 	static Vertex fromSpherical(float r, float xAngle, float yAngle);
 
 	public:
@@ -35,6 +36,7 @@ class Vertexf {
 	public:
 	Vertexf();
 	Vertexf(float x, float y, float z);
+	float norm();
 	static Vertexf fromSpherical(float r, float xAngle, float yAngle);
 
 	public:

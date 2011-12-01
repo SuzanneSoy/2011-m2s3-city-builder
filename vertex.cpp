@@ -4,6 +4,8 @@ Vertex::Vertex() {}
 
 Vertex::Vertex(int x, int y, int z): x(x), y(y), z(z) {}
 
+float Vertex::norm() { return std::sqrt(x*x + y*y + z*z); }
+
 std::ostream& operator<<(std::ostream& os, const Vertex& v) {
 	return os << "(" << v.x << "," << v.y << "," << v.z << ")";
 }
@@ -51,6 +53,8 @@ Vertex Vertex::fromSpherical(float r, float xAngle, float yAngle) {
 Vertexf::Vertexf() {}
 
 Vertexf::Vertexf(float x, float y, float z): x(x), y(y), z(z) {}
+
+float Vertexf::norm() { return std::sqrt(x*x + y*y + z*z); }
 
 std::ostream& operator<<(std::ostream& os, const Vertexf& v) {
 	return os << "(" << v.x << "," << v.y << "," << v.z << ")";

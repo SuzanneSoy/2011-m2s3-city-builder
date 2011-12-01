@@ -11,6 +11,14 @@ int QuadRoutes::height() { return std::abs(this->ne.y - this->sw.y); }
 
 bool QuadRoutes::subdivide() {
 	children.reserve(9);
+	int minchildsize = 4;
+	int lx = std::floor(std::min((nw-ne).norm(), (sw-se).norm()));
+	// constraint: lx - maxdelta*2 ≥ minchildsize
+	// constraint: maxdelta ≤ lx/4
+	int maxdelta = std::min(lx/4, (lx-minchildsize)/2);
+	float xpos = (lx/2.f + hashInRange(seed, 0, -maxdelta, maxdelta)) / (float)lx; // xpos \in 0..1
+	Vertex n = nw * xpos + ne * (1-xpos);
+	
 	int splitXMin = this->sw.x + std::max(4, this->width()*1/4);
 	int splitXMax = this->ne.x - std::max(4, this->width()*1/4);
 	int splitYMin = this->sw.y + std::max(4, this->height()*1/4);
