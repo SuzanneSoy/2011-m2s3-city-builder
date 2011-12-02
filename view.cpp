@@ -6,8 +6,11 @@ View::View(Chose* root) : root(root), camera(Camera(Vertexf(420,468,151),230,108
 }
 
 void View::setColor(unsigned char r, unsigned char g, unsigned char b) {
-	float MatDif[4] = {r/255.f, g/255.f, b/255.f, 1.0f};
-	float MatAmb[4] = {r/500.f, g/500.f, b/500.f, 1.0f};
+	float red = r/255.f;
+	float green = g/255.f;
+	float blue = b/255.f;
+	float MatDif[4] = {red, green, blue, 1.0f};
+	float MatAmb[4] = {red, green, blue, 1.0f};
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,MatDif);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,MatAmb);
 }
