@@ -11,6 +11,9 @@ public:
 	Vertex sw;
 	Vertex nw;
 public:
+	static const int minHeight = 400;
+	static const int maxHeight = 800;
+public:
 	Batiment(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	int width();
 	int height();

@@ -17,12 +17,13 @@ bool Batiment::subdivide() {
 void Batiment::triangulation() {
 	triangles.reserve(12);
 	
-	int h = hashInRange(seed,0,4,8);
+	int h = hashInRange(seed,0,minHeight,maxHeight);
+	int htoit = hashInRange(seed,0,minHeight/2,maxHeight/2);
 	Vertex neh = ne + Vertex(0,0,h);
 	Vertex seh = se + Vertex(0,0,h);
 	Vertex nwh = nw + Vertex(0,0,h);
 	Vertex swh = sw + Vertex(0,0,h);
-	Vertex toit = (neh + seh + nwh + swh) / 4 + Vertex(0,0,h/2);
+	Vertex toit = (neh + seh + nwh + swh) / 4 + Vertex(0,0,htoit);
 
 	// 4 Murs
 	addTriangle(new Triangle(neh,seh,ne,0xf1,0xe3,0xad)); addTriangle(new Triangle(seh,se,ne,0xf1,0xe3,0xad)); // ne-se-seh-neh

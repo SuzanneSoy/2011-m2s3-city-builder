@@ -11,25 +11,44 @@ int QuadRoutes::height() { return std::abs(this->ne.y - this->sw.y); }
 
 bool QuadRoutes::subdivide() {
 	children.reserve(9);
-	int minchildsize = 4;
-	int lx = std::floor(std::min((nw-ne).norm(), (sw-se).norm()));
-	// constraint: lx - maxdelta*2 ≥ minchildsize
-	// constraint: maxdelta ≤ lx/4
-	int maxdelta = std::min(lx/4, (lx-minchildsize)/2);
-	float xpos = (lx/2.f + hashInRange(seed, 0, -maxdelta, maxdelta)) / (float)lx; // xpos \in 0..1
-	Vertex n = nw * xpos + ne * (1-xpos);
+
+	// TODO : faire ces calculs sur des Vertex2d.
 	
-	int splitXMin = this->sw.x + std::max(4, this->width()*1/4);
-	int splitXMax = this->ne.x - std::max(4, this->width()*1/4);
-	int splitYMin = this->sw.y + std::max(4, this->height()*1/4);
-	int splitYMax = this->ne.y - std::max(4, this->height()*1/4);
-	Vertex split(
-		hashInRange(this->seed, 0, splitXMin, splitXMax),
-		hashInRange(this->seed, 1, splitYMin, splitYMax),
-		0 // TODO
-	);
-	// TODO : addChild(…);
-	addChild(new Carrefour(split + Vertex(1,1,0), split + Vertex(1,-1,0), split + Vertex(-1,-1,0), split + Vertex(-1,1,0)));
+	int slen = (se-sw).norm();
+	int nlen = (ne-nw).norm();
+	int minsnlen = std::min(slen,nlen);
+	// constraint: min(slen, nlen) - maxdelta*2 ≥ minchildsize
+	// constraint: maxdelta ≤ min(slen,nlen)/4
+	int xmaxdelta = std::min(minsnlen/4, (minsnlen-minchildsize)/2);
+	float sxpos = slen/2 + hashInRange(seed, 0, -xmaxdelta, xmaxdelta);
+	float nxpos = nlen/2 + hashInRange(seed, 0, -xmaxdelta, xmaxdelta);
+	Vertex s = (sw * sxpos / slen) + (se * (slen - nxpos) / slen);
+	Vertex n = (nw * nxpos / nlen) + (ne * (nlen - nxpos) / nlen);
+
+	int wlen = (nw-sw).norm();
+	int elen = (ne-se).norm();
+	int minwelen = std::min(wlen,elen);
+	// constraint: min(wlen, elen) - maxdelta*2 ≥ minchildsize
+	// constraint: maxdelta ≤ min(wlen,elen)/4
+	int ymaxdelta = std::min(minwelen/4, (minwelen-minchildsize)/2);
+	float wypos = wlen/2 + hashInRange(seed, 0, -ymaxdelta, ymaxdelta);
+	float eypos = elen/2 + hashInRange(seed, 0, -ymaxdelta, ymaxdelta);
+	Vertex w = (nw * wypos / wlen) + (sw * (wlen - wypos) / wlen);
+	Vertex e = (ne * eypos / elen) + (se * (elen - eypos) / elen);
+	
+	Vertex split = intersection(s,n,w,e);
+
+	// TODO : Pour offset les points des extrémités de la route w--split :
+	// Vertex offset = vecteur perpendiculaire w--split, de longueur hrw.
+	// Projeter `offset` sur split--n, et ajouter le résultat à split.
+	// Projeter `offset` sur w--nw, et ajouter le résultat à w.
+
+	// Projeter u sur v : (u scalaire v) / v.norm().
+	// scalaire(u,v) = u.norm() * v.norm() * cos(angle(u,v))
+	// Donc projeter u sur v : u.norm() * cos(angle(u,v))
+	// TODO : comment calculer l'angle(u,v) ?
+	
+	addChild(new Carrefour(split + Vertex(hrw,hrw,0), split + Vertex(hrw,-hrw,0), split + Vertex(-hrw,-hrw,0), split + Vertex(-hrw,hrw,0)));
 	// routes au NESW du carrefour
 	// TODO : la plupart des zéros en z sont faux…
 	Vertex roadEndN(split.x, this->ne.y, 0);
@@ -37,10 +56,10 @@ bool QuadRoutes::subdivide() {
 	Vertex roadEndS(split.x, this->sw.y, 0);
 	Vertex roadEndW(this->sw.x, split.y, 0);
 	// TODO : addChild(…);
-	Route* rn = new Route(roadEndN + Vertex(+1,0,0), split + Vertex(+1,+1,0), split + Vertex(-1,+1,0), roadEndN + Vertex(-1,0,0)); // N
-	Route* re = new Route(roadEndE + Vertex(0,+1,0), roadEndE + Vertex(0,-1,0), split + Vertex(+1,-1,0), split + Vertex(+1,+1,0)); // E
-	Route* rs = new Route(split + Vertex(+1,-1,0), roadEndS + Vertex(+1,0,0), roadEndS + Vertex(-1,0,0), split + Vertex(-1,-1,0)); // S
-	Route* rw = new Route(split + Vertex(-1,+1,0), split + Vertex(-1,-1,0), roadEndW + Vertex(0,-1,0), roadEndW + Vertex(0,+1,0)); // W
+	Route* rn = new Route(roadEndN + Vertex(+hrw,0,0), split + Vertex(+hrw,+hrw,0), split + Vertex(-hrw,+hrw,0), roadEndN + Vertex(-hrw,0,0)); // N
+	Route* re = new Route(roadEndE + Vertex(0,+hrw,0), roadEndE + Vertex(0,-hrw,0), split + Vertex(+hrw,-hrw,0), split + Vertex(+hrw,+hrw,0)); // E
+	Route* rs = new Route(split + Vertex(+hrw,-hrw,0), roadEndS + Vertex(+hrw,0,0), roadEndS + Vertex(-hrw,0,0), split + Vertex(-hrw,-hrw,0)); // S
+	Route* rw = new Route(split + Vertex(-hrw,+hrw,0), split + Vertex(-hrw,-hrw,0), roadEndW + Vertex(0,-hrw,0), roadEndW + Vertex(0,+hrw,0)); // W
 	addChild(rn);
 	addChild(re);
 	addChild(rs);
@@ -63,7 +82,7 @@ void QuadRoutes::triangulation() {
 
 Chose* QuadRoutes::sub(Vertex ne, Vertex sw) {
 	Segment rect = Segment(ne,sw);
-	if (rect.width() < 10 || rect.height() < 10) {
+	if (rect.width() < minQuadSize || rect.height() < minQuadSize) {
 		return new Batiment(ne, Vertex(ne.x, sw.y, 0), sw, Vertex(sw.x, ne.y, 0));
 	} else {
 		return new QuadRoutes(ne, Vertex(ne.x, sw.y, 0), sw, Vertex(sw.x, ne.y, 0));

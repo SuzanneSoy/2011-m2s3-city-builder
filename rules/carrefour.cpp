@@ -20,6 +20,6 @@ std::ostream& operator<<(std::ostream& os, const Carrefour& c) {
 
 void Carrefour::triangulation() {
 	triangles.reserve(2);
-	addTriangle(new Triangle(ne, nw, sw, 0x80, 0x80, 0x80));
-	addTriangle(new Triangle(sw, se, ne, 0x80, 0x80, 0x80));
+	addTriangle(new Triangle(ne, nw, sw, 0x36, 0x36, 0x36));
+	addTriangle(new Triangle(sw, se, ne, 0x36, 0x36, 0x36));
 }

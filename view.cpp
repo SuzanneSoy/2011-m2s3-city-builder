@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), camera(Camera(Vertexf(420,468,151),230,108,40,0.6)) {
+View::View(Chose* root) : root(root), camera(Camera(Vertexf(1000,1000,2000),45,100,1000,0.6)) {
 	initWindow();
 	mainLoop();
 }
@@ -21,7 +21,7 @@ void View::initWindow() {
 	SDL_SetVideoMode(windowWidth, windowHeight, 32, SDL_OPENGL);
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	gluPerspective(70,(double)windowWidth/windowHeight,1,10000);
+	gluPerspective(70,(double)windowWidth/windowHeight,1,100000); // back frustum : 1km
 	glEnable(GL_DEPTH_TEST);
 	glewInit();
 	
@@ -40,7 +40,7 @@ void View::initWindow() {
 }
 
 void View::setLight() {
-	float Light1Pos[4] = {0.5f, 1.0f, 1.0f, 0.0f};
+	float Light1Pos[4] = {-0.5f, -1.0f, 1.0f, 0.0f};
 	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 	float Light1Spec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	float Light1Amb[4] = {0.2f, 0.2f, 0.2f, 1.0f};
@@ -88,7 +88,9 @@ void View::renderScene(int lastTime, int currentTime) {
 	
 	setLight();
 	//displayAxes();
+	glBegin(GL_TRIANGLES);
 	root->display();
+	glEnd();
 	
 	glFlush();
 	SDL_GL_SwapBuffers();
@@ -189,8 +191,18 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 				case 'q':
 					exit(0);
 					break;
+				case 's':
+					if (eventKey.type != SDL_KEYDOWN) break;
+					moveDist = std::min(50000,std::max(moveDist+1, moveDist*10/9));
+					break;
+				case 'x':
+					if (eventKey.type != SDL_KEYDOWN) break;
+					moveDist = std::max(10, moveDist*9/10);
+					break;
 				case 'p': // _Print _Position
+					if (eventKey.type != SDL_KEYDOWN) break;
 					std::cout << *this << std::endl;
+					break;
 				default:
 					break;
 			}
