@@ -1,6 +1,4 @@
-#include "route.hh"
-#include "../vertex.hh"
-#include "../directions.hh"
+#include "all_includes.hh"
 
 Route::Route(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
 	triangulation();

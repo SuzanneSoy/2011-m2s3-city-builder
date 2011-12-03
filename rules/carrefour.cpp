@@ -1,4 +1,4 @@
-#include "carrefour.hh"
+#include "all_includes.hh"
 
 Carrefour::Carrefour(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
 	addEntropy(ne,se,sw,nw);

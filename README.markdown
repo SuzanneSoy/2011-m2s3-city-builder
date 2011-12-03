@@ -1,8 +1,8 @@
 Minimal requirements
 ====================
 
-* imagemagick
-* gcc
+* g++
+* GNU make
 
 How to test this program ?
 ==========================

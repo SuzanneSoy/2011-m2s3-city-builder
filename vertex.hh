@@ -14,6 +14,9 @@ class Vertex {
 	Vertex();
 	Vertex(int x, int y, int z);
 	float norm();
+	Vertex projectOn(Vertex v);
+	Vertex setNorm(int n);
+	Vertex perpendicular(); // Perpendiculaire 2D dans le sens contraire des aiguilles d'une montre.
 	static Vertex fromSpherical(float r, float xAngle, float yAngle);
 	friend Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d); // Intersection entre (a,b) et (c,d).
 

@@ -1,6 +1,7 @@
 #include "all_includes.hh"
 
-View::View(Chose* root) : root(root), camera(Camera(Vertexf(1000,1000,2000),45,100,1000,0.6)) {
+// camera(Camera(Vertexf(1000,1000,2000),45,100,1000,0.6)
+View::View(Chose* root) : root(root), camera(Camera(Vertexf(13126,19103,30539),90,179,1000,0.6)) {
 	initWindow();
 	mainLoop();
 }
@@ -27,7 +28,7 @@ void View::initWindow() {
 	
 	float MatSpec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	float MatDif[4] = {0.5f, 0.5f, 0.5f, 1.0f};
-	float MatAmb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
+	float MatAmb[4] = {0.3f, 0.3f, 0.6f, 1.0f};
 	float shininess = 128.0f;
 	 
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
@@ -157,6 +158,7 @@ void Camera::setCamera() {
 void Camera::mouseMotion(const SDL_MouseMotionEvent &event) {
 	xAngle -= event.xrel*mouseSensitivity;
 	yAngle += event.yrel*mouseSensitivity;
+	xAngle = std::fmod(xAngle + 360, 360);
 	if(yAngle > 179)
 		yAngle = 179;
 	else if(yAngle < 1)

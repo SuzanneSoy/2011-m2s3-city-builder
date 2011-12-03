@@ -16,11 +16,12 @@ void recursiveSubdivide(Chose* c) {
 
 int main() {
 	// Générer une tile de base
+	std::cout << "Initial seed = " << Chose::initialSeed << std::endl;
 	int size = 20000;
 	Vertex ne(size, size, 0);
 	Vertex se(size, 0, 0);
 	Vertex sw(0, 0, 0);
-	Vertex nw(0, size, 0);
+	Vertex nw(0, size*2, 0);
 	Chose* c = new QuadRoutes(ne,se,sw,nw);
 	// c->subdivide();
 	recursiveSubdivide(c);

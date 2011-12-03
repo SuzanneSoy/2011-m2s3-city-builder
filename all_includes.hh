@@ -1,6 +1,8 @@
 #ifndef _ALL_INCLUDES_HH_
 #define _ALL_INCLUDES_HH_
 
+typedef long long int64;
+
 class Chose;
 
 #include <iostream>
@@ -21,6 +23,7 @@ class Chose;
 #include "view.hh"
 
 #include "rules/chose.hh"
+#include "rules/quad.hh"
 #include "rules/batiment.hh"
 #include "rules/carrefour.hh"
 #include "rules/route.hh"

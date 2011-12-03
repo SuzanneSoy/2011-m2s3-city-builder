@@ -23,7 +23,7 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const QuadRoutes& r);
 	friend std::ostream& operator<<(std::ostream& os, const QuadRoutes* r);
 private:
-	Chose* sub(Vertex ne, Vertex sw);
+	Chose* sub(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 };
 
 

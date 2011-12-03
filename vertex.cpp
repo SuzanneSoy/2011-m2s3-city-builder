@@ -11,16 +11,33 @@ Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d) {
 	// Note : si les deux lignes sont parallèles, on risque fort
 	// d'avoir une division par zéro.
 	// http://en.wikipedia.org/wiki/Line-line_intersection
-	long long x1 = a.x; long long y1 = a.y;
-	long long x2 = b.x; long long y2 = b.y;
-	long long x3 = c.x; long long y3 = c.y;
-	long long x4 = d.x; long long y4 = d.y;
-	long long denominator =  ((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
+	int64 x1 = a.x; int64 y1 = a.y;
+	int64 x2 = b.x; int64 y2 = b.y;
+	int64 x3 = c.x; int64 y3 = c.y;
+	int64 x4 = d.x; int64 y4 = d.y;
+	int64 denominator =  ((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
 	return Vertex(
 		((x1*y2-y1*x2)*(x3-x4) - (x1-x2)*(x3*y4-y3*x4)) / denominator,
 		((x1*y2-y1*x2)*(y3-y4) - (y1-y2)*(x3*y4-y3*x4)) / denominator,
 		0
 	);
+}
+
+Vertex Vertex::projectOn(Vertex v) {
+	// http://www.developpez.net/forums/d202580/applications/developpement-2d-3d-jeux/contribuez/faq-mat-quat-ajout-calculs-vectoriels/
+	int64 scalaire = this->x*v.x + this->y*v.y;
+	int64 normecarre = v.norm();
+	normecarre *= normecarre;
+	return Vertex(((int64)v.x) * scalaire / normecarre, ((int64)v.y) * scalaire / normecarre, 0);
+}
+
+Vertex Vertex::setNorm(int n) {
+	int64 current = norm();
+	return Vertex((int64)x * (int64)n / current, (int64)y * (int64)n / current, 0);
+}
+
+Vertex Vertex::perpendicular() {
+	return Vertex(-y, x, 0);
 }
 
 Vertex::operator Vertexf() { return Vertexf(x,y,z); }

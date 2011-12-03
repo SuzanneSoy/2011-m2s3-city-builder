@@ -1,8 +1,4 @@
-simple-terrain
-display
-roam
-roads
 city
-*.o
-*.d
-.*.d
+all.cpp
+all_includes.hh.d
+all_includes.hh.gch
