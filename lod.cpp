@@ -39,24 +39,61 @@ Lod::Lod(float[3] camera) {
 void Lod::setCamera(float[3] camera) {
 	this->camera = camera;
 	
-	for(int i = 0; i < 5; i++) {
+	// Merge.
+	for(int i = 0; i < 6; i++) {
 		Chose* c;
 		int pos = NegateEven(camera[i>>1], i);
 		while(c = merge[i].popIfLessThan(pos)) {
-			for(int j = 0; j < 5; j++) {
+			for(int j = 0; j < 6; j++) {
 				if(i == j) break;
 				// TODO : sera merge[j].remove(c->mergeCube[j]);
 				merge[j].remove(NegateEven(c->mergeCube[j], j), c);
 			}
 		}
 	}
+	// Split out vers split in.
+	for(int i = 0; i < 6; i++) {
+		Chose* c;
+		int pos = NegateEven(camera[i>>1], i+1);
+		while(c = split[2*i+1].popIfLessThan(pos)) {
+			if(c->inCounter = 5) {
+				for(int j = 0; j < 6; j++) {
+					if(i == j) break;
+					// TODO : sera split[2*j].remove(c->splitCube[j]);
+					split[2*j].remove(NegateEven(c->splitCube[j], j), c);
+				}
+			}
+			else {
+				c->inCounter++;
+				split[2*i].insert(c->splitCube[i], c);
+			}
+		}
+	}
+	
+	// Split in vers split out.
+	for(int i = 0; i < 6; i++) {
+		Chose* c;
+		int pos = NegateEven(camera[i>>1], i);
+		while(c = split[2*i].popIfLessThan(pos)) {
+			c->inCounter--;
+			split[2*i+1].insert(c->splitCube[i], c);
+		}
+	}
 }
 
 void Lod::addMergeCube(Chose* chose, int[6] limits) {
 	for(int i = 0; i < 5; i++)
-		merge.insert(NegateEven(limits[i], i), chose);
+		merge[i].insert(NegateEven(limits[i], i), chose);
 }
 
-void Lod::addSplitCube(int[6] limits) {
-	
+void Lod::addSplitCube(Chose* chose, int[6] limits) {
+	chose->inCounter = 0;
+	for(int i = 0; i < 5; i++)
+		if(NegateEven(limits[i],i) > camera[i>>1]) {
+			chose->inCounter++;
+			split[2*i].insert(NegateEven(limits[i],i), chose);
+		}
+		else {
+			split[2*i+1].insert(NegateEven(limits[i],i+1), chose);
+		}
 }

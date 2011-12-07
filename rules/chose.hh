@@ -10,6 +10,9 @@ public:
 	unsigned int seed;
 	std::vector<Chose*> children;
 	std::vector<Triangle*> triangles;
+	int inCounter;
+	int splitCube[6];
+	int mergeCube[6];
 public:
 	Chose();
 	inline void addEntropy(unsigned int x1) { seed = hash2(seed, x1); }
