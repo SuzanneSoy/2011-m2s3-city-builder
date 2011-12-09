@@ -14,8 +14,8 @@ class Abr {
 
 class Lod {
 	private :
-	Abr merge[6];
-	Abr split[12];
+	Abr merge[6];	// {xMin, xMax, yMin, yMax, zMin, zMax}.
+	Abr split[12];	// {xMinIn, xMinOut, xMaxIn, xMaxOut, yMinIn, yMaxOut, yMaxIn, yMaxOut, zMinIn, zMinOut, zMaxIn, zMaxOut}.
 	float camera[3];
 	
 	public :
