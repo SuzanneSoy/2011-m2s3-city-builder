@@ -25,8 +25,8 @@ Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d) {
 
 Vertex Vertex::projectOn(Vertex v) {
 	// http://www.developpez.net/forums/d202580/applications/developpement-2d-3d-jeux/contribuez/faq-mat-quat-ajout-calculs-vectoriels/
-	int64 scalaire = this->x*v.x + this->y*v.y;
-	int64 normecarre = v.norm();
+	int64 scalaire = ((int64)this->x)*((int64)v.x) + ((int64)this->y)*((int64)v.y);
+	int normecarre = v.norm();
 	normecarre *= normecarre;
 	return Vertex(((int64)v.x) * scalaire / normecarre, ((int64)v.y) * scalaire / normecarre, 0);
 }
@@ -38,6 +38,15 @@ Vertex Vertex::setNorm(int n) {
 
 Vertex Vertex::perpendicular() {
 	return Vertex(-y, x, 0);
+}
+
+float Vertex::cosAngle(Vertex v) {
+	// http://www.developpez.net/forums/d202580/applications/developpement-2d-3d-jeux/contribuez/faq-mat-quat-ajout-calculs-vectoriels/
+	return ((double)(this->x*v.x + this->y*v.y)) / (((double)norm())*((double)v.norm()));
+}
+
+float cosAngle(Vertex u, Vertex v, Vertex w) {
+	return (u-v).cosAngle(w-v);
 }
 
 Vertex::operator Vertexf() { return Vertexf(x,y,z); }

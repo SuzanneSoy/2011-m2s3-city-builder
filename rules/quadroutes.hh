@@ -14,6 +14,9 @@ public:
 	static const int hrw = 250; // half road width : 2,50m.
 	static const int minchildsize = 1000;
 	static const int minQuadSize = 2500;
+	static const int maxAngleDelta = 20; // 90±20°
+	static const float cosMin;
+	static const float cosMax;
 public:
 	QuadRoutes(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	int width();

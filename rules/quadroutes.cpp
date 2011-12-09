@@ -1,5 +1,8 @@
 #include "all_includes.hh"
 
+const float QuadRoutes::cosMin = std::cos((90+maxAngleDelta)/180.f*3.14159);
+const float QuadRoutes::cosMax = std::cos((90-maxAngleDelta)/180.f*3.14159);
+
 QuadRoutes::QuadRoutes(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
 	addEntropy(ne, se, sw, nw);
 	triangulation();
@@ -37,6 +40,8 @@ bool QuadRoutes::subdivide() {
 	Vertex e = (ne * eypos / elen) + (se * (elen - eypos) / elen);
 	
 	Vertex split = intersection(s,n,w,e);
+
+	std::cout << "n-split-e=" << cosAngle(n,split,e) << " minmax=" << cosMax << std::endl;
 
 	// Créer 4 quad (qne, qse, qsw, qnw), puis :
 	Quad q[4] = {
