@@ -15,19 +15,20 @@ class Chose;
 #include <GL/glu.h>
 #include <GL/gl.h>
 
+#include "directions.hh"
 #include "vertex.hh"
 #include "segment.hh"
 #include "triangle.hh"
-#include "directions.hh"
+#include "quad.hh"
+
 #include "hash.hh"
 #include "view.hh"
 
 #include "rules/chose.hh"
-#include "rules/quad.hh"
 #include "rules/batiment.hh"
 #include "rules/carrefour.hh"
 #include "rules/route.hh"
-#include "rules/rectangleroutes.hh"
-#include "rules/quadroutes.hh"
+#include "rules/quadrilatere.hh"
+#include "rules/quadcroix.hh"
 
 #endif

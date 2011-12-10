@@ -13,3 +13,8 @@ int Segment::width() {
 int Segment::height() {
 	return std::abs(u.y - v.y);
 }
+
+Vertex Segment::randomPos(int seed, int n, int a, int b) {
+	int pos = hashInRange(seed, n, a, b);
+	return (u * pos + v * (100-pos)) / 100;
+}
