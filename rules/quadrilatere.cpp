@@ -10,28 +10,23 @@ Quadrilatere::Quadrilatere(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose()
 
 Chose* Quadrilatere::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw) {
 	Quad q = Quad(ne,se,sw,nw);
-	int minLength = q.minLength();
-	int maxLength = q.maxLength();
-	float minAngle = q.minAngle();
-	float maxAngle = q.maxAngle();
-	if (minLength < 2500 && maxLength > 5000 && proba(seed, n, 1, 20)) {
+	bool small = q.minLength() < 2500;
+	bool big = q.maxLength() >= 5000;
+	bool anglesAcceptable = q.minAngle() > Angle::d2r(30) && q.maxAngle() < Angle::d2r(150);
+	bool anglesOk = q.minAngle() > Angle::d2r(50) && q.maxAngle() < Angle::d2r(130);
+	bool tooWideX = q.minLengthEW() * 2 < q.maxLengthNS(); // trop allongé (côté E ou W deux fois plus petit que le côté N ou S).
+	bool tooWideY = q.minLengthNS() * 2 < q.maxLengthEW(); // trop allongé (côté N ou S deux fois plus petit que le côté E ou W).
+	if (!big && proba(seed, n, 1, 20)) {
 		return new QuadHerbe(ne, se, sw, nw);
-	} else if (minLength < 2500 && minAngle > 50/180.f*3.1415926535 && maxAngle < 130/180.f*3.1415926535) { // + contrainte sur les angles
+	} else if (small && anglesAcceptable) {
 		return new Batiment(ne, se, sw, nw);
-	} else if (minAngle <= 50/180.f*3.1415926535 && maxAngle >= 130/180.f*3.1415926535) {
-		// angles trop pointus
-		return new QuadHerbe(0xff, ne, se, sw, nw);
-	} else if (minLength > 2500 &&
-			   2*std::min(Segment(nw,ne).length(), Segment(se,sw).length())
-			   < std::max(Segment(ne,se).length(), Segment(sw,nw).length())) {
-		// trop allongé (côté N ou S deux fois plus petit que le côté E ou W).
-		return new QuadRect(nw, ne, se, sw); // TODO
-	} else if (minLength > 2500 &&
-			   2*std::min(Segment(ne,se).length(), Segment(sw,nw).length())
-			   < std::max(Segment(nw,ne).length(), Segment(se,sw).length())) {
-		// trop allongé (côté E ou W deux fois plus petit que le côté N ou S).
-		return new QuadRect(ne, se, sw, nw); // TODO
-	} else if (minLength > 2500) {
+	} else if (!small && !anglesOk) {
+		return new QuadAngle(ne, se, sw, nw);
+	} else if (!small && tooWideY) {
+		return new QuadRect(nw, ne, se, sw);
+	} else if (!small && tooWideX) {
+		return new QuadRect(ne, se, sw, nw);
+	} else if (!small) {
 		return new QuadCroix(ne, se, sw, nw);
 	} else {
 		return new QuadHerbe(ne, se, sw, nw);

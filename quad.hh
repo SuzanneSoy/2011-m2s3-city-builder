@@ -11,6 +11,10 @@ public:
 	Quad();
 	Quad(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	void offset(/*Cardinal*/int side, int offset);
+	int minLengthNS();
+	int minLengthEW();
+	int maxLengthNS();
+	int maxLengthEW();
 	int minLength();
 	int maxLength();
 	float minAngle();

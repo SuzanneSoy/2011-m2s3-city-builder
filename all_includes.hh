@@ -15,6 +15,7 @@ class Chose;
 #include <GL/glu.h>
 #include <GL/gl.h>
 
+#include "angle.hh"
 #include "directions.hh"
 #include "vertex.hh"
 #include "segment.hh"
@@ -31,6 +32,8 @@ class Chose;
 #include "rules/quadrilatere.hh"
 #include "rules/quadcroix.hh"
 #include "rules/quadrect.hh"
+#include "rules/quadangle.hh"
 #include "rules/quadherbe.hh"
+#include "rules/tiletri.hh"
 
 #endif

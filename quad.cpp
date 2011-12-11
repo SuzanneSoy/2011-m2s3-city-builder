@@ -15,28 +15,40 @@ void Quad::offset(/*Cardinal*/int side, int offset) {
 	corner[NW + side] = corner[NW + side] + voffset.projectOn(corner[NW + side]-corner[SW + side]);
 }
 
-int Quad::minLength() {
+int Quad::minLengthNS() {
 	return std::min(
-		std::min(
-			Segment(corner[NE],corner[SE]).length(),
-			Segment(corner[SE],corner[SW]).length()
-		), std::min(
-			Segment(corner[SW],corner[NW]).length(),
-			Segment(corner[NW],corner[NE]).length()
-		)
+		Segment(corner[NW],corner[NE]).length(),
+		Segment(corner[SE],corner[SW]).length()
 	);
 }
 
-int Quad::maxLength() {
-	return std::max(
-		std::max(
-			Segment(corner[NE],corner[SE]).length(),
-			Segment(corner[SE],corner[SW]).length()
-		), std::max(
-			Segment(corner[SW],corner[NW]).length(),
-			Segment(corner[NW],corner[NE]).length()
-		)
+int Quad::minLengthEW() {
+	return std::min(
+		Segment(corner[NE],corner[SE]).length(),
+		Segment(corner[SW],corner[NW]).length()
 	);
+}
+
+int Quad::maxLengthNS() {
+	return std::max(
+		Segment(corner[NW],corner[NE]).length(),
+		Segment(corner[SE],corner[SW]).length()
+	);
+}
+
+int Quad::maxLengthEW() {
+	return std::max(
+		Segment(corner[NE],corner[SE]).length(),
+		Segment(corner[SW],corner[NW]).length()
+	);
+}
+
+int Quad::minLength() {
+	return std::min(minLengthNS(), minLengthEW());
+}
+
+int Quad::maxLength() {
+	return std::max(maxLengthNS(), maxLengthEW());
 }
 
 float Quad::minAngle() {
