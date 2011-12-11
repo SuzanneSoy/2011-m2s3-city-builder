@@ -21,7 +21,7 @@ bool QuadCroix::subdivide() {
 	addChild(new Carrefour(q[0].corner[SW], q[1].corner[SW], q[2].corner[SW], q[3].corner[SW]));
 	for (int i = 0; i < 4; i++) {
 		addChild(new Route(q[NE+i].corner[NW], q[NE+i].corner[SW], q[NW+i].corner[SW], q[NW+i].corner[SE]));
-		addChild(Quadrilatere::factory(q[i].corner[0], q[i].corner[1], q[i].corner[2], q[i].corner[3]));
+		addChild(Quadrilatere::factory(seed, 4+i, q[i].corner[0], q[i].corner[1], q[i].corner[2], q[i].corner[3]));
 	}
 	return true;
 }

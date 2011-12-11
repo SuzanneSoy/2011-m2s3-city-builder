@@ -11,7 +11,7 @@ public:
 	Quadrilatere(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual bool subdivide();
 	virtual void triangulation();
-	static Chose* factory(Vertex ne, Vertex se, Vertex sw, Vertex nw);
+	static Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
 };
 
 #endif

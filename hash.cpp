@@ -1,5 +1,14 @@
 #include "all_includes.hh"
 
+int random_seed() {
+	static bool initialized = false;
+	if (!initialized) {
+		initialized = true;
+		srand(time(NULL));
+	}
+	return rand();
+}
+
 // Ce hash donne des bons résultats sur tous les bits de l'entier
 // généré (pas d'artefacts, répartition homogène des 0 et des 1).
 unsigned int hash2(unsigned int a, unsigned int b) {
@@ -15,23 +24,10 @@ unsigned int hash2(unsigned int a, unsigned int b) {
 	return h;
 }
 
-unsigned int hash3(unsigned int seed, int x, int y) {
-	return hash2(seed,hash2(x, y));
-}
-
 int hashInRange(int seed, int n, int a, int b) {
 	return (hash2(seed, n) % (b - a)) + a;
 }
 
-int newSeed(int seed, int n) {
-	return hash2(seed, n);
-}
-
-int random_seed() {
-	static bool initialized = false;
-	if (!initialized) {
-		initialized = true;
-		srand(time(NULL));
-	}
-	return rand();
+bool proba(int seed, int n, unsigned int a, unsigned int b) {
+	return ((hash2(seed, n) % b) < a);
 }
