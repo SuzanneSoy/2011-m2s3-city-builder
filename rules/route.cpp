@@ -17,15 +17,15 @@ std::ostream& operator<<(std::ostream& os, const Route& r) {
 	return os << "Route " << r.ne << "-" << r.se << "-" << r.sw << "-" << r.nw;
 }
 
-
+/*
 void Route::triangulation() {
 	triangles.reserve(2);
 	addTriangle(new Triangle(ne, nw, sw, 0x36, 0x36, 0x36));
 	addTriangle(new Triangle(sw, se, ne, 0x36, 0x36, 0x36));
-}
+}*/
 
 // Version avec trottoirs.
-/*void Route::triangulation() {
+void Route::triangulation() {
 	triangles.reserve(6);
 	Vertex nne, nnw, nse, nsw;				// Nouvel emplacement de la route.
 	Vertex pvLne, pvLnw, pvLsw, pvLse;		// Trottoir Nord (pv => pavement)
@@ -51,4 +51,4 @@ void Route::triangulation() {
 	
 	addTriangle(new Triangle(nne, nnw, nsw, 0x36, 0x36, 0x36));
 	addTriangle(new Triangle(nsw, nse, nne, 0x36, 0x36, 0x36));	
-}*/
+}
