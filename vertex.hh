@@ -18,7 +18,6 @@ class Vertex {
 	Vertex setNorm(int n);
 	Vertex perpendicular(); // Perpendiculaire 2D dans le sens contraire des aiguilles d'une montre.
 	float cosAngle(Vertex v); // cosinus de l'angle entre this et v.
-	friend float cosAngle(Vertex u, Vertex v, Vertex w);
 	static Vertex fromSpherical(float r, float xAngle, float yAngle);
 	friend Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d); // Intersection entre (a,b) et (c,d).
 

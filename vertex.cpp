@@ -45,10 +45,6 @@ float Vertex::cosAngle(Vertex v) {
 	return ((double)(this->x*v.x + this->y*v.y)) / (((double)norm())*((double)v.norm()));
 }
 
-float cosAngle(Vertex u, Vertex v, Vertex w) {
-	return (u-v).cosAngle(w-v);
-}
-
 Vertex::operator Vertexf() { return Vertexf(x,y,z); }
 
 std::ostream& operator<<(std::ostream& os, const Vertex& v) {

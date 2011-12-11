@@ -38,3 +38,19 @@ int Quad::maxLength() {
 		)
 	);
 }
+
+float Quad::minAngle() {
+	float a = 370; // > 360.
+	for (int i = 0; i < 4; i++) {
+		a = std::min(a, Triangle(corner[NE+i], corner[SE+i], corner[SW+i]).angle());
+	}
+	return a;
+}
+
+float Quad::maxAngle() {
+	float a = 0;
+	for (int i = 0; i < 4; i++) {
+		a = std::max(a, Triangle(corner[NE+i], corner[SE+i], corner[SW+i]).angle());
+	}
+	return a;
+}

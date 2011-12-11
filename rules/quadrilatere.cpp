@@ -9,24 +9,29 @@ Quadrilatere::Quadrilatere(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose()
 }
 
 Chose* Quadrilatere::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw) {
-	int minLength = Quad(ne,se,sw,nw).minLength();
-	if (minLength < 2500 && proba(seed, n, 1, 20)) {
+	Quad q = Quad(ne,se,sw,nw);
+	int minLength = q.minLength();
+	int maxLength = q.maxLength();
+	float minAngle = q.minAngle();
+	float maxAngle = q.maxAngle();
+	if (minLength < 2500 && maxLength > 5000 && proba(seed, n, 1, 20)) {
 		return new QuadHerbe(ne, se, sw, nw);
-	} else if (minLength < 2500) { // + contrainte sur les angles
-		// suffisemment petit pour un bâtiment
+	} else if (minLength < 2500 && minAngle > 50/180.f*3.1415926535 && maxAngle < 130/180.f*3.1415926535) { // + contrainte sur les angles
 		return new Batiment(ne, se, sw, nw);
-	} else if (false) {
+	} else if (minAngle <= 50/180.f*3.1415926535 && maxAngle >= 130/180.f*3.1415926535) {
 		// angles trop pointus
-		return NULL;
-	} else if (2*std::min(Segment(nw,ne).length(), Segment(se,sw).length())
+		return new QuadHerbe(0xff, ne, se, sw, nw);
+	} else if (minLength > 2500 &&
+			   2*std::min(Segment(nw,ne).length(), Segment(se,sw).length())
 			   < std::max(Segment(ne,se).length(), Segment(sw,nw).length())) {
 		// trop allongé (côté N ou S deux fois plus petit que le côté E ou W).
 		return new QuadRect(nw, ne, se, sw); // TODO
-	} else if (2*std::min(Segment(ne,se).length(), Segment(sw,nw).length())
+	} else if (minLength > 2500 &&
+			   2*std::min(Segment(ne,se).length(), Segment(sw,nw).length())
 			   < std::max(Segment(nw,ne).length(), Segment(se,sw).length())) {
 		// trop allongé (côté E ou W deux fois plus petit que le côté N ou S).
 		return new QuadRect(ne, se, sw, nw); // TODO
-	} else if (true) { // proche du carré
+	} else if (minLength > 2500) {
 		return new QuadCroix(ne, se, sw, nw);
 	} else {
 		return new QuadHerbe(ne, se, sw, nw);

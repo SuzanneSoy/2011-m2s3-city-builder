@@ -13,6 +13,8 @@ public:
 	void offset(/*Cardinal*/int side, int offset);
 	int minLength();
 	int maxLength();
+	float minAngle();
+	float maxAngle();
 };
 
 
