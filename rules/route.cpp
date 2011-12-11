@@ -26,15 +26,17 @@ void Route::triangulation() {
 
 // Version avec trottoirs.
 void Route::triangulation() {
-	triangles.reserve(6);
+	triangles.reserve(10);
 	Vertex nne, nnw, nse, nsw;				// Nouvel emplacement de la route.
 	Vertex pvLne, pvLnw, pvLsw, pvLse;		// Trottoir Nord (pv => pavement)
 	Vertex pvRne, pvRnw, pvRsw, pvRse;		// Trottoir Sud (pv => pavement)
+	Vertex pvLCne, pvLCnw, pvLCsw, pvLCse;	// Rebord du trottoir gauche.
+	Vertex pvRCne, pvRCnw, pvRCsw, pvRCse;	// rebord du trottoir droit.
 	
-	pvLnw = nw;
-	pvLsw = sw;
-	pvRne = ne;
-	pvRse = se;
+	pvLnw = nw + Vertex(0,0,20);
+	pvLsw = sw + Vertex(0,0,20);
+	pvRne = ne + Vertex(0,0,20);
+	pvRse = se + Vertex(0,0,20);
 	pvLne = nw + ((ne - nw)/6);
 	pvLse = sw + ((se - sw)/6);
 	pvRnw = ne - ((ne - nw)/6);
@@ -43,11 +45,29 @@ void Route::triangulation() {
 	nsw = pvLse;
 	nne = pvRnw;
 	nse = pvRsw;
+	pvLne.z += 20;
+	pvLse.z += 20;
+	pvRnw.z += 20;
+	pvRsw.z += 20;
+	pvLCnw = pvLne;
+	pvLCsw = pvLse;
+	pvLCne = nnw;
+	pvLCse = nsw;
+	pvRCnw = nne;
+	pvRCsw = nse;
+	pvRCne = pvRnw;
+	pvRCse = pvRsw;
+
 	
-	addTriangle(new Triangle(pvLne, pvLnw, pvLsw, 0xEE, 0xEE, 0x00));
-	addTriangle(new Triangle(pvLsw, pvLse, pvLne, 0xEE, 0xEE, 0x00));
-	addTriangle(new Triangle(pvRne, pvRnw, pvRsw, 0xEE, 0xEE, 0x00));
-	addTriangle(new Triangle(pvRsw, pvRse, pvRne, 0xEE, 0xEE, 0x00));
+	addTriangle(new Triangle(pvLne, pvLnw, pvLsw, 0x66, 0x66, 0x66));
+	addTriangle(new Triangle(pvLsw, pvLse, pvLne, 0x66, 0x66, 0x66));
+	addTriangle(new Triangle(pvRne, pvRnw, pvRsw, 0x66, 0x66, 0x66));
+	addTriangle(new Triangle(pvRsw, pvRse, pvRne, 0x66, 0x66, 0x66));
+	
+	addTriangle(new Triangle(pvLCne, pvLCnw, pvLCsw, 0x66, 0x66, 0x66));
+	addTriangle(new Triangle(pvLCsw, pvLCse, pvLCne, 0x66, 0x66, 0x66));
+	addTriangle(new Triangle(pvRCne, pvRCnw, pvRCsw, 0x66, 0x66, 0x66));
+	addTriangle(new Triangle(pvRCsw, pvRCse, pvRCne, 0x66, 0x66, 0x66));
 	
 	addTriangle(new Triangle(nne, nnw, nsw, 0x36, 0x36, 0x36));
 	addTriangle(new Triangle(nsw, nse, nne, 0x36, 0x36, 0x36));	
