@@ -28,6 +28,7 @@ class Chose;
 #include "rules/batiment.hh"
 #include "rules/carrefour.hh"
 #include "rules/route.hh"
+#include "rules/trottoirroute.hh"
 #include "rules/quadrilatere.hh"
 #include "rules/quadcroix.hh"
 #include "rules/quadrect.hh"
