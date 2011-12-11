@@ -4,6 +4,8 @@
 // être une superclasse de "triangle". Pour calculer le cosinus
 // d'angles, on crée un objet triangle assez gros. C'est du
 // gaspillage.
+Triangle::Triangle() {
+}
 Triangle::Triangle(Vertex v1, Vertex v2, Vertex v3): v1(v1), v2(v2), v3(v3) {
 }
 
@@ -30,6 +32,21 @@ float Triangle::cosAngle() {
 
 float Triangle::angle() {
 	return std::acos(cosAngle());
+}
+
+float Triangle::minAngle() {
+	float a2 = angle();
+	float a3 = Triangle(v2,v3,v1).angle();
+	float a1 = Angle::Pi - a2 - a3;
+	return std::min(std::min(a1, a2), a3);
+}
+
+void Triangle::offsetBase(int offset) {
+	Quad q = Quad(v2, v1, v3, v2);
+	q.offset(S, -offset);
+	v1 = q.corner[1];
+	v2 = q.corner[0];
+	v3 = q.corner[2];
 }
 
 void Triangle::display() {
