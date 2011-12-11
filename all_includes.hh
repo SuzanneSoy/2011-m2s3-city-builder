@@ -30,5 +30,7 @@ class Chose;
 #include "rules/route.hh"
 #include "rules/quadrilatere.hh"
 #include "rules/quadcroix.hh"
+#include "rules/quadrect.hh"
+#include "rules/quadherbe.hh"
 
 #endif
