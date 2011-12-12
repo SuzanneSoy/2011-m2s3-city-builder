@@ -10,6 +10,7 @@ Rules
  * piecequad (factory, représente une pièce d'un étage)
  * ouverturequad (factory, paramètre décide si porte ou fenêtre, génère 2 ou 3 modèles de portes ou fenêtre)
  * pareil pour les tri et penta
+ * ponts, ponts avec maison au-dessus, …
 * mobilier (intérieur et extérieur)
  * escalier
  * table
@@ -26,6 +27,7 @@ Rules
  * quartiertriverspenta (coupe un coin du triangle pour en faire un pentagone)
  * quartierpenta (factory)
  * quelques motifs quartierpenta*
+ * quelques motifs qui prévoient des ponts
 * route
  * routequad (factory, paramètre indique si l'on veut un carrefour ou une chaussee ou …)
  * routequadcarrefour
