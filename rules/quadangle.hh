@@ -10,6 +10,8 @@ private:
 public:
 	QuadAngle(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual bool subdivide();
+private:
+	void cutAngle();
 };
 
 #endif

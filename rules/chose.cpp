@@ -35,4 +35,4 @@ void Chose::display() {
 	}
 }
 
-unsigned int Chose::initialSeed = 1814949558;//random_seed();
+unsigned int Chose::initialSeed = random_seed();
