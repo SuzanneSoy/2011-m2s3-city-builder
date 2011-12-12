@@ -4,7 +4,7 @@
 #include "all_includes.hh"
 
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
-class Batiment : public Chose {
+class BatimentQuad : public Chose {
 public:
 	Vertex ne;
 	Vertex se;
@@ -14,7 +14,7 @@ public:
 	static const int minHeight = 400;
 	static const int maxHeight = 800;
 public:
-	Batiment(Vertex ne, Vertex se, Vertex sw, Vertex nw);
+	BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	int width();
 	int height();
 	virtual bool subdivide();

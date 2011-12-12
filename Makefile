@@ -4,7 +4,7 @@ CCWARN=-Wall -Wextra -Werror
 # -flto (nécessite GCC 4.5) -m32 ou -m64
 CFLAGS=-O0 -I. $(CCWARN)
 
-SOURCES = main.cpp view.cpp hash.cpp vertex.cpp segment.cpp triangle.cpp quad.cpp $(shell echo rules/*/*.cpp)
+SOURCES = main.cpp view.cpp hash.cpp vertex.cpp segment.cpp triangle.cpp quad.cpp rules/chose.cpp $(shell echo rules/*/*.cpp)
 LIBS = -lm -lGL -lGLU -lSDL -lGLEW
 EXECUTABLE = city
 

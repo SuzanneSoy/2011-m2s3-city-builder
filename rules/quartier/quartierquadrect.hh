@@ -4,11 +4,11 @@
 #include "all_includes.hh"
 
 // Quad est un quadrilatère
-class QuadRect : public Quadrilatere {
+class QuartierQuadRect : public QuartierQuad {
 private:
 	static const int hrw = 250; // half road width : 2,50m.
 public:
-	QuadRect(Vertex ne, Vertex se, Vertex sw, Vertex nw);
+	QuartierQuadRect(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual bool subdivide();
 };
 

@@ -1,20 +1,20 @@
 #include "all_includes.hh"
 
-Batiment::Batiment(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
+BatimentQuad::BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
 	addEntropy(ne, se, sw, nw);
 	triangulation();
 }
 
-int Batiment::width() { return this->ne.x - this->sw.x; }
+int BatimentQuad::width() { return this->ne.x - this->sw.x; }
 
-int Batiment::height() { return this->ne.y - this->sw.y; }
+int BatimentQuad::height() { return this->ne.y - this->sw.y; }
 
-bool Batiment::subdivide() {
+bool BatimentQuad::subdivide() {
 	// TODO : rien ?
 	return false;
 }
 
-void Batiment::triangulation() {
+void BatimentQuad::triangulation() {
 	triangles.reserve(12);
 	
 	int h = hashInRange(seed,0,minHeight,maxHeight);

@@ -1,30 +1,22 @@
 #include "all_includes.hh"
 
-Route::Route(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
+RouteQuadChaussee::RouteQuadChaussee(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
 	triangulation();
 }
 
-bool Route::subdivide() {
+bool RouteQuadChaussee::subdivide() {
 	// TODO
 	return false;
 }
 
-std::ostream& operator<<(std::ostream& os, const Route* r) {
-	return os << *r;
-}
-
-std::ostream& operator<<(std::ostream& os, const Route& r) {
-	return os << "Route " << r.ne << "-" << r.se << "-" << r.sw << "-" << r.nw;
-}
-
-void Route::triangulation() {
+void RouteQuadChaussee::triangulation() {
 	triangles.reserve(2);
 	addTriangle(new Triangle(ne, nw, sw, 0x36, 0x36, 0x36));
 	addTriangle(new Triangle(sw, se, ne, 0x36, 0x36, 0x36));
 }
 
 // Version avec trottoirs.
-/*void Route::triangulation() {
+/*void RouteQuadChaussee::triangulation() {
 	triangles.reserve(2);
 	Vertex nne, nnw, nse, nsw;				// Nouvel emplacement de la route.
 	

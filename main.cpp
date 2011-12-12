@@ -26,7 +26,7 @@ int main() {
 	Vertex se(size, 0, 0);
 	Vertex sw(0, 0, 0);
 	Vertex nw(0, size, 0);
-	Chose* c = Quadrilatere::factory(Chose::initialSeed, 0, ne, se, sw, nw);
+	Chose* c = QuartierQuad::factory(Chose::initialSeed, 0, ne, se, sw, nw);
 	// c->subdivide();
 	recursiveSubdivide(c);
 

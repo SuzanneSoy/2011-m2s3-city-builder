@@ -3,7 +3,7 @@
 
 #include "all_includes.hh"
 
-class TrottoirRoute : public Chose {
+class TrottoirQuadNormal : public Chose {
 	private :
 	Vertex ne;
 	Vertex se;
@@ -12,7 +12,7 @@ class TrottoirRoute : public Chose {
 	int height;
 
 	public :
-	TrottoirRoute(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height);
+	TrottoirQuadNormal(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height);
 	virtual bool subdivide();
 	virtual void triangulation();
 };

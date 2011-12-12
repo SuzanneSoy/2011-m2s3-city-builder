@@ -4,11 +4,11 @@
 #include "all_includes.hh"
 
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
-class TileTri : public Chose {
+class QuartierTri : public Chose {
 public:
 	Vertex corner[3];
 public:
-	TileTri(Vertex left, Vertex top, Vertex right);
+	QuartierTri(Vertex left, Vertex top, Vertex right);
 	virtual bool subdivide();
 	virtual void triangulation();
 	static Chose* factory(int seed, int n, Vertex left, Vertex top, Vertex right);

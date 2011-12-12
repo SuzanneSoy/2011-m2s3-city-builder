@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-TrottoirRoute::TrottoirRoute(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height) {
+TrottoirQuadNormal::TrottoirQuadNormal(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height) {
 	this->ne = ne;
 	this->nw = nw;
 	this->se = se;
@@ -9,12 +9,12 @@ TrottoirRoute::TrottoirRoute(Vertex ne, Vertex se, Vertex sw, Vertex nw, int hei
 	triangulation();
 }
 
-bool TrottoirRoute::subdivide() {
+bool TrottoirQuadNormal::subdivide() {
 	// TODO
 	return false;
 }
 
-void TrottoirRoute::triangulation() {
+void TrottoirQuadNormal::triangulation() {
 	addTriangle(new Triangle(ne + Vertex(0,0,height), nw + Vertex(0,0,height) , sw + Vertex(0,0,height), 0x66, 0x66, 0x66));
 	addTriangle(new Triangle(sw + Vertex(0,0,height), se + Vertex(0,0,height), ne + Vertex(0,0,height), 0x66, 0x66, 0x66));
 	addTriangle(new Triangle(ne + Vertex(0,0,height), nw + Vertex(0,0,height), sw + Vertex(0,0,height), 0x66, 0x66, 0x66));
