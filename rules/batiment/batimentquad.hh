@@ -19,6 +19,7 @@ public:
 	int height();
 	virtual bool subdivide();
 	virtual void triangulation();
+	Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
 };
 
 #endif

@@ -10,8 +10,21 @@ int BatimentQuad::width() { return this->ne.x - this->sw.x; }
 int BatimentQuad::height() { return this->ne.y - this->sw.y; }
 
 bool BatimentQuad::subdivide() {
-	// TODO : rien ?
+	
+	return true;
+}
+
+Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw) {
 	return false;
+	Quad q = Quad(ne,se,sw,nw);
+	seed = seed;
+	n = n;
+	q.offset(N,20);
+	q.offset(E,20);
+	q.offset(S,20);
+	q.offset(W,20);
+	
+	return NULL;	// pour compilation, à virer.
 }
 
 void BatimentQuad::triangulation() {
