@@ -15,7 +15,7 @@ bool BatimentQuad::subdivide() {
 }
 
 Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw) {
-	//return false;
+	int th = 20;        // Terrain height.
 	Quad q = Quad(ne,se,sw,nw);
 	seed = seed;
 	n = n;
@@ -24,11 +24,24 @@ Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
 	q.offset(S,-140);
 	q.offset(W,-140);
 
+	addChild(new TrottoirQuadNormal(ne,se,q.corner[1],q.corner[0],th,E));
+    addChild(new TrottoirQuadNormal(se,sw,q.corner[2],q.corner[1],th,E));
+    addChild(new TrottoirQuadNormal(sw,nw,q.corner[3],q.corner[2],th,E));
+    addChild(new TrottoirQuadNormal(nw,ne,q.corner[0],q.corner[3],th,E));
+
+    q.corner[0] = q.corner[0] + Vertex(0,0,th);
+    q.corner[1] = q.corner[1] + Vertex(0,0,th);
+    q.corner[2] = q.corner[2] + Vertex(0,0,th);
+    q.corner[3] = q.corner[3] + Vertex(0,0,th);
+
+    addChild(new BatimentQuadJardin(q.corner[0],q.corner[1],q.corner[2],q.corner[3]));
+
+    q.offset(N,-100);
+	q.offset(E,-100);
+	q.offset(S,-400);
+	q.offset(W,-100);
+
 	addChild(new BatimentQuadMaison(q.corner[0],q.corner[1],q.corner[2],q.corner[3]));
-    addChild(new TrottoirQuadNormal(ne,se,q.corner[1],q.corner[0],20,E));
-    addChild(new TrottoirQuadNormal(se,sw,q.corner[2],q.corner[1],20,E));
-    addChild(new TrottoirQuadNormal(sw,nw,q.corner[3],q.corner[2],20,E));
-    addChild(new TrottoirQuadNormal(nw,ne,q.corner[0],q.corner[3],20,E));
 	return NULL;	// pour compilation, à virer.
 }
 
