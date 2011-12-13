@@ -25,10 +25,10 @@ Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
 	q.offset(W,-140);
 
 	addChild(new BatimentQuadMaison(q.corner[0],q.corner[1],q.corner[2],q.corner[3]));
-    addChild(new TrottoirQuadNormal(q.corner[0],ne,se,q.corner[1],20));
-    addChild(new TrottoirQuadNormal(q.corner[1],se,sw,q.corner[2],20));
-    addChild(new TrottoirQuadNormal(q.corner[2],sw,nw,q.corner[3],20));
-    addChild(new TrottoirQuadNormal(q.corner[3],nw,ne,q.corner[0],20));
+    addChild(new TrottoirQuadNormal(ne,se,q.corner[1],q.corner[0],20,E));
+    addChild(new TrottoirQuadNormal(se,sw,q.corner[2],q.corner[1],20,E));
+    addChild(new TrottoirQuadNormal(sw,nw,q.corner[3],q.corner[2],20,E));
+    addChild(new TrottoirQuadNormal(nw,ne,q.corner[0],q.corner[3],20,E));
 	return NULL;	// pour compilation, à virer.
 }
 

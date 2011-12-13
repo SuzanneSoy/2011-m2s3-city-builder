@@ -10,9 +10,10 @@ class TrottoirQuadNormal : public Chose {
 	Vertex sw;
 	Vertex nw;
 	int height;
+	Cardinal border;
 
 	public :
-	TrottoirQuadNormal(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height);
+	TrottoirQuadNormal(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height, Cardinal border);
 	virtual bool subdivide();
 	virtual void triangulation();
 };
