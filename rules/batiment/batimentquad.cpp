@@ -10,26 +10,31 @@ int BatimentQuad::width() { return this->ne.x - this->sw.x; }
 int BatimentQuad::height() { return this->ne.y - this->sw.y; }
 
 bool BatimentQuad::subdivide() {
-	
+    factory(1,1,ne,se,sw,nw);
 	return true;
 }
 
 Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw) {
-	return false;
+	//return false;
 	Quad q = Quad(ne,se,sw,nw);
 	seed = seed;
 	n = n;
-	q.offset(N,20);
-	q.offset(E,20);
-	q.offset(S,20);
-	q.offset(W,20);
-	
+	q.offset(N,-140);
+	q.offset(E,-140);
+	q.offset(S,-140);
+	q.offset(W,-140);
+
+	addChild(new BatimentQuadMaison(q.corner[0],q.corner[1],q.corner[2],q.corner[3]));
+    addChild(new TrottoirQuadNormal(q.corner[0],ne,se,q.corner[1],20));
+    addChild(new TrottoirQuadNormal(q.corner[1],se,sw,q.corner[2],20));
+    addChild(new TrottoirQuadNormal(q.corner[2],sw,nw,q.corner[3],20));
+    addChild(new TrottoirQuadNormal(q.corner[3],nw,ne,q.corner[0],20));
 	return NULL;	// pour compilation, à virer.
 }
 
 void BatimentQuad::triangulation() {
 	triangles.reserve(12);
-	
+
 	int h = hashInRange(seed,0,minHeight,maxHeight);
 	int htoit = hashInRange(seed,0,minHeight/2,maxHeight/2);
 	Vertex neh = ne + Vertex(0,0,h);

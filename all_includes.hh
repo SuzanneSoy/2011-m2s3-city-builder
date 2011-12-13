@@ -26,15 +26,20 @@ class Chose;
 #include "view.hh"
 
 #include "rules/chose.hh"
+
 #include "rules/batiment/batimentquad.hh"
+#include "rules/batiment/batimentquadmaison.hh"
+
 #include "rules/quartier/quartierquad.hh"
 #include "rules/quartier/quartierquadangle.hh"
 #include "rules/quartier/quartierquadcarre.hh"
 #include "rules/quartier/quartierquadrect.hh"
 #include "rules/quartier/quartiertri.hh"
+
 #include "rules/route/routequadcarrefour.hh"
 #include "rules/route/routequadchaussee.hh"
 #include "rules/route/trottoirquadnormal.hh"
+
 #include "rules/terrain/terrainquadherbe.hh"
 
 #endif
