@@ -4,12 +4,13 @@
 #include "all_includes.hh"
 
 class RouteQuadCarrefour : public Chose {
-public:
+    private :
 	Vertex ne;
 	Vertex se;
 	Vertex sw;
 	Vertex nw;
-public:
+
+    public :
 	RouteQuadCarrefour(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual bool subdivide();
 	virtual void triangulation();

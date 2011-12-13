@@ -5,9 +5,10 @@
 
 // Quad est un quadrilatère
 class Quad {
-public:
+    public :
 	Vertex corner[4];
-public:
+
+    public :
 	Quad();
 	Quad(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	void offset(Cardinal side, int offset);

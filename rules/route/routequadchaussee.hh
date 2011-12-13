@@ -4,12 +4,13 @@
 #include "all_includes.hh"
 
 class RouteQuadChaussee : public Chose {
-public:
+    private :
 	Vertex ne;
 	Vertex se;
 	Vertex sw;
 	Vertex nw;
-public:
+
+    public :
 	RouteQuadChaussee(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual bool subdivide();
 	virtual void triangulation();

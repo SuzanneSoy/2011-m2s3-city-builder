@@ -4,7 +4,7 @@
 #include "all_includes.hh"
 
 class Triangle {
-	public:
+	public :
 	Vertex v1;
 	Vertex v2;
 	Vertex v3;
@@ -13,7 +13,7 @@ class Triangle {
 	unsigned char b;
 	Vertexf vnormal;
 
-	public:
+	public :
 	friend std::ostream& operator<<(std::ostream& os, const Triangle* t);
 	friend std::ostream& operator<<(std::ostream& os, const Triangle& t);
 	Triangle();
@@ -24,7 +24,7 @@ class Triangle {
 	float minAngle(); // angle minimum du triangle (en v1, v2 ou v3).
 	void offsetBase(int offset);
 	void display();
-	
+
 	private :
 	Vertexf normal(Vertex v1, Vertex v2, Vertex v3);
 };

@@ -5,15 +5,16 @@
 
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
 class BatimentQuadJardin : public Chose {
-public:
+    private :
 	Vertex ne;
 	Vertex se;
 	Vertex sw;
 	Vertex nw;
-public:
+
+    public :
 	static const int minHeight = 400;
 	static const int maxHeight = 800;
-public:
+
 	BatimentQuadJardin(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	int width();
 	int height();

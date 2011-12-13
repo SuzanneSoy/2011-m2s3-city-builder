@@ -10,7 +10,7 @@
 // Prendre en compte tous les évènements X en attente avant de relancer le rendu.
 
 class Camera {
-	private:
+	private :
 	Vertexf cameraCenter;
 	Vertexf cameraSight;
 	float xAngle;
@@ -23,8 +23,8 @@ class Camera {
 	bool right;
 	bool pageUp;
 	bool pageDown;
-	
-	public:
+
+	public :
 	Camera(Vertexf pos, float xA, float yA, int moveSensitivity, float mouseSensitivity);
 	void setCamera();
 	void mouseMotion(const SDL_MouseMotionEvent &event);
@@ -36,14 +36,14 @@ class Camera {
 
 
 class View {
-	private:
+	private :
 	Chose* root;
 	Camera camera;
-	
+
 	static const int windowWidth = 1024;
 	static const int windowHeight = 768;
 
-	public:
+	public :
 	View(Chose* root);
 	void initWindow();
 	void mainLoop();
@@ -51,8 +51,8 @@ class View {
 	void displayAxes();
 
 	static void setColor(unsigned char r, unsigned char g, unsigned char b);
-	
-	private:
+
+	private :
 	void setLight();
 };
 

@@ -5,12 +5,12 @@
 class Vertexf;
 
 class Vertex {
-	public:
+	public :
 	int x;
 	int y;
 	int z;
 
-	public:
+	public :
 	Vertex();
 	Vertex(int x, int y, int z);
 	float norm();
@@ -21,7 +21,7 @@ class Vertex {
 	static Vertex fromSpherical(float r, float xAngle, float yAngle);
 	friend Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d); // Intersection entre (a,b) et (c,d).
 
-	public:
+	public :
 	operator Vertexf();
 	friend std::ostream& operator<<(std::ostream& os, const Vertex& v);
 	friend Vertex operator+(const Vertex& u, const Vertex& v);
@@ -36,18 +36,18 @@ class Vertex {
 };
 
 class Vertexf {
-	public:
+	public :
 	float x;
 	float y;
 	float z;
 
-	public:
+	public :
 	Vertexf();
 	Vertexf(float x, float y, float z);
 	float norm();
 	static Vertexf fromSpherical(float r, float xAngle, float yAngle);
 
-	public:
+	public :
 	operator Vertex();
 	friend std::ostream& operator<<(std::ostream& os, const Vertexf& v);
 	friend Vertexf operator+(const Vertexf& u, const Vertexf& v);

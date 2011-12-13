@@ -1,7 +1,8 @@
 #include "all_includes.hh"
 
-BatimentQuad::BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
+BatimentQuad::BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw/*, Cardinal door*/) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
 	addEntropy(ne, se, sw, nw);
+	//this->door = door;
 	triangulation();
 }
 

@@ -4,10 +4,11 @@
 #include "all_includes.hh"
 
 class Segment {
-public:
+    private :
 	Vertex u;
 	Vertex v;
-public:
+
+    public :
 	Segment(Vertex u, Vertex v);
 	int length();
 	int width();
