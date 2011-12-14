@@ -9,6 +9,11 @@ TerrainQuadHerbe::TerrainQuadHerbe(Vertex ne, Vertex se, Vertex sw, Vertex nw) :
 	triangulation();
 }
 
+std::vector<Vertex*> TerrainQuadHerbe::getBoundingBoxPoints() const {
+    std::vector<Vertex*> list;
+    return list;
+}
+
 TerrainQuadHerbe::TerrainQuadHerbe(int red, Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), red(red) {
 	addEntropy(ne, se, sw, nw);
 	corner[NE] = ne;

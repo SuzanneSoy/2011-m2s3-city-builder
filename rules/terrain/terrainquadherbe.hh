@@ -5,14 +5,16 @@
 
 // Quad est un quadrilatère
 class TerrainQuadHerbe : public Chose {
-private:
+    private :
 	Vertex corner[4];
 	int red; // DEBUG
-public:
+
+    public :
 	TerrainQuadHerbe(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	TerrainQuadHerbe(int red, Vertex ne, Vertex se, Vertex sw, Vertex nw); // DEBUG
 	virtual bool subdivide();
 	virtual void triangulation();
+	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
 };
 
 

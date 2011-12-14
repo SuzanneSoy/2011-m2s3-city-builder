@@ -9,6 +9,11 @@ int BatimentQuadJardin::width() { return this->ne.x - this->sw.x; }
 
 int BatimentQuadJardin::height() { return this->ne.y - this->sw.y; }
 
+std::vector<Vertex*> BatimentQuadJardin::getBoundingBoxPoints() const {
+    std::vector<Vertex*> list;
+    return list;
+}
+
 bool BatimentQuadJardin::subdivide() {
 
 	return true;

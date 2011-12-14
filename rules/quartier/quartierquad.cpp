@@ -8,6 +8,11 @@ QuartierQuad::QuartierQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose()
 	corner[NW] = nw;
 }
 
+std::vector<Vertex*> QuartierQuad::getBoundingBoxPoints() const {
+    std::vector<Vertex*> list;
+    return list;
+}
+
 Chose* QuartierQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw) {
 	Quad q = Quad(ne,se,sw,nw);
 	bool small = q.minLength() < 2500;

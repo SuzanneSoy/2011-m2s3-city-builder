@@ -5,13 +5,15 @@
 
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
 class QuartierTri : public Chose {
-public:
+    public :
 	Vertex corner[3];
-public:
+
+    public :
 	QuartierTri(Vertex left, Vertex top, Vertex right);
 	virtual bool subdivide();
 	virtual void triangulation();
 	static Chose* factory(int seed, int n, Vertex left, Vertex top, Vertex right);
+	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
 };
 
 #endif

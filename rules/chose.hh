@@ -34,6 +34,7 @@ class Chose {
 	void addChild(Chose* c);
 	void addTriangle(Triangle* t);
 	virtual void triangulation() = 0;
+	virtual std::vector<Vertex*> getBoundingBoxPoints() const = 0;
 
 };
 

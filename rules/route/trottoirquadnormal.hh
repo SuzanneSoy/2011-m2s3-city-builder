@@ -16,6 +16,7 @@ class TrottoirQuadNormal : public Chose {
 	TrottoirQuadNormal(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height, Cardinal border);
 	virtual bool subdivide();
 	virtual void triangulation();
+	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
 };
 
 #endif

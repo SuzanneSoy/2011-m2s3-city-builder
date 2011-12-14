@@ -9,6 +9,11 @@ int BatimentQuadMaison::width() { return this->ne.x - this->sw.x; }
 
 int BatimentQuadMaison::height() { return this->ne.y - this->sw.y; }
 
+std::vector<Vertex*> BatimentQuadMaison::getBoundingBoxPoints() const {
+    std::vector<Vertex*> list;
+    return list;
+}
+
 bool BatimentQuadMaison::subdivide() {
 
 	return true;

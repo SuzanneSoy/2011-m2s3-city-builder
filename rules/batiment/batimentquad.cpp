@@ -10,6 +10,11 @@ int BatimentQuad::width() { return this->ne.x - this->sw.x; }
 
 int BatimentQuad::height() { return this->ne.y - this->sw.y; }
 
+std::vector<Vertex*> BatimentQuad::getBoundingBoxPoints() const {
+    std::vector<Vertex*> list;
+    return list;
+}
+
 bool BatimentQuad::subdivide() {
     factory(1,1,ne,se,sw,nw);
 	return true;

@@ -3,10 +3,15 @@
 QuartierQuadCarre::QuartierQuadCarre(Vertex ne, Vertex se, Vertex sw, Vertex nw) : QuartierQuad(ne, se, sw, nw) {
 }
 
+std::vector<Vertex*> QuartierQuadCarre::getBoundingBoxPoints() const {
+    std::vector<Vertex*> list;
+    return list;
+}
+
 bool QuartierQuadCarre::subdivide() {
 	Vertex middle[4];
 	Quad q[4];
-	
+
 	Vertex cn = Segment(corner[NW], corner[NE]).randomPos(seed, -1, 25, 75);
 	Vertex cs = Segment(corner[SE], corner[SW]).randomPos(seed, -2, 25, 75);
 	Vertex c = Segment(cn, cs).randomPos(seed, -3, 25, 75);

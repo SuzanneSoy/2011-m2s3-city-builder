@@ -8,6 +8,11 @@ QuartierTri::QuartierTri(Vertex left, Vertex top, Vertex right) : Chose() {
 	triangulation();
 }
 
+std::vector<Vertex*> QuartierTri::getBoundingBoxPoints() const {
+    std::vector<Vertex*> list;
+    return list;
+}
+
 Chose* QuartierTri::factory(int seed, int n, Vertex left, Vertex top, Vertex right) {
 	(void)seed;
 	(void)n;

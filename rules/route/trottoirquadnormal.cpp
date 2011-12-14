@@ -10,6 +10,11 @@ TrottoirQuadNormal::TrottoirQuadNormal(Vertex ne, Vertex se, Vertex sw, Vertex n
 	triangulation();
 }
 
+std::vector<Vertex*> TrottoirQuadNormal::getBoundingBoxPoints() const {
+    std::vector<Vertex*> list;
+    return list;
+}
+
 bool TrottoirQuadNormal::subdivide() {
 	// TODO
 	return false;

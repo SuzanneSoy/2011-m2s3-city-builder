@@ -5,11 +5,13 @@
 
 // Quad est un quadrilatère
 class QuartierQuadCarre : public QuartierQuad {
-private:
+    private :
 	static const int hrw = 250; // half road width : 2,50m.
-public:
+
+    public :
 	QuartierQuadCarre(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual bool subdivide();
+	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
 };
 
 #endif

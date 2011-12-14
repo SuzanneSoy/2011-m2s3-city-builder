@@ -5,6 +5,11 @@ RouteQuadCarrefour::RouteQuadCarrefour(Vertex ne, Vertex se, Vertex sw, Vertex n
 	triangulation();
 }
 
+std::vector<Vertex*> RouteQuadCarrefour::getBoundingBoxPoints() const {
+    std::vector<Vertex*> list;
+    return list;
+}
+
 bool RouteQuadCarrefour::subdivide() {
 	// TODO
 	return false;

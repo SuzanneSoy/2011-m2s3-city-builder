@@ -5,12 +5,15 @@
 
 // QuadAngle est un quadrilatère avec des angles malfichus (< 90-40 ou > 90+40).
 class QuartierQuadAngle : public QuartierQuad {
-private:
+    private :
 	static const int hrw = 150; // half road width : 2,50m.
-public:
+
+    public :
 	QuartierQuadAngle(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual bool subdivide();
-private:
+	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
+
+    private :
 	void cutAngle();
 };
 

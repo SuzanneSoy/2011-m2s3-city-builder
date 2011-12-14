@@ -4,6 +4,11 @@ QuartierQuadAngle::QuartierQuadAngle(Vertex ne, Vertex se, Vertex sw, Vertex nw)
 	triangulation();
 }
 
+std::vector<Vertex*> QuartierQuadAngle::getBoundingBoxPoints() const {
+    std::vector<Vertex*> list;
+    return list;
+}
+
 bool QuartierQuadAngle::subdivide() {
 	for (int i = 0; i < 4; i++) {
 		if (Triangle(corner[NW+i], corner[NE+i], corner[SE+i]).angle() >= Angle::d2r(130)) {
