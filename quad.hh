@@ -12,6 +12,7 @@ class Quad {
 	Quad();
 	Quad(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	void offset(Cardinal side, int offset);
+	void offsetNESW(int offsetN, int offsetE, int offsetS, int offsetW);
 	int minLengthNS();
 	int minLengthEW();
 	int maxLengthNS();

@@ -1,13 +1,16 @@
 #include "all_includes.hh"
 
-BatimentQuad::BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw/*, Cardinal door*/) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
+BatimentQuad::BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, Cardinal entry) : Chose(), ne(ne) {
 	addEntropy(ne, se, sw, nw);
-	//this->door = door;
+    this->ne = ne;
+    this->se = se;
+    this-> sw = sw;
+    this->nw = nw;
+	this->entry = entry;
 	triangulation();
 }
 
 int BatimentQuad::width() { return this->ne.x - this->sw.x; }
-
 int BatimentQuad::height() { return this->ne.y - this->sw.y; }
 
 std::vector<Vertex*> BatimentQuad::getBoundingBoxPoints() const {
@@ -42,10 +45,7 @@ Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
 
     addChild(new BatimentQuadJardin(q.corner[0],q.corner[1],q.corner[2],q.corner[3]));
 
-    q.offset(N,-100);
-	q.offset(E,-100);
-	q.offset(S,-400);
-	q.offset(W,-100);
+    q.offset(this->entry,-400);
 
 	addChild(new BatimentQuadMaison(q.corner[0],q.corner[1],q.corner[2],q.corner[3]));
 	return NULL;	// pour compilation, à virer.

@@ -15,6 +15,13 @@ void Quad::offset(Cardinal side, int offset) {
 	corner[NW + side] = corner[NW + side] + voffset.projectOn(corner[NW + side]-corner[SW + side]);
 }
 
+void Quad::offsetNESW(int offsetN, int offsetE, int offsetS, int offsetW) {
+    this->offset(N,offsetN);
+    this->offset(E,offsetE);
+    this->offset(S,offsetS);
+    this->offset(W,offsetW);
+}
+
 int Quad::minLengthNS() {
 	return std::min(
 		Segment(corner[NW],corner[NE]).length(),

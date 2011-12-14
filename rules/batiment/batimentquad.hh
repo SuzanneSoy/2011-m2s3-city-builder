@@ -10,13 +10,13 @@ class BatimentQuad : public Chose {
 	Vertex se;
 	Vertex sw;
 	Vertex nw;
-	Cardinal door;
+	Cardinal entry;
 
     public :
 	static const int minHeight = 400;
 	static const int maxHeight = 800;
 
-	BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw/*, Cardinal door*/);
+	BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, Cardinal door);
 	int width();
 	int height();
 	virtual bool subdivide();
