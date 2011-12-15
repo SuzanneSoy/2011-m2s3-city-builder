@@ -22,7 +22,7 @@ class Lod {
 
 	public :
 	Lod();
-	Lod(float camera[3]);
+	Lod(float[3]);
 	void addMergeCube(Chose* chose, int limits[6]);
 	void addSplitCube(Chose* chose, int limits[6]);
 	void setCamera(float camera[3]);

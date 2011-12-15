@@ -10,12 +10,9 @@ class Chose {
 	unsigned int seed;
 	std::vector<Chose*> children;
 	std::vector<Triangle*> triangles;
-
-	protected :
-	int inCounter;
-	int splitCube[6];
+    int inCounter;
+    int splitCube[6];
 	int mergeCube[6];
-
 
     public :
 	void display();

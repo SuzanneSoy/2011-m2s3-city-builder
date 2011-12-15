@@ -34,7 +34,7 @@ int main() {
 	Vertex cc = v->camera.cameraCenter;
 	float camera[3] = {cc.x, cc.y, cc.z};
 	camera[0] = camera[0];
-	Lod lod;
+	Lod lod(camera);
 	// tile.subdivide tant qu'on n'a pas le niveau de détail désiré.
 	return 0;
 }
