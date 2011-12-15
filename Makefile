@@ -4,7 +4,7 @@ CCWARN=-Wall -Wextra -Werror
 # -flto (nécessite GCC 4.5) -m32 ou -m64
 CFLAGS=-O0 -I. $(CCWARN)
 
-SOURCES = main.cpp view.cpp hash.cpp vertex.cpp segment.cpp triangle.cpp quad.cpp rules/chose.cpp $(shell echo rules/*/*.cpp)
+SOURCES = $(shell echo *.cpp rules/*.cpp rules/*/*.cpp)
 LIBS = -lm -lGL -lGLU -lSDL -lGLEW
 EXECUTABLE = city
 
@@ -17,8 +17,10 @@ clean:
 	rm -f $(EXECUTABLE) all_includes.hh.d all_includes.hh.gch all.cpp
 
 $(EXECUTABLE): $(SOURCES) all_includes.hh.gch Makefile
-	@:> all.cpp
+	@echo "#ifndef _ALL_CPP_"> all.cpp
+	@echo "#define _ALL_CPP_">> all.cpp
 	@$(foreach FILE,$(SOURCES),echo '#include "'"$(FILE)"'"' >> all.cpp;)
+	@echo "#endif">> all.cpp
 	$(CXX) $(LIBS) $(CFLAGS) all.cpp -o $@
 	@rm all.cpp
 
