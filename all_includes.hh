@@ -9,6 +9,7 @@ class Chose;
 #include <cstdlib>
 #include <cmath>
 #include <vector>
+#include <map>
 
 #include <SDL/SDL.h>
 #include <GL/glew.h>
@@ -24,6 +25,7 @@ class Chose;
 
 #include "hash.hh"
 #include "view.hh"
+#include "lod.hh"
 
 #include "rules/chose.hh"
 

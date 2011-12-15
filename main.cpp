@@ -30,7 +30,11 @@ int main() {
 	// c->subdivide();
 	recursiveSubdivide(c);
 
-	new View(c);
+	View *v = new View(c);
+	Vertex cc = v->camera.cameraCenter;
+	float camera[3] = {cc.x, cc.y, cc.z};
+	camera[0] = camera[0];
+	Lod lod;
 	// tile.subdivide tant qu'on n'a pas le niveau de détail désiré.
 	return 0;
 }

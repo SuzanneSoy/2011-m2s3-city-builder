@@ -20,7 +20,7 @@ Abr::remove(int key, Chose* value) {
 
 Abr::popIfLessThan(int key) {
 	std::multimap<int,Chose*>::iterator it = map.begin();
-	
+
 	if((*it).first < key) {
 		map.erase(it);
 		return (*it).second;
@@ -30,15 +30,20 @@ Abr::popIfLessThan(int key) {
 }
 
 
+
+
 #define NegateEven(v, i) ((v)*(((i)&1) ? 1 : -1))
 
-Lod::Lod(float[3] camera) {
+Lod::Lod(){};
+
+merde
+Lod::Lod(float camera[3]) {
 	this->camera = camera;
 }
 
 void Lod::setCamera(float[3] camera) {
 	this->camera = camera;
-	
+
 	// Merge.
 	for(int i = 0; i < 6; i++) {
 		Chose* c;
@@ -69,7 +74,7 @@ void Lod::setCamera(float[3] camera) {
 			}
 		}
 	}
-	
+
 	// Split in vers split out.
 	for(int i = 0; i < 6; i++) {
 		Chose* c;

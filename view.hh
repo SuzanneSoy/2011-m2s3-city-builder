@@ -10,9 +10,11 @@
 // Prendre en compte tous les évènements X en attente avant de relancer le rendu.
 
 class Camera {
-	private :
+	public :
 	Vertexf cameraCenter;
 	Vertexf cameraSight;
+
+	private :
 	float xAngle;
 	float yAngle;
 	int moveDist;
@@ -36,12 +38,15 @@ class Camera {
 
 
 class View {
-	private :
+    private :
 	Chose* root;
+
+	public :
 	Camera camera;
 
 	static const int windowWidth = 1024;
 	static const int windowHeight = 768;
+
 
 	public :
 	View(Chose* root);
