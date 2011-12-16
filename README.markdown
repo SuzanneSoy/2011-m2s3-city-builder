@@ -1,10 +1,15 @@
 Minimal requirements
 ====================
 
-* g++
-* GNU make
+* `g++` et GNU `make` (paquet `build-essential`)
+* `libsdl-dev`
+* `libglew-dev`
 
-How to test this program ?
-==========================
+The following command should install the required packages on ubuntu.
+
+    sudo apt-get install build-essential libsdl-dev libglew-dev
+
+How to run this program ?
+=========================
 
     make
