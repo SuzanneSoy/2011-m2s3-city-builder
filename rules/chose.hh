@@ -13,6 +13,7 @@ class Chose {
     int inCounter;
     int splitCube[6];
 	int mergeCube[6];
+	Vertex lctr;        // Local center;
 
     public :
 	void display();
