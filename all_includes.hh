@@ -25,6 +25,7 @@ class Chose;
 
 #include "hash.hh"
 #include "view.hh"
+// LOD must be included before chose.hh
 #include "lod.hh"
 
 #include "rules/chose.hh"
