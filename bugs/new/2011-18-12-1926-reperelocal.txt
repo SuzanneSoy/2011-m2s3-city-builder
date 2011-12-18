@@ -1,0 +1,14 @@
+Il faut redéfinir la notion et implémentation du repère local dans 
+l'abre. pour ne pas avoir de problème de taille d'entier, et utiliser 
+correctement le repère local mis en place il faut que chaque élément 
+dépendent du repère local de l'élément qui lui est parent.
+Par conséquent pour dessiner la ville il faudra effectuer un changement 
+de repère à chaque dscente dans l'abre pour décaller au fur et à mesure 
+le repère jusqu'a atteindre le repère de l'objet que l'on veut placer 
+sur la "carte".
+
+Pour le moment les repères "locaux" ne le sont pas vraiment, je place un 
+point qui sert de repère local en fonction des autres points disponibles 
+(pas de soucis pour çaà sauf je passe les coordonnées absolue de cet 
+objet au sous objets que je crée au lieu de passer les coordonnées 
+locales.
