@@ -21,8 +21,8 @@ std::ostream& operator<<(std::ostream& os, const Triangle& t) {
 	return os << "Triangle " << t.v1 << "--" << t.v2 << "--"  << t.v3 << "-- cycle";
 }
 
-Vertexf Triangle::normal(Vertex v1, Vertex v2, Vertex v3) {
-	Vertexf normal = (v1 - v2)*(v2 - v3);
+Vertex Triangle::normal(Vertex v1, Vertex v2, Vertex v3) {
+	Vertex normal = (v1 - v2)*(v2 - v3);
 	return normal / normal.norm();
 }
 
@@ -59,7 +59,7 @@ void Triangle::display() {
 	// glVertex3d(v.x+vnormal.x*50,v.y+vnormal.y*50,v.z+vnormal.z*50);
 	// glEnd( );
 	// glEnable(GL_LIGHTING);
-	
+
 	View::setColor(r,g,b);
 	glNormal3d(vnormal.x,vnormal.y,vnormal.z);
 	// glBegin(GL_TRIANGLES);

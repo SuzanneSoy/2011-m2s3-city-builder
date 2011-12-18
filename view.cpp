@@ -1,7 +1,7 @@
 #include "all_includes.hh"
 
-// camera(Camera(Vertexf(1000,1000,2000),45,100,1000,0.6)
-View::View(Chose* root) : root(root), camera(Camera(Vertexf(9600,10000,15300),0,179,1000,0.6)) {
+// camera(Camera(Vertex(1000,1000,2000),45,100,1000,0.6)
+View::View(Chose* root) : root(root), camera(Camera(Vertex(9600,10000,15300),0,179,1000,0.6)) {
 	initWindow();
 	mainLoop();
 }
@@ -25,17 +25,17 @@ void View::initWindow() {
 	gluPerspective(70,(double)windowWidth/windowHeight,1,100000); // back frustum : 1km
 	glEnable(GL_DEPTH_TEST);
 	glewInit();
-	
+
 	float MatSpec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	float MatDif[4] = {0.5f, 0.5f, 0.5f, 1.0f};
 	float MatAmb[4] = {0.3f, 0.3f, 0.6f, 1.0f};
 	float shininess = 128.0f;
-	 
+
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,MatDif);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,MatAmb);
 	glMaterialfv(GL_FRONT,GL_SHININESS,&shininess);
-	
+
 	glEnable(GL_LIGHTING); 	// Active l'éclairage
   	glEnable(GL_LIGHT0);	// Active la lumière 0;
 }
@@ -62,13 +62,13 @@ void View::displayAxes() {
 	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
 	glVertex3f(2500.0f, 0.0f, 0.0f); // ending point of the line
 	glEnd( );
-	
+
 	glBegin(GL_LINES);
 	glColor3ub(0,255,0);
 	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
 	glVertex3f(0.0f, 2500.0f, 0.0f); // ending point of the line
 	glEnd( );
-	
+
 	glBegin(GL_LINES);
 	glColor3ub(0,0,255);
 	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
@@ -81,18 +81,18 @@ void View::displayAxes() {
 void View::renderScene(int lastTime, int currentTime) {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
-	
+
 	camera.animation(currentTime-lastTime);
 	camera.setCamera();
-	
+
 	setLight();
 	//displayAxes();
 	glBegin(GL_TRIANGLES);
 	root->display();
 	glEnd();
-	
+
 	glFlush();
 	SDL_GL_SwapBuffers();
 }
@@ -107,7 +107,7 @@ void View::mainLoop() {
 
 	int lastTime = SDL_GetTicks() - 30;
 	int currentTime = 0;
-	
+
 	while (continuer) {
 		lastTime = currentTime;
 		currentTime = SDL_GetTicks();
@@ -133,9 +133,9 @@ void View::mainLoop() {
 	SDL_Quit();
 }
 
-Camera::Camera(Vertexf pos, float xA, float yA, int moveSensitivity, float mouseSensitivity)
+Camera::Camera(Vertex pos, float xA, float yA, int moveSensitivity, float mouseSensitivity)
 	: cameraCenter(pos),
-	  cameraSight(cameraCenter + Vertexf::fromSpherical(100,yA,xA)),
+	  cameraSight(cameraCenter + Vertex::fromSpherical(100,yA,xA)),
 	  xAngle(xA),
 	  yAngle(yA),
 	  moveDist(moveSensitivity),
@@ -151,7 +151,7 @@ std::ostream& Camera::print(std::ostream& os) const {
 }
 
 void Camera::setCamera() {
-	cameraSight = cameraCenter + Vertexf::fromSpherical(100, yAngle, xAngle);
+	cameraSight = cameraCenter + Vertex::fromSpherical(100, yAngle, xAngle);
 	gluLookAt(cameraCenter.x,cameraCenter.y,cameraCenter.z, cameraSight.x, cameraSight.y, cameraSight.z,0,0,1);
 }
 
@@ -214,17 +214,17 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 
 void Camera::animation(int elapsedTime) {
 	float diff = ((float)(elapsedTime+1)/1000.)*(float)moveDist;
-	
+
 	if(up)
-		cameraCenter = cameraCenter + Vertexf::fromSpherical(diff, yAngle, xAngle);
+		cameraCenter = cameraCenter + Vertex::fromSpherical(diff, yAngle, xAngle);
 	if(down)
-		cameraCenter = cameraCenter - Vertexf::fromSpherical(diff, yAngle, xAngle);
+		cameraCenter = cameraCenter - Vertex::fromSpherical(diff, yAngle, xAngle);
 	if(left)
-		cameraCenter = cameraCenter - Vertexf::fromSpherical(diff, 90, xAngle - 90);
+		cameraCenter = cameraCenter - Vertex::fromSpherical(diff, 90, xAngle - 90);
 	if(right)
-		cameraCenter = cameraCenter + Vertexf::fromSpherical(diff, 90, xAngle - 90);
+		cameraCenter = cameraCenter + Vertex::fromSpherical(diff, 90, xAngle - 90);
 	if(pageUp)
-		cameraCenter = cameraCenter - Vertexf::fromSpherical(diff, yAngle + 90, xAngle);
+		cameraCenter = cameraCenter - Vertex::fromSpherical(diff, yAngle + 90, xAngle);
 	if(pageDown)
-		cameraCenter = cameraCenter + Vertexf::fromSpherical(diff, yAngle + 90, xAngle);
+		cameraCenter = cameraCenter + Vertex::fromSpherical(diff, yAngle + 90, xAngle);
 }
