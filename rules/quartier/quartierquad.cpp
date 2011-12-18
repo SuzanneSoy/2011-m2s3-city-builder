@@ -8,6 +8,13 @@ QuartierQuad::QuartierQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose()
 	corner[NW] = nw;
 }
 
+QuartierQuad::~QuartierQuad() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+}
+
 std::vector<Vertex*> QuartierQuad::getBoundingBoxPoints() const {
     std::vector<Vertex*> list;
     return list;
@@ -38,8 +45,16 @@ Chose* QuartierQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
 	}
 }
 
-bool QuartierQuad::subdivide() {
+bool QuartierQuad::split() {
 	return false;
+}
+
+bool QuartierQuad::merge() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+    return true;
 }
 
 void QuartierQuad::triangulation() {

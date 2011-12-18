@@ -17,9 +17,11 @@ class BatimentQuad : public Chose {
 	static const int maxHeight = 800;
 
 	BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, Cardinal door);
+	virtual ~BatimentQuad();
 	int width();
 	int height();
-	virtual bool subdivide();
+	virtual bool split();
+	virtual bool merge();
 	virtual void triangulation();
 	Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual std::vector<Vertex*> getBoundingBoxPoints() const;

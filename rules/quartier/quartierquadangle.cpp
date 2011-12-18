@@ -4,12 +4,19 @@ QuartierQuadAngle::QuartierQuadAngle(Vertex ne, Vertex se, Vertex sw, Vertex nw)
 	triangulation();
 }
 
+QuartierQuadAngle::~QuartierQuadAngle() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+}
+
 std::vector<Vertex*> QuartierQuadAngle::getBoundingBoxPoints() const {
     std::vector<Vertex*> list;
     return list;
 }
 
-bool QuartierQuadAngle::subdivide() {
+bool QuartierQuadAngle::split() {
 	for (int i = 0; i < 4; i++) {
 		if (Triangle(corner[NW+i], corner[NE+i], corner[SE+i]).angle() >= Angle::d2r(130)) {
 			Triangle t1(corner[NE+i], corner[SE+i], corner[SW+i]);
@@ -58,4 +65,12 @@ bool QuartierQuadAngle::subdivide() {
 	// Ne devait jamais arriver ici !
 	addChild(new TerrainQuadHerbe(corner[NE], corner[SE], corner[SW], corner[NW]));
 	return true;
+}
+
+bool QuartierQuadAngle::merge() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+    return true;
 }

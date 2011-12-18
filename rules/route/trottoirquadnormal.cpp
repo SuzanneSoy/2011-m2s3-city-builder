@@ -10,14 +10,29 @@ TrottoirQuadNormal::TrottoirQuadNormal(Vertex ne, Vertex se, Vertex sw, Vertex n
 	triangulation();
 }
 
+TrottoirQuadNormal::~TrottoirQuadNormal() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+}
+
 std::vector<Vertex*> TrottoirQuadNormal::getBoundingBoxPoints() const {
     std::vector<Vertex*> list;
     return list;
 }
 
-bool TrottoirQuadNormal::subdivide() {
+bool TrottoirQuadNormal::split() {
 	// TODO
 	return false;
+}
+
+bool TrottoirQuadNormal::merge() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+    return true;
 }
 
 void TrottoirQuadNormal::triangulation() {

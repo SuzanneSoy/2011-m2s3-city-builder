@@ -16,7 +16,8 @@ class Chose {
 
     public :
 	void display();
-	virtual bool subdivide() = 0;
+	virtual bool split() = 0;
+	virtual bool merge() = 0;
 
     protected :
 	Chose();

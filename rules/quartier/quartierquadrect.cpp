@@ -3,12 +3,19 @@
 QuartierQuadRect::QuartierQuadRect(Vertex ne, Vertex se, Vertex sw, Vertex nw) : QuartierQuad(ne, se, sw, nw) {
 }
 
+QuartierQuadRect::~QuartierQuadRect() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+}
+
 std::vector<Vertex*> QuartierQuadRect::getBoundingBoxPoints() const {
     std::vector<Vertex*> list;
     return list;
 }
 
-bool QuartierQuadRect::subdivide() {
+bool QuartierQuadRect::split() {
 	Vertex n = Segment(corner[NW], corner[NE]).randomPos(seed, 0, 33, 67);
 	Vertex s = Segment(corner[SE], corner[SW]).randomPos(seed, 1, 33, 67);
 
@@ -21,4 +28,12 @@ bool QuartierQuadRect::subdivide() {
 	addChild(QuartierQuad::factory(seed, 2, qe.corner[0], qe.corner[1], qe.corner[2], qe.corner[3]));
 	addChild(QuartierQuad::factory(seed, 3, qw.corner[0], qw.corner[1], qw.corner[2], qw.corner[3]));
 	return true;
+}
+
+bool QuartierQuadRect::merge() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+    return true;
 }

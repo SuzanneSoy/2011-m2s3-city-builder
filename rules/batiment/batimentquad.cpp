@@ -10,6 +10,13 @@ BatimentQuad::BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, Cardinal 
 	triangulation();
 }
 
+BatimentQuad::~BatimentQuad() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+}
+
 int BatimentQuad::width() { return this->ne.x - this->sw.x; }
 int BatimentQuad::height() { return this->ne.y - this->sw.y; }
 
@@ -18,9 +25,17 @@ std::vector<Vertex*> BatimentQuad::getBoundingBoxPoints() const {
     return list;
 }
 
-bool BatimentQuad::subdivide() {
+bool BatimentQuad::split() {
     factory(1,1,ne,se,sw,nw);
 	return true;
+}
+
+bool BatimentQuad::merge() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+    return true;
 }
 
 Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw) {

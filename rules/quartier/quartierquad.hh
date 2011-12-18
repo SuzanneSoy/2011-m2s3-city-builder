@@ -9,7 +9,9 @@ public:
 	Vertex corner[4];
 public:
 	QuartierQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw);
-	virtual bool subdivide();
+	virtual ~QuartierQuad();
+	virtual bool split();
+	virtual bool merge();
 	virtual void triangulation();
 	static Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual std::vector<Vertex*> getBoundingBoxPoints() const;

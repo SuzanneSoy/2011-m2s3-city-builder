@@ -8,6 +8,13 @@ QuartierTri::QuartierTri(Vertex left, Vertex top, Vertex right) : Chose() {
 	triangulation();
 }
 
+QuartierTri::~QuartierTri() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+}
+
 std::vector<Vertex*> QuartierTri::getBoundingBoxPoints() const {
     std::vector<Vertex*> list;
     return list;
@@ -20,8 +27,16 @@ Chose* QuartierTri::factory(int seed, int n, Vertex left, Vertex top, Vertex rig
 	return new QuartierTri(left, top, right);
 }
 
-bool QuartierTri::subdivide() {
+bool QuartierTri::split() {
 	return false;
+}
+
+bool QuartierTri::merge() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+    return true;
 }
 
 void QuartierTri::triangulation() {

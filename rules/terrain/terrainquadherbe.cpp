@@ -9,6 +9,13 @@ TerrainQuadHerbe::TerrainQuadHerbe(Vertex ne, Vertex se, Vertex sw, Vertex nw) :
 	triangulation();
 }
 
+TerrainQuadHerbe::~TerrainQuadHerbe() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+}
+
 std::vector<Vertex*> TerrainQuadHerbe::getBoundingBoxPoints() const {
     std::vector<Vertex*> list;
     return list;
@@ -23,8 +30,16 @@ TerrainQuadHerbe::TerrainQuadHerbe(int red, Vertex ne, Vertex se, Vertex sw, Ver
 	triangulation();
 }
 
-bool TerrainQuadHerbe::subdivide() {
+bool TerrainQuadHerbe::split() {
 	return false;
+}
+
+bool TerrainQuadHerbe::merge() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+    return true;
 }
 
 void TerrainQuadHerbe::triangulation() {

@@ -3,12 +3,19 @@
 QuartierQuadCarre::QuartierQuadCarre(Vertex ne, Vertex se, Vertex sw, Vertex nw) : QuartierQuad(ne, se, sw, nw) {
 }
 
+QuartierQuadCarre::~QuartierQuadCarre() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+}
+
 std::vector<Vertex*> QuartierQuadCarre::getBoundingBoxPoints() const {
     std::vector<Vertex*> list;
     return list;
 }
 
-bool QuartierQuadCarre::subdivide() {
+bool QuartierQuadCarre::split() {
 	Vertex middle[4];
 	Quad q[4];
 
@@ -29,4 +36,12 @@ bool QuartierQuadCarre::subdivide() {
 		addChild(QuartierQuad::factory(seed, 4+i, q[i].corner[0], q[i].corner[1], q[i].corner[2], q[i].corner[3]));
 	}
 	return true;
+}
+
+bool QuartierQuadCarre::merge() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+    return true;
 }

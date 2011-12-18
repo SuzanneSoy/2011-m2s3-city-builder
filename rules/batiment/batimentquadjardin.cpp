@@ -5,6 +5,13 @@ BatimentQuadJardin::BatimentQuadJardin(Vertex ne, Vertex se, Vertex sw, Vertex n
 	triangulation();
 }
 
+BatimentQuadJardin::~BatimentQuadJardin() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+}
+
 int BatimentQuadJardin::width() { return this->ne.x - this->sw.x; }
 
 int BatimentQuadJardin::height() { return this->ne.y - this->sw.y; }
@@ -14,9 +21,17 @@ std::vector<Vertex*> BatimentQuadJardin::getBoundingBoxPoints() const {
     return list;
 }
 
-bool BatimentQuadJardin::subdivide() {
+bool BatimentQuadJardin::split() {
 
 	return true;
+}
+
+bool BatimentQuadJardin::merge() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
+    return true;
 }
 
 void BatimentQuadJardin::triangulation() {
