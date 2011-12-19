@@ -21,6 +21,11 @@ void Chose::addTriangle(Triangle* t) {
 	// TODO : Ajouter t dans la liste des triangles à envoyer au GPU.
 }
 
+void Chose::addQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b) {
+    this->addTriangle(new Triangle(u,x,w,r,g,b));
+    this->addTriangle(new Triangle(w,v,u,r,g,b));
+}
+
 void Chose::display() {
 	if (children.size() > 0) {
 		std::vector<Chose*>::iterator it;

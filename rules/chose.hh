@@ -32,6 +32,7 @@ class Chose {
 	inline void addEntropy(Vertex v1, Vertex v2, Vertex v3, Vertex v4) { addEntropy(v1, v2); addEntropy(v3, v4); }
 	void addChild(Chose* c);
 	void addTriangle(Triangle* t);
+	void addQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b);
 	virtual void triangulation() = 0;
 	virtual std::vector<Vertex*> getBoundingBoxPoints() const = 0;
 

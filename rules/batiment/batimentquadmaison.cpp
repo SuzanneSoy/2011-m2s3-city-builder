@@ -51,10 +51,10 @@ void BatimentQuadMaison::triangulation() {
 	Vertex toit = (neh + seh + nwh + swh) / 4 + Vertex(0,0,htoit);
 
 	// 4 Murs
-	addTriangle(new Triangle(lctr+neh,lctr+seh,lctr+ne,0xf1,0xe3,0xad)); addTriangle(new Triangle(lctr+seh,lctr+se,lctr+ne,0xf1,0xe3,0xad)); // ne-se-seh-neh
-	addTriangle(new Triangle(lctr+seh,lctr+swh,lctr+se,0xf1,0xe3,0xad)); addTriangle(new Triangle(lctr+swh,lctr+sw,lctr+se,0xf1,0xe3,0xad)); // se-sw-swh-seh
-	addTriangle(new Triangle(lctr+swh,lctr+nwh,lctr+sw,0xf1,0xe3,0xad)); addTriangle(new Triangle(lctr+nwh,lctr+nw,lctr+sw,0xf1,0xe3,0xad)); // sw-nw-nwh-swh
-	addTriangle(new Triangle(lctr+nwh,lctr+neh,lctr+nw,0xf1,0xe3,0xad)); addTriangle(new Triangle(lctr+neh,lctr+ne,lctr+nw,0xf1,0xe3,0xad)); // nw-ne-neh-nwh
+	addQuad(lctr+neh,lctr+seh,lctr+se,lctr+ne,0xf1,0xe3,0xad);
+	addQuad(lctr+seh,lctr+swh,lctr+sw,lctr+se,0xf1,0xe3,0xad);
+	addQuad(lctr+swh,lctr+nwh,lctr+nw,lctr+sw,0xf1,0xe3,0xad);
+	addQuad(lctr+nwh,lctr+neh,lctr+ne,lctr+nw,0xf1,0xe3,0xad);
 
 	// 1 Toit
 	addTriangle(new Triangle(lctr+neh,lctr+toit,lctr+seh,0x9a,0x48,0x3c));
