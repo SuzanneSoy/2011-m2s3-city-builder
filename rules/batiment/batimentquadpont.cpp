@@ -44,7 +44,7 @@ float ct(float x) {
 }
 
 float nt(double x, int height) {
-    return (ct(x) + -ct(-M_PI/2.))/(ct(0)+ -ct(-M_PI/2.)) * height;
+    return (ct(x) + -ct(-1.7))/(ct(0)+ -ct(-1.7)) * height;
 }
 
 void BatimentQuadPont::triangulation() {
@@ -60,24 +60,38 @@ void BatimentQuadPont::triangulation() {
     Vertex nwh = nw + Vertex(0,0,height+100);
     Vertex l1 = ne - nw;
     Vertex l2 = sw - se;
-    float pas = (M_PI / 60);
-    float n1 = l1.norm()/pas;
-    float n2 = l2.norm()/pas;
+
+    int steps = (2*1.7/0.1);
+    float pas = 0.1;
+    float n1 = l1.norm()/(2*1.7/0.1);
+    float n2 = l2.norm()/(2*1.7/0.1);
     n1=n1;
+    n2=n2;
+    int middle = steps/2;
+    int n;
 
-    std::cout << std::endl << std::endl;
+    std::cout << std::endl << l1.norm() << std::endl;
 
-    for(var=-M_PI/2; var <= M_PI/2; var+=pas) {
-        if(var == 0) continue;
-        std::cout << var << " \t " << nt(var,height) << std::endl;
+    addTriangle(new Triangle(pb,sw,swh,0xFF,0xFF,0xFF));
+    addTriangle(new Triangle(pa,nw,nwh,0xFF,0xFF,0xFF));
+
+    for(var=-1.7,n=0; var <= 1.7; var+=pas,n++) {
+        std::cout << var << std::endl;
+        //std::cout << var << " \t " << nt(var,height) << std::endl;
         q.offset(W,-n2);
         a = q.corner[3] + Vertex(0,0,nt(var,height));
         b = q.corner[2] + Vertex(0,0,nt(var,height));
 
         addQuad(a,b,pb,pa,0xFF,0xFF,0xFF);
-        if( var < 0) {
+        if( n < middle) {
             addTriangle(new Triangle(pa,a,nwh,0xFF,0xFF,0xFF));
             addTriangle(new Triangle(pb,b,swh,0xFF,0xFF,0xFF));
+        }
+        else if(n == middle) {
+            addTriangle(new Triangle(pa,a,nwh,0xFF,0xFF,0xFF));
+            addTriangle(new Triangle(pb,b,swh,0xFF,0xFF,0xFF));
+            addTriangle(new Triangle(a,neh,nwh,0xFF,0xFF,0xFF));
+            addTriangle(new Triangle(b,seh,swh,0xFF,0xFF,0xFF));
         }
         else {
             addTriangle(new Triangle(pa,a,neh,0xFF,0xFF,0xFF));
@@ -87,4 +101,7 @@ void BatimentQuadPont::triangulation() {
         pa = a;
         pb = b;
     }
+
+    addTriangle(new Triangle(se,pb,seh,0xFF,0xFF,0xFF));
+    addTriangle(new Triangle(ne,pa,neh,0xFF,0xFF,0xFF));
 }
