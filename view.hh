@@ -11,8 +11,8 @@
 
 class Camera {
 	public :
-	Vertexf cameraCenter;
-	Vertexf cameraSight;
+	Vertex cameraCenter;
+	Vertex cameraSight;
 
 	private :
 	float xAngle;
@@ -27,7 +27,7 @@ class Camera {
 	bool pageDown;
 
 	public :
-	Camera(Vertexf pos, float xA, float yA, int moveSensitivity, float mouseSensitivity);
+	Camera(Vertex pos, float xA, float yA, int moveSensitivity, float mouseSensitivity);
 	void setCamera();
 	void mouseMotion(const SDL_MouseMotionEvent &event);
 	void keyboard(const SDL_KeyboardEvent &event);

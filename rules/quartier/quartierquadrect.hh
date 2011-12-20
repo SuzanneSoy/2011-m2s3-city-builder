@@ -10,7 +10,8 @@ class QuartierQuadRect : public QuartierQuad {
 
     public :
 	QuartierQuadRect(Vertex ne, Vertex se, Vertex sw, Vertex nw);
-	virtual bool subdivide();
+	virtual ~QuartierQuadRect();
+	virtual bool split();
 	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
 };
 

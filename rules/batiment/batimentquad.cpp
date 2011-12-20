@@ -2,12 +2,20 @@
 
 BatimentQuad::BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, Cardinal entry) : Chose(), ne(ne) {
 	addEntropy(ne, se, sw, nw);
-    this->ne = ne;
-    this->se = se;
-    this-> sw = sw;
-    this->nw = nw;
 	this->entry = entry;
-	triangulation();
+	lctr = Vertex(ne.x-nw.x,se.y-ne.y,0.0f);
+    this->ne = ne-lctr;
+    this->se = se-lctr;
+    this-> sw = sw-lctr;
+    this->nw = nw-lctr;
+    triangulation();
+}
+
+BatimentQuad::~BatimentQuad() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
 }
 
 int BatimentQuad::width() { return this->ne.x - this->sw.x; }
@@ -18,7 +26,7 @@ std::vector<Vertex*> BatimentQuad::getBoundingBoxPoints() const {
     return list;
 }
 
-bool BatimentQuad::subdivide() {
+bool BatimentQuad::split() {
     factory(1,1,ne,se,sw,nw);
 	return true;
 }
@@ -33,21 +41,21 @@ Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
 	q.offset(S,-140);
 	q.offset(W,-140);
 
-	addChild(new TrottoirQuadNormal(ne,se,q.corner[1],q.corner[0],th,E));
-    addChild(new TrottoirQuadNormal(se,sw,q.corner[2],q.corner[1],th,E));
-    addChild(new TrottoirQuadNormal(sw,nw,q.corner[3],q.corner[2],th,E));
-    addChild(new TrottoirQuadNormal(nw,ne,q.corner[0],q.corner[3],th,E));
+	addChild(new TrottoirQuadNormal(lctr+ne,lctr+se,lctr+q.corner[1],lctr+q.corner[0],th,E));
+    addChild(new TrottoirQuadNormal(lctr+se,lctr+sw,lctr+q.corner[2],lctr+q.corner[1],th,E));
+    addChild(new TrottoirQuadNormal(lctr+sw,lctr+nw,lctr+q.corner[3],lctr+q.corner[2],th,E));
+    addChild(new TrottoirQuadNormal(lctr+nw,lctr+ne,lctr+q.corner[0],lctr+q.corner[3],th,E));
 
     q.corner[0] = q.corner[0] + Vertex(0,0,th);
     q.corner[1] = q.corner[1] + Vertex(0,0,th);
     q.corner[2] = q.corner[2] + Vertex(0,0,th);
     q.corner[3] = q.corner[3] + Vertex(0,0,th);
 
-    addChild(new BatimentQuadJardin(q.corner[0],q.corner[1],q.corner[2],q.corner[3]));
+    addChild(new BatimentQuadJardin(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3]));
 
     q.offset(this->entry,-400);
 
-	addChild(new BatimentQuadMaison(q.corner[0],q.corner[1],q.corner[2],q.corner[3]));
+	addChild(new BatimentQuadMaison(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3]));
 	return NULL;	// pour compilation, à virer.
 }
 

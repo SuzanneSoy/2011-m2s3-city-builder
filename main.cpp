@@ -10,7 +10,7 @@
 //  -> bâtiment dans le "bout" le plus "étroit", et lignes  dans une seule direction dans le reste.
 
 void recursiveSubdivide(Chose* c) {
-	if (c->subdivide()) {
+	if (c->split()) {
 		std::vector<Chose*>::iterator it;
 		for (it = c->children.begin(); it != c->children.end(); ++it) {
 			recursiveSubdivide(*it);
@@ -27,7 +27,7 @@ int main() {
 	Vertex sw(0, 0, 0);
 	Vertex nw(0, size, 0);
 	Chose* c = QuartierQuad::factory(Chose::initialSeed, 0, ne, se, sw, nw);
-	// c->subdivide();
+	// c->split();
 	recursiveSubdivide(c);
 	
 	Heap h(1);

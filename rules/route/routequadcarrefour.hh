@@ -12,7 +12,8 @@ class RouteQuadCarrefour : public Chose {
 
     public :
 	RouteQuadCarrefour(Vertex ne, Vertex se, Vertex sw, Vertex nw);
-	virtual bool subdivide();
+	virtual ~RouteQuadCarrefour();
+	virtual bool split();
 	virtual void triangulation();
 	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
 };

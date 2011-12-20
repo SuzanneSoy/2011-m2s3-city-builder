@@ -14,11 +14,12 @@ class Chose {
     int inCounter;
     int splitCube[6];
 	int mergeCube[6];
+	Vertex lctr;        // Local center;
 
     public :
 	void display();
-	virtual bool subdivide() = 0;
-	virtual void merge();
+	virtual bool split() = 0;
+	virtual bool merge();
 
     protected :
 	Chose();

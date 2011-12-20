@@ -10,8 +10,12 @@ void Chose::addTriangle(Triangle* t) {
 	triangles.push_back(t);
 }
 
-void Chose::merge() {
-	triangles.clear();
+bool Chose::merge() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+	// triangles.clear();
+    return true;
 }
 
 void Chose::display() {

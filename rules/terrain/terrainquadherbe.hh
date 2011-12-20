@@ -12,7 +12,8 @@ class TerrainQuadHerbe : public Chose {
     public :
 	TerrainQuadHerbe(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	TerrainQuadHerbe(int red, Vertex ne, Vertex se, Vertex sw, Vertex nw); // DEBUG
-	virtual bool subdivide();
+	virtual ~TerrainQuadHerbe();
+	virtual bool split();
 	virtual void triangulation();
 	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
 };

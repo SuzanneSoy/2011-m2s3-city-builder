@@ -11,7 +11,7 @@ class Triangle {
 	unsigned char r;
 	unsigned char g;
 	unsigned char b;
-	Vertexf vnormal;
+	Vertex vnormal;
 
 	public :
 	friend std::ostream& operator<<(std::ostream& os, const Triangle* t);
@@ -26,7 +26,7 @@ class Triangle {
 	void display();
 
 	private :
-	Vertexf normal(Vertex v1, Vertex v2, Vertex v3);
+	Vertex normal(Vertex v1, Vertex v2, Vertex v3);
 };
 
 #endif

@@ -1,8 +1,20 @@
 #include "all_includes.hh"
 
-BatimentQuadMaison::BatimentQuadMaison(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
+BatimentQuadMaison::BatimentQuadMaison(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose() {
 	addEntropy(ne, se, sw, nw);
+	lctr = Vertex(ne.x-nw.x,se.y-ne.y,0.0f);
+    this->ne = ne-lctr;
+    this->se = se-lctr;
+    this-> sw = sw-lctr;
+    this->nw = nw-lctr;
 	triangulation();
+}
+
+BatimentQuadMaison::~BatimentQuadMaison() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
 }
 
 int BatimentQuadMaison::width() { return this->ne.x - this->sw.x; }
@@ -14,7 +26,7 @@ std::vector<Vertex*> BatimentQuadMaison::getBoundingBoxPoints() const {
     return list;
 }
 
-bool BatimentQuadMaison::subdivide() {
+bool BatimentQuadMaison::split() {
 
 	return true;
 }
@@ -31,14 +43,14 @@ void BatimentQuadMaison::triangulation() {
 	Vertex toit = (neh + seh + nwh + swh) / 4 + Vertex(0,0,htoit);
 
 	// 4 Murs
-	addTriangle(new Triangle(neh,seh,ne,0xf1,0xe3,0xad)); addTriangle(new Triangle(seh,se,ne,0xf1,0xe3,0xad)); // ne-se-seh-neh
-	addTriangle(new Triangle(seh,swh,se,0xf1,0xe3,0xad)); addTriangle(new Triangle(swh,sw,se,0xf1,0xe3,0xad)); // se-sw-swh-seh
-	addTriangle(new Triangle(swh,nwh,sw,0xf1,0xe3,0xad)); addTriangle(new Triangle(nwh,nw,sw,0xf1,0xe3,0xad)); // sw-nw-nwh-swh
-	addTriangle(new Triangle(nwh,neh,nw,0xf1,0xe3,0xad)); addTriangle(new Triangle(neh,ne,nw,0xf1,0xe3,0xad)); // nw-ne-neh-nwh
+	addTriangle(new Triangle(lctr+neh,lctr+seh,lctr+ne,0xf1,0xe3,0xad)); addTriangle(new Triangle(lctr+seh,lctr+se,lctr+ne,0xf1,0xe3,0xad)); // ne-se-seh-neh
+	addTriangle(new Triangle(lctr+seh,lctr+swh,lctr+se,0xf1,0xe3,0xad)); addTriangle(new Triangle(lctr+swh,lctr+sw,lctr+se,0xf1,0xe3,0xad)); // se-sw-swh-seh
+	addTriangle(new Triangle(lctr+swh,lctr+nwh,lctr+sw,0xf1,0xe3,0xad)); addTriangle(new Triangle(lctr+nwh,lctr+nw,lctr+sw,0xf1,0xe3,0xad)); // sw-nw-nwh-swh
+	addTriangle(new Triangle(lctr+nwh,lctr+neh,lctr+nw,0xf1,0xe3,0xad)); addTriangle(new Triangle(lctr+neh,lctr+ne,lctr+nw,0xf1,0xe3,0xad)); // nw-ne-neh-nwh
 
 	// 1 Toit
-	addTriangle(new Triangle(neh,toit,seh,0x9a,0x48,0x3c));
-	addTriangle(new Triangle(seh,toit,swh,0x9a,0x48,0x3c));
-	addTriangle(new Triangle(swh,toit,nwh,0x9a,0x48,0x3c));
-	addTriangle(new Triangle(nwh,toit,neh,0x9a,0x48,0x3c));
+	addTriangle(new Triangle(lctr+neh,lctr+toit,lctr+seh,0x9a,0x48,0x3c));
+	addTriangle(new Triangle(lctr+seh,lctr+toit,lctr+swh,0x9a,0x48,0x3c));
+	addTriangle(new Triangle(lctr+swh,lctr+toit,lctr+nwh,0x9a,0x48,0x3c));
+	addTriangle(new Triangle(lctr+nwh,lctr+toit,lctr+neh,0x9a,0x48,0x3c));
 }

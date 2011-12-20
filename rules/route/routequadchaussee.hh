@@ -12,7 +12,8 @@ class RouteQuadChaussee : public Chose {
 
     public :
 	RouteQuadChaussee(Vertex ne, Vertex se, Vertex sw, Vertex nw);
-	virtual bool subdivide();
+	virtual ~RouteQuadChaussee();
+	virtual bool split();
 	virtual void triangulation();
 	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
 };

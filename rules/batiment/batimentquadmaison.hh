@@ -16,9 +16,10 @@ class BatimentQuadMaison : public Chose {
 	static const int maxHeight = 800;
 
 	BatimentQuadMaison(Vertex ne, Vertex se, Vertex sw, Vertex nw);
+	virtual ~BatimentQuadMaison();
 	int width();
 	int height();
-	virtual bool subdivide();
+	virtual bool split();
 	virtual void triangulation();
 	Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual std::vector<Vertex*> getBoundingBoxPoints() const;

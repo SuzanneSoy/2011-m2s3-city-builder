@@ -1,8 +1,20 @@
 #include "all_includes.hh"
 
-BatimentQuadJardin::BatimentQuadJardin(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose(), ne(ne), se(se), sw(sw), nw(nw) {
+BatimentQuadJardin::BatimentQuadJardin(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose() {
 	addEntropy(ne, se, sw, nw);
+	lctr = Vertex(ne.x-nw.x,se.y-ne.y,0.0f);
+    this->ne = ne-lctr;
+    this->se = se-lctr;
+    this-> sw = sw-lctr;
+    this->nw = nw-lctr;
 	triangulation();
+}
+
+BatimentQuadJardin::~BatimentQuadJardin() {
+    for(unsigned int i = 0; i < children.size(); i++)
+        delete(children[i]);
+    children.clear();
+    triangles.clear();
 }
 
 int BatimentQuadJardin::width() { return this->ne.x - this->sw.x; }
@@ -14,7 +26,7 @@ std::vector<Vertex*> BatimentQuadJardin::getBoundingBoxPoints() const {
     return list;
 }
 
-bool BatimentQuadJardin::subdivide() {
+bool BatimentQuadJardin::split() {
 
 	return true;
 }
@@ -22,6 +34,6 @@ bool BatimentQuadJardin::subdivide() {
 void BatimentQuadJardin::triangulation() {
 	triangles.reserve(2);
 
-	addTriangle(new Triangle(ne,nw,sw,0x12,0x64,0x12));
-	addTriangle(new Triangle(sw,se,ne,0x10,0x60,0x10));
+	addTriangle(new Triangle(lctr+ne,lctr+nw,lctr+sw,0x12,0x64,0x12));
+	addTriangle(new Triangle(lctr+sw,lctr+se,lctr+ne,0x10,0x60,0x10));
 }

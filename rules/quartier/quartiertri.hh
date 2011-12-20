@@ -10,7 +10,8 @@ class QuartierTri : public Chose {
 
     public :
 	QuartierTri(Vertex left, Vertex top, Vertex right);
-	virtual bool subdivide();
+	virtual ~QuartierTri();
+	virtual bool split();
 	virtual void triangulation();
 	static Chose* factory(int seed, int n, Vertex left, Vertex top, Vertex right);
 	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
