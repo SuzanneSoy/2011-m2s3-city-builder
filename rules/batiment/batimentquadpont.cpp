@@ -72,8 +72,8 @@ void BatimentQuadPont::triangulation() {
 
     std::cout << std::endl << l1.norm() << std::endl;
 
-    addTriangle(new Triangle(pb,sw,swh,0xFF,0xFF,0xFF));
-    addTriangle(new Triangle(pa,nw,nwh,0xFF,0xFF,0xFF));
+    addTriangle(new Triangle(pb,sw,swh,0x10,0xFF,0x10));
+    addTriangle(new Triangle(pa,nw,nwh,0x10,0xFF,0x10));
 
     for(var=-1.7,n=0; var <= 1.7; var+=pas,n++) {
         std::cout << var << std::endl;
@@ -82,26 +82,26 @@ void BatimentQuadPont::triangulation() {
         a = q.corner[3] + Vertex(0,0,nt(var,height));
         b = q.corner[2] + Vertex(0,0,nt(var,height));
 
-        addQuad(a,b,pb,pa,0xFF,0xFF,0xFF);
+        addQuad(a,b,pb,pa,0xEE,0xEE,0xEE);
         if( n < middle) {
-            addTriangle(new Triangle(pa,a,nwh,0xFF,0xFF,0xFF));
-            addTriangle(new Triangle(pb,b,swh,0xFF,0xFF,0xFF));
+            addTriangle(new Triangle(pa,a,nwh,0xFF,0x10,0xFF));
+            addTriangle(new Triangle(pb,b,swh,0xFF,0x10,0xFF));
         }
         else if(n == middle) {
-            addTriangle(new Triangle(pa,a,nwh,0xFF,0xFF,0xFF));
-            addTriangle(new Triangle(pb,b,swh,0xFF,0xFF,0xFF));
-            addTriangle(new Triangle(a,neh,nwh,0xFF,0xFF,0xFF));
-            addTriangle(new Triangle(b,seh,swh,0xFF,0xFF,0xFF));
+            addTriangle(new Triangle(pa,a,nwh,0x10,0x10,0xFF));
+            addTriangle(new Triangle(pb,b,swh,0x10,0x10,0xFF));
+            addTriangle(new Triangle(a,neh,nwh,0x10,0x10,0xFF));
+            addTriangle(new Triangle(b,seh,swh,0x10,0x10,0xFF));
         }
         else {
-            addTriangle(new Triangle(pa,a,neh,0xFF,0xFF,0xFF));
-            addTriangle(new Triangle(pb,b,seh,0xFF,0xFF,0xFF));
+            addTriangle(new Triangle(pa,a,neh,0x10,0xFF,0xFF));
+            addTriangle(new Triangle(pb,b,seh,0x10,0xFF,0xFF));
         }
 
         pa = a;
         pb = b;
     }
 
-    addTriangle(new Triangle(se,pb,seh,0xFF,0xFF,0xFF));
-    addTriangle(new Triangle(ne,pa,neh,0xFF,0xFF,0xFF));
+    addTriangle(new Triangle(se,pb,seh,0x10,0xFF,0x10));
+    addTriangle(new Triangle(ne,pa,neh,0x10,0xFF,0x10));
 }

@@ -66,7 +66,7 @@ Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
 
 	addChild(new BatimentQuadMaison(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3]));
 */
-    addChild(new BatimentQuadPont(q.corner[0],q.corner[1],q.corner[2],q.corner[3],300));
+    addChild(new BatimentQuadPont(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3],300));
 	return NULL;	// pour compilation, à virer.
 }
 
