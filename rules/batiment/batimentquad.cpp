@@ -44,11 +44,12 @@ Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
 	Quad q = Quad(ne,se,sw,nw);
 	seed = seed;
 	n = n;
+	th = th;
 	q.offset(N,-140);
 	q.offset(E,-140);
 	q.offset(S,-140);
 	q.offset(W,-140);
-
+/*
 	addChild(new TrottoirQuadNormal(lctr+ne,lctr+se,lctr+q.corner[1],lctr+q.corner[0],th,E));
     addChild(new TrottoirQuadNormal(lctr+se,lctr+sw,lctr+q.corner[2],lctr+q.corner[1],th,E));
     addChild(new TrottoirQuadNormal(lctr+sw,lctr+nw,lctr+q.corner[3],lctr+q.corner[2],th,E));
@@ -64,6 +65,8 @@ Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
     q.offset(this->entry,-400);
 
 	addChild(new BatimentQuadMaison(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3]));
+*/
+    addChild(new BatimentQuadPont(q.corner[0],q.corner[1],q.corner[2],q.corner[3],300));
 	return NULL;	// pour compilation, à virer.
 }
 
