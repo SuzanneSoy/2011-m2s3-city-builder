@@ -61,11 +61,9 @@ void BatimentQuadPont::triangulation() {
     Vertex l1 = ne - nw;
     Vertex l2 = sw - se;
 
-    int steps = (2*1.7/0.1);
     float pas = 0.1;
-    float n1 = l1.norm()/(2*1.7/0.1);
-    float n2 = l2.norm()/(2*1.7/0.1);
-    n1=n1;
+    int steps = (2*1.7/pas);
+    float n2 = l2.norm()/(2*1.7/pas);
     n2=n2;
     int middle = steps/2;
     int n;
