@@ -44,7 +44,7 @@ Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
 
 	if(rand <= 2) {
         Quad q = Quad(ne,se,sw,nw).makeParallelogram();
-        addChild(new BatimentQuadPont(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3],300));
+        addChild(new BatimentQuadMaisonPont(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3],600));
 	}
 	else if(rand <= 15) {
         int th = 20;        // Terrain height.
@@ -80,30 +80,13 @@ Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
 void BatimentQuad::triangulation() {
 	triangles.reserve(12);
 
-    //addTriangle(new Triangle(lctr+ne,lctr+nw,lctr+sw,0xFF,0xFF,0x00));
-	//addTriangle(new Triangle(lctr+sw,lctr+se,lctr+ne,0xFF,0xFF,0x00));
-
 	int h = hashInRange(seed,0,minHeight,maxHeight);
-	//int htoit = hashInRange(seed,0,minHeight/2,maxHeight/2);
+	int htoit = hashInRange(seed,0,minHeight/2,maxHeight/2);
+	h += htoit;
 	Vertex neh = ne + Vertex(0,0,h);
 	Vertex seh = se + Vertex(0,0,h);
 	Vertex nwh = nw + Vertex(0,0,h);
 	Vertex swh = sw + Vertex(0,0,h);
-	//Vertex toit = (neh + seh + nwh + swh) / 4 + Vertex(0,0,htoit);
 
     addOcto(lctr+ne,lctr+se,lctr+sw,lctr+nw,lctr+neh,lctr+seh,lctr+swh,lctr+nwh,0xFF,0xFF,0x00);
-
-/*
-	// 4 Murs
-	addTriangle(new Triangle(neh,seh,ne,0xf1,0xe3,0xad)); addTriangle(new Triangle(seh,se,ne,0xf1,0xe3,0xad)); // ne-se-seh-neh
-	addTriangle(new Triangle(seh,swh,se,0xf1,0xe3,0xad)); addTriangle(new Triangle(swh,sw,se,0xf1,0xe3,0xad)); // se-sw-swh-seh
-	addTriangle(new Triangle(swh,nwh,sw,0xf1,0xe3,0xad)); addTriangle(new Triangle(nwh,nw,sw,0xf1,0xe3,0xad)); // sw-nw-nwh-swh
-	addTriangle(new Triangle(nwh,neh,nw,0xf1,0xe3,0xad)); addTriangle(new Triangle(neh,ne,nw,0xf1,0xe3,0xad)); // nw-ne-neh-nwh
-
-	// 1 Toit
-	addTriangle(new Triangle(neh,toit,seh,0x9a,0x48,0x3c));
-	addTriangle(new Triangle(seh,toit,swh,0x9a,0x48,0x3c));
-	addTriangle(new Triangle(swh,toit,nwh,0x9a,0x48,0x3c));
-	addTriangle(new Triangle(nwh,toit,neh,0x9a,0x48,0x3c));
-*/
 }
