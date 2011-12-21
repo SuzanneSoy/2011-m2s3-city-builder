@@ -75,4 +75,52 @@ void Chose::updateAABB() {
 	}
 }
 
+void Chose::displayAABB() {
+	updateAABB();
+	if (children.size() > 0) {
+		std::vector<Chose*>::iterator it;
+		for (it = children.begin(); it != children.end(); ++it) {
+			(*it)->displayAABB();
+		}
+	} else {
+		// Affiche la AABB.
+		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
+		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[5]);
+		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[5]);
+		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
+		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[5]);
+		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[5]);
+		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
+		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[5]);
+		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[4]);
+		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
+		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[4]);
+		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[4]);
+		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
+		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[5]);
+		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[4]);
+		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
+		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[4]);
+		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[4]);
+		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
+		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[5]);
+		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[5]);
+		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
+		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[4]);
+		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[5]);
+		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
+		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[5]);
+		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[5]);
+		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
+		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[4]);
+		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[5]);
+		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
+		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[4]);
+		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[4]);
+		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
+		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[4]);
+		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[4]);
+	}
+}
+
 unsigned int Chose::initialSeed = 779313522;//random_seed();

@@ -18,6 +18,7 @@ class Chose {
 
     public :
 	void display();
+	void displayAABB();
 	virtual bool split() = 0;
 	virtual bool merge();
 	virtual void triangulation() = 0;

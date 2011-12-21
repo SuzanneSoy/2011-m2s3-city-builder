@@ -97,6 +97,13 @@ void View::renderScene(int lastTime, int currentTime) {
 	root->display();
 	glEnd();
 
+	// DEBUG : display AABB
+	// glDisable(GL_LIGHTING);
+	// glDisable(GL_TEXTURE_2D);
+	// glBegin(GL_TRIANGLES);
+	// root->displayAABB();
+	// glEnd();
+
 	glFlush();
 	SDL_GL_SwapBuffers();
 }
