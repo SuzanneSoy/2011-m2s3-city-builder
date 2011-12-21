@@ -68,14 +68,10 @@ void BatimentQuadPont::triangulation() {
     int middle = steps/2;
     int n;
 
-    std::cout << std::endl << l1.norm() << std::endl;
-
     addTriangle(new Triangle(lctr+pb,lctr+sw,lctr+swh,0x10,0xFF,0x10));
     addTriangle(new Triangle(lctr+pa,lctr+nw,lctr+nwh,0x10,0xFF,0x10));
 
     for(var=-1.7,n=0; var <= 1.7; var+=pas,n++) {
-        std::cout << var << std::endl;
-        //std::cout << var << " \t " << nt(var,height) << std::endl;
         q.offset(W,-n2);
         a = q.corner[3] + Vertex(0,0,nt(var,height));
         b = q.corner[2] + Vertex(0,0,nt(var,height));

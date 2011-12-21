@@ -40,33 +40,41 @@ bool BatimentQuad::merge() {
 }
 
 Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw) {
-	int th = 20;        // Terrain height.
-	Quad q = Quad(ne,se,sw,nw);
-	seed = seed;
-	n = n;
-	th = th;
-	q.offset(N,-140);
-	q.offset(E,-140);
-	q.offset(S,-140);
-	q.offset(W,-140);
-/*
-	addChild(new TrottoirQuadNormal(lctr+ne,lctr+se,lctr+q.corner[1],lctr+q.corner[0],th,E));
-    addChild(new TrottoirQuadNormal(lctr+se,lctr+sw,lctr+q.corner[2],lctr+q.corner[1],th,E));
-    addChild(new TrottoirQuadNormal(lctr+sw,lctr+nw,lctr+q.corner[3],lctr+q.corner[2],th,E));
-    addChild(new TrottoirQuadNormal(lctr+nw,lctr+ne,lctr+q.corner[0],lctr+q.corner[3],th,E));
+	int rand = this->seed % 20;
 
-    q.corner[0] = q.corner[0] + Vertex(0,0,th);
-    q.corner[1] = q.corner[1] + Vertex(0,0,th);
-    q.corner[2] = q.corner[2] + Vertex(0,0,th);
-    q.corner[3] = q.corner[3] + Vertex(0,0,th);
+	if(rand <= 2) {
+        Quad q = Quad(ne,se,sw,nw);
+        addChild(new BatimentQuadPont(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3],300));
+	}
+	else if(rand <= 15) {
+        int th = 20;        // Terrain height.
+        Quad q = Quad(ne,se,sw,nw);
+        seed = seed;
+        n = n;
+        th = th;
+        q.offset(N,-140);
+        q.offset(E,-140);
+        q.offset(S,-140);
+        q.offset(W,-140);
 
-    addChild(new BatimentQuadJardin(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3]));
+        addChild(new TrottoirQuadNormal(lctr+ne,lctr+se,lctr+q.corner[1],lctr+q.corner[0],th,E));
+        addChild(new TrottoirQuadNormal(lctr+se,lctr+sw,lctr+q.corner[2],lctr+q.corner[1],th,E));
+        addChild(new TrottoirQuadNormal(lctr+sw,lctr+nw,lctr+q.corner[3],lctr+q.corner[2],th,E));
+        addChild(new TrottoirQuadNormal(lctr+nw,lctr+ne,lctr+q.corner[0],lctr+q.corner[3],th,E));
 
-    q.offset(this->entry,-400);
+        q.corner[0] = q.corner[0] + Vertex(0,0,th);
+        q.corner[1] = q.corner[1] + Vertex(0,0,th);
+        q.corner[2] = q.corner[2] + Vertex(0,0,th);
+        q.corner[3] = q.corner[3] + Vertex(0,0,th);
 
-	addChild(new BatimentQuadMaison(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3]));
-*/
-    addChild(new BatimentQuadPont(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3],300));
+        q.makeParallelogram();
+        addChild(new BatimentQuadJardin(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3]));
+
+        q.offset(this->entry,-400);
+
+        addChild(new BatimentQuadMaison(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3]));
+	}
+
 	return NULL;	// pour compilation, à virer.
 }
 

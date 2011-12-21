@@ -21,6 +21,7 @@ class Quad {
 	int maxLength();
 	float minAngle();
 	float maxAngle();
+	void makeParallelogram();
 };
 
 

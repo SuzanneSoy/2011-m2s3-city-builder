@@ -6,6 +6,11 @@ int Segment::length() {
 	return (u-v).norm();
 }
 
+Segment Segment::reduce(int value) {
+    float reduc = (float)length()/(float)value;
+    return Segment(u,u+((v - u) / reduc));
+}
+
 int Segment::width() {
 	return std::abs(u.x - v.x);
 }

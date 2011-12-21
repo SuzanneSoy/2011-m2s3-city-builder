@@ -43,5 +43,8 @@ void BatimentQuadJardin::triangulation() {
 	triangles.reserve(2);
 
 	addTriangle(new Triangle(lctr+ne,lctr+nw,lctr+sw,0x12,0x64,0x12));
-	addTriangle(new Triangle(lctr+sw,lctr+se,lctr+ne,0x10,0x60,0x10));
+	addTriangle(new Triangle(lctr+sw,lctr+se,lctr+ne,0x12,0x64,0x12));
+
+	//addTriangle(new Triangle(lctr+ne,lctr+nw,lctr+sw,0xFF,0xFF,0x00));
+	//addTriangle(new Triangle(lctr+sw,lctr+se,lctr+ne,0xFF,0xFF,0x00));
 }
