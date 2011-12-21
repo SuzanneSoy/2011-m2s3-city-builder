@@ -44,7 +44,7 @@ Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
 
 	if(rand <= 2) {
         Quad q = Quad(ne,se,sw,nw).makeParallelogram();
-        addChild(new BatimentQuadMaisonPont(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3],600));
+        addChild(new BatimentQuadMaisonPont(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3],800));
 	}
 	else if(rand <= 15) {
         int th = 20;        // Terrain height.

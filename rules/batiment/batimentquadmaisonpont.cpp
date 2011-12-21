@@ -27,6 +27,7 @@ std::vector<Vertex*> BatimentQuadMaisonPont::getBoundingBoxPoints() const {
 }
 
 bool BatimentQuadMaisonPont::split() {
+/*
     Quad q = Quad(ne,se,sw,nw);
     q.makeParallelogram();
     if(Segment(q.corner[0],q.corner[3]).length() < Segment(q.corner[0],q.corner[1]).length())
@@ -69,6 +70,7 @@ bool BatimentQuadMaisonPont::split() {
     ne = lctr+qc.corner[3];
 
     addChild(new BatimentQuadPont(se,sw,nw,ne,partHeight));
+*/
 	return true;
 }
 
@@ -82,5 +84,21 @@ bool BatimentQuadMaisonPont::merge() {
 
 void BatimentQuadMaisonPont::triangulation() {
 	//triangles.reserve(2);
+	float h = 2.5*height/3.;
+    Vertex seh = se + Vertex(0,0,h);
+    Vertex swh = sw + Vertex(0,0,h);
+    Vertex nwh = nw + Vertex(0,0,h);
+    Vertex neh = ne + Vertex(0,0,h);
+
+    addOcto(ne,se,sw,nw,neh,seh,swh,nwh,0xDD,0xDD,0xDD);
+
+    Vertex ce = seh + (neh - seh)/2 + Vertex(0,0,0.5*height/3.);
+    Vertex cw = swh + (nwh - swh)/2 + Vertex(0,0,0.5*height/3.);
+
+    addTriangle(new Triangle(swh,nwh,cw,0xDD,0xDD,0xDD));
+    addTriangle(new Triangle(neh,seh,ce,0xDD,0xDD,0xDD));
+
+    addQuad(neh,nwh,cw,ce,0xE0,0x20,0x00);
+    addQuad(swh,seh,ce,cw,0xE0,0x20,0x00);
 
 }
