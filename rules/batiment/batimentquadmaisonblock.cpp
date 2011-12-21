@@ -1,8 +1,5 @@
 #include "all_includes.hh"
 
-BatimentQuadMaisonBlock::BatimentQuadMaisonBlock() {
-}
-
 BatimentQuadMaisonBlock::BatimentQuadMaisonBlock(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height) : Chose() {
 	addEntropy(ne, se, sw, nw);
 	lctr = Vertex(ne.x-nw.x,se.y-ne.y,0.0f);
@@ -11,7 +8,6 @@ BatimentQuadMaisonBlock::BatimentQuadMaisonBlock(Vertex ne, Vertex se, Vertex sw
     this-> sw = sw-lctr;
     this->nw = nw-lctr;
     this->height = height;
-	triangulation();
 }
 
 BatimentQuadMaisonBlock::~BatimentQuadMaisonBlock() {
@@ -25,14 +21,6 @@ void BatimentQuadMaisonBlock::getBoundingBoxPoints() {
 
 bool BatimentQuadMaisonBlock::split() {
 	return false;
-}
-
-bool BatimentQuadMaisonBlock::merge() {
-    for(unsigned int i = 0; i < children.size(); i++)
-        delete(children[i]);
-    children.clear();
-    triangles.clear();
-    return true;
 }
 
 void BatimentQuadMaisonBlock::triangulation() {

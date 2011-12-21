@@ -14,11 +14,9 @@ class BatimentQuadMaisonBlock : public Chose {
 
     public :
 
-	BatimentQuadMaisonBlock();
 	BatimentQuadMaisonBlock(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height);
 	virtual ~BatimentQuadMaisonBlock();
 	virtual bool split();
-	virtual bool merge();
 	virtual void triangulation();
 	Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual void getBoundingBoxPoints();

@@ -31,7 +31,6 @@ TerrainQuadHerbe::TerrainQuadHerbe(int red, Vertex ne, Vertex se, Vertex sw, Ver
 	corner[SE] = se;
 	corner[SW] = sw;
 	corner[NW] = nw;
-	triangulation();
 }
 
 bool TerrainQuadHerbe::split() {

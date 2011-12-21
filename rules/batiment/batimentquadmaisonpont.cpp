@@ -1,17 +1,12 @@
 #include "all_includes.hh"
 
-BatimentQuadMaisonPont::BatimentQuadMaisonPont() {
-}
-
 BatimentQuadMaisonPont::BatimentQuadMaisonPont(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height) : Chose() {
 	addEntropy(ne, se, sw, nw);
-	lctr = Vertex(ne.x-nw.x,se.y-ne.y,0.0f);
-    this->ne = ne-lctr;
-    this->se = se-lctr;
-    this-> sw = sw-lctr;
-    this->nw = nw-lctr;
+	c[NE] = ne;
+	c[SE] = se;
+	c[SW] = sw;
+	c[NW] = nw;
     this->height = height;
-	triangulation();
 }
 
 BatimentQuadMaisonPont::~BatimentQuadMaisonPont() {
@@ -25,7 +20,7 @@ void BatimentQuadMaisonPont::getBoundingBoxPoints() {
 
 bool BatimentQuadMaisonPont::split() {
 
-    Quad q = Quad(ne,se,sw,nw);
+    Quad q = Quad(c[NE],c[SE],c[SW],c[NW]);
     q.makeParallelogram();
     if(Segment(q.corner[0],q.corner[3]).length() < Segment(q.corner[0],q.corner[1]).length())
         q = Quad(q.corner[1],q.corner[2],q.corner[3],q.corner[0]);
@@ -40,33 +35,33 @@ bool BatimentQuadMaisonPont::split() {
     qc.offset(E, -partLength);
     qc.offset(W, -partLength);
 
-    se = lctr+qa.corner[0];
-    sw = lctr+qa.corner[1];
-    nw = lctr+qa.corner[2];
-    ne = lctr+qa.corner[3];
+    c[SE] = qa.corner[0];
+    c[SW] = qa.corner[1];
+    c[NW] = qa.corner[2];
+    c[NE] = qa.corner[3];
 
-    addChild(new BatimentQuadMaisonBlock(ne,se,sw,nw,partHeight));
+    addChild(new BatimentQuadMaisonBlock(c[NE],c[SE],c[SW],c[NW],partHeight));
 
-    se = lctr+qb.corner[0];
-    sw = lctr+qb.corner[1];
-    nw = lctr+qb.corner[2];
-    ne = lctr+qb.corner[3];
+    c[SE] = qb.corner[0];
+    c[SW] = qb.corner[1];
+    c[NW] = qb.corner[2];
+    c[NE] = qb.corner[3];
 
-    addChild(new BatimentQuadMaisonBlock(ne,se,sw,nw,partHeight));
+    addChild(new BatimentQuadMaisonBlock(c[NE],c[SE],c[SW],c[NW],partHeight));
 
-    se = lctr+qh.corner[0] + Vertex(0,0,partHeight);
-    sw = lctr+qh.corner[1] + Vertex(0,0,partHeight);
-    nw = lctr+qh.corner[2] + Vertex(0,0,partHeight);
-    ne = lctr+qh.corner[3] + Vertex(0,0,partHeight);
+    c[SE] = qh.corner[0] + Vertex(0,0,partHeight);
+    c[SW] = qh.corner[1] + Vertex(0,0,partHeight);
+    c[NW] = qh.corner[2] + Vertex(0,0,partHeight);
+    c[NE] = qh.corner[3] + Vertex(0,0,partHeight);
 
-    addChild(new BatimentQuadMaisonBlock(ne,se,sw,nw,partHeight));
+    addChild(new BatimentQuadMaisonBlock(c[NE],c[SE],c[SW],c[NW],partHeight));
 
-    se = lctr+qc.corner[0];
-    sw = lctr+qc.corner[1];
-    nw = lctr+qc.corner[2];
-    ne = lctr+qc.corner[3];
+    c[SE] = qc.corner[0];
+    c[SW] = qc.corner[1];
+    c[NW] = qc.corner[2];
+    c[NE] = qc.corner[3];
 
-    addChild(new BatimentQuadPont(se,sw,nw,ne,partHeight));
+    addChild(new BatimentQuadPont(c[SE],c[SW],c[NW],c[NE],partHeight));
 /*
     Vertex seh = qh.corner[0] + Vertex(0,0,partHeight);
     Vertex swh = qh.corner[1] + Vertex(0,0,partHeight);
@@ -85,23 +80,15 @@ bool BatimentQuadMaisonPont::split() {
 	return true;
 }
 
-bool BatimentQuadMaisonPont::merge() {
-    for(unsigned int i = 0; i < children.size(); i++)
-        delete(children[i]);
-    children.clear();
-    triangles.clear();
-    return true;
-}
-
 void BatimentQuadMaisonPont::triangulation() {
 	//triangles.reserve(2);
 	float h = 2.5*height/3.;
-    Vertex seh = se + Vertex(0,0,h);
-    Vertex swh = sw + Vertex(0,0,h);
-    Vertex nwh = nw + Vertex(0,0,h);
-    Vertex neh = ne + Vertex(0,0,h);
+    Vertex seh = c[SE] + Vertex(0,0,h);
+    Vertex swh = c[SW] + Vertex(0,0,h);
+    Vertex nwh = c[NW] + Vertex(0,0,h);
+    Vertex neh = c[NE] + Vertex(0,0,h);
 
-    addOcto(ne,se,sw,nw,neh,seh,swh,nwh,0xDD,0xDD,0xDD);
+    addOcto(c[NE],c[SE],c[SW],c[NW],neh,seh,swh,nwh,0xDD,0xDD,0xDD);
 
     Vertex ce = seh + (neh - seh)/2 + Vertex(0,0,0.5*height/3.);
     Vertex cw = swh + (nwh - swh)/2 + Vertex(0,0,0.5*height/3.);
