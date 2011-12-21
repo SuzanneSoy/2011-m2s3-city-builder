@@ -14,8 +14,6 @@ class Triangle {
 	Vertex vnormal;
 
 	public :
-	friend std::ostream& operator<<(std::ostream& os, const Triangle* t);
-	friend std::ostream& operator<<(std::ostream& os, const Triangle& t);
 	Triangle();
 	Triangle(Vertex v1, Vertex v2, Vertex v3);
 	Triangle(Vertex v1, Vertex v2, Vertex v3, unsigned char r, unsigned char g, unsigned char b);

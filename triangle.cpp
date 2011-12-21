@@ -13,14 +13,6 @@ Triangle::Triangle(Vertex v1, Vertex v2, Vertex v3, unsigned char r, unsigned ch
 	: v1(v1), v2(v2), v3(v3), r(r), g(g), b(b), vnormal(normal(v1,v2,v3)) {
 }
 
-std::ostream& operator<<(std::ostream& os, const Triangle* t) {
-	return os << *t;
-}
-
-std::ostream& operator<<(std::ostream& os, const Triangle& t) {
-	return os << "Triangle " << t.v1 << "--" << t.v2 << "--"  << t.v3 << "-- cycle";
-}
-
 Vertex Triangle::normal(Vertex v1, Vertex v2, Vertex v3) {
 	Vertex normal = (v1 - v2)*(v2 - v3);
 	return normal / normal.norm();

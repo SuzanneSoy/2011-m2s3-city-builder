@@ -1,7 +1,6 @@
 #include "all_includes.hh"
 
 Chose::Chose() : seed(initialSeed), children() {
-	std::cout << "NEW CHOSE " << (int)(this) << std::endl;
 }
 
 void Chose::addChild(Chose* c) {
