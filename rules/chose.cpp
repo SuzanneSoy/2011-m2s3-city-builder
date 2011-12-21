@@ -26,6 +26,16 @@ void Chose::addQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char
     this->addTriangle(new Triangle(w,v,u,r,g,b));
 }
 
+void Chose::addOcto(Vertex a, Vertex b, Vertex c, Vertex d,
+                    Vertex e, Vertex f, Vertex g, Vertex h, char red, char green, char blue) {
+    this->addQuad(d,c,b,a,red,green,blue);
+    this->addQuad(d,h,g,c,red,green,blue);
+    this->addQuad(c,g,f,b,red,green,blue);
+    this->addQuad(b,f,e,a,red,green,blue);
+    this->addQuad(a,e,h,d,red,green,blue);
+    this->addQuad(h,g,f,e,red,green,blue);
+}
+
 void Chose::display() {
 	if (children.size() > 0) {
 		std::vector<Chose*>::iterator it;

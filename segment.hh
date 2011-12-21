@@ -10,10 +10,10 @@ class Segment {
 
     public :
 	Segment(Vertex u, Vertex v);
-	int length();
+	float length();
 	int width();
 	int height();
-	Segment reduce(int value);
+	Segment reduce(float value);
 	Vertex randomPos(int seed, int n, int a, int b); // Renvoir un vertex sur le segment [u,v], à une position entre a% and b%.
 };
 

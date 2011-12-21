@@ -22,7 +22,7 @@ void Quad::offsetNESW(int offsetN, int offsetE, int offsetS, int offsetW) {
     this->offset(W,offsetW);
 }
 
-void Quad::makeParallelogram() {
+Quad Quad::makeParallelogram() {
     int l1, l2;
 
     if(Segment(corner[NW],corner[NE]).length() < Segment(corner[SE],corner[SW]).length()) {
@@ -45,6 +45,8 @@ void Quad::makeParallelogram() {
             corner[NW] = corner[NE] + (corner[SW] - corner[SE]);
         }
     }
+
+    return Quad(corner[0],corner[1],corner[2],corner[3]);
 }
 
 int Quad::minLengthNS() {
