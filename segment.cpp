@@ -2,8 +2,13 @@
 
 Segment::Segment(Vertex u, Vertex v): u(u), v(v) {}
 
-int Segment::length() {
+float Segment::length() {
 	return (u-v).norm();
+}
+
+Segment Segment::reduce(float value) {
+    float reduc = (float)length()/(float)value;
+    return Segment(u,u+((v - u) / reduc));
 }
 
 int Segment::width() {

@@ -53,6 +53,8 @@ class Chose {
 	}
 	void addChild(Chose* c);
 	void addTriangle(Triangle* t);
+	void addQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b);
+	void addOcto(Vertex a,Vertex b,Vertex c,Vertex d,Vertex e,Vertex f,Vertex g,Vertex h,char red,char green,char blue);
 };
 
 #endif

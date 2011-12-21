@@ -18,6 +18,21 @@ bool Chose::merge() {
     return true;
 }
 
+void Chose::addQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b) {
+    this->addTriangle(new Triangle(u,x,w,r,g,b));
+    this->addTriangle(new Triangle(w,v,u,r,g,b));
+}
+
+void Chose::addOcto(Vertex a, Vertex b, Vertex c, Vertex d,
+                    Vertex e, Vertex f, Vertex g, Vertex h, char red, char green, char blue) {
+    this->addQuad(a,b,c,d,red,green,blue);
+    this->addQuad(e,f,g,h,red,green,blue);
+    this->addQuad(b,a,e,f,red,green,blue);
+    this->addQuad(c,b,f,g,red,green,blue);
+    this->addQuad(d,c,g,h,red,green,blue);
+    this->addQuad(a,d,h,e,red,green,blue);
+}
+
 void Chose::display() {
 	if (children.size() > 0) {
 		std::vector<Chose*>::iterator it;

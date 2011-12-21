@@ -22,6 +22,33 @@ void Quad::offsetNESW(int offsetN, int offsetE, int offsetS, int offsetW) {
     this->offset(W,offsetW);
 }
 
+Quad Quad::makeParallelogram() {
+    int l1, l2;
+
+    if(Segment(corner[NW],corner[NE]).length() < Segment(corner[SE],corner[SW]).length()) {
+        if((l1 = Segment(corner[NE],corner[SE]).length()) < (l2 = Segment(corner[SW],corner[NW]).length())) {
+            corner[SW] = Segment(corner[NW],corner[SW]).reduce(l1).v;
+            corner[SE] = corner[SW] + (corner[NE] - corner[NW]);
+        }
+        else if((l1 = Segment(corner[NE],corner[SE]).length()) > (l2 = Segment(corner[SW],corner[NW]).length())) {
+            corner[SE] = Segment(corner[NE],corner[SE]).reduce(l2).v;
+            corner[SW] = corner[SE] + (corner[NW] - corner[NE]);
+        }
+    }
+    else {
+        if((l1 = Segment(corner[NE],corner[SE]).length()) < (l2 = Segment(corner[SW],corner[NW]).length())) {
+            corner[NW] = Segment(corner[SW],corner[NW]).reduce(l1).v;
+            corner[NE] = corner[NW] + (corner[SE] - corner[SW]);
+        }
+        else if((l1 = Segment(corner[NE],corner[SE]).length()) > (l2 = Segment(corner[SW],corner[NW]).length())) {
+            corner[NE] = Segment(corner[SE],corner[NE]).reduce(l2).v;
+            corner[NW] = corner[NE] + (corner[SW] - corner[SE]);
+        }
+    }
+
+    return Quad(corner[0],corner[1],corner[2],corner[3]);
+}
+
 int Quad::minLengthNS() {
 	return std::min(
 		Segment(corner[NW],corner[NE]).length(),

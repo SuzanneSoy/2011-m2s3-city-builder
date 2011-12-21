@@ -1,21 +1,24 @@
-#ifndef _RULES_BATIMENT_HH_
-#define _RULES_BATIMENT_HH_
+#ifndef _RULES_BATIMENTPONT_HH_
+#define _RULES_BATIMENTPONT_HH_
 
 #include "all_includes.hh"
 
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
-class BatimentQuad : public Chose {
+class BatimentQuadPont: public Chose {
     private :
-	Vertex c[4];
-	Cardinal entry;
+	Vertex ne;
+	Vertex se;
+	Vertex sw;
+	Vertex nw;
+	int height;
 
     public :
-	static const int minHeight = 400;
-	static const int maxHeight = 800;
 
-	BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, Cardinal door);
-	virtual ~BatimentQuad();
+	BatimentQuadPont();
+	BatimentQuadPont(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height);
+	virtual ~BatimentQuadPont();
 	virtual bool split();
+	virtual bool merge();
 	virtual void triangulation();
 	Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual void getBoundingBoxPoints();
