@@ -12,7 +12,6 @@ class QuartierQuadCarre : public QuartierQuad {
 	QuartierQuadCarre(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual ~QuartierQuadCarre();
 	virtual bool split();
-	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
 };
 
 #endif

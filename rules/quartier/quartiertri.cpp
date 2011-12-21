@@ -5,19 +5,20 @@ QuartierTri::QuartierTri(Vertex left, Vertex top, Vertex right) : Chose() {
 	corner[0] = left;
 	corner[1] = top;
 	corner[2] = right;
-	triangulation();
 }
 
 QuartierTri::~QuartierTri() {
-    for(unsigned int i = 0; i < children.size(); i++)
-        delete(children[i]);
-    children.clear();
-    triangles.clear();
+	children.clear();
+	triangles.clear();
 }
 
-std::vector<Vertex*> QuartierTri::getBoundingBoxPoints() const {
-    std::vector<Vertex*> list;
-    return list;
+void QuartierTri::getBoundingBoxPoints() {
+	addBBPoint(corner[0]);
+	addBBPoint(corner[1]);
+	addBBPoint(corner[2]);
+	addBBPoint(corner[0] + Vertex(0,0,1000)); // TODO
+	addBBPoint(corner[1] + Vertex(0,0,1000));
+	addBBPoint(corner[2] + Vertex(0,0,1000));
 }
 
 Chose* QuartierTri::factory(int seed, int n, Vertex left, Vertex top, Vertex right) {

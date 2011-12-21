@@ -1,62 +1,55 @@
 #include "all_includes.hh"
 
-BatimentQuad::BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, Cardinal entry) : Chose(), ne(ne) {
+BatimentQuad::BatimentQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, Cardinal entry) : Chose() {
 	addEntropy(ne, se, sw, nw);
 	this->entry = entry;
-	lctr = Vertex(ne.x-nw.x,se.y-ne.y,0.0f);
-    this->ne = ne-lctr;
-    this->se = se-lctr;
-    this-> sw = sw-lctr;
-    this->nw = nw-lctr;
-    triangulation();
+	lctr = (ne + se + sw + nw) / 4;
+    corner[NE] = ne;//-lctr;
+	corner[SE] = se;//-lctr;
+    corner[SW] = sw;//-lctr;
+    corner[NW] = nw;//-lctr;
 }
 
 BatimentQuad::~BatimentQuad() {
-    for(unsigned int i = 0; i < children.size(); i++)
-        delete(children[i]);
     children.clear();
     triangles.clear();
 }
 
-int BatimentQuad::width() { return this->ne.x - this->sw.x; }
-int BatimentQuad::height() { return this->ne.y - this->sw.y; }
-
-std::vector<Vertex*> BatimentQuad::getBoundingBoxPoints() const {
-    std::vector<Vertex*> list;
-    return list;
+void BatimentQuad::getBoundingBoxPoints() {
+	addBBPoint(corner[NE]);
+	addBBPoint(corner[SE]);
+	addBBPoint(corner[SW]);
+	addBBPoint(corner[NW]);
+	addBBPoint(corner[NE] + Vertex(0,0,maxHeight + maxHeight/2)); // TODO
+	addBBPoint(corner[SE] + Vertex(0,0,maxHeight + maxHeight/2));
+	addBBPoint(corner[SW] + Vertex(0,0,maxHeight + maxHeight/2));
+	addBBPoint(corner[NW] + Vertex(0,0,maxHeight + maxHeight/2));
 }
 
 bool BatimentQuad::split() {
-    factory(1,1,ne,se,sw,nw);
-	return true;
-}
-
-Chose* BatimentQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw) {
-	int th = 20;        // Terrain height.
-	Quad q = Quad(ne,se,sw,nw);
-	seed = seed;
-	n = n;
+	int th = 20; // Terrain height.
+	Quad q = Quad(corner[NE],corner[SE],corner[SW],corner[NW]);
 	q.offset(N,-140);
 	q.offset(E,-140);
 	q.offset(S,-140);
 	q.offset(W,-140);
 
-	addChild(new TrottoirQuadNormal(lctr+ne,lctr+se,lctr+q.corner[1],lctr+q.corner[0],th,E));
-    addChild(new TrottoirQuadNormal(lctr+se,lctr+sw,lctr+q.corner[2],lctr+q.corner[1],th,E));
-    addChild(new TrottoirQuadNormal(lctr+sw,lctr+nw,lctr+q.corner[3],lctr+q.corner[2],th,E));
-    addChild(new TrottoirQuadNormal(lctr+nw,lctr+ne,lctr+q.corner[0],lctr+q.corner[3],th,E));
+	addChild(new TrottoirQuadNormal(/*lctr+*/corner[NE],/*lctr+*/corner[SE],/*lctr+*/q.corner[1],/*lctr+*/q.corner[0],th,E));
+    addChild(new TrottoirQuadNormal(/*lctr+*/corner[SE],/*lctr+*/corner[SW],/*lctr+*/q.corner[2],/*lctr+*/q.corner[1],th,E));
+    addChild(new TrottoirQuadNormal(/*lctr+*/corner[SW],/*lctr+*/corner[NW],/*lctr+*/q.corner[3],/*lctr+*/q.corner[2],th,E));
+    addChild(new TrottoirQuadNormal(/*lctr+*/corner[NW],/*lctr+*/corner[NE],/*lctr+*/q.corner[0],/*lctr+*/q.corner[3],th,E));
 
     q.corner[0] = q.corner[0] + Vertex(0,0,th);
     q.corner[1] = q.corner[1] + Vertex(0,0,th);
     q.corner[2] = q.corner[2] + Vertex(0,0,th);
     q.corner[3] = q.corner[3] + Vertex(0,0,th);
 
-    addChild(new BatimentQuadJardin(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3]));
+    addChild(new BatimentQuadJardin(/*lctr+*/q.corner[0],/*lctr+*/q.corner[1],/*lctr+*/q.corner[2],/*lctr+*/q.corner[3]));
 
     q.offset(this->entry,-400);
 
-	addChild(new BatimentQuadMaison(lctr+q.corner[0],lctr+q.corner[1],lctr+q.corner[2],lctr+q.corner[3]));
-	return NULL;	// pour compilation, à virer.
+	addChild(new BatimentQuadMaison(/*lctr+*/q.corner[0],/*lctr+*/q.corner[1],/*lctr+*/q.corner[2],/*lctr+*/q.corner[3]));
+	return true;
 }
 
 void BatimentQuad::triangulation() {
@@ -64,17 +57,17 @@ void BatimentQuad::triangulation() {
 
 	int h = hashInRange(seed,0,minHeight,maxHeight);
 	int htoit = hashInRange(seed,0,minHeight/2,maxHeight/2);
-	Vertex neh = ne + Vertex(0,0,h);
-	Vertex seh = se + Vertex(0,0,h);
-	Vertex nwh = nw + Vertex(0,0,h);
-	Vertex swh = sw + Vertex(0,0,h);
+	Vertex neh = corner[NE] + Vertex(0,0,h);
+	Vertex seh = corner[SE] + Vertex(0,0,h);
+	Vertex nwh = corner[NW] + Vertex(0,0,h);
+	Vertex swh = corner[SW] + Vertex(0,0,h);
 	Vertex toit = (neh + seh + nwh + swh) / 4 + Vertex(0,0,htoit);
 
 	// 4 Murs
-	addTriangle(new Triangle(neh,seh,ne,0xf1,0xe3,0xad)); addTriangle(new Triangle(seh,se,ne,0xf1,0xe3,0xad)); // ne-se-seh-neh
-	addTriangle(new Triangle(seh,swh,se,0xf1,0xe3,0xad)); addTriangle(new Triangle(swh,sw,se,0xf1,0xe3,0xad)); // se-sw-swh-seh
-	addTriangle(new Triangle(swh,nwh,sw,0xf1,0xe3,0xad)); addTriangle(new Triangle(nwh,nw,sw,0xf1,0xe3,0xad)); // sw-nw-nwh-swh
-	addTriangle(new Triangle(nwh,neh,nw,0xf1,0xe3,0xad)); addTriangle(new Triangle(neh,ne,nw,0xf1,0xe3,0xad)); // nw-ne-neh-nwh
+	addTriangle(new Triangle(neh,seh,corner[NE],0xf1,0xe3,0xad)); addTriangle(new Triangle(seh,corner[SE],corner[NE],0xf1,0xe3,0xad)); // ne-se-seh-neh
+	addTriangle(new Triangle(seh,swh,corner[SE],0xf1,0xe3,0xad)); addTriangle(new Triangle(swh,corner[SW],corner[SE],0xf1,0xe3,0xad)); // se-sw-swh-seh
+	addTriangle(new Triangle(swh,nwh,corner[SW],0xf1,0xe3,0xad)); addTriangle(new Triangle(nwh,corner[NW],corner[SW],0xf1,0xe3,0xad)); // sw-nw-nwh-swh
+	addTriangle(new Triangle(nwh,neh,corner[NW],0xf1,0xe3,0xad)); addTriangle(new Triangle(neh,corner[NE],corner[NW],0xf1,0xe3,0xad)); // nw-ne-neh-nwh
 
 	// 1 Toit
 	addTriangle(new Triangle(neh,toit,seh,0x9a,0x48,0x3c));

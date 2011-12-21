@@ -2,28 +2,27 @@
 
 BatimentQuadJardin::BatimentQuadJardin(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose() {
 	addEntropy(ne, se, sw, nw);
-	lctr = Vertex(ne.x-nw.x,se.y-ne.y,0.0f);
-    this->ne = ne-lctr;
-    this->se = se-lctr;
-    this-> sw = sw-lctr;
-    this->nw = nw-lctr;
-	triangulation();
+	lctr = (ne + se + sw + nw) / 4;
+    corner[NE] = ne;//-lctr;
+	corner[SE] = se;//-lctr;
+    corner[SW] = sw;//-lctr;
+    corner[NW] = nw;//-lctr;
 }
 
 BatimentQuadJardin::~BatimentQuadJardin() {
-    for(unsigned int i = 0; i < children.size(); i++)
-        delete(children[i]);
     children.clear();
     triangles.clear();
 }
 
-int BatimentQuadJardin::width() { return this->ne.x - this->sw.x; }
-
-int BatimentQuadJardin::height() { return this->ne.y - this->sw.y; }
-
-std::vector<Vertex*> BatimentQuadJardin::getBoundingBoxPoints() const {
-    std::vector<Vertex*> list;
-    return list;
+void BatimentQuadJardin::getBoundingBoxPoints() {
+	addBBPoint(corner[NE]);
+	addBBPoint(corner[SE]);
+	addBBPoint(corner[SW]);
+	addBBPoint(corner[NW]);
+	addBBPoint(corner[NE] + Vertex(0,0,200)); // TODO
+	addBBPoint(corner[SE] + Vertex(0,0,200));
+	addBBPoint(corner[SW] + Vertex(0,0,200));
+	addBBPoint(corner[NW] + Vertex(0,0,200));
 }
 
 bool BatimentQuadJardin::split() {
@@ -34,6 +33,6 @@ bool BatimentQuadJardin::split() {
 void BatimentQuadJardin::triangulation() {
 	triangles.reserve(2);
 
-	addTriangle(new Triangle(lctr+ne,lctr+nw,lctr+sw,0x12,0x64,0x12));
-	addTriangle(new Triangle(lctr+sw,lctr+se,lctr+ne,0x10,0x60,0x10));
+	addTriangle(new Triangle(/*lctr+*/corner[NE],/*lctr+*/corner[NW],/*lctr+*/corner[SW],0x12,0x64,0x12));
+	addTriangle(new Triangle(/*lctr+*/corner[SW],/*lctr+*/corner[SE],/*lctr+*/corner[NE],0x12,0x64,0x12));
 }

@@ -1,7 +1,10 @@
 #include "all_includes.hh"
 
-// camera(Camera(Vertex(1000,1000,2000),45,100,1000,0.6)
-View::View(Chose* root) : root(root), camera(Camera(Vertex(9600,10000,15300),0,179,1000,0.6)) {
+// camera(Camera(Vertex(9600,10000,15300),0,179,1000,0.6)
+View::View(Chose* root)
+	: root(root),
+	  camera(Camera(Vertex(10,10,-100),45,90,1000,0.6)),
+	  lod(camera.cameraCenter, root) {
 	initWindow();
 	mainLoop();
 }
@@ -86,6 +89,7 @@ void View::renderScene(int lastTime, int currentTime) {
 
 	camera.animation(currentTime-lastTime);
 	camera.setCamera();
+	lod.setCamera(camera.cameraCenter);
 
 	setLight();
 	//displayAxes();

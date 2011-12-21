@@ -6,10 +6,7 @@
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
 class BatimentQuadMaison : public Chose {
     private :
-	Vertex ne;
-	Vertex se;
-	Vertex sw;
-	Vertex nw;
+	Vertex corner[4];
 
     public :
 	static const int minHeight = 400;
@@ -17,12 +14,10 @@ class BatimentQuadMaison : public Chose {
 
 	BatimentQuadMaison(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual ~BatimentQuadMaison();
-	int width();
-	int height();
 	virtual bool split();
 	virtual void triangulation();
 	Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
-	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
+	virtual void getBoundingBoxPoints();
 };
 
 #endif

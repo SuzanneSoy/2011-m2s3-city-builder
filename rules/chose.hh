@@ -20,8 +20,12 @@ class Chose {
 	void display();
 	virtual bool split() = 0;
 	virtual bool merge();
+	virtual void triangulation() = 0;
+	virtual void updateAABB();
 
     protected :
+	void addBBPoint(Vertex v);
+	virtual void getBoundingBoxPoints() = 0;
 	Chose();
 	inline void addEntropy(unsigned int x1) {
 		seed = hash2(seed, x1);
@@ -49,8 +53,6 @@ class Chose {
 	}
 	void addChild(Chose* c);
 	void addTriangle(Triangle* t);
-	virtual void triangulation() = 0;
-	virtual std::vector<Vertex*> getBoundingBoxPoints() const = 0;
 };
 
 #endif

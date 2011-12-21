@@ -5,10 +5,7 @@
 
 class TrottoirQuadNormal : public Chose {
 	private :
-	Vertex ne;
-	Vertex se;
-	Vertex sw;
-	Vertex nw;
+	Vertex c[4];
 	int height;
 	Cardinal border;
 
@@ -17,7 +14,7 @@ class TrottoirQuadNormal : public Chose {
 	virtual ~TrottoirQuadNormal();
 	virtual bool split();
 	virtual void triangulation();
-	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
+	virtual void getBoundingBoxPoints();
 };
 
 #endif

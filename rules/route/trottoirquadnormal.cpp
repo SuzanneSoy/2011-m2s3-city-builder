@@ -1,25 +1,30 @@
 #include "all_includes.hh"
 
 TrottoirQuadNormal::TrottoirQuadNormal(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height, Cardinal border) {
-	this->ne = ne;
-	this->nw = nw;
-	this->se = se;
-	this->sw = sw;
+    c[NE] = ne;
+	c[SE] = se;
+    c[SW] = sw;
+    c[NW] = nw;
 	this->height = height;
 	this->border = border;
-	triangulation();
+	// TODO : pas besoin de ce champ : il suffit d'orienter
+	// correctement le trottoir lorsqu'on le crée.
 }
 
 TrottoirQuadNormal::~TrottoirQuadNormal() {
-    for(unsigned int i = 0; i < children.size(); i++)
-        delete(children[i]);
     children.clear();
     triangles.clear();
 }
 
-std::vector<Vertex*> TrottoirQuadNormal::getBoundingBoxPoints() const {
-    std::vector<Vertex*> list;
-    return list;
+void TrottoirQuadNormal::getBoundingBoxPoints() {
+	addBBPoint(c[NE]);
+	addBBPoint(c[SE]);
+	addBBPoint(c[SW]);
+	addBBPoint(c[NW]);
+	addBBPoint(c[NE] + Vertex(0,0,height)); // TODO
+	addBBPoint(c[SE] + Vertex(0,0,height));
+	addBBPoint(c[SW] + Vertex(0,0,height));
+	addBBPoint(c[NW] + Vertex(0,0,height));
 }
 
 bool TrottoirQuadNormal::split() {
@@ -29,37 +34,37 @@ bool TrottoirQuadNormal::split() {
 
 void TrottoirQuadNormal::triangulation() {
 	Vertex h = Vertex(0,0,height);
-	Quad q = Quad(ne,se,sw,nw);
+	Quad q = Quad(c[NE],c[SE],c[SW],c[NW]);
 
 	if(border == E) {
         q.offset(E,-15);
         addTriangle(new Triangle(q.corner[0] + h, q.corner[3] + h, q.corner[2] + h, 0x66, 0x66, 0x66));
         addTriangle(new Triangle(q.corner[2] + h, q.corner[1] + h, q.corner[0] + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(ne + h,q.corner[0] + h, q.corner[1] + h, 0xAA, 0xAA, 0xAA));
-        addTriangle(new Triangle(q.corner[1] + h, se + h, ne + h, 0xAA, 0xAA, 0xAA));
+        addTriangle(new Triangle(c[NE] + h,q.corner[0] + h, q.corner[1] + h, 0xAA, 0xAA, 0xAA));
+        addTriangle(new Triangle(q.corner[1] + h, c[SE] + h, c[NE] + h, 0xAA, 0xAA, 0xAA));
 
-        addTriangle(new Triangle(nw + h, nw, sw, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(sw, sw + h, nw + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(ne, ne + h, se + h, 0xAA, 0xAA, 0xAA));
-        addTriangle(new Triangle(se + h, se, ne, 0xAA, 0xAA, 0xAA));
+        addTriangle(new Triangle(c[NW] + h, c[NW], c[SW], 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[SW], c[SW] + h, c[NW] + h, 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[NE], c[NE] + h, c[SE] + h, 0xAA, 0xAA, 0xAA));
+        addTriangle(new Triangle(c[SE] + h, c[SE], c[NE], 0xAA, 0xAA, 0xAA));
 
-        addTriangle(new Triangle(ne + h, ne, nw, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(nw, nw + h, ne + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(sw, sw + h, se + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(se + h, se, sw, 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[NE] + h, c[NE], c[NW], 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[NW], c[NW] + h, c[NE] + h, 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[SW], c[SW] + h, c[SE] + h, 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[SE] + h, c[SE], c[SW], 0x66, 0x66, 0x66));
     }
     else {
         addTriangle(new Triangle(q.corner[0] + h, q.corner[3] + h, q.corner[2] + h, 0x66, 0x66, 0x66));
         addTriangle(new Triangle(q.corner[2] + h, q.corner[1] + h, q.corner[0] + h, 0x66, 0x66, 0x66));
 
-        addTriangle(new Triangle(nw + h, nw, sw, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(sw, sw + h, nw + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(ne, ne + h, se + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(se + h, se, ne, 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[NW] + h, c[NW], c[SW], 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[SW], c[SW] + h, c[NW] + h, 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[NE], c[NE] + h, c[SE] + h, 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[SE] + h, c[SE], c[NE], 0x66, 0x66, 0x66));
 
-        addTriangle(new Triangle(ne + h, ne, nw, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(nw, nw + h, ne + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(sw, sw + h, se + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(se + h, se, sw, 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[NE] + h, c[NE], c[NW], 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[NW], c[NW] + h, c[NE] + h, 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[SW], c[SW] + h, c[SE] + h, 0x66, 0x66, 0x66));
+        addTriangle(new Triangle(c[SE] + h, c[SE], c[SW], 0x66, 0x66, 0x66));
     }
 }

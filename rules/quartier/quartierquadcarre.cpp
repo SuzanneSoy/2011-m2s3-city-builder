@@ -4,15 +4,8 @@ QuartierQuadCarre::QuartierQuadCarre(Vertex ne, Vertex se, Vertex sw, Vertex nw)
 }
 
 QuartierQuadCarre::~QuartierQuadCarre() {
-    for(unsigned int i = 0; i < children.size(); i++)
-        delete(children[i]);
     children.clear();
     triangles.clear();
-}
-
-std::vector<Vertex*> QuartierQuadCarre::getBoundingBoxPoints() const {
-    std::vector<Vertex*> list;
-    return list;
 }
 
 bool QuartierQuadCarre::split() {

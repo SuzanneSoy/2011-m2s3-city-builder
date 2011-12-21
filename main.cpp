@@ -27,22 +27,23 @@ int main() {
 	Vertex sw(0, 0, 0);
 	Vertex nw(0, size, 0);
 	Chose* c = QuartierQuad::factory(Chose::initialSeed, 0, ne, se, sw, nw);
+	c->triangulation();
+	c->updateAABB();
 	// c->split();
-	recursiveSubdivide(c);
+	// recursiveSubdivide(c);
 	
-	Heap h(1);
-	(void)h;
-	h.insert(43,c);
-	h.insert(42,c->children[0]);
-	h.popIfLessThan(42); // NULL
-	h.popIfLessThan(43); // c->children[0]
-	h.popIfLessThan(44); // c
-	h.popIfLessThan(44); // NULL
+	// Heap h(1);
+	// (void)h;
+	// h.insert(43,c);
+	// h.insert(42,c->children[0]);
+	// h.popIfLessThan(42); // NULL
+	// h.popIfLessThan(43); // c->children[0]
+	// h.popIfLessThan(44); // c
+	// h.popIfLessThan(44); // NULL
 	
-	View *v = new View(c);
-	Vertex cc = v->camera.cameraCenter;
-	float camera[3] = {cc.x, cc.y, cc.z};
-	camera[0] = camera[0];
-	Lod lod(camera);
+	new View(c);
+	// Vertex cc = v->camera.cameraCenter;
+	// float camera[3] = {cc.x, cc.y, cc.z};
+	// Lod lod(camera);
 	return 0;
 }

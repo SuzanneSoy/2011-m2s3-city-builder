@@ -15,7 +15,7 @@ class TerrainQuadHerbe : public Chose {
 	virtual ~TerrainQuadHerbe();
 	virtual bool split();
 	virtual void triangulation();
-	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
+	virtual void getBoundingBoxPoints();
 };
 
 

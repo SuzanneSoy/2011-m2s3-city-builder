@@ -9,15 +9,19 @@ QuartierQuad::QuartierQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose()
 }
 
 QuartierQuad::~QuartierQuad() {
-    for(unsigned int i = 0; i < children.size(); i++)
-        delete(children[i]);
     children.clear();
     triangles.clear();
 }
 
-std::vector<Vertex*> QuartierQuad::getBoundingBoxPoints() const {
-    std::vector<Vertex*> list;
-    return list;
+void QuartierQuad::getBoundingBoxPoints() {
+	addBBPoint(corner[NE]);
+	addBBPoint(corner[SE]);
+	addBBPoint(corner[SW]);
+	addBBPoint(corner[NW]);
+	addBBPoint(corner[NE] + Vertex(0,0,1000)); // TODO
+	addBBPoint(corner[SE] + Vertex(0,0,1000));
+	addBBPoint(corner[SW] + Vertex(0,0,1000));
+	addBBPoint(corner[NW] + Vertex(0,0,1000));
 }
 
 Chose* QuartierQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw) {

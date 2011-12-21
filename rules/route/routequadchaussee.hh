@@ -5,17 +5,14 @@
 
 class RouteQuadChaussee : public Chose {
     private :
-	Vertex ne;
-	Vertex se;
-	Vertex sw;
-	Vertex nw;
+	Vertex corner[4];
 
     public :
 	RouteQuadChaussee(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual ~RouteQuadChaussee();
 	virtual bool split();
 	virtual void triangulation();
-	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
+	virtual void getBoundingBoxPoints();
 };
 
 #endif

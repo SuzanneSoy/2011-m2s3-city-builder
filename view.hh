@@ -43,6 +43,8 @@ class View {
 
 	public :
 	Camera camera;
+private:
+	Lod lod;
 
 	static const int windowWidth = 1024;
 	static const int windowHeight = 768;

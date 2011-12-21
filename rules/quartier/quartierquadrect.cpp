@@ -4,15 +4,8 @@ QuartierQuadRect::QuartierQuadRect(Vertex ne, Vertex se, Vertex sw, Vertex nw) :
 }
 
 QuartierQuadRect::~QuartierQuadRect() {
-    for(unsigned int i = 0; i < children.size(); i++)
-        delete(children[i]);
     children.clear();
     triangles.clear();
-}
-
-std::vector<Vertex*> QuartierQuadRect::getBoundingBoxPoints() const {
-    std::vector<Vertex*> list;
-    return list;
 }
 
 bool QuartierQuadRect::split() {

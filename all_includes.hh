@@ -24,9 +24,11 @@ class Chose;
 #include "quad.hh"
 
 #include "hash.hh"
-#include "view.hh"
-// LOD must be included before chose.hh
+// heap.hh must be included before lod.hh
+#include "heap.hh"
+// lod.hh must be included before chose.hh and view.hh
 #include "lod.hh"
+#include "view.hh"
 
 #include "rules/chose.hh"
 

@@ -14,7 +14,7 @@ class QuartierTri : public Chose {
 	virtual bool split();
 	virtual void triangulation();
 	static Chose* factory(int seed, int n, Vertex left, Vertex top, Vertex right);
-	virtual std::vector<Vertex*> getBoundingBoxPoints() const;
+	virtual void getBoundingBoxPoints();
 };
 
 #endif
