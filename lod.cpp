@@ -2,7 +2,7 @@
 
 Lod::Lod(Vertex camera, Chose* root) {
 	for (int i = 0; i < 6; i++) {
-		merge[i].init(i, (i & 1) ? -1 : 1);
+		merge[i].init(i, (i & 1) ? 1 : -1);
 		splitIn[i].init(6+i, (i & 1) ? 1 : -1);
 		splitOut[i].init(12+i, (i & 1) ? -1 : 1);
 	}
@@ -25,8 +25,8 @@ void Lod::setCamera(Vertex newCamera) {
 			for(int j = 0; j < 6; j++) {
 				if(i == j) continue;
 				merge[j].remove(c);
-				// TODO
 			}
+			doMerge(c);
 		}
 	}
 	// Split out vers split in.
@@ -67,6 +67,7 @@ void Lod::doSplit(Chose* c) {
 			// (*it)->drawAABB();
 			addSplitCube((*it));
 		}
+		addMergeCube(c);
 	}
 	// else {
 	// 	// Pour debug : quand on tente de split un objet qui ne peut
@@ -76,8 +77,16 @@ void Lod::doSplit(Chose* c) {
 	// }
 }
 
+void Lod::doMerge(Chose* c) {
+	c->merge();
+	addSplitCube(c);
+}
+
 void Lod::addMergeCube(Chose* chose) {
-	for(int i = 0; i < 5; i++)
+	// Innutile de détecter si l'on est déjà sortis de la mergeBox :
+	// comme elle est plus grosse que la splitBox, on est forcément
+	// dedans.
+	for(int i = 0; i < 6; i++)
 		merge[i].insert(chose->lod.mergeBox[i], chose);
 }
 

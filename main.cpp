@@ -30,7 +30,7 @@ int main() {
 	Chose* c = QuartierQuad::factory(Chose::initialSeed, 0, ne, se, sw, nw);
 	c->triangulation();
 	c->updateAABB();
-	c->drawAABB();
+	// c->drawAABB();
 	// c->split();
 	// recursiveSubdivide(c);
 	
