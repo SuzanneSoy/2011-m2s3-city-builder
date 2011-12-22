@@ -33,7 +33,6 @@ void Lod::setCamera(Vertex newCamera) {
 	for(int i = 0; i < 6; i++) {
 		Chose* c;
 		while((c = splitOut[i].popIfLessThan(camera[i>>1]))) {
-			std::cout<<"soi "<<c->lod.inCounter+1<<" "<<typeid(*c).name()<<" "<<c<<std::endl;
 			if(c->lod.inCounter == 5) {
 				for(int j = 0; j < 6; j++) {
 					if(i == j) continue;
@@ -52,7 +51,6 @@ void Lod::setCamera(Vertex newCamera) {
 	for(int i = 0; i < 6; i++) {
 		Chose* c;
 		while((c = splitIn[i].popIfLessThan(camera[i>>1]))) {
-			std::cout<<"SIO "<<c->lod.inCounter-1<<" "<<typeid(*c).name()<<" "<<c<<std::endl;
 			c->lod.inCounter--;
 			splitOut[i].insert(c->lod.splitBox[i], c);
 		}
@@ -61,20 +59,21 @@ void Lod::setCamera(Vertex newCamera) {
 
 void Lod::doSplit(Chose* c) {
 	// TODO
-	if (c->split() && c->children.size() > 0) {
+	if (c->split()) {
 		std::vector<Chose*>::iterator it;
 		for (it = c->children.begin(); it != c->children.end(); ++it) {
 			(*it)->triangulation();
 			(*it)->updateAABB();
-			(*it)->drawAABB();
+			// (*it)->drawAABB();
 			addSplitCube((*it));
 		}
-	} else {
-		// Pour debug : quand on tente de split un objet qui ne peut
-		// pas l'être, on vire le dessin de sa splitBox.
-		c->triangles.clear();
-		c->triangulation();
 	}
+	// else {
+	// 	// Pour debug : quand on tente de split un objet qui ne peut
+	// 	// pas l'être, on vire le dessin de sa splitBox.
+	// 	c->triangles.clear();
+	// 	c->triangulation();
+	// }
 }
 
 void Lod::addMergeCube(Chose* chose) {
@@ -85,9 +84,6 @@ void Lod::addMergeCube(Chose* chose) {
 void Lod::addSplitCube(Chose* chose) {
 	chose->lod.inCounter = 0;
 	for(int i = 0; i < 6; i++) {
-		// std::cout << chose->lod.splitBox[i] << " " << camera[i>>1] << " " << splitOut[i].factor;
-		// std::cout << " " << (splitOut[i].lessThan(chose->lod.splitBox[i], camera[i>>1]) ? "t" : "f");
-		// std::cout << std::endl;
 		if(splitOut[i].lessThan(chose->lod.splitBox[i], camera[i>>1])) {
 			chose->lod.inCounter++;
 			splitIn[i].insert(chose->lod.splitBox[i], chose);
@@ -101,5 +97,4 @@ void Lod::addSplitCube(Chose* chose) {
 			splitIn[i].remove(chose);
 		doSplit(chose);
 	}
-	std::cout<<"insert "<<chose->lod.inCounter<<" "<<typeid(*chose).name()<<" "<<chose<<std::endl;
 }

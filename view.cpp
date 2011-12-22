@@ -3,7 +3,7 @@
 // camera(Camera(Vertex(9600,10000,15300),0,179,1000,0.6)
 View::View(Chose* root)
 	: root(root),
-	  camera(Camera(Vertex(-15000,-15000,3000),45,90,1000,0.6)),
+	  camera(Camera(Vertex(-9000,-15000,3000),45,90,1000,0.6)),
 	  lod(camera.cameraCenter, root) {
 	initWindow();
 	mainLoop();
@@ -105,7 +105,7 @@ void View::mainLoop() {
 	short continuer = 1;
 	SDL_Event event;
 	SDL_EnableKeyRepeat(40,40);
-	// SDL_WM_GrabInput(SDL_GRAB_ON);
+	SDL_WM_GrabInput(SDL_GRAB_ON);
     SDL_ShowCursor(SDL_DISABLE);
 	while ( SDL_PollEvent(&event) ); // empty queue.
 
