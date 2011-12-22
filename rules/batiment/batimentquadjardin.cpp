@@ -26,8 +26,7 @@ void BatimentQuadJardin::getBoundingBoxPoints() {
 }
 
 bool BatimentQuadJardin::split() {
-
-	return true;
+	return false;
 }
 
 void BatimentQuadJardin::triangulation() {

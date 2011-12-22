@@ -25,7 +25,6 @@ void RouteQuadChaussee::getBoundingBoxPoints() {
 }
 
 bool RouteQuadChaussee::split() {
-	// TODO
 	return false;
 }
 

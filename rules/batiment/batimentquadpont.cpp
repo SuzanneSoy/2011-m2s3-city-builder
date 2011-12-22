@@ -19,7 +19,7 @@ void BatimentQuadPont::getBoundingBoxPoints() {
 }
 
 bool BatimentQuadPont::split() {
-	return true;
+	return false;
 }
 
 float ct(float x) {

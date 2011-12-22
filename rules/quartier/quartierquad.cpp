@@ -50,6 +50,7 @@ Chose* QuartierQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, V
 }
 
 bool QuartierQuad::split() {
+	std::cout << "ERROR : QuartierQuad cannot be split." << std::endl;
 	return false;
 }
 

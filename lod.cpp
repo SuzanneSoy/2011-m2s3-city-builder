@@ -32,7 +32,6 @@ void Lod::setCamera(Vertex newCamera) {
 		Chose* c;
 		int pos = NegateOdd(camera[i>>1], i);
 		while((c = split[2*i+1].popIfLessThan(pos))) {
-			std::cout << "soi " << (int)(c) << std::endl;
 			if(c->lod.inCounter == 5) {
 				for(int j = 0; j < 6; j++) {
 					if(i == j) continue;

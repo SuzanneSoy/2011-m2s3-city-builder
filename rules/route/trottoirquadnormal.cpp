@@ -28,7 +28,6 @@ void TrottoirQuadNormal::getBoundingBoxPoints() {
 }
 
 bool TrottoirQuadNormal::split() {
-	// TODO
 	return false;
 }
 

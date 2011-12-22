@@ -25,7 +25,6 @@ void RouteQuadCarrefour::getBoundingBoxPoints() {
 }
 
 bool RouteQuadCarrefour::split() {
-	// TODO
 	return false;
 }
 
