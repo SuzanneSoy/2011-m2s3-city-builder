@@ -25,8 +25,8 @@ public :
 struct LodNode {
 	int heaps[18];
 	float aabb[6];
-	float splitCube[12];
-	float mergeCube[6];
+	float splitBox[12];
+	float mergeBox[6];
     int inCounter;
 	bool firstBBPoint;
 };

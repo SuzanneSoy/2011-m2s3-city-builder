@@ -68,59 +68,32 @@ void Chose::addBBPoint(Vertex v) {
 void Chose::updateAABB() {
 	lod.firstBBPoint = true;
 	getBoundingBoxPoints();
-	for (int i = 0; i < 6; i++) {
-		// TODO
-		lod.splitCube[i] = lod.aabb[i];
-		lod.mergeCube[i] = lod.aabb[i];
+	for (int i = 0; i < 3; i++) {
+		float splitFactor = 2;
+		float mergeFactor = 3;
+		float center = (lod.aabb[2*i] + lod.aabb[2*i+1]) / 2;
+		lod.splitBox[2*i] = (lod.aabb[2*i] - center) * splitFactor + center;
+		lod.splitBox[2*i+1] = (lod.aabb[2*i+1] - center) * splitFactor + center;
+		lod.mergeBox[2*i] = (lod.aabb[2*i] - center) * mergeFactor + center;
+		lod.mergeBox[2*i+1] = (lod.aabb[2*i+1] - center) * mergeFactor + center;
 	}
 }
 
-void Chose::displayAABB() {
-	updateAABB();
-	if (children.size() > 0) {
-		std::vector<Chose*>::iterator it;
-		for (it = children.begin(); it != children.end(); ++it) {
-			(*it)->displayAABB();
-		}
-	} else {
-		// Affiche la AABB.
-		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
-		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[5]);
-		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[5]);
-		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
-		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[5]);
-		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[5]);
-		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
-		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[5]);
-		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[4]);
-		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
-		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[4]);
-		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[4]);
-		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
-		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[5]);
-		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[4]);
-		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[4]);
-		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[4]);
-		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[4]);
-		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
-		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[5]);
-		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[5]);
-		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
-		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[4]);
-		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[5]);
-		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
-		glVertex3d(lod.aabb[0],lod.aabb[2],lod.aabb[5]);
-		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[5]);
-		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
-		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[4]);
-		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[5]);
-		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
-		glVertex3d(lod.aabb[0],lod.aabb[3],lod.aabb[4]);
-		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[4]);
-		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[5]);
-		glVertex3d(lod.aabb[1],lod.aabb[2],lod.aabb[4]);
-		glVertex3d(lod.aabb[1],lod.aabb[3],lod.aabb[4]);
-	}
+// DEBUG
+void Chose::drawAABB() {
+	addOcto(
+		Vertex(lod.splitBox[0], lod.splitBox[2], lod.splitBox[4]),
+		Vertex(lod.splitBox[1], lod.splitBox[2], lod.splitBox[4]),
+		Vertex(lod.splitBox[1], lod.splitBox[3], lod.splitBox[4]),
+		Vertex(lod.splitBox[0], lod.splitBox[3], lod.splitBox[4]),
+		Vertex(lod.splitBox[0], lod.splitBox[2], lod.splitBox[5]),
+		Vertex(lod.splitBox[1], lod.splitBox[2], lod.splitBox[5]),
+		Vertex(lod.splitBox[1], lod.splitBox[3], lod.splitBox[5]),
+		Vertex(lod.splitBox[0], lod.splitBox[3], lod.splitBox[5]),
+		hashInRange(seed, 42, 0, 256),
+		hashInRange(seed, 43, 0, 256),
+		hashInRange(seed, 44, 0, 256)
+	);
 }
 
 unsigned int Chose::initialSeed = 779313522;//random_seed();

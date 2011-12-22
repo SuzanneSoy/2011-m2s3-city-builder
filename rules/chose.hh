@@ -11,14 +11,11 @@ class Chose {
 	std::vector<Chose*> children;
 	std::vector<Triangle*> triangles;
 	LodNode lod;
-    int inCounter;
-    int splitCube[6];
-	int mergeCube[6];
 	Vertex lctr;        // Local center;
 
     public :
 	void display();
-	void displayAABB();
+	void drawAABB(); // DEBUG
 	virtual bool split() = 0;
 	virtual bool merge();
 	virtual void triangulation() = 0;
