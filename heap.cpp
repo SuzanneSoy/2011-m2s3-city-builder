@@ -10,7 +10,7 @@ void Heap::insert(int key, Chose* value) {
 		int _d_node = value->lod.heaps[id];
 		if (_d_node <= lastNode && _d_node >= 0 &&
 			buckets[getBucket(_d_node)][getIndex(_d_node)].value == value) {
-			std::cout << "ERROR ! Trying to insert " << (int)(value);
+			std::cout << "ERROR ! Trying to insert " << value;
 			std::cout << " but it is already here." << std::endl;
 		}
 	}
@@ -30,8 +30,8 @@ void Heap::remove(Chose* value) {
 
 	{ // DEBUG
 		if (buckets[getBucket(node)][getIndex(node)].value != value) {
-			std::cout << "ERROR ! Trying to remove " << (int)(value);
-			std::cout << " but found " << (int)(buckets[getBucket(node)][getIndex(node)].value);
+			std::cout << "ERROR ! Trying to remove " << value;
+			std::cout << " but found " << buckets[getBucket(node)][getIndex(node)].value;
 			std::cout << std::endl;
 		}
 	}
