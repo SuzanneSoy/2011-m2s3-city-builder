@@ -6,10 +6,7 @@
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
 class BatimentQuadMaisonBlock : public Chose {
     private :
-	Vertex ne;
-	Vertex se;
-	Vertex sw;
-	Vertex nw;
+	Vertex c[4];
 	int height;
 
     public :

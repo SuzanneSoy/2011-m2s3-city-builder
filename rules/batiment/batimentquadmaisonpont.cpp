@@ -15,7 +15,14 @@ BatimentQuadMaisonPont::~BatimentQuadMaisonPont() {
 }
 
 void BatimentQuadMaisonPont::getBoundingBoxPoints() {
-	// TODO
+    addBBPoint(c[NE]);
+	addBBPoint(c[SE]);
+	addBBPoint(c[SW]);
+	addBBPoint(c[NW]);
+	addBBPoint(c[NE] + Vertex(0,0,height)); // TODO
+	addBBPoint(c[SE] + Vertex(0,0,height));
+	addBBPoint(c[SW] + Vertex(0,0,height));
+	addBBPoint(c[NW] + Vertex(0,0,height));
 }
 
 bool BatimentQuadMaisonPont::split() {
