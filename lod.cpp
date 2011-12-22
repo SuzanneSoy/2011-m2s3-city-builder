@@ -60,7 +60,7 @@ void Lod::setCamera(Vertex newCamera) {
 
 void Lod::doSplit(Chose* c) {
 	// TODO
-	if (c->split()) {
+	if (c->split() && c->children.size() > 0) {
 		std::vector<Chose*>::iterator it;
 		for (it = c->children.begin(); it != c->children.end(); ++it) {
 			(*it)->triangulation();
@@ -68,6 +68,11 @@ void Lod::doSplit(Chose* c) {
 			(*it)->drawAABB();
 			addSplitCube((*it));
 		}
+	} else {
+		// Pour debug : quand on tente de split un objet qui ne peut
+		// pas l'être, on vire le dessin de sa splitBox.
+		c->triangles.clear();
+		c->triangulation();
 	}
 }
 
