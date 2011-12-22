@@ -4,16 +4,11 @@
 
 class Lod {
 private :
-	Heap merge[6];	// {xMin, xMax, yMin, yMax, zMin, zMax}.
-	Heap split[12];	// {xMinIn, xMinOut, xMaxIn, xMaxOut, yMinIn, yMaxOut, yMaxIn, yMaxOut, zMinIn, zMinOut, zMaxIn, zMaxOut}.
+	Heap merge[6];    // {xMin, xMax, yMin, yMax, zMin, zMax}.
+	Heap splitIn[6];  // {xMinIn, xMaxIn, yMinIn, yMaxIn, zMinIn, zMaxIn}.
+	Heap splitOut[6]; // {xMinOut, xMaxOut, yMinOut, yMaxOut, zMinOut, zMaxOut}.
 	float camera[3];
 private:
-	inline float NegateEven(float value, int evenodd) {
-		return (value*((evenodd&1) ? 1 : -1));
-	}
-	inline float NegateOdd(float value, int evenodd) {
-		return (value*((evenodd&1) ? -1 : 1));
-	}
 	void doSplit(Chose* c);
 public :
 	Lod(Vertex camera, Chose* root);

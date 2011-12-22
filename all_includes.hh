@@ -5,6 +5,9 @@ typedef long long int64;
 
 class Chose;
 
+// DEBUG
+#include <typeinfo>
+
 #include <iostream>
 #include <cstdlib>
 #include <cmath>

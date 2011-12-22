@@ -3,9 +3,9 @@ Heap::Heap()
 	  bucketArraySize(1), lastNode(-1) {
 }
 
-void Heap::setId(int id) { this->id = id; }
+void Heap::init(int id, int factor) { this->id = id; this->factor = factor; }
 
-void Heap::insert(int key, Chose* value) {
+void Heap::insert(float key, Chose* value) {
 	{ // DEBUG
 		int _d_node = value->lod.heaps[id];
 		if (_d_node <= lastNode && _d_node >= 0 &&
@@ -23,8 +23,6 @@ void Heap::insert(int key, Chose* value) {
 	siftUp(lastNode);
 }
 
-void handler();
-int global = 0;
 void Heap::remove(Chose* value) {
 	int node = value->lod.heaps[id];
 
@@ -57,8 +55,12 @@ void Heap::remove(Chose* value) {
 	siftDown(node);
 }
 
-Chose* Heap::popIfLessThan(int key) {
-	if (lastNode >= 0 && buckets[0][0].key < key) {
+bool Heap::lessThan(float a, float b) {
+	return (a * factor < b * factor);
+}
+
+Chose* Heap::popIfLessThan(float key) {
+	if (lastNode >= 0 && buckets[0][0].key * factor < key * factor) {
 		Chose* ret = buckets[0][0].value;
 		remove(ret);
 		return ret;
@@ -75,7 +77,7 @@ void Heap::siftUp(int node) {
 			break;
 		int p = parent(node);
 		np = &(buckets[getBucket(p)][getIndex(p)]);
-		if (n->key >= np->key)
+		if (n->key * factor <= np->key * factor)
 			break;
 		HeapNode temp = *n;
 		*n = *np;
@@ -102,8 +104,9 @@ void Heap::siftDown(int node) {
 		nrc = &(buckets[getBucket(rc)][getIndex(rc)]);
 		// exchLeft et exchRight peuvent être tout deux true. Dans ce
 		// cas, c'est exchRight qui gagne.
-		bool exchLeft = (lc <= lastNode) && (n->key > nlc->key);
-		bool exchRight = (rc <= lastNode) && (n->key > nrc->key) && (nlc->key > nrc->key);
+		bool exchLeft = (lc <= lastNode) && (n->key * factor < nlc->key * factor);
+		bool exchRight = (rc <= lastNode) && (n->key * factor < nrc->key * factor);
+		exchRight = exchRight && (nlc->key * factor < nrc->key * factor);
 		if ((!exchLeft) && (!exchRight))
 			break;
 		HeapNode temp = *n;

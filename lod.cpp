@@ -1,8 +1,11 @@
 #include "all_includes.hh"
 
 Lod::Lod(Vertex camera, Chose* root) {
-	for (int i = 0; i < 6; i++) merge[i].setId(i);
-	for (int i = 0; i < 12; i++) split[i].setId(6+i);
+	for (int i = 0; i < 6; i++) {
+		merge[i].init(i, (i & 1) ? -1 : 1);
+		splitIn[i].init(6+i, (i & 1) ? 1 : -1);
+		splitOut[i].init(6+i, (i & 1) ? -1 : 1);
+	}
 	this->camera[0] = camera.x;
 	this->camera[1] = camera.y;
 	this->camera[2] = camera.z;
@@ -18,8 +21,7 @@ void Lod::setCamera(Vertex newCamera) {
 	// Merge.
 	for(int i = 0; i < 6; i++) {
 		Chose* c;
-		int pos = NegateEven(camera[i>>1], i);
-		while((c = merge[i].popIfLessThan(pos))) {
+		while((c = merge[i].popIfLessThan(camera[i>>1]))) {
 			for(int j = 0; j < 6; j++) {
 				if(i == j) continue;
 				merge[j].remove(c);
@@ -30,18 +32,19 @@ void Lod::setCamera(Vertex newCamera) {
 	// Split out vers split in.
 	for(int i = 0; i < 6; i++) {
 		Chose* c;
-		int pos = NegateOdd(camera[i>>1], i);
-		while((c = split[2*i+1].popIfLessThan(pos))) {
+		while((c = splitOut[i].popIfLessThan(camera[i>>1]))) {
+			// std::cout << "soi " << c->lod.inCounter + 1 << " ";
+			// std::cout << typeid(*c).name() << " " << c << std::endl;
 			if(c->lod.inCounter == 5) {
 				for(int j = 0; j < 6; j++) {
 					if(i == j) continue;
-					split[2*j].remove(c);
+					splitIn[j].remove(c);
 				}
 				doSplit(c);
 			}
 			else {
 				c->lod.inCounter++;
-				split[2*i].insert(c->lod.splitBox[i], c);
+				splitIn[i].insert(c->lod.splitBox[i], c);
 			}
 		}
 	}
@@ -49,10 +52,9 @@ void Lod::setCamera(Vertex newCamera) {
 	// Split in vers split out.
 	for(int i = 0; i < 6; i++) {
 		Chose* c;
-		int pos = NegateEven(camera[i>>1], i);
-		while((c = split[2*i].popIfLessThan(pos))) {
+		while((c = splitIn[i].popIfLessThan(camera[i>>1]))) {
 			c->lod.inCounter--;
-			split[2*i+1].insert(c->lod.splitBox[i], c);
+			splitOut[i].insert(c->lod.splitBox[i], c);
 		}
 	}
 }
@@ -77,24 +79,26 @@ void Lod::doSplit(Chose* c) {
 
 void Lod::addMergeCube(Chose* chose) {
 	for(int i = 0; i < 5; i++)
-		merge[i].insert(NegateEven(chose->lod.mergeBox[i], i), chose);
+		merge[i].insert(chose->lod.mergeBox[i], chose);
 }
 
 void Lod::addSplitCube(Chose* chose) {
 	chose->lod.inCounter = 0;
 	for(int i = 0; i < 6; i++) {
-		if(NegateEven(chose->lod.splitBox[i] - camera[i>>1], i) >= 0) {
+		// std::cout << chose->lod.splitBox[i] << " " << camera[i>>1] << " " << splitOut[i].factor;
+		// std::cout << " " << (splitOut[i].lessThan(chose->lod.splitBox[i], camera[i>>1]) ? "t" : "f");
+		// std::cout << std::endl;
+		if(splitOut[i].lessThan(chose->lod.splitBox[i], camera[i>>1])) {
 			chose->lod.inCounter++;
-			split[2*i].insert(NegateEven(chose->lod.splitBox[i],i), chose);
+			splitIn[i].insert(chose->lod.splitBox[i], chose);
 		} else {
-			split[2*i+1].insert(NegateOdd(chose->lod.splitBox[i],i), chose);
+			splitOut[i].insert(chose->lod.splitBox[i], chose);
 		}
 	}
-	// TODO : si chose->inCounter == 6, il faut le split immédiatement.
+	// TODO : plutôt que d'ajouter puis enlever, précalculer puis enlever si nécessaire.
 	if (chose->lod.inCounter == 6) {
-		for(int i = 0; i < 6; i++) {
-			split[2*i].remove(chose);
-		}
+		for(int i = 0; i < 6; i++)
+			splitIn[i].remove(chose);
 		doSplit(chose);
 	}
 }

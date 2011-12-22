@@ -1,8 +1,9 @@
 CXX=g++
 # -ansi -pedantic -Wconversion
 CCWARN=-Wall -Wextra -Werror
-# -flto (nécessite GCC 4.5) -m32 ou -m64
-CFLAGS=-O0 -I. $(CCWARN)
+# TODO : -O3 -m32 ou -m64
+# -g -rdynamic uniquement pour le debug.
+CFLAGS=-O0 -I. $(CCWARN) -g -rdynamic
 
 SOURCES = $(shell echo *.cpp rules/*.cpp rules/*/*.cpp)
 HEADERS = $(shell echo *.hh rules/*.hh rules/*/*.hh)
