@@ -6,14 +6,14 @@ Heap::Heap()
 void Heap::init(int id, int factor) { this->id = id; this->factor = factor; }
 
 void Heap::insert(float key, Chose* value) {
-	{ // DEBUG
-		int _d_node = value->lod.heaps[id];
-		if (_d_node <= lastNode && _d_node >= 0 &&
-			buckets[getBucket(_d_node)][getIndex(_d_node)].value == value) {
-			std::cout << "ERROR ! Trying to insert " << value;
-			std::cout << " but it is already here." << std::endl;
-		}
-	}
+	// { // DEBUG
+	// 	int _d_node = value->lod.heaps[id];
+	// 	if (_d_node <= lastNode && _d_node >= 0 &&
+	// 		buckets[getBucket(_d_node)][getIndex(_d_node)].value == value) {
+	// 		std::cout << "ERROR ! Trying to insert " << value;
+	// 		std::cout << " but it is already here." << std::endl;
+	// 	}
+	// }
 	++lastNode;
 	if (getBucket(lastNode) > lastAllocatedBucket) {
 		allocateBucket();
@@ -26,13 +26,13 @@ void Heap::insert(float key, Chose* value) {
 void Heap::remove(Chose* value) {
 	int node = value->lod.heaps[id];
 
-	{ // DEBUG
-		if (buckets[getBucket(node)][getIndex(node)].value != value) {
-			std::cout << "ERROR ! Trying to remove " << value;
-			std::cout << " but found " << buckets[getBucket(node)][getIndex(node)].value;
-			std::cout << std::endl;
-		}
-	}
+	// { // DEBUG
+	// 	if (buckets[getBucket(node)][getIndex(node)].value != value) {
+	// 		std::cout << "ERROR ! Trying to remove " << value;
+	// 		std::cout << " but found " << buckets[getBucket(node)][getIndex(node)].value;
+	// 		std::cout << std::endl;
+	// 	}
+	// }
 
 	if (node == lastNode) { // On a supprimé le dernier noeud.
 		--lastNode;
