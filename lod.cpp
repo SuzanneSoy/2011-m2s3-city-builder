@@ -4,7 +4,7 @@ Lod::Lod(Vertex camera, Chose* root) {
 	for (int i = 0; i < 6; i++) {
 		merge[i].init(i, (i & 1) ? -1 : 1);
 		splitIn[i].init(6+i, (i & 1) ? 1 : -1);
-		splitOut[i].init(6+i, (i & 1) ? -1 : 1);
+		splitOut[i].init(12+i, (i & 1) ? -1 : 1);
 	}
 	this->camera[0] = camera.x;
 	this->camera[1] = camera.y;
@@ -33,8 +33,7 @@ void Lod::setCamera(Vertex newCamera) {
 	for(int i = 0; i < 6; i++) {
 		Chose* c;
 		while((c = splitOut[i].popIfLessThan(camera[i>>1]))) {
-			// std::cout << "soi " << c->lod.inCounter + 1 << " ";
-			// std::cout << typeid(*c).name() << " " << c << std::endl;
+			std::cout<<"soi "<<c->lod.inCounter+1<<" "<<typeid(*c).name()<<" "<<c<<std::endl;
 			if(c->lod.inCounter == 5) {
 				for(int j = 0; j < 6; j++) {
 					if(i == j) continue;
@@ -53,6 +52,7 @@ void Lod::setCamera(Vertex newCamera) {
 	for(int i = 0; i < 6; i++) {
 		Chose* c;
 		while((c = splitIn[i].popIfLessThan(camera[i>>1]))) {
+			std::cout<<"SIO "<<c->lod.inCounter-1<<" "<<typeid(*c).name()<<" "<<c<<std::endl;
 			c->lod.inCounter--;
 			splitOut[i].insert(c->lod.splitBox[i], c);
 		}
@@ -101,4 +101,5 @@ void Lod::addSplitCube(Chose* chose) {
 			splitIn[i].remove(chose);
 		doSplit(chose);
 	}
+	std::cout<<"insert "<<chose->lod.inCounter<<" "<<typeid(*chose).name()<<" "<<chose<<std::endl;
 }

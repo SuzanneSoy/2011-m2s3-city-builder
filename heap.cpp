@@ -21,6 +21,13 @@ void Heap::insert(float key, Chose* value) {
 	buckets[getBucket(lastNode)][getIndex(lastNode)].key = key;
 	buckets[getBucket(lastNode)][getIndex(lastNode)].value = value;
 	siftUp(lastNode);
+	for (int i = 0; i <= lastNode; i++) {
+		std::cout << id << " ";
+		std::cout << buckets[getBucket(lastNode)][getIndex(lastNode)].key << " ";
+		std::cout << buckets[getBucket(lastNode)][getIndex(lastNode)].value;
+		std::cout << typeid(*(buckets[getBucket(lastNode)][getIndex(lastNode)].value)).name();
+		std::cout << std::endl;
+	}
 }
 
 void Heap::remove(Chose* value) {
