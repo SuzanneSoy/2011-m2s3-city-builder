@@ -37,5 +37,5 @@ void BatimentQuadBlock::triangulation() {
     Vertex nwh = c[NW] + Vertex(0,0,height);
     Vertex neh = c[NE] + Vertex(0,0,height);
 
-    addOcto(c[SE],c[SW],c[NW],c[NE],seh,swh,nwh,neh,0xFF,0x36,0x00);
+    addOcto(c[SE],c[SW],c[NW],c[NE],seh,swh,nwh,neh,0xF1,0xE0,0xE0);
 }

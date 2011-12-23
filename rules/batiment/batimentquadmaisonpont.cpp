@@ -69,21 +69,14 @@ bool BatimentQuadMaisonPont::split() {
     ne = qc.corner[3];
 
     addChild(new BatimentQuadPont(se,sw,nw,ne,partHeight));
-/*
-    Vertex seh = qh.corner[0] + Vertex(0,0,partHeight);
-    Vertex swh = qh.corner[1] + Vertex(0,0,partHeight);
-    Vertex nwh = qh.corner[2] + Vertex(0,0,partHeight);
-    Vertex neh = qh.corner[3] + Vertex(0,0,partHeight);
 
-    Vertex ce = seh + (neh - seh)/2 + Vertex(0,0,0.5*height/3.);
-    Vertex cw = swh + (nwh - swh)/2 + Vertex(0,0,0.5*height/3.);
+    Vertex seh = qh.corner[0] + Vertex(0,0,2*partHeight);
+    Vertex swh = qh.corner[1] + Vertex(0,0,2*partHeight);
+    Vertex nwh = qh.corner[2] + Vertex(0,0,2*partHeight);
+    Vertex neh = qh.corner[3] + Vertex(0,0,2*partHeight);
 
-    addTriangle(new Triangle(swh,nwh,cw,0xDD,0xDD,0xDD));
-    addTriangle(new Triangle(neh,seh,ce,0xDD,0xDD,0xDD));
+    addChild(new BatimentQuadToit(seh,swh,nwh,neh,150));
 
-    addQuad(neh,nwh,cw,ce,0xE0,0x20,0x00);
-    addQuad(swh,seh,ce,cw,0xE0,0x20,0x00);
-*/
 	return true;
 }
 
@@ -96,14 +89,14 @@ void BatimentQuadMaisonPont::triangulation() {
     Vertex nwh = q.corner[NW] + Vertex(0,0,h);
     Vertex neh = q.corner[NE] + Vertex(0,0,h);
 
-    addQuad(c[SE],c[SW],c[NW],c[NE],0xDD,0xDD,0xDD);
-    addOcto(q.corner[NE],q.corner[SE],q.corner[SW],q.corner[NW],neh,seh,swh,nwh,0xDD,0xDD,0xDD);
+    addQuad(c[SE],c[SW],c[NW],c[NE],0x80,0x80,0x80);
+    addOcto(q.corner[NE],q.corner[SE],q.corner[SW],q.corner[NW],neh,seh,swh,nwh,0xF1,0xE0,0xE0);
 
     Vertex ce = seh + (neh - seh)/2 + Vertex(0,0,0.5*height/3.);
     Vertex cw = swh + (nwh - swh)/2 + Vertex(0,0,0.5*height/3.);
 
-    addTriangle(new Triangle(swh,nwh,cw,0xDD,0xDD,0xDD));
-    addTriangle(new Triangle(neh,seh,ce,0xDD,0xDD,0xDD));
+    addTriangle(new Triangle(swh,nwh,cw,0xF1,0xE0,0xE0));
+    addTriangle(new Triangle(neh,seh,ce,0xF1,0xE0,0xE0));
 
     addQuad(neh,nwh,cw,ce,0xE0,0x20,0x00);
     addQuad(swh,seh,ce,cw,0xE0,0x20,0x00);

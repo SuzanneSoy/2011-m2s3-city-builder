@@ -3,7 +3,7 @@
 
 #include "all_includes.hh"
 
-// Quad est un quadrilatère
+
 class TerrainQuadHerbe : public Chose {
     private :
 	Vertex corner[4];
