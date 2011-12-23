@@ -29,11 +29,13 @@ void BatimentQuad::getBoundingBoxPoints() {
 bool BatimentQuad::split() {
 	int rand = this->seed % 20; // TODO : utiliser les fonctions random in range & co.
 
-	if(rand <= 2) {
-        Quad q = Quad(c[NE],c[SE],c[SW],c[NW]).makeParallelogram();
+	if(rand <= 1) {
+        Quad q = Quad(c[NE],c[SE],c[SW],c[NW]);
+        // TODO ajouter une classe surface.
+        //addQuad(c[SE],c[SW],c[NW],c[NE],0xDD,0xDD,0xDD);
         addChild(new BatimentQuadMaisonPont(q.corner[0],q.corner[1],q.corner[2],q.corner[3],800));
 	}
-	else if(rand <= 15) {
+	else {
         int th = 20;        // Terrain height.
         Quad q = Quad(c[NE],c[SE],c[SW],c[NW]);
         th = th;

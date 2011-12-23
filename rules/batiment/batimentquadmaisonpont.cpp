@@ -46,21 +46,22 @@ bool BatimentQuadMaisonPont::split() {
     Vertex nw = qa.corner[2];
     Vertex ne = qa.corner[3];
 
-    addChild(new BatimentQuadMaisonBlock(ne,se,sw,nw,partHeight));
+    addChild(new BatimentQuadJardin(c[SE],c[SW],c[NW],c[NE]));
+    addChild(new BatimentQuadBlock(ne,se,sw,nw,partHeight));
 
     se = qb.corner[0];
     sw = qb.corner[1];
     nw = qb.corner[2];
     ne = qb.corner[3];
 
-    addChild(new BatimentQuadMaisonBlock(ne,se,sw,nw,partHeight));
+    addChild(new BatimentQuadBlock(ne,se,sw,nw,partHeight));
 
     se = qh.corner[0] + Vertex(0,0,partHeight);
     sw = qh.corner[1] + Vertex(0,0,partHeight);
     nw = qh.corner[2] + Vertex(0,0,partHeight);
     ne = qh.corner[3] + Vertex(0,0,partHeight);
 
-    addChild(new BatimentQuadMaisonBlock(ne,se,sw,nw,partHeight));
+    addChild(new BatimentQuadBlock(ne,se,sw,nw,partHeight));
 
     se = qc.corner[0];
     sw = qc.corner[1];
@@ -89,12 +90,14 @@ bool BatimentQuadMaisonPont::split() {
 void BatimentQuadMaisonPont::triangulation() {
 	//triangles.reserve(2);
 	float h = 2.5*height/3.;
-    Vertex seh = c[SE] + Vertex(0,0,h);
-    Vertex swh = c[SW] + Vertex(0,0,h);
-    Vertex nwh = c[NW] + Vertex(0,0,h);
-    Vertex neh = c[NE] + Vertex(0,0,h);
+	Quad q = Quad(c[NE],c[SE],c[SW],c[NW]).makeParallelogram();
+    Vertex seh = q.corner[SE] + Vertex(0,0,h);
+    Vertex swh = q.corner[SW] + Vertex(0,0,h);
+    Vertex nwh = q.corner[NW] + Vertex(0,0,h);
+    Vertex neh = q.corner[NE] + Vertex(0,0,h);
 
-    addOcto(c[NE],c[SE],c[SW],c[NW],neh,seh,swh,nwh,0xDD,0xDD,0xDD);
+    addQuad(c[SE],c[SW],c[NW],c[NE],0xDD,0xDD,0xDD);
+    addOcto(q.corner[NE],q.corner[SE],q.corner[SW],q.corner[NW],neh,seh,swh,nwh,0xDD,0xDD,0xDD);
 
     Vertex ce = seh + (neh - seh)/2 + Vertex(0,0,0.5*height/3.);
     Vertex cw = swh + (nwh - swh)/2 + Vertex(0,0,0.5*height/3.);

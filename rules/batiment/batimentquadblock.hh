@@ -4,15 +4,15 @@
 #include "all_includes.hh"
 
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
-class BatimentQuadMaisonBlock : public Chose {
+class BatimentQuadBlock : public Chose {
     private :
 	Vertex c[4];
 	int height;
 
     public :
 
-	BatimentQuadMaisonBlock(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height);
-	virtual ~BatimentQuadMaisonBlock();
+	BatimentQuadBlock(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height);
+	virtual ~BatimentQuadBlock();
 	virtual bool split();
 	virtual void triangulation();
 	Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
