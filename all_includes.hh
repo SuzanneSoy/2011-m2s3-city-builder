@@ -40,7 +40,7 @@ class Chose;
 #include "rules/batiment/batimentquadjardin.hh"
 #include "rules/batiment/batimentquadpont.hh"
 #include "rules/batiment/batimentquadmaisonpont.hh"
-#include "rules/batiment/batimentquadmaisonblock.hh"
+#include "rules/batiment/batimentquadblock.hh"
 
 #include "rules/quartier/quartierquad.hh"
 #include "rules/quartier/quartierquadangle.hh"

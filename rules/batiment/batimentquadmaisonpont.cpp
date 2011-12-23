@@ -26,7 +26,6 @@ void BatimentQuadMaisonPont::getBoundingBoxPoints() {
 }
 
 bool BatimentQuadMaisonPont::split() {
-
     Quad q = Quad(c[NE],c[SE],c[SW],c[NW]);
     q.makeParallelogram();
     if(Segment(q.corner[0],q.corner[3]).length() < Segment(q.corner[0],q.corner[1]).length())
@@ -42,33 +41,33 @@ bool BatimentQuadMaisonPont::split() {
     qc.offset(E, -partLength);
     qc.offset(W, -partLength);
 
-    c[SE] = qa.corner[0];
-    c[SW] = qa.corner[1];
-    c[NW] = qa.corner[2];
-    c[NE] = qa.corner[3];
+    Vertex se = qa.corner[0];
+    Vertex sw = qa.corner[1];
+    Vertex nw = qa.corner[2];
+    Vertex ne = qa.corner[3];
 
-    addChild(new BatimentQuadMaisonBlock(c[NE],c[SE],c[SW],c[NW],partHeight));
+    addChild(new BatimentQuadMaisonBlock(ne,se,sw,nw,partHeight));
 
-    c[SE] = qb.corner[0];
-    c[SW] = qb.corner[1];
-    c[NW] = qb.corner[2];
-    c[NE] = qb.corner[3];
+    se = qb.corner[0];
+    sw = qb.corner[1];
+    nw = qb.corner[2];
+    ne = qb.corner[3];
 
-    addChild(new BatimentQuadMaisonBlock(c[NE],c[SE],c[SW],c[NW],partHeight));
+    addChild(new BatimentQuadMaisonBlock(ne,se,sw,nw,partHeight));
 
-    c[SE] = qh.corner[0] + Vertex(0,0,partHeight);
-    c[SW] = qh.corner[1] + Vertex(0,0,partHeight);
-    c[NW] = qh.corner[2] + Vertex(0,0,partHeight);
-    c[NE] = qh.corner[3] + Vertex(0,0,partHeight);
+    se = qh.corner[0] + Vertex(0,0,partHeight);
+    sw = qh.corner[1] + Vertex(0,0,partHeight);
+    nw = qh.corner[2] + Vertex(0,0,partHeight);
+    ne = qh.corner[3] + Vertex(0,0,partHeight);
 
-    addChild(new BatimentQuadMaisonBlock(c[NE],c[SE],c[SW],c[NW],partHeight));
+    addChild(new BatimentQuadMaisonBlock(ne,se,sw,nw,partHeight));
 
-    c[SE] = qc.corner[0];
-    c[SW] = qc.corner[1];
-    c[NW] = qc.corner[2];
-    c[NE] = qc.corner[3];
+    se = qc.corner[0];
+    sw = qc.corner[1];
+    nw = qc.corner[2];
+    ne = qc.corner[3];
 
-    addChild(new BatimentQuadPont(c[SE],c[SW],c[NW],c[NE],partHeight));
+    addChild(new BatimentQuadPont(se,sw,nw,ne,partHeight));
 /*
     Vertex seh = qh.corner[0] + Vertex(0,0,partHeight);
     Vertex swh = qh.corner[1] + Vertex(0,0,partHeight);
