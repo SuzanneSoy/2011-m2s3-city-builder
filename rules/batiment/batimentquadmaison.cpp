@@ -47,8 +47,8 @@ void BatimentQuadMaison::triangulation() {
 	addQuad(/*lctr+*/nwh,/*lctr+*/neh,/*lctr+*/corner[NE],/*lctr+*/corner[NW],0xf1,0xe3,0xad);
 
 	// 1 Toit
-	addTriangle(new Triangle(/*lctr+*/neh,/*lctr+*/toit,/*lctr+*/seh,0x9a,0x48,0x3c));
-	addTriangle(new Triangle(/*lctr+*/seh,/*lctr+*/toit,/*lctr+*/swh,0x9a,0x48,0x3c));
-	addTriangle(new Triangle(/*lctr+*/swh,/*lctr+*/toit,/*lctr+*/nwh,0x9a,0x48,0x3c));
-	addTriangle(new Triangle(/*lctr+*/nwh,/*lctr+*/toit,/*lctr+*/neh,0x9a,0x48,0x3c));
+	addTriangle(new Triangle(/*lctr+*/neh,/*lctr+*/toit,/*lctr+*/seh,0x96,0x16,0x18));
+	addTriangle(new Triangle(/*lctr+*/seh,/*lctr+*/toit,/*lctr+*/swh,0x96,0x16,0x18));
+	addTriangle(new Triangle(/*lctr+*/swh,/*lctr+*/toit,/*lctr+*/nwh,0x96,0x16,0x18));
+	addTriangle(new Triangle(/*lctr+*/nwh,/*lctr+*/toit,/*lctr+*/neh,0x96,0x16,0x18));
 }

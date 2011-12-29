@@ -47,7 +47,7 @@ void View::setLight() {
 	float Light1Pos[4] = {-0.5f, -1.0f, 1.0f, 0.0f};
 	float Light1Dif[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 	float Light1Spec[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-	float Light1Amb[4] = {0.2f, 0.2f, 0.2f, 1.0f};
+	float Light1Amb[4] = {0.4f, 0.4f, 0.4f, 1.0f};
 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, Light1Dif);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, Light1Spec);

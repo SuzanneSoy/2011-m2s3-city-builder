@@ -69,8 +69,8 @@ void Chose::updateAABB() {
 	lod.firstBBPoint = true;
 	getBoundingBoxPoints();
 	for (int i = 0; i < 3; i++) {
-		float splitFactor = 2;
-		float mergeFactor = 3;
+		float splitFactor = 24;
+		float mergeFactor = 25;
 		float center = (lod.aabb[2*i] + lod.aabb[2*i+1]) / 2;
 		lod.splitBox[2*i] = (lod.aabb[2*i] - center) * splitFactor + center;
 		lod.splitBox[2*i+1] = (lod.aabb[2*i+1] - center) * splitFactor + center;
