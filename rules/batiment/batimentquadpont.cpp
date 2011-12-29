@@ -53,13 +53,13 @@ void BatimentQuadPont::triangulation() {
     Vertex l2 = c[SW] - c[SE];
 
     float pas = 0.1;
-    int steps = (2*1.7/pas);
-    float n2 = l2.norm()/(2*1.7/pas);
+    int steps = (3.14/pas);
+    float n2 = l2.norm()/(3.14/pas);
     n2=n2;
     int middle = steps/2;
     int n;
 
-    addTriangle(new Triangle(pb,c[SW],swh,0xD0,0xD0,0xD0));
+    addTriangle(new Triangle(c[SW],pb,swh,0xD0,0xD0,0xD0));
     addTriangle(new Triangle(pa,c[NW],nwh,0xD0,0xD0,0xD0));
 
     for(var=-1.7,n=0; var <= 1.7; var+=pas,n++) {
@@ -67,21 +67,21 @@ void BatimentQuadPont::triangulation() {
         a = q.corner[3] + Vertex(0,0,nt(var,height));
         b = q.corner[2] + Vertex(0,0,nt(var,height));
 
-        addQuad(b,a,pa,pb,0xD0,0xD0,0xD0);
+        addQuad(a,b,pb,pa,0xD0,0xD0,0xD0);
 
         if( n < middle) {
-            addTriangle(new Triangle(a,pa,nwh,0xD0,0xD0,0xD0));
-            addTriangle(new Triangle(pb,b,swh,0xD0,0xD0,0xD0));
+            addTriangle(new Triangle(pa,a,nwh,0xD0,0xD0,0xD0));
+            addTriangle(new Triangle(b,pb,swh,0xD0,0xD0,0xD0));
         }
         else if(n == middle) {
-            addTriangle(new Triangle(a,pa,nwh,0xD0,0xD0,0xD0));
-            addTriangle(new Triangle(pb,b,swh,0xD0,0xD0,0xD0));
-            addTriangle(new Triangle(a,nwh,neh,0xD0,0xD0,0xD0));
-            addTriangle(new Triangle(b,seh,swh,0xD0,0xD0,0xD0));
+            addTriangle(new Triangle(pa,a,nwh,0xD0,0xD0,0xD0));
+            addTriangle(new Triangle(b,pb,swh,0xD0,0xD0,0xD0));
+            addTriangle(new Triangle(a,neh,nwh,0xD0,0xD0,0xD0));
+            addTriangle(new Triangle(b,swh,seh,0xD0,0xD0,0xD0));
         }
         else {
-            addTriangle(new Triangle(a,pa,neh,0xD0,0xD0,0xD0));
-            addTriangle(new Triangle(pb,b,seh,0xD0,0xD0,0xD0));
+            addTriangle(new Triangle(pa,a,neh,0xD0,0xD0,0xD0));
+            addTriangle(new Triangle(b,pb,seh,0xD0,0xD0,0xD0));
         }
 
         pa = a;
