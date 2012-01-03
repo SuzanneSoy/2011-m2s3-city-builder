@@ -9,9 +9,8 @@ class Chose {
 	static unsigned int initialSeed;
 	unsigned int seed;
 	std::vector<Chose*> children;
-	std::vector<Triangle*> triangles;
+	std::vector<GPUTriangle*> triangles;
 	LodNode lod;
-	Vertex lctr;        // Local center;
 
     public :
 	void display();
@@ -50,7 +49,7 @@ class Chose {
 		addEntropy(v1, v2); addEntropy(v3, v4);
 	}
 	void addChild(Chose* c);
-	void addTriangle(Triangle* t);
+	void addTriangle(GPUTriangle* t);
 	void addQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b);
 	void addOcto(Vertex a,Vertex b,Vertex c,Vertex d,Vertex e,Vertex f,Vertex g,Vertex h,char red,char green,char blue);
 };

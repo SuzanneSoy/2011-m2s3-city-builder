@@ -2,3 +2,5 @@ city
 all.cpp
 all_includes.hh.gch
 city-builder
+.cproject
+.project

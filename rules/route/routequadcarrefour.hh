@@ -5,7 +5,7 @@
 
 class RouteQuadCarrefour : public Chose {
     private :
-	Vertex corner[4];
+	Vertex c[4];
 
     public :
 	RouteQuadCarrefour(Vertex ne, Vertex se, Vertex sw, Vertex nw);

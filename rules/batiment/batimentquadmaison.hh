@@ -6,7 +6,7 @@
 
 class BatimentQuadMaison : public Chose {
     private :
-	Vertex corner[4];
+	Vertex c[4];
 
     public :
 	static const int minHeight = 400;

@@ -12,21 +12,21 @@ bool QuartierQuadCarre::split() {
 	Vertex middle[4];
 	Quad q[4];
 
-	Vertex cn = Segment(corner[NW], corner[NE]).randomPos(seed, -1, 25, 75);
-	Vertex cs = Segment(corner[SE], corner[SW]).randomPos(seed, -2, 25, 75);
-	Vertex c = Segment(cn, cs).randomPos(seed, -3, 25, 75);
+	Vertex centerN = Segment(c[NW], c[NE]).randomPos(seed, -1, 25, 75);
+	Vertex centerS = Segment(c[SE], c[SW]).randomPos(seed, -2, 25, 75);
+	Vertex center = Segment(centerN, centerS).randomPos(seed, -3, 25, 75);
 
 	for (int i = 0; i < 4; i++) {
-		middle[N+i] = Segment(corner[NW+i], corner[NE+i]).randomPos(seed, i, 25, 75);
+		middle[N+i] = Segment(c[NW+i], c[NE+i]).randomPos(seed, i, 25, 75);
 	}
 	for (int i = 0; i < 4; i++) {
-		q[i] = Quad(corner[NE+i], middle[E+i], c, middle[N+i]);
+		q[i] = Quad(c[NE+i], middle[E+i], center, middle[N+i]);
 		q[i].offset(W,-hrw); q[i].offset(S,-hrw);
 	}
-	addChild(new RouteQuadCarrefour(q[0].corner[SW], q[1].corner[SW], q[2].corner[SW], q[3].corner[SW]));
+	addChild(new RouteQuadCarrefour(q[0].c[SW], q[1].c[SW], q[2].c[SW], q[3].c[SW]));
 	for (int i = 0; i < 4; i++) {
-		addChild(new RouteQuadChaussee(q[NE+i].corner[NW], q[NE+i].corner[SW], q[NW+i].corner[SW], q[NW+i].corner[SE]));
-		addChild(QuartierQuad::factory(seed, 4+i, q[i].corner[0], q[i].corner[1], q[i].corner[2], q[i].corner[3]));
+		addChild(new RouteQuadChaussee(q[NE+i].c[NW], q[NE+i].c[SW], q[NW+i].c[SW], q[NW+i].c[SE]));
+		addChild(QuartierQuad::factory(seed, 4+i, q[i].c[0], q[i].c[1], q[i].c[2], q[i].c[3]));
 	}
 	return true;
 }

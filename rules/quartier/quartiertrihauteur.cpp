@@ -4,16 +4,16 @@ QuartierTriHauteur::QuartierTriHauteur(Vertex left, Vertex top, Vertex right) : 
 }
 
 bool QuartierTriHauteur::split() {
-	Vertex baseCenter = Segment(corner[0], corner[2]).randomPos(seed, 0, 33, 67);
+	Vertex baseCenter = Segment(c[0], c[2]).randomPos(seed, 0, 33, 67);
 
-	Triangle tl = Triangle(baseCenter, corner[0], corner[1]);
-	Triangle tr = Triangle(corner[1], corner[2], baseCenter);
+	Triangle tl = Triangle(baseCenter, c[0], c[1]);
+	Triangle tr = Triangle(c[1], c[2], baseCenter);
 	tl.offsetBase(-hrw);
 	tr.offsetBase(-hrw);
 
-	addChild(new RouteQuadChaussee(tr.v1, tr.v3, tl.v1, tl.v3));
-	addChild(new RouteTriChaussee(tl.v3, corner[1], tr.v1));
-	addChild(QuartierTri::factory(seed, 1, tl.v3, tl.v1, tl.v2));
-	addChild(QuartierTri::factory(seed, 2, tr.v2, tr.v3, tr.v1));
+	addChild(new RouteQuadChaussee(tr.c[0], tr.c[2], tl.c[0], tl.c[2]));
+	addChild(new RouteTriChaussee(tl.c[2], c[1], tr.c[0]));
+	addChild(QuartierTri::factory(seed, 1, tl.c[2], tl.c[0], tl.c[1]));
+	addChild(QuartierTri::factory(seed, 2, tr.c[1], tr.c[2], tr.c[0]));
 	return true;
 }

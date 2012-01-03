@@ -5,7 +5,7 @@
 
 class RouteTriChaussee : public Chose {
     private :
-	Vertex corner[3];
+	Vertex c[3];
 
     public :
 	RouteTriChaussee(Vertex left, Vertex top, Vertex right);

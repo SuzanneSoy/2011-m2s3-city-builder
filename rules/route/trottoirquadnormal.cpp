@@ -37,33 +37,33 @@ void TrottoirQuadNormal::triangulation() {
 
 	if(border == E) {
         q.offset(E,-15);
-        addTriangle(new Triangle(q.corner[0] + h, q.corner[3] + h, q.corner[2] + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(q.corner[2] + h, q.corner[1] + h, q.corner[0] + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[NE] + h,q.corner[0] + h, q.corner[1] + h, 0xAA, 0xAA, 0xAA));
-        addTriangle(new Triangle(q.corner[1] + h, c[SE] + h, c[NE] + h, 0xAA, 0xAA, 0xAA));
+        addTriangle(new GPUTriangle(q.c[0] + h, q.c[3] + h, q.c[2] + h, 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(q.c[2] + h, q.c[1] + h, q.c[0] + h, 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[NE] + h,q.c[0] + h, q.c[1] + h, 0xAA, 0xAA, 0xAA));
+        addTriangle(new GPUTriangle(q.c[1] + h, c[SE] + h, c[NE] + h, 0xAA, 0xAA, 0xAA));
 
-        addTriangle(new Triangle(c[NW] + h, c[NW], c[SW], 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[SW], c[SW] + h, c[NW] + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[NE], c[NE] + h, c[SE] + h, 0xAA, 0xAA, 0xAA));
-        addTriangle(new Triangle(c[SE] + h, c[SE], c[NE], 0xAA, 0xAA, 0xAA));
+        addTriangle(new GPUTriangle(c[NW] + h, c[NW], c[SW], 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[SW], c[SW] + h, c[NW] + h, 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[NE], c[NE] + h, c[SE] + h, 0xAA, 0xAA, 0xAA));
+        addTriangle(new GPUTriangle(c[SE] + h, c[SE], c[NE], 0xAA, 0xAA, 0xAA));
 
-        addTriangle(new Triangle(c[NE] + h, c[NE], c[NW], 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[NW], c[NW] + h, c[NE] + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[SW], c[SW] + h, c[SE] + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[SE] + h, c[SE], c[SW], 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[NE] + h, c[NE], c[NW], 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[NW], c[NW] + h, c[NE] + h, 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[SW], c[SW] + h, c[SE] + h, 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[SE] + h, c[SE], c[SW], 0x66, 0x66, 0x66));
     }
     else {
-        addTriangle(new Triangle(q.corner[0] + h, q.corner[3] + h, q.corner[2] + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(q.corner[2] + h, q.corner[1] + h, q.corner[0] + h, 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(q.c[0] + h, q.c[3] + h, q.c[2] + h, 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(q.c[2] + h, q.c[1] + h, q.c[0] + h, 0x66, 0x66, 0x66));
 
-        addTriangle(new Triangle(c[NW] + h, c[NW], c[SW], 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[SW], c[SW] + h, c[NW] + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[NE], c[NE] + h, c[SE] + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[SE] + h, c[SE], c[NE], 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[NW] + h, c[NW], c[SW], 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[SW], c[SW] + h, c[NW] + h, 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[NE], c[NE] + h, c[SE] + h, 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[SE] + h, c[SE], c[NE], 0x66, 0x66, 0x66));
 
-        addTriangle(new Triangle(c[NE] + h, c[NE], c[NW], 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[NW], c[NW] + h, c[NE] + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[SW], c[SW] + h, c[SE] + h, 0x66, 0x66, 0x66));
-        addTriangle(new Triangle(c[SE] + h, c[SE], c[SW], 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[NE] + h, c[NE], c[NW], 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[NW], c[NW] + h, c[NE] + h, 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[SW], c[SW] + h, c[SE] + h, 0x66, 0x66, 0x66));
+        addTriangle(new GPUTriangle(c[SE] + h, c[SE], c[SW], 0x66, 0x66, 0x66));
     }
 }

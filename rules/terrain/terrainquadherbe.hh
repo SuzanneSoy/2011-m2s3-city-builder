@@ -6,13 +6,10 @@
 
 class TerrainQuadHerbe : public Chose {
     private :
-	Vertex corner[4];
-	int red; // DEBUG
+	Vertex c[4];
 
     public :
 	TerrainQuadHerbe(Vertex ne, Vertex se, Vertex sw, Vertex nw);
-	TerrainQuadHerbe(int red, Vertex ne, Vertex se, Vertex sw, Vertex nw); // DEBUG
-	virtual ~TerrainQuadHerbe();
 	virtual bool split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();

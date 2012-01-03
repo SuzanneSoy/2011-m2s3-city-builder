@@ -6,7 +6,7 @@
 // Quad est un quadrilatère
 class Quad {
     public :
-	Vertex corner[4];
+	Vertex c[4];
 
     public :
 	Quad();

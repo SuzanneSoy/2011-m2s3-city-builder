@@ -2,11 +2,10 @@
 
 BatimentQuadJardin::BatimentQuadJardin(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose() {
 	addEntropy(ne, se, sw, nw);
-	lctr = (ne + se + sw + nw) / 4;
-    corner[NE] = ne;//-lctr;
-	corner[SE] = se;//-lctr;
-    corner[SW] = sw;//-lctr;
-    corner[NW] = nw;//-lctr;
+	c[NE] = ne;
+	c[SE] = se;
+    c[SW] = sw;
+    c[NW] = nw;
 }
 
 BatimentQuadJardin::~BatimentQuadJardin() {
@@ -15,14 +14,14 @@ BatimentQuadJardin::~BatimentQuadJardin() {
 }
 
 void BatimentQuadJardin::getBoundingBoxPoints() {
-	addBBPoint(corner[NE]);
-	addBBPoint(corner[SE]);
-	addBBPoint(corner[SW]);
-	addBBPoint(corner[NW]);
-	addBBPoint(corner[NE] + Vertex(0,0,200)); // TODO
-	addBBPoint(corner[SE] + Vertex(0,0,200));
-	addBBPoint(corner[SW] + Vertex(0,0,200));
-	addBBPoint(corner[NW] + Vertex(0,0,200));
+	addBBPoint(c[NE]);
+	addBBPoint(c[SE]);
+	addBBPoint(c[SW]);
+	addBBPoint(c[NW]);
+	addBBPoint(c[NE] + Vertex(0,0,200)); // TODO
+	addBBPoint(c[SE] + Vertex(0,0,200));
+	addBBPoint(c[SW] + Vertex(0,0,200));
+	addBBPoint(c[NW] + Vertex(0,0,200));
 }
 
 bool BatimentQuadJardin::split() {
@@ -32,6 +31,6 @@ bool BatimentQuadJardin::split() {
 void BatimentQuadJardin::triangulation() {
 	triangles.reserve(2);
 
-	addTriangle(new Triangle(/*lctr+*/corner[NE],/*lctr+*/corner[NW],/*lctr+*/corner[SW],0x12,0x64,0x12));
-	addTriangle(new Triangle(/*lctr+*/corner[SW],/*lctr+*/corner[SE],/*lctr+*/corner[NE],0x12,0x64,0x12));
+	addTriangle(new GPUTriangle(/*lctr+*/c[NE],/*lctr+*/c[NW],/*lctr+*/c[SW],0x12,0x64,0x12));
+	addTriangle(new GPUTriangle(/*lctr+*/c[SW],/*lctr+*/c[SE],/*lctr+*/c[NE],0x12,0x64,0x12));
 }

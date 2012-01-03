@@ -7,7 +7,7 @@ void Chose::addChild(Chose* c) {
 	children.push_back(c);
 }
 
-void Chose::addTriangle(Triangle* t) {
+void Chose::addTriangle(GPUTriangle* t) {
 	triangles.push_back(t);
 }
 
@@ -18,8 +18,8 @@ bool Chose::merge() {
 }
 
 void Chose::addQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b) {
-    this->addTriangle(new Triangle(u,x,w,r,g,b));
-    this->addTriangle(new Triangle(w,v,u,r,g,b));
+    this->addTriangle(new GPUTriangle(u,x,w,r,g,b));
+    this->addTriangle(new GPUTriangle(w,v,u,r,g,b));
 }
 
 void Chose::addOcto(Vertex a, Vertex b, Vertex c, Vertex d,
@@ -39,7 +39,7 @@ void Chose::display() {
 			(*it)->display();
 		}
 	} else {
-		std::vector<Triangle*>::iterator it;
+		std::vector<GPUTriangle*>::iterator it;
 		for (it = triangles.begin(); it != triangles.end(); ++it) {
 			(*it)->display();
 		}

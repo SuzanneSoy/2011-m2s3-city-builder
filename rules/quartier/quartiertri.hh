@@ -6,7 +6,7 @@
 
 class QuartierTri : public Chose {
     public :
-	Vertex corner[3];
+	Vertex c[3];
 
     public :
 	QuartierTri(Vertex left, Vertex top, Vertex right);

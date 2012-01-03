@@ -6,7 +6,7 @@
 
 class QuartierQuad : public Chose {
 public:
-	Vertex corner[4];
+	Vertex c[4];
 public:
 	QuartierQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual ~QuartierQuad();

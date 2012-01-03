@@ -2,8 +2,7 @@
 
 BatimentQuadBlock::BatimentQuadBlock(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height) : Chose() {
 	addEntropy(ne, se, sw, nw);
-	lctr = Vertex(ne.x-nw.x,se.y-ne.y,0.0f);
-    c[NE] = ne;
+	c[NE] = ne;
     c[SE] = se;
     c[SW] = sw;
     c[NW] = nw;

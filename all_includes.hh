@@ -19,13 +19,14 @@ class Chose;
 #include <GL/glu.h>
 #include <GL/gl.h>
 
-#include "angle.hh"
-#include "directions.hh"
-#include "vertex.hh"
-#include "segment.hh"
-#include "triangle.hh"
-#include "quad.hh"
+#include "geometry/angle.hh"
+#include "geometry/directions.hh"
+#include "geometry/vertex.hh"
+#include "geometry/segment.hh"
+#include "geometry/triangle.hh"
+#include "geometry/quad.hh"
 
+#include "gputriangle.hh"
 #include "hash.hh"
 // heap.hh must be included before lod.hh
 #include "heap.hh"
