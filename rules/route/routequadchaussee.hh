@@ -1,5 +1,5 @@
-#ifndef _RULES_ROUTE_HH_
-#define _RULES_ROUTE_HH_
+#ifndef _RULES_ROUTE_QUAD_CHAUSSEE_HH_
+#define _RULES_ROUTE_QUAD_CHAUSSEE_HH_
 
 #include "all_includes.hh"
 

@@ -51,6 +51,8 @@ class Chose;
 
 #include "rules/route/routequadcarrefour.hh"
 #include "rules/route/routequadchaussee.hh"
+#include "rules/route/routetrichaussee.hh"
+
 #include "rules/route/trottoirquadnormal.hh"
 
 #include "rules/terrain/terrainquadherbe.hh"

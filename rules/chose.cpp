@@ -101,4 +101,4 @@ void Chose::drawAABB() {
 	);
 }
 
-unsigned int Chose::initialSeed = 779313522;//random_seed();
+unsigned int Chose::initialSeed = random_seed();

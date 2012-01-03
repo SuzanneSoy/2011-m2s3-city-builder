@@ -18,8 +18,8 @@ bool QuartierQuadAngle::split() {
 			addChild(QuartierTri::factory(seed, 0, t1.v1, t1.v2, t1.v3));
 			addChild(QuartierTri::factory(seed, 1, t2.v1, t2.v2, t2.v3));
 			addChild(new RouteQuadChaussee(t1.v1, t1.v3, t2.v1, t2.v3));
-			addChild(new QuartierTri(t2.v3, corner[NE+i], t1.v1)); // TODO : new RouteTri
-			addChild(new QuartierTri(t1.v3, corner[SW+i], t2.v1)); // TODO : new RouteTri
+			addChild(new RouteTriChaussee(t1.v1, corner[NE+i], t2.v3));
+			addChild(new RouteTriChaussee(t2.v1, corner[SW+i], t1.v3));
 			return true;
 		}
 	}
@@ -40,7 +40,7 @@ bool QuartierQuadAngle::split() {
 				addChild(QuartierTri::factory(seed, 0, tn.v1, tn.v2, tn.v3));
 				addChild(QuartierQuad::factory(seed, 1, q.corner[0], q.corner[1], q.corner[2], q.corner[3]));
 				addChild(new RouteQuadChaussee(tn.v1, tn.v3, q.corner[1], q.corner[0]));
-				addChild(new QuartierTri(tn.v3, oldv3, q.corner[1])); // TODO : new RouteTri
+				addChild(new RouteTriChaussee(q.corner[1], oldv3, tn.v3));
 			} else {
 				q = Quad(corner[NW+i], e, corner[SE+i], corner[SW+i]);
 				Vertex oldv1 = te.v1;
@@ -49,7 +49,7 @@ bool QuartierQuadAngle::split() {
 				addChild(QuartierTri::factory(seed, 0, te.v1, te.v2, te.v3));
 				addChild(QuartierQuad::factory(seed, 1, q.corner[0], q.corner[1], q.corner[2], q.corner[3]));
 				addChild(new RouteQuadChaussee(te.v1, te.v3, q.corner[1], q.corner[0]));
-				addChild(new QuartierTri(q.corner[0], oldv1, te.v1)); // TODO : new RouteTri
+				addChild(new RouteTriChaussee(te.v1, oldv1, q.corner[0]));
 			}
 			return true;
 		}

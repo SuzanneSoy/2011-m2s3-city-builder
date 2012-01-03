@@ -33,17 +33,3 @@ void RouteQuadChaussee::triangulation() {
 	addTriangle(new Triangle(corner[NE], corner[NW], corner[SW], 0x36, 0x36, 0x36));
 	addTriangle(new Triangle(corner[SW], corner[SE], corner[NE], 0x36, 0x36, 0x36));
 }
-
-// Version avec trottoirs.
-/*void RouteQuadChaussee::triangulation() {
-	triangles.reserve(2);
-	Vertex nne, nnw, nse, nsw;				// Nouvel emplacement de la route.
-
-	nnw = nw + ((ne - nw)/6);
-	nsw = sw + ((se - sw)/6);
-	nne = ne - ((ne - nw)/6);
-	nse = se - ((se - sw)/6);
-
-	addChild(new TrottoirRoute(nnw, nsw, sw, nw, 20));
-	addChild(new TrottoirRoute(ne, se, nse,  nne,20));
-}*/
