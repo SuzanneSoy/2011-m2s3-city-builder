@@ -68,9 +68,14 @@ void Chose::addBBPoint(Vertex v) {
 void Chose::updateAABB() {
 	lod.firstBBPoint = true;
 	getBoundingBoxPoints();
+	float dx = lod.aabb[1] - lod.aabb[0];
+	float dy = lod.aabb[3] - lod.aabb[2];
+	float dz = lod.aabb[5] - lod.aabb[4];
+	float volume = dx*dy*dz;
+	float pseudoLength = std::max(1.f, std::pow(volume, 1.f/3.f) / 1000.f);
+	float splitFactor = 24 * pseudoLength;
+	float mergeFactor = 25 * pseudoLength;
 	for (int i = 0; i < 3; i++) {
-		float splitFactor = 24;
-		float mergeFactor = 25;
 		float center = (lod.aabb[2*i] + lod.aabb[2*i+1]) / 2;
 		lod.splitBox[2*i] = (lod.aabb[2*i] - center) * splitFactor + center;
 		lod.splitBox[2*i+1] = (lod.aabb[2*i+1] - center) * splitFactor + center;
