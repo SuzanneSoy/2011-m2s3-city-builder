@@ -36,35 +36,35 @@ void BatimentQuadPont::triangulation() {
     int middle = steps/2;
     int n;
 
-    addTriangle(new GPUTriangle(c[SW],pb,ch[SW],0xD0,0xD0,0xD0));
-    addTriangle(new GPUTriangle(pa,c[NW],ch[NW],0xD0,0xD0,0xD0));
+    addGPUTriangle(new GPUTriangle(c[SW],pb,ch[SW],0xD0,0xD0,0xD0));
+    addGPUTriangle(new GPUTriangle(pa,c[NW],ch[NW],0xD0,0xD0,0xD0));
 
     for(var=-1.7,n=0; var <= 1.7; var+=pas,n++) {
         q.offset(W,-n2);
         a = q.c[3] + Vertex(0,0,nt(var,height));
         b = q.c[2] + Vertex(0,0,nt(var,height));
 
-        addQuad(a,b,pb,pa,0xD0,0xD0,0xD0);
+        addGPUQuad(a,b,pb,pa,0xD0,0xD0,0xD0);
 
         if( n < middle) {
-            addTriangle(new GPUTriangle(pa,a,ch[NW],0xD0,0xD0,0xD0));
-            addTriangle(new GPUTriangle(b,pb,ch[SW],0xD0,0xD0,0xD0));
+            addGPUTriangle(new GPUTriangle(pa,a,ch[NW],0xD0,0xD0,0xD0));
+            addGPUTriangle(new GPUTriangle(b,pb,ch[SW],0xD0,0xD0,0xD0));
         }
         else if(n == middle) {
-            addTriangle(new GPUTriangle(pa,a,ch[NW],0xD0,0xD0,0xD0));
-            addTriangle(new GPUTriangle(b,pb,ch[SW],0xD0,0xD0,0xD0));
-            addTriangle(new GPUTriangle(a,ch[NE],ch[NW],0xD0,0xD0,0xD0));
-            addTriangle(new GPUTriangle(b,ch[SW],ch[SE],0xD0,0xD0,0xD0));
+            addGPUTriangle(new GPUTriangle(pa,a,ch[NW],0xD0,0xD0,0xD0));
+            addGPUTriangle(new GPUTriangle(b,pb,ch[SW],0xD0,0xD0,0xD0));
+            addGPUTriangle(new GPUTriangle(a,ch[NE],ch[NW],0xD0,0xD0,0xD0));
+            addGPUTriangle(new GPUTriangle(b,ch[SW],ch[SE],0xD0,0xD0,0xD0));
         }
         else {
-            addTriangle(new GPUTriangle(pa,a,ch[NE],0xD0,0xD0,0xD0));
-            addTriangle(new GPUTriangle(b,pb,ch[SE],0xD0,0xD0,0xD0));
+            addGPUTriangle(new GPUTriangle(pa,a,ch[NE],0xD0,0xD0,0xD0));
+            addGPUTriangle(new GPUTriangle(b,pb,ch[SE],0xD0,0xD0,0xD0));
         }
 
         pa = a;
         pb = b;
     }
 
-    addTriangle(new GPUTriangle(c[SE],pb,ch[SE],0xD0,0xD0,0xD0));
-    addTriangle(new GPUTriangle(c[NE],pa,ch[NE],0xD0,0xD0,0xD0));
+    addGPUTriangle(new GPUTriangle(c[SE],pb,ch[SE],0xD0,0xD0,0xD0));
+    addGPUTriangle(new GPUTriangle(c[NE],pa,ch[NE],0xD0,0xD0,0xD0));
 }

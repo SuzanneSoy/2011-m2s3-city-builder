@@ -58,11 +58,11 @@ class Chose {
 		addEntropy(t[LEFT], t[TOP], t[RIGHT]);
 	}
 	void addChild(Chose* c);
-	void addTriangle(GPUTriangle* t);
-	void addQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b);
-	void addQuad(Quad q, char r, char g, char b);
-	void addOcto(Vertex a,Vertex b,Vertex c,Vertex d,Vertex e,Vertex f,Vertex g,Vertex h,char red,char green,char blue);
-	void addOcto(Quad q1, Quad q2, char red, char green, char blue);
+	void addGPUTriangle(GPUTriangle* t);
+	void addGPUQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b);
+	void addGPUQuad(Quad q, char r, char g, char b);
+	void addGPUOcto(Vertex a,Vertex b,Vertex c,Vertex d,Vertex e,Vertex f,Vertex g,Vertex h,char red,char green,char blue);
+	void addGPUOcto(Quad q1, Quad q2, char red, char green, char blue);
 };
 
 #endif

@@ -10,5 +10,5 @@ void RouteQuadCarrefour::getBoundingBoxPoints() {
 }
 
 void RouteQuadCarrefour::triangulation() {
-	addQuad(c, 0x36, 0x36, 0x36);
+	addGPUQuad(c, 0x36, 0x36, 0x36);
 }

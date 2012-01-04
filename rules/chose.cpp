@@ -13,7 +13,7 @@ void Chose::addChild(Chose* c) {
 	children.push_back(c);
 }
 
-void Chose::addTriangle(GPUTriangle* t) {
+void Chose::addGPUTriangle(GPUTriangle* t) {
 	triangles.push_back(t);
 }
 
@@ -23,27 +23,27 @@ bool Chose::merge() {
     return true;
 }
 
-void Chose::addQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b) {
-    this->addTriangle(new GPUTriangle(u,x,w,r,g,b));
-    this->addTriangle(new GPUTriangle(w,v,u,r,g,b));
+void Chose::addGPUQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b) {
+    this->addGPUTriangle(new GPUTriangle(u,x,w,r,g,b));
+    this->addGPUTriangle(new GPUTriangle(w,v,u,r,g,b));
 }
 
-void Chose::addQuad(Quad q, char r, char g, char b) {
-	addQuad(q[NE], q[SE], q[SW], q[NW], r, g, b);
+void Chose::addGPUQuad(Quad q, char r, char g, char b) {
+	addGPUQuad(q[NE], q[SE], q[SW], q[NW], r, g, b);
 }
 
-void Chose::addOcto(Vertex a, Vertex b, Vertex c, Vertex d,
+void Chose::addGPUOcto(Vertex a, Vertex b, Vertex c, Vertex d,
                     Vertex e, Vertex f, Vertex g, Vertex h, char red, char green, char blue) {
-    this->addQuad(a,b,c,d,red,green,blue);
-    this->addQuad(e,f,g,h,red,green,blue);
-    this->addQuad(b,a,e,f,red,green,blue);
-    this->addQuad(c,b,f,g,red,green,blue);
-    this->addQuad(d,c,g,h,red,green,blue);
-    this->addQuad(a,d,h,e,red,green,blue);
+    this->addGPUQuad(a,b,c,d,red,green,blue);
+    this->addGPUQuad(e,f,g,h,red,green,blue);
+    this->addGPUQuad(b,a,e,f,red,green,blue);
+    this->addGPUQuad(c,b,f,g,red,green,blue);
+    this->addGPUQuad(d,c,g,h,red,green,blue);
+    this->addGPUQuad(a,d,h,e,red,green,blue);
 }
 
-void Chose::addOcto(Quad q1, Quad q2, char red, char green, char blue) {
-	addOcto(q1[NE], q1[SE], q1[SW], q1[NW], q2[NE], q2[SE], q2[SW], q2[NW], red, green, blue);
+void Chose::addGPUOcto(Quad q1, Quad q2, char red, char green, char blue) {
+	addGPUOcto(q1[NE], q1[SE], q1[SW], q1[NW], q2[NE], q2[SE], q2[SW], q2[NW], red, green, blue);
 }
 
 void Chose::display() {
@@ -113,7 +113,7 @@ void Chose::updateAABB() {
 
 // DEBUG
 void Chose::drawAABB() {
-	addOcto(
+	addGPUOcto(
 		Vertex(lod.splitBox[0], lod.splitBox[2], lod.splitBox[4]),
 		Vertex(lod.splitBox[1], lod.splitBox[2], lod.splitBox[4]),
 		Vertex(lod.splitBox[1], lod.splitBox[3], lod.splitBox[4]),

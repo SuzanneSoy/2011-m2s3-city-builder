@@ -40,6 +40,6 @@ bool QuartierQuad::split() {
 
 void QuartierQuad::triangulation() {
 	triangles.reserve(2);
-	addTriangle(new GPUTriangle(c[NE], c[NW], c[SW], 0xc0, 0xc0, 0xc0));
-	addTriangle(new GPUTriangle(c[SW], c[SE], c[NE], 0xc0, 0xc0, 0xc0));
+	addGPUTriangle(new GPUTriangle(c[NE], c[NW], c[SW], 0xc0, 0xc0, 0xc0));
+	addGPUTriangle(new GPUTriangle(c[SW], c[SE], c[NE], 0xc0, 0xc0, 0xc0));
 }

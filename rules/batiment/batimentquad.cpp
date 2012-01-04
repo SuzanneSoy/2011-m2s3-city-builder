@@ -48,5 +48,5 @@ void BatimentQuad::triangulation() {
 	int htoit = hashInRange(seed,0,minHeight/2,maxHeight/2);
 	h += htoit;
 
-    addOcto(c, c + Vertex(0,0,h), 0xFF, 0xFF, 0x00);
+    addGPUOcto(c, c + Vertex(0,0,h), 0xFF, 0xFF, 0x00);
 }

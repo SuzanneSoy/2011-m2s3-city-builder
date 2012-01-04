@@ -10,5 +10,5 @@ void RouteTriChaussee::getBoundingBoxPoints() {
 }
 
 void RouteTriChaussee::triangulation() {
-	addTriangle(new GPUTriangle(c[LEFT], c[TOP], c[RIGHT], 0x36, 0x36, 0x36));
+	addGPUTriangle(new GPUTriangle(c[LEFT], c[TOP], c[RIGHT], 0x36, 0x36, 0x36));
 }

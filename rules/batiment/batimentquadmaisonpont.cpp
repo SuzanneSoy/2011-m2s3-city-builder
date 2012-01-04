@@ -41,15 +41,15 @@ void BatimentQuadMaisonPont::triangulation() {
 	Quad q = Quad(c[NE],c[SE],c[SW],c[NW]).makeParallelogram();
 	Quad qh = q + Vertex(0,0,h);
 
-    addQuad(c,0x80,0x80,0x80);
-    addOcto(q,qh,0xF1,0xE0,0xE0);
+    addGPUQuad(c,0x80,0x80,0x80);
+    addGPUOcto(q,qh,0xF1,0xE0,0xE0);
 
     Vertex ce = qh[SE] + (qh[NE] - qh[SE])/2 + Vertex(0,0,0.5*height/3.f);
     Vertex cw = qh[SW] + (qh[NW] - qh[SW])/2 + Vertex(0,0,0.5*height/3.f);
 
-    addTriangle(new GPUTriangle(qh[SW],qh[NW],cw,0xF1,0xE0,0xE0));
-    addTriangle(new GPUTriangle(qh[NE],qh[SE],ce,0xF1,0xE0,0xE0));
+    addGPUTriangle(new GPUTriangle(qh[SW],qh[NW],cw,0xF1,0xE0,0xE0));
+    addGPUTriangle(new GPUTriangle(qh[NE],qh[SE],ce,0xF1,0xE0,0xE0));
 
-    addQuad(qh[NE],qh[NW],cw,ce,0xE0,0x20,0x00);
-    addQuad(qh[SW],qh[SE],ce,cw,0xE0,0x20,0x00);
+    addGPUQuad(qh[NE],qh[NW],cw,ce,0xE0,0x20,0x00);
+    addGPUQuad(qh[SW],qh[SE],ce,cw,0xE0,0x20,0x00);
 }

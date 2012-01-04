@@ -10,5 +10,5 @@ void BatimentQuadBlock::getBoundingBoxPoints() {
 }
 
 void BatimentQuadBlock::triangulation() {
-    addOcto(c, c + Vertex(0,0,height), 0xF1, 0xE0, 0xE0);
+    addGPUOcto(c, c + Vertex(0,0,height), 0xF1, 0xE0, 0xE0);
 }

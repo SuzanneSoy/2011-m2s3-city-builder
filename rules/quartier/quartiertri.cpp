@@ -22,5 +22,5 @@ bool QuartierTri::split() {
 
 void QuartierTri::triangulation() {
 	triangles.reserve(1);
-	addTriangle(new GPUTriangle(c[LEFT], c[TOP], c[RIGHT], 0xf0, 0xc0, 0xc0));
+	addGPUTriangle(new GPUTriangle(c[LEFT], c[TOP], c[RIGHT], 0xf0, 0xc0, 0xc0));
 }
