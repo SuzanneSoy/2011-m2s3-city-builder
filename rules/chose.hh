@@ -15,15 +15,18 @@ class Chose {
     public :
 	void display();
 	void drawAABB(); // DEBUG
-	virtual bool split() = 0;
+	virtual bool split() { return false; };
 	virtual bool merge();
-	virtual void triangulation() = 0;
+	virtual void triangulation() { triangles.clear(); };
 	virtual void updateAABB();
 
     protected :
-	void addBBPoint(Vertex v);
+	void addBBPoint(const Vertex v);
+	void addBBPoints(const Triangle t);
+	void addBBPoints(const Quad q);
 	virtual void getBoundingBoxPoints() = 0;
 	Chose();
+	~Chose();
 	inline void addEntropy(unsigned int x1) {
 		seed = hash2(seed, x1);
 	}
@@ -48,10 +51,18 @@ class Chose {
 	inline void addEntropy(Vertex v1, Vertex v2, Vertex v3, Vertex v4) {
 		addEntropy(v1, v2); addEntropy(v3, v4);
 	}
+	inline void addEntropy(Quad q) {
+		addEntropy(q[NE], q[SE], q[SW], q[NW]);
+	}
+	inline void addEntropy(Triangle t) {
+		addEntropy(t[LEFT], t[TOP], t[RIGHT]);
+	}
 	void addChild(Chose* c);
 	void addTriangle(GPUTriangle* t);
 	void addQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b);
+	void addQuad(Quad q, char r, char g, char b);
 	void addOcto(Vertex a,Vertex b,Vertex c,Vertex d,Vertex e,Vertex f,Vertex g,Vertex h,char red,char green,char blue);
+	void addOcto(Quad q1, Quad q2, char red, char green, char blue);
 };
 
 #endif

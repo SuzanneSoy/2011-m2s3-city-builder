@@ -6,13 +6,12 @@
 
 class QuartierQuad : public Chose {
 public:
-	Vertex c[4];
+	Quad c;
 public:
-	QuartierQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw);
-	virtual ~QuartierQuad();
+	QuartierQuad(Quad c);
 	virtual bool split();
 	virtual void triangulation();
-	static Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
+	static Chose* factory(int seed, int n, Quad c);
 	virtual void getBoundingBoxPoints();
 };
 

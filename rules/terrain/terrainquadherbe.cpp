@@ -1,26 +1,12 @@
 #include "all_includes.hh"
 
-TerrainQuadHerbe::TerrainQuadHerbe(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose() {
-	addEntropy(ne, se, sw, nw);
-	c[NE] = ne;
-	c[SE] = se;
-	c[SW] = sw;
-	c[NW] = nw;
+TerrainQuadHerbe::TerrainQuadHerbe(Quad c) : Chose(), c(c) {
+	addEntropy(c);
 }
 
 void TerrainQuadHerbe::getBoundingBoxPoints() {
-	addBBPoint(c[NE]);
-	addBBPoint(c[SE]);
-	addBBPoint(c[SW]);
-	addBBPoint(c[NW]);
-	addBBPoint(c[NE] + Vertex(0,0,1000)); // TODO
-	addBBPoint(c[SE] + Vertex(0,0,1000));
-	addBBPoint(c[SW] + Vertex(0,0,1000));
-	addBBPoint(c[NW] + Vertex(0,0,1000));
-}
-
-bool TerrainQuadHerbe::split() {
-	return false;
+	addBBPoints(c);
+	addBBPoints(c + Vertex(0,0,1000)); // TODO
 }
 
 void TerrainQuadHerbe::triangulation() {

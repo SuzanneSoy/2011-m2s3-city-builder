@@ -5,12 +5,10 @@
 
 class RouteQuadCarrefour : public Chose {
     private :
-	Vertex c[4];
+	Quad c;
 
     public :
-	RouteQuadCarrefour(Vertex ne, Vertex se, Vertex sw, Vertex nw);
-	virtual ~RouteQuadCarrefour();
-	virtual bool split();
+	RouteQuadCarrefour(Quad c);
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

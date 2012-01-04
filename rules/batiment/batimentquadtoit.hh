@@ -6,16 +6,13 @@
 // TOTO en faire un classe abstraite et définir des classe filles pour les différents types de toits.
 class BatimentQuadToit: public Chose {
     private :
-	Vertex c[4];
+	Quad c;
 	int height;
 
     public :
 
-	BatimentQuadToit(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height);
-	virtual ~BatimentQuadToit();
-	virtual bool split();
+	BatimentQuadToit(Quad c, int height);
 	virtual void triangulation();
-	Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual void getBoundingBoxPoints();
 };
 

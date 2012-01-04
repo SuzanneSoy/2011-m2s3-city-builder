@@ -1,11 +1,6 @@
 #include "all_includes.hh"
 
-QuartierQuadAngle::QuartierQuadAngle(Vertex ne, Vertex se, Vertex sw, Vertex nw) : QuartierQuad(ne, se, sw, nw) {
-}
-
-QuartierQuadAngle::~QuartierQuadAngle() {
-    children.clear();
-    triangles.clear();
+QuartierQuadAngle::QuartierQuadAngle(Quad c) : QuartierQuad(c) {
 }
 
 bool QuartierQuadAngle::split() {
@@ -15,11 +10,11 @@ bool QuartierQuadAngle::split() {
 			t1.offsetBase(-hrw);
 			Triangle t2(c[SW+i], c[NW+i], c[NE+i]);
 			t2.offsetBase(-hrw);
-			addChild(QuartierTri::factory(seed, 0, t1.c[0], t1.c[1], t1.c[2]));
-			addChild(QuartierTri::factory(seed, 1, t2.c[0], t2.c[1], t2.c[2]));
-			addChild(new RouteQuadChaussee(t1.c[0], t1.c[2], t2.c[0], t2.c[2]));
-			addChild(new RouteTriChaussee(t1.c[0], c[NE+i], t2.c[2]));
-			addChild(new RouteTriChaussee(t2.c[0], c[SW+i], t1.c[2]));
+			addChild(QuartierTri::factory(seed, 0, t1));
+			addChild(QuartierTri::factory(seed, 1, t2));
+			addChild(new RouteQuadChaussee(Quad(t1[LEFT], t1[RIGHT], t2[LEFT], t2[RIGHT])));
+			addChild(new RouteTriChaussee(Triangle(t1[LEFT], c[NE+i], t2[RIGHT])));
+			addChild(new RouteTriChaussee(Triangle(t2[LEFT], c[SW+i], t1[RIGHT])));
 			return true;
 		}
 	}
@@ -34,27 +29,27 @@ bool QuartierQuadAngle::split() {
 			Quad q;
 			if (tn.minAngle() > te.minAngle()) {
 				q = Quad(n, c[SE+i], c[SW+i], c[NW+i]);
-				Vertex oldtnc2 = tn.c[2];
+				Vertex oldtnright = tn[RIGHT];
 				tn.offsetBase(-hrw);
 				q.offset(E, -hrw);
-				addChild(QuartierTri::factory(seed, 0, tn.c[0], tn.c[1], tn.c[2]));
-				addChild(QuartierQuad::factory(seed, 1, q.c[0], q.c[1], q.c[2], q.c[3]));
-				addChild(new RouteQuadChaussee(tn.c[0], tn.c[2], q.c[1], q.c[0]));
-				addChild(new RouteTriChaussee(q.c[1], oldtnc2, tn.c[2]));
+				addChild(QuartierTri::factory(seed, 0, tn));
+				addChild(QuartierQuad::factory(seed, 1, q));
+				addChild(new RouteQuadChaussee(Quad(tn[LEFT], tn[RIGHT], q[SE], q[NE])));
+				addChild(new RouteTriChaussee(Triangle(q[SE], oldtnright, tn[RIGHT])));
 			} else {
 				q = Quad(c[NW+i], e, c[SE+i], c[SW+i]);
-				Vertex oldtec0 = te.c[0];
+				Vertex oldteleft = te[LEFT];
 				te.offsetBase(-hrw);
 				q.offset(E, -hrw);
-				addChild(QuartierTri::factory(seed, 0, te.c[0], te.c[1], te.c[2]));
-				addChild(QuartierQuad::factory(seed, 1, q.c[0], q.c[1], q.c[2], q.c[3]));
-				addChild(new RouteQuadChaussee(te.c[0], te.c[2], q.c[1], q.c[0]));
-				addChild(new RouteTriChaussee(te.c[0], oldtec0, q.c[0]));
+				addChild(QuartierTri::factory(seed, 0, te));
+				addChild(QuartierQuad::factory(seed, 1, q));
+				addChild(new RouteQuadChaussee(Quad(te[LEFT], te[RIGHT], q[SE], q[NE])));
+				addChild(new RouteTriChaussee(Triangle(te[LEFT], oldteleft, q[NE])));
 			}
 			return true;
 		}
 	}
 	// Ne devait jamais arriver ici !
-	addChild(new TerrainQuadHerbe(c[NE], c[SE], c[SW], c[NW]));
+	addChild(new TerrainQuadHerbe(c));
 	return true;
 }

@@ -5,11 +5,10 @@
 
 class RouteTriChaussee : public Chose {
     private :
-	Vertex c[3];
+	Triangle c;
 
     public :
-	RouteTriChaussee(Vertex left, Vertex top, Vertex right);
-	virtual bool split();
+	RouteTriChaussee(Triangle c);
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

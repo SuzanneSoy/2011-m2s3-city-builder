@@ -1,32 +1,12 @@
 #include "all_includes.hh"
 
-BatimentQuadToit::BatimentQuadToit(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height) : Chose() {
-	addEntropy(ne, se, sw, nw);
-    c[NE] = ne;
-    c[SE] = se;
-    c[SW] = sw;
-    c[NW] = nw;
-    this->height = height;
-}
-
-BatimentQuadToit::~BatimentQuadToit() {
-    children.clear();
-    triangles.clear();
+BatimentQuadToit::BatimentQuadToit(Quad c, int height) : Chose(), c(c), height(height) {
+	addEntropy(c);
 }
 
 void BatimentQuadToit::getBoundingBoxPoints() {
-	addBBPoint(c[NE]);
-	addBBPoint(c[SE]);
-	addBBPoint(c[SW]);
-	addBBPoint(c[NW]);
-	addBBPoint(c[NE] + Vertex(0,0,height)); // TODO
-	addBBPoint(c[SE] + Vertex(0,0,height));
-	addBBPoint(c[SW] + Vertex(0,0,height));
-	addBBPoint(c[NW] + Vertex(0,0,height));
-}
-
-bool BatimentQuadToit::split() {
-	return false;
+	addBBPoints(c);
+	addBBPoints(c + Vertex(0,0,height)); // TODO
 }
 
 void BatimentQuadToit::triangulation() {

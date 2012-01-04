@@ -9,8 +9,7 @@ class QuartierQuadCarre : public QuartierQuad {
 	static const int hrw = 250; // half road width : 2,50m.
 
     public :
-	QuartierQuadCarre(Vertex ne, Vertex se, Vertex sw, Vertex nw);
-	virtual ~QuartierQuadCarre();
+	QuartierQuadCarre(Quad c);
 	virtual bool split();
 };
 

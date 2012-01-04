@@ -23,4 +23,14 @@ inline Coin operator+(Coin c, int i) {
 	return Coin((int(c) + int(i)) & 3);
 }
 
+enum SommetTriangle {
+	LEFT = 0,
+	TOP = 1,
+	RIGHT = 2
+};
+
+inline SommetTriangle operator+(SommetTriangle c, int i) {
+	return SommetTriangle((((int(c) + int(i)) % 3 ) + 3) % 3);
+}
+
 #endif

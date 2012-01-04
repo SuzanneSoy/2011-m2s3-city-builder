@@ -28,3 +28,7 @@ void Triangle::offsetBase(int offset) {
 	c[1] = q.c[0];
 	c[2] = q.c[2];
 }
+
+Triangle operator+(const Triangle& t, const Vertex& v) {
+	return Triangle(t[LEFT] + v, t[TOP] + v, t[RIGHT] + v);
+}

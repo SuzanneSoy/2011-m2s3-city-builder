@@ -100,3 +100,7 @@ float Quad::maxAngle() {
 	}
 	return a;
 }
+
+Quad operator+(const Quad& q, const Vertex& v) {
+	return Quad(q[NE] + v, q[SE] + v, q[SW] + v, q[NW] + v);
+}

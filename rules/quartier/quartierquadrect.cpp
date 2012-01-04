@@ -1,11 +1,6 @@
 #include "all_includes.hh"
 
-QuartierQuadRect::QuartierQuadRect(Vertex ne, Vertex se, Vertex sw, Vertex nw) : QuartierQuad(ne, se, sw, nw) {
-}
-
-QuartierQuadRect::~QuartierQuadRect() {
-    children.clear();
-    triangles.clear();
+QuartierQuadRect::QuartierQuadRect(Quad c) : QuartierQuad(c) {
 }
 
 bool QuartierQuadRect::split() {
@@ -17,8 +12,8 @@ bool QuartierQuadRect::split() {
 	qe.offset(W,-hrw);
 	qw.offset(W,-hrw);
 
-	addChild(new RouteQuadChaussee(qe.c[NW], qe.c[SW], qw.c[NW], qw.c[SW]));
-	addChild(QuartierQuad::factory(seed, 2, qe.c[0], qe.c[1], qe.c[2], qe.c[3]));
-	addChild(QuartierQuad::factory(seed, 3, qw.c[0], qw.c[1], qw.c[2], qw.c[3]));
+	addChild(new RouteQuadChaussee(Quad(qe[NW], qe[SW], qw[NW], qw[SW])));
+	addChild(QuartierQuad::factory(seed, 2, qe));
+	addChild(QuartierQuad::factory(seed, 3, qw));
 	return true;
 }

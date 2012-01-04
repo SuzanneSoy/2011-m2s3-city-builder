@@ -8,7 +8,7 @@ class QuartierTriHauteur : public QuartierTri {
 	static const int hrw = 250; // half road width : 2,50m.
 
     public :
-	QuartierTriHauteur(Vertex left, Vertex top, Vertex right);
+	QuartierTriHauteur(Triangle c);
 	virtual bool split();
 };
 

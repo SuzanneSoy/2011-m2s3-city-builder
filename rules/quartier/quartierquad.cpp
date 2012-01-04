@@ -1,51 +1,35 @@
 #include "all_includes.hh"
 
-QuartierQuad::QuartierQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw) : Chose() {
-	addEntropy(ne, se, sw, nw);
-	c[NE] = ne;
-	c[SE] = se;
-	c[SW] = sw;
-	c[NW] = nw;
-}
-
-QuartierQuad::~QuartierQuad() {
-    children.clear();
-    triangles.clear();
+QuartierQuad::QuartierQuad(Quad c) : Chose(), c(c) {
+	addEntropy(c);
 }
 
 void QuartierQuad::getBoundingBoxPoints() {
-	addBBPoint(c[NE]);
-	addBBPoint(c[SE]);
-	addBBPoint(c[SW]);
-	addBBPoint(c[NW]);
-	addBBPoint(c[NE] + Vertex(0,0,1000)); // TODO
-	addBBPoint(c[SE] + Vertex(0,0,1000));
-	addBBPoint(c[SW] + Vertex(0,0,1000));
-	addBBPoint(c[NW] + Vertex(0,0,1000));
+	addBBPoints(c);
+	addBBPoints(c + Vertex(0,0,1000));
 }
 
-Chose* QuartierQuad::factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw) {
-	Quad q = Quad(ne,se,sw,nw);
-	bool small = q.minLength() < 2500;
-	bool big = q.maxLength() >= 5000;
-	bool anglesAcceptable = q.minAngle() > Angle::d2r(90-60) && q.maxAngle() < Angle::d2r(90+60);
-	bool anglesOk = q.minAngle() > Angle::d2r(90-40) && q.maxAngle() < Angle::d2r(90+40);
-	bool tooWideX = q.minLengthEW() * 2 < q.maxLengthNS(); // trop allongé (côté E ou W deux fois plus petit que le côté N ou S).
-	bool tooWideY = q.minLengthNS() * 2 < q.maxLengthEW(); // trop allongé (côté N ou S deux fois plus petit que le côté E ou W).
+Chose* QuartierQuad::factory(int seed, int n, Quad c) {
+	bool small = c.minLength() < 2500;
+	bool big = c.maxLength() >= 5000;
+	bool anglesAcceptable = c.minAngle() > Angle::d2r(90-60) && c.maxAngle() < Angle::d2r(90+60);
+	bool anglesOk = c.minAngle() > Angle::d2r(90-40) && c.maxAngle() < Angle::d2r(90+40);
+	bool tooWideX = c.minLengthEW() * 2 < c.maxLengthNS(); // trop allongé (côté E ou W deux fois plus petit que le côté N ou S).
+	bool tooWideY = c.minLengthNS() * 2 < c.maxLengthEW(); // trop allongé (côté N ou S deux fois plus petit que le côté E ou W).
 	if (!big && proba(seed, n, 1, 20)) {
-		return new TerrainQuadHerbe(ne, se, sw, nw);
+		return new TerrainQuadHerbe(c);
 	} else if (small && anglesAcceptable) {
-		return new BatimentQuad(ne, se, sw, nw, N);
+		return new BatimentQuad(c, N);
 	} else if (!small && !anglesOk) {
-		return new QuartierQuadAngle(ne, se, sw, nw);
+		return new QuartierQuadAngle(c);
 	} else if (!small && tooWideY) {
-		return new QuartierQuadRect(nw, ne, se, sw);
+		return new QuartierQuadRect(Quad(c[NW], c[NE], c[SE], c[SW]));
 	} else if (!small && tooWideX) {
-		return new QuartierQuadRect(ne, se, sw, nw);
+		return new QuartierQuadRect(c);
 	} else if (!small) {
-		return new QuartierQuadCarre(ne, se, sw, nw);
+		return new QuartierQuadCarre(c);
 	} else {
-		return new TerrainQuadHerbe(ne, se, sw, nw);
+		return new TerrainQuadHerbe(c);
 	}
 }
 

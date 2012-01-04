@@ -1,32 +1,12 @@
 #include "all_includes.hh"
 
-BatimentQuadPont::BatimentQuadPont(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height) : Chose() {
-	addEntropy(ne, se, sw, nw);
-    c[NE] = ne;
-    c[SE] = se;
-    c[SW] = sw;
-    c[NW] = nw;
-    this->height = height;
-}
-
-BatimentQuadPont::~BatimentQuadPont() {
-    children.clear();
-    triangles.clear();
+BatimentQuadPont::BatimentQuadPont(Quad c, int height) : Chose(), c(c), height(height) {
+	addEntropy(c);
 }
 
 void BatimentQuadPont::getBoundingBoxPoints() {
-	addBBPoint(c[NE]);
-	addBBPoint(c[SE]);
-	addBBPoint(c[SW]);
-	addBBPoint(c[NW]);
-	addBBPoint(c[NE] + Vertex(0,0,height)); // TODO
-	addBBPoint(c[SE] + Vertex(0,0,height));
-	addBBPoint(c[SW] + Vertex(0,0,height));
-	addBBPoint(c[NW] + Vertex(0,0,height));
-}
-
-bool BatimentQuadPont::split() {
-	return false;
+	addBBPoints(c);
+	addBBPoints(c + Vertex(0,0,height)); // TODO
 }
 
 float ct(float x) {
@@ -45,10 +25,7 @@ void BatimentQuadPont::triangulation() {
     height -= 20;
     Vertex pa = c[NW];
     Vertex pb = c[SW];
-    Vertex neh = c[NE] + Vertex(0,0,height+20);
-    Vertex seh = c[SE] + Vertex(0,0,height+20);
-    Vertex swh = c[SW] + Vertex(0,0,height+20);
-    Vertex nwh = c[NW] + Vertex(0,0,height+20);
+    Quad ch = c + Vertex(0,0,height+20);
     Vertex l1 = c[NE] - c[NW];
     Vertex l2 = c[SW] - c[SE];
 
@@ -59,8 +36,8 @@ void BatimentQuadPont::triangulation() {
     int middle = steps/2;
     int n;
 
-    addTriangle(new GPUTriangle(c[SW],pb,swh,0xD0,0xD0,0xD0));
-    addTriangle(new GPUTriangle(pa,c[NW],nwh,0xD0,0xD0,0xD0));
+    addTriangle(new GPUTriangle(c[SW],pb,ch[SW],0xD0,0xD0,0xD0));
+    addTriangle(new GPUTriangle(pa,c[NW],ch[NW],0xD0,0xD0,0xD0));
 
     for(var=-1.7,n=0; var <= 1.7; var+=pas,n++) {
         q.offset(W,-n2);
@@ -70,24 +47,24 @@ void BatimentQuadPont::triangulation() {
         addQuad(a,b,pb,pa,0xD0,0xD0,0xD0);
 
         if( n < middle) {
-            addTriangle(new GPUTriangle(pa,a,nwh,0xD0,0xD0,0xD0));
-            addTriangle(new GPUTriangle(b,pb,swh,0xD0,0xD0,0xD0));
+            addTriangle(new GPUTriangle(pa,a,ch[NW],0xD0,0xD0,0xD0));
+            addTriangle(new GPUTriangle(b,pb,ch[SW],0xD0,0xD0,0xD0));
         }
         else if(n == middle) {
-            addTriangle(new GPUTriangle(pa,a,nwh,0xD0,0xD0,0xD0));
-            addTriangle(new GPUTriangle(b,pb,swh,0xD0,0xD0,0xD0));
-            addTriangle(new GPUTriangle(a,neh,nwh,0xD0,0xD0,0xD0));
-            addTriangle(new GPUTriangle(b,swh,seh,0xD0,0xD0,0xD0));
+            addTriangle(new GPUTriangle(pa,a,ch[NW],0xD0,0xD0,0xD0));
+            addTriangle(new GPUTriangle(b,pb,ch[SW],0xD0,0xD0,0xD0));
+            addTriangle(new GPUTriangle(a,ch[NE],ch[NW],0xD0,0xD0,0xD0));
+            addTriangle(new GPUTriangle(b,ch[SW],ch[SE],0xD0,0xD0,0xD0));
         }
         else {
-            addTriangle(new GPUTriangle(pa,a,neh,0xD0,0xD0,0xD0));
-            addTriangle(new GPUTriangle(b,pb,seh,0xD0,0xD0,0xD0));
+            addTriangle(new GPUTriangle(pa,a,ch[NE],0xD0,0xD0,0xD0));
+            addTriangle(new GPUTriangle(b,pb,ch[SE],0xD0,0xD0,0xD0));
         }
 
         pa = a;
         pb = b;
     }
 
-    addTriangle(new GPUTriangle(c[SE],pb,seh,0xD0,0xD0,0xD0));
-    addTriangle(new GPUTriangle(c[NE],pa,neh,0xD0,0xD0,0xD0));
+    addTriangle(new GPUTriangle(c[SE],pb,ch[SE],0xD0,0xD0,0xD0));
+    addTriangle(new GPUTriangle(c[NE],pa,ch[NE],0xD0,0xD0,0xD0));
 }

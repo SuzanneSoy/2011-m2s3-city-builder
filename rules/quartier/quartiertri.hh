@@ -6,14 +6,13 @@
 
 class QuartierTri : public Chose {
     public :
-	Vertex c[3];
+	Triangle c;
 
     public :
-	QuartierTri(Vertex left, Vertex top, Vertex right);
-	virtual ~QuartierTri();
+	QuartierTri(Triangle c);
 	virtual bool split();
 	virtual void triangulation();
-	static Chose* factory(int seed, int n, Vertex left, Vertex top, Vertex right);
+	static Chose* factory(int seed, int n, Triangle c);
 	virtual void getBoundingBoxPoints();
 };
 

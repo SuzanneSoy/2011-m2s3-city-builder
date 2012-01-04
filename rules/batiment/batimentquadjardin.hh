@@ -6,17 +6,14 @@
 
 class BatimentQuadJardin : public Chose {
     private :
-	Vertex c[4];
+	Quad c;
 
     public :
 	static const int minHeight = 400;
 	static const int maxHeight = 800;
 
-	BatimentQuadJardin(Vertex ne, Vertex se, Vertex sw, Vertex nw);
-	virtual ~BatimentQuadJardin();
-	virtual bool split();
+	BatimentQuadJardin(Quad c);
 	virtual void triangulation();
-	Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual void getBoundingBoxPoints();
 };
 

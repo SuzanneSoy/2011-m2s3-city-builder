@@ -1,11 +1,6 @@
 #include "all_includes.hh"
 
-QuartierQuadCarre::QuartierQuadCarre(Vertex ne, Vertex se, Vertex sw, Vertex nw) : QuartierQuad(ne, se, sw, nw) {
-}
-
-QuartierQuadCarre::~QuartierQuadCarre() {
-    children.clear();
-    triangles.clear();
+QuartierQuadCarre::QuartierQuadCarre(Quad c) : QuartierQuad(c) {
 }
 
 bool QuartierQuadCarre::split() {
@@ -23,10 +18,10 @@ bool QuartierQuadCarre::split() {
 		q[i] = Quad(c[NE+i], middle[E+i], center, middle[N+i]);
 		q[i].offset(W,-hrw); q[i].offset(S,-hrw);
 	}
-	addChild(new RouteQuadCarrefour(q[0].c[SW], q[1].c[SW], q[2].c[SW], q[3].c[SW]));
+	addChild(new RouteQuadCarrefour(Quad(q[0][SW], q[1][SW], q[2][SW], q[3][SW])));
 	for (int i = 0; i < 4; i++) {
-		addChild(new RouteQuadChaussee(q[NE+i].c[NW], q[NE+i].c[SW], q[NW+i].c[SW], q[NW+i].c[SE]));
-		addChild(QuartierQuad::factory(seed, 4+i, q[i].c[0], q[i].c[1], q[i].c[2], q[i].c[3]));
+		addChild(new RouteQuadChaussee(Quad(q[NE+i][NW], q[NE+i][SW], q[NW+i][SW], q[NW+i][SE])));
+		addChild(QuartierQuad::factory(seed, 4+i, q[i]));
 	}
 	return true;
 }

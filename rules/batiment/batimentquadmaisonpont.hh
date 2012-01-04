@@ -6,16 +6,14 @@
 
 class BatimentQuadMaisonPont: public Chose {
     private :
-	Vertex c[4];
+	Quad c;
 	int height;
 
     public :
 
-	BatimentQuadMaisonPont(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height);
-	virtual ~BatimentQuadMaisonPont();
+	BatimentQuadMaisonPont(Quad c, int height);
 	virtual bool split();
 	virtual void triangulation();
-	Chose* factory(int seed, int n, Vertex ne, Vertex se, Vertex sw, Vertex nw);
 	virtual void getBoundingBoxPoints();
 };
 

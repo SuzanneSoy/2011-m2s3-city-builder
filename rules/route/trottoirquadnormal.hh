@@ -5,14 +5,14 @@
 
 class TrottoirQuadNormal : public Chose {
 	private :
-	Vertex c[4];
+	Quad c;
 	int height;
+	// TODO : pas besoin de ce champ : il suffit d'orienter
+	// correctement le trottoir lorsqu'on le crée.
 	Cardinal border;
 
 	public :
-	TrottoirQuadNormal(Vertex ne, Vertex se, Vertex sw, Vertex nw, int height, Cardinal border);
-	virtual ~TrottoirQuadNormal();
-	virtual bool split();
+	TrottoirQuadNormal(Quad c, int height, Cardinal border);
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };
