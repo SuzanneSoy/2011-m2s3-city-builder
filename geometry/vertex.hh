@@ -1,5 +1,5 @@
-#ifndef _VERTEX_HH_
-#define _VERTEX_HH_
+#ifndef _GEOMETRY_VERTEX_HH_
+#define _GEOMETRY_VERTEX_HH_
 
 #include "all_includes.hh"
 

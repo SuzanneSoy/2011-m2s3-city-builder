@@ -1,5 +1,6 @@
 #ifndef _LOD_HH_
 #define _LOD_HH_
+
 #include "all_includes.hh"
 
 class Lod {

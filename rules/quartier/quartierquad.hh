@@ -1,5 +1,5 @@
-#ifndef _RULES_QUADRILATERE_HH_
-#define _RULES_QUADRILATERE_HH_
+#ifndef _RULES_QUARTIER_QUARTIERQUAD_HH_
+#define _RULES_QUARTIER_QUARTIERQUAD_HH_
 
 #include "all_includes.hh"
 

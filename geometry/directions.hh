@@ -1,5 +1,5 @@
-#ifndef _DIRECTIONS_HH_
-#define _DIRECTIONS_HH_
+#ifndef _GEOMETRY_DIRECTIONS_HH_
+#define _GEOMETRY_DIRECTIONS_HH_
 
 enum Cardinal {
 	N = 0,

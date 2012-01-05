@@ -1,3 +1,6 @@
+#ifndef _HEAP_HH_
+#define _HEAP_HH_
+
 struct HeapNode {
 	float key;
 	Chose* value;
@@ -35,3 +38,5 @@ public:
 	bool lessThan(float a, float b); // Renvoie true ssi a < b dans l'ordre du tas.
 	void init(int id, int factor); // factor = -1 pour tas Min, 1 pour tas max
 };
+
+#endif

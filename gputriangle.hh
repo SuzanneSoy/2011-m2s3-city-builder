@@ -1,5 +1,5 @@
-#ifndef _GPU_TRIANGLE_HH_
-#define _GPU_TRIANGLE_HH_
+#ifndef _GPUTRIANGLE_HH_
+#define _GPUTRIANGLE_HH_
 
 #include "all_includes.hh"
 

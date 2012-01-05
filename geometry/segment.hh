@@ -1,5 +1,5 @@
-#ifndef _SEGMENT_HH_
-#define _SEGMENT_HH_
+#ifndef _GEOMETRY_SEGMENT_HH_
+#define _GEOMETRY_SEGMENT_HH_
 
 #include "all_includes.hh"
 

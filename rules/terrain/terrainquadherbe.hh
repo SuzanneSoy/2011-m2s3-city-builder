@@ -1,5 +1,5 @@
-#ifndef _RULES_QUAD_HERBE_HH_
-#define _RULES_QUAD_HERBE_HH_
+#ifndef _RULES_TERRAIN_TERRAINQUADHERBE_HH_
+#define _RULES_TERRAIN_TERRAINQUADHERBE_HH_
 
 #include "all_includes.hh"
 

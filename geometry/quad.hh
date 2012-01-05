@@ -1,5 +1,5 @@
-#ifndef _QUAD_HH_
-#define _QUAD_HH_
+#ifndef _GEOMETRY_QUAD_HH_
+#define _GEOMETRY_QUAD_HH_
 
 #include "all_includes.hh"
 

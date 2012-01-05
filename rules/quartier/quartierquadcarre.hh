@@ -1,5 +1,5 @@
-#ifndef _RULES_QUAD_CROIX_HH_
-#define _RULES_QUAD_CROIX_HH_
+#ifndef _RULES_QUARTIER_QUARTIERQUADCARRE_HH_
+#define _RULES_QUARTIER_QUARTIERQUADCARRE_HH_
 
 #include "all_includes.hh"
 

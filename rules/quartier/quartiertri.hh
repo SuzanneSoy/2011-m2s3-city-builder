@@ -1,5 +1,5 @@
-#ifndef _RULES_TRIANGLE_HH_
-#define _RULES_TRIANGLE_HH_
+#ifndef _RULES_QUARTIER_QUARTIERTRI_HH_
+#define _RULES_QUARTIER_QUARTIERTRI_HH_
 
 #include "all_includes.hh"
 
