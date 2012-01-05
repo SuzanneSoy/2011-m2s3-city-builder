@@ -44,6 +44,8 @@ class Chose;
 #include "rules/batiment/batimentquadblock.hh"
 #include "rules/batiment/batimentquadtoit.hh"
 #include "rules/batiment/batimenttri.hh"
+#include "rules/batiment/batimentquadmur.hh"
+#include "rules/batiment/batimentquadfenetre.hh"
 
 #include "rules/quartier/quartierquad.hh"
 #include "rules/quartier/quartierquadangle.hh"

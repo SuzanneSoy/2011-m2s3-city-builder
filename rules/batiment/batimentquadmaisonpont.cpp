@@ -10,9 +10,9 @@ void BatimentQuadMaisonPont::getBoundingBoxPoints() {
 }
 
 bool BatimentQuadMaisonPont::split() {
-    Quad q = Quad(c[NE],c[SE],c[SW],c[NW]);
+    Quad q = c;
     q.makeParallelogram();
-    if(Segment(q[NE],q[NW]).length() < Segment(q[NE],q[SE]).length())
+	if(Segment(q[NE],q[NW]).length() < Segment(q[NE],q[SE]).length())
         q = q << 1;
     float partLength = Segment(q[NE],q[NW]).length() / 3;
     int partHeight = 2.5*height/3.;
@@ -25,10 +25,10 @@ bool BatimentQuadMaisonPont::split() {
     qc.offset(E, -partLength);
     qc.offset(W, -partLength);
 
-    addChild(new BatimentQuadJardin(c << 1));
-    addChild(new BatimentQuadBlock(qa >> 1,partHeight));
-    addChild(new BatimentQuadBlock(qb >> 1,partHeight));
-    addChild(new BatimentQuadBlock((qh + Vertex(0,0,partHeight)) >> 1,partHeight));
+    addChild(new BatimentQuadJardin(c));
+    addChild(new BatimentQuadBlock(qa,partHeight));
+    addChild(new BatimentQuadBlock(qb,partHeight));
+    addChild(new BatimentQuadBlock((qh + Vertex(0,0,partHeight)),partHeight));
     addChild(new BatimentQuadPont(qc,partHeight));
     addChild(new BatimentQuadToit(qh + Vertex(0,0,2*partHeight),150));
 
