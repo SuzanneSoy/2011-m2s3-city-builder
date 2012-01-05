@@ -11,6 +11,5 @@ void TerrainQuadHerbe::getBoundingBoxPoints() {
 
 void TerrainQuadHerbe::triangulation() {
 	triangles.reserve(2);
-	addGPUTriangle(new GPUTriangle(c[NE], c[NW], c[SW], 0x11, 0xaa, 0x22));
-	addGPUTriangle(new GPUTriangle(c[SW], c[SE], c[NE], 0x11, 0xaa, 0x22));
+	addGPUQuad(c, 0x11, 0xaa, 0x22);
 }

@@ -12,9 +12,9 @@ void BatimentQuadMaisonPont::getBoundingBoxPoints() {
 bool BatimentQuadMaisonPont::split() {
     Quad q = Quad(c[NE],c[SE],c[SW],c[NW]);
     q.makeParallelogram();
-    if(Segment(q.c[0],q.c[3]).length() < Segment(q.c[0],q.c[1]).length())
-        q = Quad(q.c[1],q.c[2],q.c[3],q.c[0]);
-    float partLength = Segment(q.c[0],q.c[3]).length() / 3;
+    if(Segment(q[NE],q[NW]).length() < Segment(q[NE],q[SE]).length())
+        q = q << 1;
+    float partLength = Segment(q[NE],q[NW]).length() / 3;
     int partHeight = 2.5*height/3.;
     Quad qa = q;
     Quad qb = q;
@@ -36,7 +36,6 @@ bool BatimentQuadMaisonPont::split() {
 }
 
 void BatimentQuadMaisonPont::triangulation() {
-	//triangles.reserve(2);
 	float h = 2.5*height/3.;
 	Quad q = Quad(c[NE],c[SE],c[SW],c[NW]).makeParallelogram();
 	Quad qh = q + Vertex(0,0,h);
@@ -47,8 +46,8 @@ void BatimentQuadMaisonPont::triangulation() {
     Vertex ce = qh[SE] + (qh[NE] - qh[SE])/2 + Vertex(0,0,0.5*height/3.f);
     Vertex cw = qh[SW] + (qh[NW] - qh[SW])/2 + Vertex(0,0,0.5*height/3.f);
 
-    addGPUTriangle(new GPUTriangle(qh[SW],qh[NW],cw,0xF1,0xE0,0xE0));
-    addGPUTriangle(new GPUTriangle(qh[NE],qh[SE],ce,0xF1,0xE0,0xE0));
+    addGPUTriangle(qh[NW],cw,qh[SW],0xF1,0xE0,0xE0);
+    addGPUTriangle(qh[SE],ce,qh[NE],0xF1,0xE0,0xE0);
 
     addGPUQuad(qh[NE],qh[NW],cw,ce,0xE0,0x20,0x00);
     addGPUQuad(qh[SW],qh[SE],ce,cw,0xE0,0x20,0x00);

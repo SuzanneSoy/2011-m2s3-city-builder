@@ -12,8 +12,15 @@ void QuartierTri::getBoundingBoxPoints() {
 Chose* QuartierTri::factory(int seed, int n, Triangle c) {
 	(void)seed;
 	(void)n;
-	// TODO
-	return new QuartierTri(c);
+	bool small = c.minLength() < 2500;
+	bool big = c.maxLength() >= 5000;
+	if (small && !big) {
+		return new BatimentTri(c);
+	} else if (!small) {
+		return new QuartierTriHauteur(c);
+	} else {
+		return new TerrainTriHerbe(c);
+	}
 }
 
 bool QuartierTri::split() {
@@ -22,5 +29,5 @@ bool QuartierTri::split() {
 
 void QuartierTri::triangulation() {
 	triangles.reserve(1);
-	addGPUTriangle(new GPUTriangle(c[LEFT], c[TOP], c[RIGHT], 0xf0, 0xc0, 0xc0));
+	addGPUTriangle(c, 0xf0, 0xc0, 0xc0);
 }

@@ -12,7 +12,7 @@ class TrottoirQuadNormal : public Chose {
 	Cardinal border;
 
 	public :
-	TrottoirQuadNormal(Quad c, int height, Cardinal border);
+	TrottoirQuadNormal(Quad c, int height);
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

@@ -96,6 +96,15 @@ void View::renderScene(int lastTime, int currentTime) {
 	glBegin(GL_TRIANGLES);
 	root->display();
 	glEnd();
+	if (false) { // displayNormals ?
+		glDisable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
+		glBegin(GL_LINES);
+		root->displayNormals();
+		glEnd();
+		glEnable(GL_LIGHTING);
+		glEnable(GL_TEXTURE_2D);
+	}
 
 	glFlush();
 	SDL_GL_SwapBuffers();

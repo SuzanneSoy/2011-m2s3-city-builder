@@ -4,7 +4,7 @@ Vertex::Vertex() {}
 
 Vertex::Vertex(float x, float y, float z): x(x), y(y), z(z) {}
 
-float Vertex::norm() { return std::sqrt(x*x + y*y + z*z); }
+float Vertex::norm() const { return std::sqrt(x*x + y*y + z*z); }
 
 // TODO : this is 2D only, use Vertex2d.
 Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d) {

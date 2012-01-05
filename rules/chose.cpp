@@ -13,37 +13,39 @@ void Chose::addChild(Chose* c) {
 	children.push_back(c);
 }
 
-void Chose::addGPUTriangle(GPUTriangle* t) {
-	triangles.push_back(t);
-}
-
 bool Chose::merge() {
     children.clear();
 	// triangles.clear();
     return true;
 }
 
-void Chose::addGPUQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b) {
-    this->addGPUTriangle(new GPUTriangle(u,x,w,r,g,b));
-    this->addGPUTriangle(new GPUTriangle(w,v,u,r,g,b));
+void Chose::addGPUTriangle(Vertex left, Vertex top, Vertex right, char r, char g, char b) {
+	triangles.push_back(new GPUTriangle(left, top, right, r, g, b));
+}
+
+void Chose::addGPUTriangle(Triangle t, char r, char g, char b) {
+	addGPUTriangle(t[LEFT], t[TOP], t[RIGHT], r, g, b);
+}
+
+void Chose::addGPUQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, char r, char g, char b) {
+    this->addGPUTriangle(nw,ne,se,r,g,b);
+    this->addGPUTriangle(se,sw,nw,r,g,b);
 }
 
 void Chose::addGPUQuad(Quad q, char r, char g, char b) {
 	addGPUQuad(q[NE], q[SE], q[SW], q[NW], r, g, b);
 }
 
-void Chose::addGPUOcto(Vertex a, Vertex b, Vertex c, Vertex d,
-                    Vertex e, Vertex f, Vertex g, Vertex h, char red, char green, char blue) {
-    this->addGPUQuad(a,b,c,d,red,green,blue);
-    this->addGPUQuad(e,f,g,h,red,green,blue);
-    this->addGPUQuad(b,a,e,f,red,green,blue);
-    this->addGPUQuad(c,b,f,g,red,green,blue);
-    this->addGPUQuad(d,c,g,h,red,green,blue);
-    this->addGPUQuad(a,d,h,e,red,green,blue);
+void Chose::addGPUOcto(Vertex ne, Vertex se, Vertex sw, Vertex nw,
+                    Vertex neh, Vertex seh, Vertex swh, Vertex nwh, char r, char g, char b) {
+	addGPUOcto(Quad(ne,se,sw,nw), Quad(neh,seh,swh,nwh), r, g, b);
 }
 
-void Chose::addGPUOcto(Quad q1, Quad q2, char red, char green, char blue) {
-	addGPUOcto(q1[NE], q1[SE], q1[SW], q1[NW], q2[NE], q2[SE], q2[SW], q2[NW], red, green, blue);
+void Chose::addGPUOcto(Quad q, Quad qh, char r, char g, char b) {
+    this->addGPUQuad(q[NE], q[SE], q[SW], q[NW], r, g, b);
+    this->addGPUQuad(qh[NE], qh[SE], qh[SW], qh[NW], r, g, b);
+    for (int i = 0; i < 4; i++)
+    	this->addGPUQuad(q[NE+i], q[SE+i], qh[SE+i], qh[NE+i], r, g, b);
 }
 
 void Chose::display() {
@@ -56,6 +58,20 @@ void Chose::display() {
 		std::vector<GPUTriangle*>::iterator it;
 		for (it = triangles.begin(); it != triangles.end(); ++it) {
 			(*it)->display();
+		}
+	}
+}
+
+void Chose::displayNormals() {
+	if (children.size() > 0) {
+		std::vector<Chose*>::iterator it;
+		for (it = children.begin(); it != children.end(); ++it) {
+			(*it)->displayNormals();
+		}
+	} else {
+		std::vector<GPUTriangle*>::iterator it;
+		for (it = triangles.begin(); it != triangles.end(); ++it) {
+			(*it)->displayNormal();
 		}
 	}
 }
@@ -128,4 +144,4 @@ void Chose::drawAABB() {
 	);
 }
 
-unsigned int Chose::initialSeed = random_seed();
+unsigned int Chose::initialSeed = 1417359759;//random_seed();

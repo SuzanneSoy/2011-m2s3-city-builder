@@ -43,6 +43,7 @@ class Chose;
 #include "rules/batiment/batimentquadmaisonpont.hh"
 #include "rules/batiment/batimentquadblock.hh"
 #include "rules/batiment/batimentquadtoit.hh"
+#include "rules/batiment/batimenttri.hh"
 
 #include "rules/quartier/quartierquad.hh"
 #include "rules/quartier/quartierquadangle.hh"
@@ -58,5 +59,6 @@ class Chose;
 #include "rules/route/trottoirquadnormal.hh"
 
 #include "rules/terrain/terrainquadherbe.hh"
+#include "rules/terrain/terraintriherbe.hh"
 
 #endif

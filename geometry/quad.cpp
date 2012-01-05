@@ -49,39 +49,39 @@ Quad Quad::makeParallelogram() {
     return Quad(c[0],c[1],c[2],c[3]);
 }
 
-int Quad::minLengthNS() {
+float Quad::minLengthNS() {
 	return std::min(
 		Segment(c[NW],c[NE]).length(),
 		Segment(c[SE],c[SW]).length()
 	);
 }
 
-int Quad::minLengthEW() {
+float Quad::minLengthEW() {
 	return std::min(
 		Segment(c[NE],c[SE]).length(),
 		Segment(c[SW],c[NW]).length()
 	);
 }
 
-int Quad::maxLengthNS() {
+float Quad::maxLengthNS() {
 	return std::max(
 		Segment(c[NW],c[NE]).length(),
 		Segment(c[SE],c[SW]).length()
 	);
 }
 
-int Quad::maxLengthEW() {
+float Quad::maxLengthEW() {
 	return std::max(
 		Segment(c[NE],c[SE]).length(),
 		Segment(c[SW],c[NW]).length()
 	);
 }
 
-int Quad::minLength() {
+float Quad::minLength() {
 	return std::min(minLengthNS(), minLengthEW());
 }
 
-int Quad::maxLength() {
+float Quad::maxLength() {
 	return std::max(maxLengthNS(), maxLengthEW());
 }
 

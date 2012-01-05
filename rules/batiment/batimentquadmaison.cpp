@@ -17,15 +17,10 @@ void BatimentQuadMaison::triangulation() {
 	Quad ch = c + Vertex(0,0,h);
 	Vertex toit = (ch[NE] + ch[SE] + ch[SW] + ch[NW]) / 4 + Vertex(0,0,htoit);
 
-	// 4 Murs
-	addGPUQuad(ch[NE],ch[SE],c[SE],c[NE],0xf1,0xe3,0xad);
-	addGPUQuad(ch[SE],ch[SW],c[SW],c[SE],0xf1,0xe3,0xad);
-	addGPUQuad(ch[SW],ch[NW],c[NW],c[SW],0xf1,0xe3,0xad);
-	addGPUQuad(ch[NW],ch[NE],c[NE],c[NW],0xf1,0xe3,0xad);
-
-	// 1 Toit
-	addGPUTriangle(new GPUTriangle(ch[NE],toit,ch[SE],0x96,0x16,0x18));
-	addGPUTriangle(new GPUTriangle(ch[SE],toit,ch[SW],0x96,0x16,0x18));
-	addGPUTriangle(new GPUTriangle(ch[SW],toit,ch[NW],0x96,0x16,0x18));
-	addGPUTriangle(new GPUTriangle(ch[NW],toit,ch[NE],0x96,0x16,0x18));
+	for (int i = 0; i < 4; i++) {
+		// Mur
+		addGPUQuad(c[NE+i],c[SE+i],ch[SE+i],ch[NE+i],0xf1,0xe3,0xad);
+		// Pan du toit
+		addGPUTriangle(ch[SE+i],toit,ch[NE+i],0x96,0x16,0x18);
+	}
 }

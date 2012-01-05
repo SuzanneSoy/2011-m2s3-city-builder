@@ -14,6 +14,7 @@ class Chose {
 
     public :
 	void display();
+	void displayNormals();
 	void drawAABB(); // DEBUG
 	virtual bool split() { return false; };
 	virtual bool merge();
@@ -59,6 +60,8 @@ class Chose {
 	}
 	void addChild(Chose* c);
 	void addGPUTriangle(GPUTriangle* t);
+	void addGPUTriangle(Vertex left, Vertex top, Vertex right, char r, char g, char b);
+	void addGPUTriangle(Triangle t, char r, char g, char b);
 	void addGPUQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b);
 	void addGPUQuad(Quad q, char r, char g, char b);
 	void addGPUOcto(Vertex a,Vertex b,Vertex c,Vertex d,Vertex e,Vertex f,Vertex g,Vertex h,char red,char green,char blue);

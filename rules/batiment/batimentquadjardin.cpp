@@ -12,6 +12,5 @@ void BatimentQuadJardin::getBoundingBoxPoints() {
 void BatimentQuadJardin::triangulation() {
 	triangles.reserve(2);
 
-	addGPUTriangle(new GPUTriangle(c[NE],c[NW],c[SW],0x12,0x64,0x12));
-	addGPUTriangle(new GPUTriangle(c[SW],c[SE],c[NE],0x12,0x64,0x12));
+	addGPUQuad(c, 0x12, 0x64, 0x12);
 }

@@ -12,7 +12,7 @@ class Vertex {
 	public :
 	Vertex();
 	Vertex(float x, float y, float z);
-	float norm();
+	float norm() const;
 	Vertex projectOn(Vertex v);
 	Vertex setNorm(float n);
 	Vertex perpendicular(); // Perpendiculaire 2D dans le sens contraire des aiguilles d'une montre.

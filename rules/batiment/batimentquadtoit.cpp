@@ -10,12 +10,11 @@ void BatimentQuadToit::getBoundingBoxPoints() {
 }
 
 void BatimentQuadToit::triangulation() {
-	//triangles.reserve(2);
     Vertex ce = c[SE] + (c[NE] - c[SE])/2 + Vertex(0,0,height/3.);
     Vertex cw = c[SW] + (c[NW] - c[SW])/2 + Vertex(0,0,height/3.);
 
-    addGPUTriangle(new GPUTriangle(c[SW],c[NW],cw,0xF1,0xE0,0xE0));
-    addGPUTriangle(new GPUTriangle(c[NE],c[SE],ce,0xF1,0xE0,0xE0));
+    addGPUTriangle(c[NW],cw,c[SW],0xF1,0xE0,0xE0);
+    addGPUTriangle(c[SE],ce,c[NE],0xF1,0xE0,0xE0);
 
     addGPUQuad(c[NE],c[NW],cw,ce,0xE0,0x20,0x00);
     addGPUQuad(c[SW],c[SE],ce,cw,0xE0,0x20,0x00);

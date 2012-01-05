@@ -5,7 +5,7 @@
 
 // Quad est un quadrilatère
 class Quad {
-    public :
+    private:
 	Vertex c[4];
 
     public :
@@ -17,21 +17,21 @@ class Quad {
 	inline const Vertex& operator[] (Coin x) const {
 		return c[x];
 	}
-	inline Quad operator>> (int rot) {
+	inline Quad operator>> (int rot) const {
 			return Quad(c[NE - rot], c[SE - rot], c[SW - rot], c[NW - rot]);
 	}
-	inline Quad operator<< (int rot) {
+	inline Quad operator<< (int rot) const {
 			return Quad(c[NE + rot], c[SE + rot], c[SW + rot], c[NW + rot]);
 	}
 	friend Quad operator+(const Quad& t, const Vertex& v);
 	void offset(Cardinal side, int offset);
 	void offsetNESW(int offsetN, int offsetE, int offsetS, int offsetW);
-	int minLengthNS();
-	int minLengthEW();
-	int maxLengthNS();
-	int maxLengthEW();
-	int minLength();
-	int maxLength();
+	float minLengthNS();
+	float minLengthEW();
+	float maxLengthNS();
+	float maxLengthEW();
+	float minLength();
+	float maxLength();
 	float minAngle();
 	float maxAngle();
 	Quad makeParallelogram();
