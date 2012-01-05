@@ -11,7 +11,7 @@ int main() {
 	Chose* c = QuartierQuad::factory(Chose::initialSeed, 0, Quad(ne, se, sw, nw));
 	c->triangulation();
 	c->updateAABB();
-	
+
 	new View(c);
 	return 0;
 }
