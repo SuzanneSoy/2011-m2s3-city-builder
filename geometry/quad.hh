@@ -26,6 +26,7 @@ class Quad {
 	friend Quad operator+(const Quad& t, const Vertex& v);
 	void offset(Cardinal side, int offset);
 	void offsetNESW(int offsetN, int offsetE, int offsetS, int offsetW);
+	float length(Cardinal c);
 	float minLengthNS();
 	float minLengthEW();
 	float maxLengthNS();

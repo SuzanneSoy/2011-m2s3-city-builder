@@ -49,6 +49,19 @@ Quad Quad::makeParallelogram() {
     return Quad(c[0],c[1],c[2],c[3]);
 }
 
+float Quad::length(Cardinal cn) {
+    if(cn == N)
+        return Segment(c[NW],c[NE]).length();
+    else if(cn == S)
+        return Segment(c[SW],c[SE]).length();
+    else if(cn == E)
+        return Segment(c[NE],c[SE]).length();
+    else if(cn == W)
+        return Segment(c[SW],c[NW]).length();
+
+    return 0;
+}
+
 float Quad::minLengthNS() {
 	return std::min(
 		Segment(c[NW],c[NE]).length(),
