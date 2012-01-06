@@ -1,0 +1,1 @@
+Lorsqu'on a un quad non convexe (ou convexe avec un angle très grand je pense), la fonction offset fait n'importe quoi.
