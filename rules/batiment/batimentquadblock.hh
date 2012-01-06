@@ -11,6 +11,7 @@ class BatimentQuadBlock : public Chose {
 
     public :
 	BatimentQuadBlock(Quad c, int height);
+	virtual bool split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

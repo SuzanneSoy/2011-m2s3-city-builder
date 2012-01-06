@@ -27,6 +27,7 @@ class Quad {
 	Quad inset(Cardinal side, float offset) const;
 	Quad insetNESW(float offsetN, float offsetE, float offsetS, float offsetW) const;
 	Quad insetNESW(float offset) const;
+	float length(Cardinal c);
 	float minLengthNS();
 	float minLengthEW();
 	float maxLengthNS();
