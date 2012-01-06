@@ -43,4 +43,18 @@ inline SommetTriangle operator-(SommetTriangle c, int i) {
 	return SommetTriangle((((int(c) - int(i)) % 3 ) + 3) % 3);
 }
 
+enum CoteTriangle {
+	LEFTSIDE = 0,
+	RIGHTSIDE = 1,
+	BASE = 2
+};
+
+inline CoteTriangle operator+(CoteTriangle c, int i) {
+	return CoteTriangle((((int(c) + int(i)) % 3 ) + 3) % 3);
+}
+
+inline CoteTriangle operator-(CoteTriangle c, int i) {
+	return CoteTriangle((((int(c) - int(i)) % 3 ) + 3) % 3);
+}
+
 #endif

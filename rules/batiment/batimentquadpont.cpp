@@ -40,7 +40,7 @@ void BatimentQuadPont::triangulation() {
     addGPUTriangle(pa,c[NW],ch[NW],0xD0,0xD0,0xD0);
 
     for(var=-1.7,n=0; var <= 1.7; var+=pas,n++) {
-        q.offset(W,-n2);
+        q = q.inset(W,n2);
         a = q[NW] + Vertex(0,0,nt(var,height));
         b = q[SW] + Vertex(0,0,nt(var,height));
 

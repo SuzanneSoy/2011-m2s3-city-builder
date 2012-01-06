@@ -16,7 +16,7 @@ bool QuartierQuadCarre::split() {
 	}
 	for (int i = 0; i < 4; i++) {
 		q[i] = Quad(c[NE+i], middle[E+i], center, middle[N+i]);
-		q[i].offset(W,-hrw); q[i].offset(S,-hrw);
+		q[i] = q[i].inset(W,hrw).inset(S,hrw);
 	}
 	addChild(new RouteQuadCarrefour(Quad(q[0][SW], q[1][SW], q[2][SW], q[3][SW])));
 	for (int i = 0; i < 4; i++) {

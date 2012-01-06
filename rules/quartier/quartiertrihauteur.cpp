@@ -6,10 +6,8 @@ QuartierTriHauteur::QuartierTriHauteur(Triangle c) : QuartierTri(c) {
 bool QuartierTriHauteur::split() {
 	Vertex baseCenter = Segment(c[LEFT], c[RIGHT]).randomPos(seed, 0, 33, 67);
 
-	Triangle tl = Triangle(baseCenter, c[LEFT], c[TOP]);
-	Triangle tr = Triangle(c[TOP], c[RIGHT], baseCenter);
-	tl.offsetBase(-hrw);
-	tr.offsetBase(-hrw);
+	Triangle tl = Triangle(baseCenter, c[LEFT], c[TOP]).inset(BASE, hrw);
+	Triangle tr = Triangle(c[TOP], c[RIGHT], baseCenter).inset(BASE, hrw);
 
 	addChild(new RouteQuadChaussee(Quad(tr[LEFT], tr[RIGHT], tl[LEFT], tl[RIGHT])));
 	addChild(new RouteTriChaussee(Triangle(tl[RIGHT], c[TOP], tr[LEFT])));

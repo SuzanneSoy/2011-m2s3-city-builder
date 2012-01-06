@@ -29,12 +29,10 @@ float Triangle::maxLength() const {
 	return std::max(std::max((c[0] - c[1]).norm(), (c[1] - c[2]).norm()), (c[2] - c[0]).norm());
 }
 
-void Triangle::offsetBase(int offset) {
-	Quad q = Quad(c[1], c[0], c[2], c[1]);
-	q.offset(S, -offset);
-	c[0] = q[SE];
-	c[1] = q[NE];
-	c[2] = q[SW];
+Triangle Triangle::inset(CoteTriangle side, float offset) const {
+	Quad q = Quad(c[RIGHT + side], c[LEFT + side], c[TOP + side], c[RIGHT + side]);
+	q = q.inset(S, offset);
+	return (Triangle(q[SE], q[SW], q[NW]) >> side);
 }
 
 Triangle operator+(const Triangle& t, const Vertex& v) {

@@ -23,26 +23,30 @@ Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d) {
 	);
 }
 
-Vertex Vertex::projectOn(Vertex v) {
+Vertex Vertex::projectOn(Vertex v) const {
 	// http://www.developpez.net/forums/d202580/applications/developpement-2d-3d-jeux/contribuez/faq-mat-quat-ajout-calculs-vectoriels/
-	int64 scalaire = ((int64)this->x)*((int64)v.x) + ((int64)this->y)*((int64)v.y);
-	int normecarre = v.norm();
+	float scalaire = (this->x)*(v.x) + (this->y)*(v.y);
+	float normecarre = v.norm();
 	normecarre *= normecarre;
-	return Vertex(((int64)v.x) * scalaire / normecarre, ((int64)v.y) * scalaire / normecarre, 0);
+	return Vertex(v.x * scalaire / normecarre, v.y * scalaire / normecarre, 0);
 }
 
-Vertex Vertex::setNorm(float n) {
-	int64 current = norm();
-	return Vertex((int64)x * (int64)n / current, (int64)y * (int64)n / current, 0);
+Vertex Vertex::setNorm(float n) const {
+	return (*this * n / norm());
 }
 
-Vertex Vertex::perpendicular() {
+Vertex Vertex::perpendicularCw() const {
 	return Vertex(-y, x, 0);
 }
 
-float Vertex::cosAngle(Vertex v) {
+float Vertex::cosAngle(Vertex v) const {
 	// http://www.developpez.net/forums/d202580/applications/developpement-2d-3d-jeux/contribuez/faq-mat-quat-ajout-calculs-vectoriels/
-	return ((double)(this->x*v.x + this->y*v.y)) / (((double)norm())*((double)v.norm()));
+	//std::cout << "cosAngle " << *this << " " << v << " " << ((this->x*v.x + this->y*v.y) / (norm()*v.norm())) << " " << (norm()*v.norm()) << std::endl;
+	return ((this->x*v.x + this->y*v.y) / (norm()*v.norm()));
+}
+
+float Vertex::angle(Vertex v) const {
+	return std::acos(cosAngle(v));
 }
 
 Vertex::operator Vertex() { return Vertex(x,y,z); }

@@ -16,14 +16,10 @@ bool BatimentQuadMaisonPont::split() {
         q = q << 1;
     float partLength = Segment(q[NE],q[NW]).length() / 3;
     int partHeight = 2.5*height/3.;
-    Quad qa = q;
-    Quad qb = q;
-    Quad qc = q;
+    Quad qa = q.inset(E,2*partLength);
+    Quad qb = q.inset(W,2*partLength);
+    Quad qc = q.inset(E, partLength).inset(W, partLength);
     Quad qh = q;
-    qa.offset(E,-2*partLength);
-    qb.offset(W,-2*partLength);
-    qc.offset(E, -partLength);
-    qc.offset(W, -partLength);
 
     addChild(new BatimentQuadJardin(c));
     addChild(new BatimentQuadBlock(qa,partHeight));

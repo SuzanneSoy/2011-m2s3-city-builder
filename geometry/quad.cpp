@@ -9,17 +9,22 @@ Quad::Quad(Vertex ne, Vertex se, Vertex sw, Vertex nw) {
 	c[NW] = nw;
 }
 
-void Quad::offset(Cardinal side, int offset) {
-	Vertex voffset = (c[NE + side]-c[NW + side]).perpendicular().setNorm(offset);
-	c[NE + side] = c[NE + side] + voffset.projectOn(c[NE + side]-c[SE + side]);
-	c[NW + side] = c[NW + side] + voffset.projectOn(c[NW + side]-c[SW + side]);
+Quad Quad::inset(Cardinal side, float offset) const {
+	Quad q = (*this) << side;
+	Vertex offsetDirection = (q[NW]-q[NE]).perpendicularCw();
+	float distE = offset / offsetDirection.cosAngle(q[SE] - q[NE]);
+	float distW = offset / offsetDirection.cosAngle(q[SW] - q[NW]);
+	q[NE] = q[NE] + (q[SE] - q[NE]).setNorm(distE);
+	q[NW] = q[NW] + (q[SW] - q[NW]).setNorm(distW);
+	return q >> side;
 }
 
-void Quad::offsetNESW(int offsetN, int offsetE, int offsetS, int offsetW) {
-    this->offset(N,offsetN);
-    this->offset(E,offsetE);
-    this->offset(S,offsetS);
-    this->offset(W,offsetW);
+Quad Quad::insetNESW(float offsetN, float offsetE, float offsetS, float offsetW) const {
+    return (*this).inset(N,offsetN).inset(E,offsetE).inset(S,offsetS).inset(W,offsetW);
+}
+
+Quad Quad::insetNESW(float offset) const {
+	return insetNESW(offset, offset, offset, offset);
 }
 
 Quad Quad::makeParallelogram() {
@@ -103,4 +108,10 @@ float Quad::maxAngle() {
 
 Quad operator+(const Quad& q, const Vertex& v) {
 	return Quad(q[NE] + v, q[SE] + v, q[SW] + v, q[NW] + v);
+}
+
+void Quad::cutCornerCorner(Coin from) const {
+	Triangle t1(c[from-1], c[from], c[from+1]);
+	Triangle t2(c[from+1], c[from+2], c[from-1]);
+	// TODO
 }

@@ -28,7 +28,7 @@ class Triangle {
 	float minAngle() const; // angle minimum du triangle (en c[0], c[1] ou c[2]).
 	float minLength() const;
 	float maxLength() const;
-	void offsetBase(int offset);
+	Triangle inset(CoteTriangle side, float offset) const;
 	void display();
 };
 

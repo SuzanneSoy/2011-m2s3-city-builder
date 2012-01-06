@@ -18,11 +18,7 @@ bool BatimentQuad::split() {
         addChild(new BatimentQuadMaisonPont(q,800));
 	} else {
         int th = 20;        // Terrain height.
-        Quad q = Quad(c[NE],c[SE],c[SW],c[NW]);
-        q.offset(N,-140);
-        q.offset(E,-140);
-        q.offset(S,-140);
-        q.offset(W,-140);
+        Quad q = Quad(c[NE],c[SE],c[SW],c[NW]).insetNESW(140);
 
         addChild(new TrottoirQuadNormal(Quad(c[NE],c[SE],q[SE],q[NE]),th));
         addChild(new TrottoirQuadNormal(Quad(c[SE],c[SW],q[SW],q[SE]),th));
@@ -32,8 +28,7 @@ bool BatimentQuad::split() {
         Quad qh = q + Vertex(0,0,th);
         addChild(new BatimentQuadJardin(qh));
 
-        qh.offset(this->entry,-400);
-        addChild(new BatimentQuadMaison(qh));
+        addChild(new BatimentQuadMaison(qh.inset(this->entry,400)));
 	}
 	return true;
 }

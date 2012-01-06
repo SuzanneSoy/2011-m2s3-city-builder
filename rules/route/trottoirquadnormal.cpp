@@ -10,8 +10,7 @@ void TrottoirQuadNormal::getBoundingBoxPoints() {
 
 void TrottoirQuadNormal::triangulation() {
 	Quad ch = c + Vertex(0,0,height);
-	Quad bordureh = ch;
-	bordureh.offset(E,-15);
+	Quad bordureh = ch.inset(E,15);
 
 	addGPUQuad(c[NE], c[SE], ch[SE], ch[NE], 0xAA, 0xAA, 0xAA);
 	addGPUQuad(ch[NE], ch[SE], bordureh[SE], bordureh[NE], 0xAA, 0xAA, 0xAA);

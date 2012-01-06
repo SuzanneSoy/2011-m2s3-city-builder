@@ -6,15 +6,14 @@ QuartierQuadAngle::QuartierQuadAngle(Quad c) : QuartierQuad(c) {
 bool QuartierQuadAngle::split() {
 	for (int i = 0; i < 4; i++) {
 		if (Triangle(c[NW+i], c[NE+i], c[SE+i]).angle() >= Angle::d2r(130)) {
-			Triangle t1(c[NE+i], c[SE+i], c[SW+i]);
-			t1.offsetBase(-hrw);
-			Triangle t2(c[SW+i], c[NW+i], c[NE+i]);
-			t2.offsetBase(-hrw);
+			// TODO : maintenant que Triangle::offset prend un paramètre side, on peut simplifier ce bazaar.
+			Triangle t1 = Triangle(c[NE+i], c[SE+i], c[SW+i]).inset(BASE, hrw);
+			Triangle t2 = Triangle(c[SW+i], c[NW+i], c[NE+i]).inset(BASE, hrw);
 			addChild(QuartierTri::factory(seed, 0, t1));
 			addChild(QuartierTri::factory(seed, 1, t2));
 			addChild(new RouteQuadChaussee(Quad(t1[LEFT], t1[RIGHT], t2[LEFT], t2[RIGHT])));
-			addChild(new RouteTriChaussee(Triangle(t1[LEFT], c[NE+i], t2[RIGHT])));
-			addChild(new RouteTriChaussee(Triangle(t2[LEFT], c[SW+i], t1[RIGHT])));
+			addChild(new RouteTriChaussee(Triangle(t2[RIGHT], c[NE+i], t1[LEFT])));
+			addChild(new RouteTriChaussee(Triangle(t1[RIGHT], c[SW+i], t2[LEFT])));
 			return true;
 		}
 	}
@@ -28,23 +27,21 @@ bool QuartierQuadAngle::split() {
 			Triangle te = Triangle(c[NW+i], c[NE+i], e);
 			Quad q;
 			if (tn.minAngle() > te.minAngle()) {
-				q = Quad(n, c[SE+i], c[SW+i], c[NW+i]);
+				q = Quad(n, c[SE+i], c[SW+i], c[NW+i]).inset(E, hrw);
 				Vertex oldtnright = tn[RIGHT];
-				tn.offsetBase(-hrw);
-				q.offset(E, -hrw);
+				tn = tn.inset(BASE, hrw);
 				addChild(QuartierTri::factory(seed, 0, tn));
 				addChild(QuartierQuad::factory(seed, 1, q));
 				addChild(new RouteQuadChaussee(Quad(tn[LEFT], tn[RIGHT], q[SE], q[NE])));
-				addChild(new RouteTriChaussee(Triangle(q[SE], oldtnright, tn[RIGHT])));
+				addChild(new RouteTriChaussee(Triangle(tn[RIGHT], oldtnright, q[SE])));
 			} else {
-				q = Quad(c[NW+i], e, c[SE+i], c[SW+i]);
+				q = Quad(c[NW+i], e, c[SE+i], c[SW+i]).inset(E, hrw);
 				Vertex oldteleft = te[LEFT];
-				te.offsetBase(-hrw);
-				q.offset(E, -hrw);
+				te = te.inset(BASE, hrw);
 				addChild(QuartierTri::factory(seed, 0, te));
 				addChild(QuartierQuad::factory(seed, 1, q));
 				addChild(new RouteQuadChaussee(Quad(te[LEFT], te[RIGHT], q[SE], q[NE])));
-				addChild(new RouteTriChaussee(Triangle(te[LEFT], oldteleft, q[NE])));
+				addChild(new RouteTriChaussee(Triangle(q[NE], oldteleft, te[LEFT])));
 			}
 			return true;
 		}

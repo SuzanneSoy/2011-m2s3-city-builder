@@ -24,8 +24,9 @@ class Quad {
 			return Quad(c[NE + rot], c[SE + rot], c[SW + rot], c[NW + rot]);
 	}
 	friend Quad operator+(const Quad& t, const Vertex& v);
-	void offset(Cardinal side, int offset);
-	void offsetNESW(int offsetN, int offsetE, int offsetS, int offsetW);
+	Quad inset(Cardinal side, float offset) const;
+	Quad insetNESW(float offsetN, float offsetE, float offsetS, float offsetW) const;
+	Quad insetNESW(float offset) const;
 	float minLengthNS();
 	float minLengthEW();
 	float maxLengthNS();
@@ -34,6 +35,7 @@ class Quad {
 	float maxLength();
 	float minAngle();
 	float maxAngle();
+	void cutCornerCorner(Coin from) const;
 	Quad makeParallelogram();
 };
 
