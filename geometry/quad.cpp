@@ -30,22 +30,22 @@ Quad Quad::insetNESW(float offset) const {
 Quad Quad::makeParallelogram() {
     int l1, l2;
 
-    if(Segment(c[NW],c[NE]).length() < Segment(c[SE],c[SW]).length()) {
-        if((l1 = Segment(c[NE],c[SE]).length()) < (l2 = Segment(c[SW],c[NW]).length())) {
+    if(length(N) < length(S)) {
+        if((l1 = length(E)) < (l2 = length(W))) {
             c[SW] = Segment(c[NW],c[SW]).reduce(l1).v;
             c[SE] = c[SW] + (c[NE] - c[NW]);
         }
-        else if((l1 = Segment(c[NE],c[SE]).length()) > (l2 = Segment(c[SW],c[NW]).length())) {
+        else if((l1 = length(E)) > (l2 = length(W))) {
             c[SE] = Segment(c[NE],c[SE]).reduce(l2).v;
             c[SW] = c[SE] + (c[NW] - c[NE]);
         }
     }
     else {
-        if((l1 = Segment(c[NE],c[SE]).length()) < (l2 = Segment(c[SW],c[NW]).length())) {
+        if((l1 = length(E)) < (l2 = length(W))) {
             c[NW] = Segment(c[SW],c[NW]).reduce(l1).v;
             c[NE] = c[NW] + (c[SE] - c[SW]);
         }
-        else if((l1 = Segment(c[NE],c[SE]).length()) > (l2 = Segment(c[SW],c[NW]).length())) {
+        else if((l1 = length(E)) > (l2 = length(W))) {
             c[NE] = Segment(c[SE],c[NE]).reduce(l2).v;
             c[NW] = c[NE] + (c[SW] - c[SE]);
         }
@@ -54,56 +54,35 @@ Quad Quad::makeParallelogram() {
     return Quad(c[0],c[1],c[2],c[3]);
 }
 
-float Quad::length(Cardinal cn) {
-    if(cn == N)
-        return Segment(c[NW],c[NE]).length();
-    else if(cn == S)
-        return Segment(c[SW],c[SE]).length();
-    else if(cn == E)
-        return Segment(c[NE],c[SE]).length();
-    else if(cn == W)
-        return Segment(c[SW],c[NW]).length();
-
-    return 0;
+float Quad::length(Cardinal side) const {
+	return Segment(c[NW+side],c[NE+side]).length();
 }
 
-float Quad::minLengthNS() {
-	return std::min(
-		Segment(c[NW],c[NE]).length(),
-		Segment(c[SE],c[SW]).length()
-	);
+float Quad::minLengthNS() const {
+	return std::min(length(N), length(S));
 }
 
-float Quad::minLengthEW() {
-	return std::min(
-		Segment(c[NE],c[SE]).length(),
-		Segment(c[SW],c[NW]).length()
-	);
+float Quad::minLengthEW() const {
+	return std::min(length(E), length(W));
 }
 
-float Quad::maxLengthNS() {
-	return std::max(
-		Segment(c[NW],c[NE]).length(),
-		Segment(c[SE],c[SW]).length()
-	);
+float Quad::maxLengthNS() const {
+	return std::max(length(N), length(S));
 }
 
-float Quad::maxLengthEW() {
-	return std::max(
-		Segment(c[NE],c[SE]).length(),
-		Segment(c[SW],c[NW]).length()
-	);
+float Quad::maxLengthEW() const {
+	return std::max(length(E), length(W));
 }
 
-float Quad::minLength() {
+float Quad::minLength() const {
 	return std::min(minLengthNS(), minLengthEW());
 }
 
-float Quad::maxLength() {
+float Quad::maxLength() const {
 	return std::max(maxLengthNS(), maxLengthEW());
 }
 
-float Quad::minAngle() {
+float Quad::minAngle() const {
 	float a = 370; // > 360.
 	for (int i = 0; i < 4; i++) {
 		a = std::min(a, Triangle(c[NE+i], c[SE+i], c[SW+i]).angle());
@@ -111,7 +90,7 @@ float Quad::minAngle() {
 	return a;
 }
 
-float Quad::maxAngle() {
+float Quad::maxAngle() const {
 	float a = 0;
 	for (int i = 0; i < 4; i++) {
 		a = std::max(a, Triangle(c[NE+i], c[SE+i], c[SW+i]).angle());
