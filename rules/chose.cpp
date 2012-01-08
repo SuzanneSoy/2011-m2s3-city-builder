@@ -3,7 +3,8 @@
 Chose::Chose() : seed(initialSeed), children() {
 }
 
-// TODO : Est-ce vraiment nécessaire ?
+// TODO : Le destructeur est-il vraiment nécessaire ?
+// TODO : Vu que children et triangles contiennent des pointeurs, le .clear() risque de ne pas les désallouer !
 Chose::~Chose() {
     children.clear();
     triangles.clear();

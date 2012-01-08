@@ -53,6 +53,7 @@ class Chose;
 #include "rules/quartier/quartierquadrect.hh"
 #include "rules/quartier/quartiertri.hh"
 #include "rules/quartier/quartiertrihauteur.hh"
+#include "rules/quartier/quartiertritrapeze.hh"
 
 #include "rules/route/routequadcarrefour.hh"
 #include "rules/route/routequadchaussee.hh"

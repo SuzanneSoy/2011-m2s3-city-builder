@@ -10,14 +10,14 @@ void QuartierTri::getBoundingBoxPoints() {
 }
 
 Chose* QuartierTri::factory(int seed, int n, Triangle c) {
-	(void)seed;
-	(void)n;
 	bool small = c.minLength() < 2500;
 	bool big = c.maxLength() >= 5000;
 	if (small && !big) {
 		return new BatimentTri(c);
-	} else if (!small) {
+	} else if (!small && proba(seed, n, 1, 2)) {
 		return new QuartierTriHauteur(c);
+	} else if (!small) {
+		return new QuartierTriTrapeze(c);
 	} else {
 		return new TerrainTriHerbe(c);
 	}

@@ -1,9 +1,8 @@
 #include "all_includes.hh"
 
-// camera(Camera(Vertex(9600,10000,15300),0,179,1000,0.6)
 View::View(Chose* root)
 	: root(root),
-	  camera(Camera(Vertex(-9000,-15000,3000),45,90,1000,0.6)),
+	  camera(Camera(Vertex(9600,10000,15300),0,179,1000,0.6)),
 	  lod(camera.cameraCenter, root) {
 	initWindow();
 	mainLoop();

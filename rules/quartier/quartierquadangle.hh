@@ -11,9 +11,6 @@ class QuartierQuadAngle : public QuartierQuad {
     public :
 	QuartierQuadAngle(Quad c);
 	virtual bool split();
-
-    private :
-	void cutAngle();
 };
 
 #endif

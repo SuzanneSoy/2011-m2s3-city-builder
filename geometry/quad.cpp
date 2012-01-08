@@ -102,8 +102,12 @@ Quad operator+(const Quad& q, const Vertex& v) {
 	return Quad(q[NE] + v, q[SE] + v, q[SW] + v, q[NW] + v);
 }
 
-void Quad::cutCornerCorner(Coin from) const {
-	Triangle t1(c[from-1], c[from], c[from+1]);
-	Triangle t2(c[from+1], c[from+2], c[from-1]);
-	// TODO
+/*
+void Quad::cutCornerCorner(Coin from, float cutwidth) const {
+	Triangle left = Triangle(c[from-2], c[from-1], c[from]).offset(BASE, cutwidth);
+	Triangle right = Triangle(c[from], c[from+1], c[from+2]).offset(BASE, cutwidth);
+	Quad cut(right[LEFT], right[RIGHT], left[LEFT], left[RIGHT]); // + c[from+2] avant le 1er sommet, et c[from] après le 2e.
+	Triangle cutFrom(left[RIGHT], c[from], right[LEFT]);
+	Triangle cutTo(right[LEFT], c[from+2], left[RIGHT]);
 }
+*/
