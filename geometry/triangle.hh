@@ -25,7 +25,8 @@ class Triangle {
 	friend Triangle operator+(const Triangle& t, const Vertex& v);
 	float cosAngle() const; // cosinus de l'angle en c[1].
 	float angle() const; // angle en c[1], en degrés. TODO : le calcul ne donne que des angles entre 0 et 180 !
-	float minAngle() const; // angle minimum du triangle (en c[0], c[1] ou c[2]).
+	float minAngle() const; // angle minimum du triangle (en LEFT, TOP ou RIGHT).
+	float maxAngle() const; // angle maximum du triangle (en LEFT, TOP ou RIGHT).
 	float minLength() const;
 	float maxLength() const;
 	Triangle inset(CoteTriangle side, float offset) const;

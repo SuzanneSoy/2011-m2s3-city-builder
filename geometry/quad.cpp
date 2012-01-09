@@ -27,31 +27,32 @@ Quad Quad::insetNESW(float offset) const {
 	return insetNESW(offset, offset, offset, offset);
 }
 
-Quad Quad::makeParallelogram() {
+Quad Quad::makeParallelogram() const {
     int l1, l2;
+    Quad q(c[NE],c[SE],c[SW],c[NW]);
 
     if(length(N) < length(S)) {
         if((l1 = length(E)) < (l2 = length(W))) {
-            c[SW] = Segment(c[NW],c[SW]).reduce(l1).v;
-            c[SE] = c[SW] + (c[NE] - c[NW]);
+            q[SW] = Segment(q[NW],q[SW]).reduce(l1).v;
+            q[SE] = q[SW] + (q[NE] - q[NW]);
         }
         else if((l1 = length(E)) > (l2 = length(W))) {
-            c[SE] = Segment(c[NE],c[SE]).reduce(l2).v;
-            c[SW] = c[SE] + (c[NW] - c[NE]);
+            q[SE] = Segment(q[NE],q[SE]).reduce(l2).v;
+            q[SW] = q[SE] + (q[NW] - q[NE]);
         }
     }
     else {
         if((l1 = length(E)) < (l2 = length(W))) {
-            c[NW] = Segment(c[SW],c[NW]).reduce(l1).v;
-            c[NE] = c[NW] + (c[SE] - c[SW]);
+            q[NW] = Segment(q[SW],q[NW]).reduce(l1).v;
+            q[NE] = q[NW] + (q[SE] - q[SW]);
         }
         else if((l1 = length(E)) > (l2 = length(W))) {
-            c[NE] = Segment(c[SE],c[NE]).reduce(l2).v;
-            c[NW] = c[NE] + (c[SW] - c[SE]);
+            q[NE] = Segment(q[SE],q[NE]).reduce(l2).v;
+            q[NW] = q[NE] + (q[SW] - q[SE]);
         }
     }
 
-    return Quad(c[0],c[1],c[2],c[3]);
+    return q;
 }
 
 float Quad::length(Cardinal side) const {

@@ -10,8 +10,7 @@ void BatimentQuadMaisonPont::getBoundingBoxPoints() {
 }
 
 bool BatimentQuadMaisonPont::split() {
-    Quad q = c;
-    q.makeParallelogram();
+    Quad q = c.makeParallelogram();
 	if(Segment(q[NE],q[NW]).length() < Segment(q[NE],q[SE]).length())
         q = q << 1;
     float partLength = Segment(q[NE],q[NW]).length() / 3;
@@ -33,7 +32,7 @@ bool BatimentQuadMaisonPont::split() {
 
 void BatimentQuadMaisonPont::triangulation() {
 	float h = 2.5*height/3.;
-	Quad q = Quad(c[NE],c[SE],c[SW],c[NW]).makeParallelogram();
+	Quad q = c.makeParallelogram();
 	Quad qh = q + Vertex(0,0,h);
 
     addGPUQuad(c,0x80,0x80,0x80);

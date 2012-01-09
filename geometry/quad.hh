@@ -36,8 +36,8 @@ class Quad {
 	float maxLength() const;
 	float minAngle() const;
 	float maxAngle() const;
-	void cutCornerCorner(Coin from) const;
-	Quad makeParallelogram();
+	//void cutCornerCorner(Coin from) const;
+	Quad makeParallelogram() const;
 };
 
 

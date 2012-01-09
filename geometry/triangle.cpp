@@ -1,13 +1,13 @@
 Triangle::Triangle() {
 }
 Triangle::Triangle(Vertex left, Vertex top, Vertex right) {
-	c[0] = left;
-	c[1] = top;
-	c[2] = right;
+	c[LEFT] = left;
+	c[TOP] = top;
+	c[RIGHT] = right;
 }
 
 float Triangle::cosAngle() const {
-	return (c[0]-c[1]).cosAngle(c[2]-c[1]);
+	return (c[LEFT]-c[TOP]).cosAngle(c[RIGHT]-c[TOP]);
 }
 
 float Triangle::angle() const {
@@ -16,17 +16,24 @@ float Triangle::angle() const {
 
 float Triangle::minAngle() const {
 	float at = angle();
-	float a3 = Triangle(c[TOP],c[RIGHT],c[LEFT]).angle();
-	float a1 = Angle::Pi - at - a3;
-	return std::min(std::min(a1, at), a3);
+	float ar = Triangle(c[TOP],c[RIGHT],c[LEFT]).angle();
+	float al = Angle::Pi - at - ar;
+	return std::min(std::min(al, at), ar);
+}
+
+float Triangle::maxAngle() const {
+	float at = angle();
+	float ar = Triangle(c[TOP],c[RIGHT],c[LEFT]).angle();
+	float al = Angle::Pi - at - ar;
+	return std::max(std::max(al, at), ar);
 }
 
 float Triangle::minLength() const {
-	return std::min(std::min((c[0] - c[1]).norm(), (c[1] - c[2]).norm()), (c[2] - c[0]).norm());
+	return std::min(std::min((c[LEFT] - c[TOP]).norm(), (c[TOP] - c[RIGHT]).norm()), (c[RIGHT] - c[LEFT]).norm());
 }
 
 float Triangle::maxLength() const {
-	return std::max(std::max((c[0] - c[1]).norm(), (c[1] - c[2]).norm()), (c[2] - c[0]).norm());
+	return std::max(std::max((c[LEFT] - c[TOP]).norm(), (c[TOP] - c[RIGHT]).norm()), (c[RIGHT] - c[LEFT]).norm());
 }
 
 Triangle Triangle::inset(CoteTriangle side, float offset) const {
