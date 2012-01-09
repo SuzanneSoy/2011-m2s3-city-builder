@@ -14,10 +14,16 @@ Chose* QuartierTri::factory(int seed, int n, Triangle c) {
 	bool big = c.maxLength() >= 5000;
 	if (small && !big) {
 		return new BatimentTri(c);
-	} else if (!small && proba(seed, n, 1, 2)) {
-		return new QuartierTriHauteur(c);
-	} else if (!small) {
-		return new QuartierTriTrapeze(c);
+	} else if (big) {
+		int choice = hashInRange(seed, n, 0, 3);
+		if (choice == 0) {
+			// TODO : condition : générer seulement si les 3 angles sont proches de 60°
+			return new QuartierTriCentre(c);
+		} else if (choice == 1) {
+			return new QuartierTriHauteur(c);
+		} else {
+			return new QuartierTriTrapeze(c);
+		}
 	} else {
 		return new TerrainTriHerbe(c);
 	}

@@ -29,6 +29,8 @@ class Triangle {
 	float minLength() const;
 	float maxLength() const;
 	Triangle inset(CoteTriangle side, float offset) const;
+	Triangle insetLTR(float offset) const;
+	Vertex randomPoint(int seed, int n) const;
 	void display();
 };
 

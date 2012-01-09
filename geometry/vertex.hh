@@ -29,7 +29,6 @@ class Vertex {
 	friend Vertex operator-(const Vertex& v);
 	friend Vertex operator*(const Vertex& v, const float n);
 	friend Vertex operator*(const Vertex& u, const Vertex& v);
-	friend Vertex operator/(const Vertex& v, const int n);
 	friend Vertex operator/(const Vertex& v, const float f);
 };
 

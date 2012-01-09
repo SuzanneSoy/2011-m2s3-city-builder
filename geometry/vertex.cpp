@@ -80,10 +80,6 @@ Vertex operator*(const Vertex& u, const Vertex& v) {
 	);
 }
 
-Vertex operator/(const Vertex& v, const int n) {
-	return Vertex(v.x / n, v.y / n, v.z / n);
-}
-
 Vertex operator/(const Vertex& v, const float f) {
 	return Vertex(v.x / f, v.y / f, v.z / f);
 }
