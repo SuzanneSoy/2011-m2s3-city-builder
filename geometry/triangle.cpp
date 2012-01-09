@@ -51,7 +51,7 @@ Triangle operator+(const Triangle& t, const Vertex& v) {
 }
 
 Vertex Triangle::randomPoint(int seed, int n) const {
-	float rndl = hashInRange(seed, n, 0, 100);
-	float rndr = hashInRange(seed, hash2(n, 42), 0, 100 - rndl);
+	float rndl = floatInRange(seed, n, 0, 100);
+	float rndr = floatInRange(seed, hash2(n, 42), 0, 100 - rndl);
 	return c[TOP] + (c[LEFT] - c[TOP]) * (rndl/100.f) + (c[RIGHT] - c[TOP]) * (rndr/100.f);
 }

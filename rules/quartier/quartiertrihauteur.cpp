@@ -10,7 +10,7 @@ bool QuartierTriHauteur::split() {
 	// addChild(new RouteTriChaussee(r.cutFrom));
 	// addChild(QuartierTri::factory(seed, 1, r.left);
 	// addChild(QuartierTri::factory(seed, 1, r.right);
-	Vertex baseCenter = Segment(c[LEFT], c[RIGHT]).randomPos(seed, 0, 33, 67);
+	Vertex baseCenter = Segment(c[LEFT], c[RIGHT]).randomPos(seed, 0, 1/3.f, 2/3.f);
 
 	Triangle tl(c[TOP], baseCenter, c[LEFT]);
 	Triangle tr(c[RIGHT], baseCenter, c[TOP]);

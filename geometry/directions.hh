@@ -10,9 +10,12 @@ enum Cardinal {
 
 inline Cardinal operator+(Cardinal c, int i) {
 	return Cardinal((int(c) + int(i)) & 3);
+	//int result = int(c) << (i & 3);
+	//result = result | result >> 4;
+	//return Cardinal (c & 15);
 }
 inline Cardinal operator-(Cardinal c, int i) {
-	return Cardinal((int(c) - int(i)) & 3);
+	return c + (-i);
 }
 
 enum Coin {
@@ -26,7 +29,7 @@ inline Coin operator+(Coin c, int i) {
 	return Coin((int(c) + int(i)) & 3);
 }
 inline Coin operator-(Coin c, int i) {
-	return Coin((int(c) - int(i)) & 3);
+	return c + (-i);
 }
 
 enum SommetTriangle {

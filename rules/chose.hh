@@ -41,7 +41,7 @@ class Chose {
 		addEntropy(x1, x2); addEntropy(x3, x4);
 	}
 	inline void addEntropy(Vertex v1) {
-		addEntropy(v1.x, v1.y);
+		addEntropy(float2uint(v1.x), float2uint(v1.y));
 	}
 	inline void addEntropy(Vertex v1, Vertex v2) {
 		addEntropy(v1); addEntropy(v2);
@@ -59,13 +59,15 @@ class Chose {
 		addEntropy(t[LEFT], t[TOP], t[RIGHT]);
 	}
 	void addChild(Chose* c);
-	void addGPUTriangle(GPUTriangle* t);
-	void addGPUTriangle(Vertex left, Vertex top, Vertex right, char r, char g, char b);
-	void addGPUTriangle(Triangle t, char r, char g, char b);
-	void addGPUQuad(Vertex u, Vertex v, Vertex w, Vertex x, char r, char g, char b);
-	void addGPUQuad(Quad q, char r, char g, char b);
-	void addGPUOcto(Vertex a,Vertex b,Vertex c,Vertex d,Vertex e,Vertex f,Vertex g,Vertex h,char red,char green,char blue);
-	void addGPUOcto(Quad q1, Quad q2, char red, char green, char blue);
+
+	void addGPUTriangle(Vertex left, Vertex top, Vertex right, unsigned char r, unsigned char g, unsigned char b);
+	void addGPUTriangle(Triangle t, unsigned char r, unsigned char g, unsigned char b);
+	void addGPUQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, unsigned char r, unsigned char g, unsigned char b);
+	void addGPUQuad(Quad q, unsigned char r, unsigned char g, unsigned char b);
+	void addGPUOcto(Vertex ne, Vertex se, Vertex sw, Vertex nw,
+			Vertex neh, Vertex seh, Vertex swh, Vertex nwh,
+			unsigned char r, unsigned char g, unsigned char b);
+	void addGPUOcto(Quad q, Quad qh, unsigned char r, unsigned char g, unsigned char b);
 };
 
 #endif

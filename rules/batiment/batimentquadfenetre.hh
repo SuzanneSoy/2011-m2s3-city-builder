@@ -6,11 +6,11 @@
 class BatimentQuadFenetre: public Chose {
     private :
 	Quad c;
-	int height;
+	float height;
 
     public :
 
-	BatimentQuadFenetre(Quad c, int height);
+	BatimentQuadFenetre(Quad c, float height);
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

@@ -30,7 +30,7 @@ private:
 	inline int leftchild(int node) { return node * 2 + 1; }
 	inline int rightchild(int node) { return node * 2 + 2; }
 public:
-	int factor;
+	float factor; // -1.f ou +1.f
 	Heap();
 	void insert(float key, Chose* value);
 	void remove(Chose* value);

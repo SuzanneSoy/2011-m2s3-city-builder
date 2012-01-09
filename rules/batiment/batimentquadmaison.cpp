@@ -12,8 +12,8 @@ void BatimentQuadMaison::getBoundingBoxPoints() {
 void BatimentQuadMaison::triangulation() {
 	triangles.reserve(12);
 
-	int h = hashInRange(seed,0,minHeight,maxHeight);
-	int htoit = hashInRange(seed,0,minHeight/2,maxHeight/2);
+	float h = floatInRange(seed,0,minHeight,maxHeight);
+	float htoit = floatInRange(seed,0,minHeight/2,maxHeight/2);
 	Quad ch = c + Vertex(0,0,h);
 	Vertex toit = (ch[NE] + ch[SE] + ch[SW] + ch[NW]) / 4 + Vertex(0,0,htoit);
 

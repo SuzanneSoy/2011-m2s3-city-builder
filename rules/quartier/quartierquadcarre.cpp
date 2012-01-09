@@ -7,12 +7,12 @@ bool QuartierQuadCarre::split() {
 	Vertex middle[4];
 	Quad q[4];
 
-	Vertex centerN = Segment(c[NW], c[NE]).randomPos(seed, -1, 25, 75);
-	Vertex centerS = Segment(c[SE], c[SW]).randomPos(seed, -2, 25, 75);
-	Vertex center = Segment(centerN, centerS).randomPos(seed, -3, 25, 75);
+	Vertex centerN = Segment(c[NW], c[NE]).randomPos(seed, -1, 0.25, 0.75);
+	Vertex centerS = Segment(c[SE], c[SW]).randomPos(seed, -2, 0.25, 0.75);
+	Vertex center = Segment(centerN, centerS).randomPos(seed, -3, 0.25, 0.75);
 
 	for (int i = 0; i < 4; i++) {
-		middle[N+i] = Segment(c[NW+i], c[NE+i]).randomPos(seed, i, 25, 75);
+		middle[N+i] = Segment(c[NW+i], c[NE+i]).randomPos(seed, i, 0.25, 0.75);
 	}
 	for (int i = 0; i < 4; i++) {
 		q[i] = Quad(c[NE+i], middle[E+i], center, middle[N+i]);

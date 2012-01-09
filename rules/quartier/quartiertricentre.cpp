@@ -8,7 +8,7 @@ bool QuartierTriCentre::split() {
 	Vertex center = c.insetLTR(1000).randomPoint(seed, 0);
 	Vertex edgePoint[3];
 	for (int i = 0; i < 3; i++)
-		edgePoint[LEFTSIDE+i] = Segment(c[LEFT+i], c[TOP+i]).randomPos(seed, i+1, 33, 67);
+		edgePoint[LEFTSIDE+i] = Segment(c[LEFT+i], c[TOP+i]).randomPos(seed, i+1, 1/3.f, 2/3.f);
 
 	Quad q[3];
 	for (int i = 0; i < 3; i++) {

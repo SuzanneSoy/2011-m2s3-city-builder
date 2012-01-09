@@ -21,8 +21,8 @@ bool QuartierQuadAngle::split() {
 	for (int i = 0; i < 4; i++) {
 		if (Triangle(c[NW+i], c[NE+i], c[SE+i]).angle() <= Angle::d2r(50)) {
 			// "couper ce coin".
-			Vertex n = Segment(c[NW+i], c[NE+i]).randomPos(seed, 0, 40, 60);
-			Vertex e = Segment(c[NE+i], c[SE+i]).randomPos(seed, 1, 40, 60);
+			Vertex n = Segment(c[NW+i], c[NE+i]).randomPos(seed, 0, 0.4f, 0.6f);
+			Vertex e = Segment(c[NE+i], c[SE+i]).randomPos(seed, 1, 0.4f, 0.6f);
 			Triangle tn = Triangle(n, c[NE+i], c[SE+i]);
 			Triangle te = Triangle(c[NW+i], c[NE+i], e);
 			Quad q;

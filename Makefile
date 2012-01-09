@@ -3,7 +3,7 @@ CXX=g++
 CCWARN=-Wall -Wextra -Werror
 # TODO : -O3 -m32 ou -m64
 # -g -rdynamic uniquement pour le debug.
-CFLAGS=-O0 -g -rdynamic -m32 -I. $(CCWARN)
+CFLAGS=-O0 -g -rdynamic -I. $(CCWARN)
 
 SOURCES = $(shell echo *.cpp geometry/*.cpp rules/*.cpp rules/*/*.cpp)
 HEADERS = $(shell echo *.hh  geometry/*.hh  rules/*.hh  rules/*/*.hh)

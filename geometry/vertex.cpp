@@ -6,19 +6,15 @@ Vertex::Vertex(float x, float y, float z): x(x), y(y), z(z) {}
 
 float Vertex::norm() const { return std::sqrt(x*x + y*y + z*z); }
 
-// TODO : this is 2D only, use Vertex2d.
+// TODO : Ce code ne marche qu'en 2D !
 Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d) {
 	// Note : si les deux lignes sont parallèles, on risque fort
 	// d'avoir une division par zéro.
 	// http://en.wikipedia.org/wiki/Line-line_intersection
-	int64 x1 = a.x; int64 y1 = a.y;
-	int64 x2 = b.x; int64 y2 = b.y;
-	int64 x3 = c.x; int64 y3 = c.y;
-	int64 x4 = d.x; int64 y4 = d.y;
-	int64 denominator =  ((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
+	float denominator =  ((a.x-b.x)*(c.y-d.y) - (a.y-b.y)*(c.x-d.x));
 	return Vertex(
-		((x1*y2-y1*x2)*(x3-x4) - (x1-x2)*(x3*y4-y3*x4)) / denominator,
-		((x1*y2-y1*x2)*(y3-y4) - (y1-y2)*(x3*y4-y3*x4)) / denominator,
+		((a.x*b.y-a.y*b.x)*(c.x-d.x) - (a.x-b.x)*(c.x*d.y-c.y*d.x)) / denominator,
+		((a.x*b.y-a.y*b.x)*(c.y-d.y) - (a.y-b.y)*(c.x*d.y-c.y*d.x)) / denominator,
 		0
 	);
 }
@@ -48,8 +44,6 @@ float Vertex::cosAngle(Vertex v) const {
 float Vertex::angle(Vertex v) const {
 	return std::acos(cosAngle(v));
 }
-
-Vertex::operator Vertex() { return Vertex(x,y,z); }
 
 std::ostream& operator<<(std::ostream& os, const Vertex& v) {
 	return os << "(" << v.x << "," << v.y << "," << v.z << ")";
@@ -87,9 +81,9 @@ Vertex operator/(const Vertex& v, const float f) {
 Vertex Vertex::fromSpherical(float r, float xAngle, float yAngle) {
 	// http://electron9.phys.utk.edu/vectors/3dcoordinates.htm
 	return Vertex(
-		r * std::sin(xAngle / 180 * 3.14159) * std::cos(yAngle / 180 * 3.14159),
-		r * std::sin(xAngle / 180 * 3.14159) * std::sin(yAngle / 180 * 3.14159),
-		r * std::cos(xAngle / 180 * 3.14159)
+		r * std::sin(xAngle / 180.f * Angle::Pi) * std::cos(yAngle / 180.f * Angle::Pi),
+		r * std::sin(xAngle / 180.f * Angle::Pi) * std::sin(yAngle / 180.f * Angle::Pi),
+		r * std::cos(xAngle / 180.f * Angle::Pi)
 	);
 }
 

@@ -15,7 +15,7 @@ Chose* QuartierTri::factory(int seed, int n, Triangle c) {
 	if (small && !big) {
 		return new BatimentTri(c);
 	} else if (big) {
-		int choice = hashInRange(seed, n, 0, 3);
+		int choice = hash2(seed, n) % 3;
 		if (choice == 0) {
 			// TODO : condition : générer seulement si les 3 angles sont proches de 60°
 			return new QuartierTriCentre(c);

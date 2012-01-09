@@ -6,13 +6,13 @@
 class TrottoirQuadNormal : public Chose {
 	private :
 	Quad c;
-	int height;
+	float height;
 	// TODO : pas besoin de ce champ : il suffit d'orienter
 	// correctement le trottoir lorsqu'on le crée.
 	Cardinal border;
 
 	public :
-	TrottoirQuadNormal(Quad c, int height);
+	TrottoirQuadNormal(Quad c, float height);
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

@@ -24,10 +24,28 @@ unsigned int hash2(unsigned int a, unsigned int b) {
 	return h;
 }
 
-int hashInRange(int seed, int n, int a, int b) {
-	return (hash2(seed, n) % (b - a)) + a;
+float floatInRange(int seed, int n, float a, float b) {
+	// 24 bits de précision, ça devrait suffire pour la plupart des utilisations.
+	return (float)(hash2(seed, n) & 0xffffff) / (float)(0x1000000) * (b-a) + a;
 }
 
 bool proba(int seed, int n, unsigned int a, unsigned int b) {
 	return ((hash2(seed, n) % b) < a);
+}
+
+unsigned int float2uint(float f) {
+	// TODO : il y a plein de problèmes avec cette conversion :
+	// 1) Il y a plusieurs représentations possibles pour le même float,
+	//    donc si on re-split un objet 10 minutes après et qu'on n'a pas
+	//    la même représentation, on n'aura pas la même entropie pour les hash.
+	// 2) On ne peut pas faire juste fi.f = f; return fi.ui; car si
+	//    sizeof(int) > sizeof(float), on lira des saletés.
+	// 3) De toute façon, tout ça est principalement du "undefined behaviour".
+	FloatUIntUnion fi;
+	for (unsigned int i = 0; i < sizeof(fi); i++) {
+		// effacer la structure.
+		reinterpret_cast<char*>(&fi)[i] = 0;
+	}
+	fi.f = f;
+	return fi.ui;
 }

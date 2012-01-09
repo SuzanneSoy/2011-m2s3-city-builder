@@ -22,7 +22,6 @@ class Vertex {
 	friend Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d); // Intersection entre (a,b) et (c,d).
 
 	public :
-	operator Vertex();
 	friend std::ostream& operator<<(std::ostream& os, const Vertex& v);
 	friend Vertex operator+(const Vertex& u, const Vertex& v);
 	friend Vertex operator-(const Vertex& u, const Vertex& v);

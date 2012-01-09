@@ -28,7 +28,7 @@ Quad Quad::insetNESW(float offset) const {
 }
 
 Quad Quad::makeParallelogram() const {
-    int l1, l2;
+    float l1, l2;
     Quad q(c[NE],c[SE],c[SW],c[NW]);
 
     if(length(N) < length(S)) {

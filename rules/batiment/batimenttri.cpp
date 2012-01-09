@@ -39,11 +39,10 @@ bool BatimentTri::split() {
 }
 
 void BatimentTri::triangulation() {
-	int h = hashInRange(seed,1,minHeight,maxHeight);
-	// int htoit = hashInRange(seed,2,minHeight/2,maxHeight/2);
-	// h += htoit;
+	float h = floatInRange(seed,1,minHeight,maxHeight);
+	// float htoit = hashInRange(seed,2,minHeight/2,maxHeight/2);
 
-    // addGPUOcto(c, c + Vertex(0,0,h), 0xFF, 0xFF, 0x00);
+    // addGPUOcto(c, c + Vertex(0,0,h + htoit), 0xFF, 0xFF, 0x00);
 	Triangle ch = c + Vertex(0,0,h);
 	addGPUTriangle(c[LEFT], c[TOP], c[RIGHT], 0xFF, 0xFF, 0x00);
 	addGPUTriangle(ch[LEFT], ch[TOP], ch[RIGHT], 0xFF, 0xFF, 0x00);

@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-BatimentQuadToit::BatimentQuadToit(Quad c, int height) : Chose(), c(c), height(height) {
+BatimentQuadToit::BatimentQuadToit(Quad c, float height) : Chose(), c(c), height(height) {
 	addEntropy(c);
 }
 
@@ -10,8 +10,8 @@ void BatimentQuadToit::getBoundingBoxPoints() {
 }
 
 void BatimentQuadToit::triangulation() {
-    Vertex ce = c[SE] + (c[NE] - c[SE])/2 + Vertex(0,0,height/3.);
-    Vertex cw = c[SW] + (c[NW] - c[SW])/2 + Vertex(0,0,height/3.);
+    Vertex ce = c[SE] + (c[NE] - c[SE])/2 + Vertex(0,0,height / 3.f);
+    Vertex cw = c[SW] + (c[NW] - c[SW])/2 + Vertex(0,0,height / 3.f);
 
     addGPUTriangle(c[NW],cw,c[SW],0xF1,0xE0,0xE0);
     addGPUTriangle(c[SE],ce,c[NE],0xF1,0xE0,0xE0);

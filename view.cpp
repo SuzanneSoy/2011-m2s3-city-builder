@@ -2,16 +2,16 @@
 
 View::View(Chose* root)
 	: root(root),
-	  camera(Camera(Vertex(9600,10000,15300),0,179,1000,0.6)),
+	  camera(Camera(Vertex(9600,10000,15300),0,179,1000,0.6f)),
 	  lod(camera.cameraCenter, root) {
 	initWindow();
 	mainLoop();
 }
 
 void View::setColor(unsigned char r, unsigned char g, unsigned char b) {
-	float red = r/255.f;
-	float green = g/255.f;
-	float blue = b/255.f;
+	float red   = (float)r / 255.f;
+	float green = (float)g / 255.f;
+	float blue  = (float)b / 255.f;
 	float MatDif[4] = {red, green, blue, 1.0f};
 	float MatAmb[4] = {red, green, blue, 1.0f};
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,MatDif);
@@ -168,8 +168,8 @@ void Camera::setCamera() {
 }
 
 void Camera::mouseMotion(const SDL_MouseMotionEvent &event) {
-	xAngle -= event.xrel*mouseSensitivity;
-	yAngle += event.yrel*mouseSensitivity;
+	xAngle -= (float)(event.xrel) * mouseSensitivity;
+	yAngle += (float)(event.yrel) * mouseSensitivity;
 	xAngle = std::fmod(xAngle + 360, 360);
 	if(yAngle > 179)
 		yAngle = 179;
@@ -225,7 +225,7 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 }
 
 void Camera::animation(int elapsedTime) {
-	float diff = ((float)(elapsedTime+1)/1000.)*(float)moveDist;
+	float diff = ((float)(elapsedTime+1)/1000.f)*(float)moveDist;
 
 	if(up)
 		cameraCenter = cameraCenter + Vertex::fromSpherical(diff, yAngle, xAngle);

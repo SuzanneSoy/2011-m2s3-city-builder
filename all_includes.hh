@@ -1,8 +1,6 @@
 #ifndef _ALL_INCLUDES_HH_
 #define _ALL_INCLUDES_HH_
 
-typedef long long int64;
-
 class Chose;
 
 // DEBUG

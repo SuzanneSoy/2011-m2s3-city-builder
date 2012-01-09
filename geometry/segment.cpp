@@ -11,15 +11,15 @@ Segment Segment::reduce(float value) {
     return Segment(u,u+((v - u) / reduc));
 }
 
-int Segment::width() {
+float Segment::width() {
 	return std::abs(u.x - v.x);
 }
 
-int Segment::height() {
+float Segment::height() {
 	return std::abs(u.y - v.y);
 }
 
-Vertex Segment::randomPos(int seed, int n, int a, int b) {
-	int pos = hashInRange(seed, n, a, b);
-	return (u * pos + v * (100-pos)) / 100;
+Vertex Segment::randomPos(int seed, int n, float a, float b) {
+	float pos = floatInRange(seed, n, a, b);
+	return (u * pos + v * (1-pos));
 }

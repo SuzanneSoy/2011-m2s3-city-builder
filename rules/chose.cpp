@@ -20,29 +20,29 @@ bool Chose::merge() {
     return true;
 }
 
-void Chose::addGPUTriangle(Vertex left, Vertex top, Vertex right, char r, char g, char b) {
+void Chose::addGPUTriangle(Vertex left, Vertex top, Vertex right, unsigned char r, unsigned char g, unsigned char b) {
 	triangles.push_back(new GPUTriangle(left, top, right, r, g, b));
 }
 
-void Chose::addGPUTriangle(Triangle t, char r, char g, char b) {
+void Chose::addGPUTriangle(Triangle t, unsigned char r, unsigned char g, unsigned char b) {
 	addGPUTriangle(t[LEFT], t[TOP], t[RIGHT], r, g, b);
 }
 
-void Chose::addGPUQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, char r, char g, char b) {
+void Chose::addGPUQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, unsigned char r, unsigned char g, unsigned char b) {
     this->addGPUTriangle(nw,ne,se,r,g,b);
     this->addGPUTriangle(se,sw,nw,r,g,b);
 }
 
-void Chose::addGPUQuad(Quad q, char r, char g, char b) {
+void Chose::addGPUQuad(Quad q, unsigned char r, unsigned char g, unsigned char b) {
 	addGPUQuad(q[NE], q[SE], q[SW], q[NW], r, g, b);
 }
 
 void Chose::addGPUOcto(Vertex ne, Vertex se, Vertex sw, Vertex nw,
-                    Vertex neh, Vertex seh, Vertex swh, Vertex nwh, char r, char g, char b) {
+                    Vertex neh, Vertex seh, Vertex swh, Vertex nwh, unsigned char r, unsigned char g, unsigned char b) {
 	addGPUOcto(Quad(ne,se,sw,nw), Quad(neh,seh,swh,nwh), r, g, b);
 }
 
-void Chose::addGPUOcto(Quad q, Quad qh, char r, char g, char b) {
+void Chose::addGPUOcto(Quad q, Quad qh, unsigned char r, unsigned char g, unsigned char b) {
     this->addGPUQuad(q[NE], q[SE], q[SW], q[NW], r, g, b);
     this->addGPUQuad(qh[NE], qh[SE], qh[SW], qh[NW], r, g, b);
     for (int i = 0; i < 4; i++)
@@ -139,9 +139,9 @@ void Chose::drawAABB() {
 		Vertex(lod.splitBox[1], lod.splitBox[2], lod.splitBox[5]),
 		Vertex(lod.splitBox[1], lod.splitBox[3], lod.splitBox[5]),
 		Vertex(lod.splitBox[0], lod.splitBox[3], lod.splitBox[5]),
-		hashInRange(seed, 42, 0, 256),
-		hashInRange(seed, 43, 0, 256),
-		hashInRange(seed, 44, 0, 256)
+		hash2(seed, 42) & 255,
+		hash2(seed, 43) & 255,
+		hash2(seed, 44) & 255
 	);
 }
 

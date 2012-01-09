@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-BatimentQuadBlock::BatimentQuadBlock(Quad c, int height) : Chose(), c(c), height(height) {
+BatimentQuadBlock::BatimentQuadBlock(Quad c, float height) : Chose(), c(c), height(height) {
 	addEntropy(c);
 }
 

@@ -17,7 +17,7 @@ bool BatimentQuad::split() {
         //addQuad(c[SE],c[SW],c[NW],c[NE],0xDD,0xDD,0xDD);
         addChild(new BatimentQuadMaisonPont(q,800));
 	} else {
-        int th = 20;        // Terrain height.
+        float th = 20;        // Terrain height.
         Quad q = Quad(c[NE],c[SE],c[SW],c[NW]).insetNESW(140);
 
         addChild(new TrottoirQuadNormal(Quad(c[NE],c[SE],q[SE],q[NE]),th));
@@ -36,9 +36,8 @@ bool BatimentQuad::split() {
 void BatimentQuad::triangulation() {
 	triangles.reserve(12);
 
-	int h = hashInRange(seed,1,minHeight,maxHeight);
-	int htoit = hashInRange(seed,2,minHeight/2,maxHeight/2);
-	h += htoit;
+	float h = floatInRange(seed,1,minHeight,maxHeight);
+	float htoit = floatInRange(seed,2,minHeight/2,maxHeight/2);
 
-    addGPUOcto(c, c + Vertex(0,0,h), 0xFF, 0xFF, 0x00);
+    addGPUOcto(c, c + Vertex(0,0,h + htoit), 0xFF, 0xFF, 0x00);
 }
