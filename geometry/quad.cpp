@@ -12,10 +12,12 @@ Quad::Quad(Vertex ne, Vertex se, Vertex sw, Vertex nw) {
 Quad Quad::inset(Cardinal side, float offset) const {
 	Quad q = (*this) << int(side);
 	Vertex offsetDirection = Triangle(q[NE], q[NW], q[NW] + q.normal()).normal();
-	float distE = offset / offsetDirection.cosAngle(q[SE] - q[NE]);
-	float distW = offset / offsetDirection.cosAngle(q[SW] - q[NW]);
-	q[NE] = q[NE] + (q[SE] - q[NE]).setNorm(distE);
-	q[NW] = q[NW] + (q[SW] - q[NW]).setNorm(distW);
+	Vertex e = q[SE] - q[NE];
+	Vertex w = q[SW] - q[NW];
+	float distE = offset / offsetDirection.cosAngle(e);
+	float distW = offset / offsetDirection.cosAngle(w);
+	q[NE] = q[NE] + e.setNorm(distE);
+	q[NW] = q[NW] + w.setNorm(distW);
 	return q >> int(side);
 }
 

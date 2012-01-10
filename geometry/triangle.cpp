@@ -36,10 +36,16 @@ float Triangle::maxLength() const {
 	return std::max(std::max((c[LEFT] - c[TOP]).norm(), (c[TOP] - c[RIGHT]).norm()), (c[RIGHT] - c[LEFT]).norm());
 }
 
-Triangle Triangle::inset(CoteTriangle side, float offset) const {
-	Quad q = Quad(c[RIGHT + side], c[LEFT + side], c[TOP + side], c[RIGHT + side]);
-	q = q.inset(S, offset);
-	return (Triangle(q[SE], q[SW], q[NW]) >> side);
+Triangle Triangle::inset(CoteTriangle side, float offset) const  {
+	Triangle t = (*this) << int(side);
+	Vertex offsetDirection = Triangle(t[TOP], t[LEFT], t[LEFT] + t.normal()).normal();
+	Vertex rightside = t[RIGHT] - t[TOP];
+	Vertex base = t[RIGHT] - t[LEFT];
+	float distTR = offset / offsetDirection.cosAngle(rightside);
+	float distLR = offset / offsetDirection.cosAngle(base);
+	t[TOP] = t[TOP] + rightside.setNorm(distTR);
+	t[LEFT] = t[LEFT] + base.setNorm(distLR);
+	return t >> int(side);
 }
 
 Triangle Triangle::insetLTR(float offset) const {

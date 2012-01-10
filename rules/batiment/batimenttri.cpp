@@ -42,10 +42,9 @@ void BatimentTri::triangulation() {
 	float h = floatInRange(seed,1,minHeight,maxHeight);
 	// float htoit = hashInRange(seed,2,minHeight/2,maxHeight/2);
 
-    // addGPUOcto(c, c + Vertex(0,0,h + htoit), 0xFF, 0xFF, 0x00);
 	Triangle ch = c + Vertex(0,0,h);
-	addGPUTriangle(c[LEFT], c[TOP], c[RIGHT], 0xFF, 0xFF, 0x00);
-	addGPUTriangle(ch[LEFT], ch[TOP], ch[RIGHT], 0xFF, 0xFF, 0x00);
+	addGPUTriangle(c, 0xFF, 0xFF, 0x00);
+	addGPUTriangle(ch, 0xFF, 0xFF, 0x00);
 	for (int i = 0; i < 3; i++)
 		addGPUQuad(c[LEFT+i], c[TOP+i], ch[TOP+i], ch[LEFT+i], 0xFF, 0xFF, 0x00);
 }

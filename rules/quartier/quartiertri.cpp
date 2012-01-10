@@ -11,21 +11,27 @@ void QuartierTri::getBoundingBoxPoints() {
 
 Chose* QuartierTri::factory(int seed, int n, Triangle c) {
 	bool small = c.minLength() < 2500;
-	bool big = c.maxLength() >= 5000;
+	bool big = c.maxLength() >= 6000;
+	bool verybig = c.maxLength() >= 20000;
 	if (small && !big) {
-		return new BatimentTri(c);
-	} else if (big) {
+		return new RouteTrottoirTri(c);
+	} else if (verybig) {
 		int choice = hash2(seed, n) % 3;
 		if (choice == 0) {
-			// TODO : condition : générer seulement si les 3 angles sont proches de 60°
 			return new QuartierTriCentre(c);
 		} else if (choice == 1) {
 			return new QuartierTriHauteur(c);
 		} else {
 			return new QuartierTriTrapeze(c);
 		}
+	} else if (big && c.maxAngle() < 75 && c.minAngle() > 45) {
+		return new QuartierTriCentre(c);
+	} else if (big && !small) {
+		return new QuartierTriHauteur(c);
+	} else if (big && !small) {
+		return new QuartierTriTrapeze(c);
 	} else {
-		return new BatimentTri(c);
+		return new RouteTrottoirTri(c);
 	}
 }
 
