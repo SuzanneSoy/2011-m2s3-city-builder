@@ -29,6 +29,7 @@ class Triangle {
 	float maxAngle() const; // angle maximum du triangle (en LEFT, TOP ou RIGHT).
 	float minLength() const;
 	float maxLength() const;
+	float surface() const;
 	Triangle inset(CoteTriangle side, float offset) const;
 	Triangle insetLTR(float offset) const;
 	Vertex randomPoint(int seed, int n) const;

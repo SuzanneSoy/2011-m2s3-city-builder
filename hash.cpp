@@ -29,8 +29,8 @@ float floatInRange(int seed, int n, float a, float b) {
 	return (float)(hash2(seed, n) & 0xffffff) / (float)(0x1000000) * (b-a) + a;
 }
 
-bool proba(int seed, int n, unsigned int a, unsigned int b) {
-	return ((hash2(seed, n) % b) < a);
+bool proba(int seed, int n, float a, float b) {
+	return floatInRange(seed, n, 0, b) < a;
 }
 
 unsigned int float2uint(float f) {

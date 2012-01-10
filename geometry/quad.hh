@@ -37,6 +37,8 @@ class Quad {
 	float maxLength() const;
 	float minAngle() const;
 	float maxAngle() const;
+	Vertex randomPoint(int seed, int n) const;
+	float surface() const;
 	//void cutCornerCorner(Coin from) const;
 	Quad makeParallelogram() const;
 };

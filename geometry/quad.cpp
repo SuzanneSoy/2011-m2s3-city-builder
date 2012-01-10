@@ -33,7 +33,6 @@ Quad Quad::insetOpp(Cardinal side, float offset) const {
 
     qb = qb.inset(N,offset);
     return Quad(q[NE],qb[NE],qb[NW],q[NW]);
-
 }
 
 Quad Quad::makeParallelogram() const {
@@ -112,12 +111,20 @@ Quad operator+(const Quad& q, const Vertex& v) {
 	return Quad(q[NE] + v, q[SE] + v, q[SW] + v, q[NW] + v);
 }
 
-/*
-void Quad::cutCornerCorner(Coin from, float cutwidth) const {
-	Triangle left = Triangle(c[from-2], c[from-1], c[from]).offset(BASE, cutwidth);
-	Triangle right = Triangle(c[from], c[from+1], c[from+2]).offset(BASE, cutwidth);
-	Quad cut(right[LEFT], right[RIGHT], left[LEFT], left[RIGHT]); // + c[from+2] avant le 1er sommet, et c[from] après le 2e.
-	Triangle cutFrom(left[RIGHT], c[from], right[LEFT]);
-	Triangle cutTo(right[LEFT], c[from+2], left[RIGHT]);
+Vertex Quad::randomPoint(int seed, int n) const {
+	Triangle ne(c[NW], c[NE], c[SE]);
+	Triangle sw(c[SE], c[SW], c[NW]);
+	float surfacene = ne.surface();
+	float surfacesw = sw.surface();
+	if (proba(seed, n, surfacene, surfacene + surfacesw)) {
+		return ne.randomPoint(seed, hash2(n, 42));
+	} else {
+		return sw.randomPoint(seed, hash2(n, 42));
+	}
 }
-*/
+
+float Quad::surface() const {
+	Triangle ne(c[NW], c[NE], c[SE]);
+	Triangle sw(c[SE], c[SW], c[NW]);
+	return ne.surface() + sw.surface();
+}
