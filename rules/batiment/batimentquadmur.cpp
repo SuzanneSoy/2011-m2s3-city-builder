@@ -11,9 +11,21 @@ void BatimentQuadMur::getBoundingBoxPoints() {
 	addBBPoints(ch);
 }
 
-void BatimentQuadMur::setWindow(Quad w) {
-    this->windowPos = w;
-    this->window = true;
+void BatimentQuadMur::setWindow(bool val) {
+    this->window = val;
+    Quad q = Quad(ch[SE],c[SE],c[SW],ch[SW]);
+    int lr = (q.length(S) - 100)/40;
+    std::cout << q.inset(E,60).surface() << std::endl;
+    Quad wFront = q.inset(N,40).inset(S,100).inset(E,lr).inset(W,lr);
+    Quad wBack = wFront.offsetNormal(28);
+    windowPos = Quad(wBack[SE],wFront[SE],wFront[SW],wBack[SW]);
+    windowPosh = Quad(wBack[NE],wFront[NE],wFront[NW],wBack[NW]);
+
+    //std::cout << "lr" << lr << std::endl;
+    //std::cout << wFront[NE] << std::endl;
+    //std::cout << q[SE] << std::endl;
+    //std::cout << q[SW] << std::endl;
+    //std::cout << q[NW] << std::endl << std::endl;
 }
 
 bool BatimentQuadMur::split() {
@@ -25,11 +37,16 @@ bool BatimentQuadMur::split() {
     Quad top = c;
     Quad bottom = c;
 
-    //addChild(BatimentQuadMur())
 
-    return false;
+    //addChild(new BatimentQuadMur(c,windowPos));
+    //addChild(new BatimentQuadMur(windowPos,ch));
+
+    return true;
 }
 
 void BatimentQuadMur::triangulation() {
-    addGPUOcto(c, ch, 0xf1,0xe3,0xad);
+    if(!window)
+        addGPUOcto(c, ch, 0xf1,0xe3,0xad);
+    else
+        addGPUOcto(c, ch, 0xFF,0x10,0x00);
 }

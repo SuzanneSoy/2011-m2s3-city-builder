@@ -20,10 +20,18 @@ bool BatimentQuadBlock::split() {
     Quad mwh = ch.insetOpp(W,28);
     Quad mnh = ch.inset(E,28).inset(W,28).insetOpp(N,28);
 
-    addChild(new BatimentQuadMur(me,meh));
-    addChild(new BatimentQuadMur(mw,mwh));
-    addChild(new BatimentQuadMur(mn,mnh));
-    addChild(new BatimentQuadMur(ms,msh));
+    BatimentQuadMur *mme = new BatimentQuadMur(me,meh);
+    BatimentQuadMur *mmn = new BatimentQuadMur(mn,mnh);
+    BatimentQuadMur *mmw = new BatimentQuadMur(mw,mwh);
+    BatimentQuadMur *mms = new BatimentQuadMur(ms,msh);
+    mme->setWindow(true);
+    //mmn->setWindow(true);
+    mmw->setWindow(true);
+    mms->setWindow(true);
+    addChild(mme);
+    addChild(mmw);
+    addChild(mmn);
+    addChild(mms);
     return true;
 }
 
