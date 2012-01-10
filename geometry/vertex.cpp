@@ -2,7 +2,11 @@
 
 Vertex::Vertex() {}
 
-Vertex::Vertex(float _x, float _y, float _z): x(_x), y(_y), z(_z) {}
+Vertex::Vertex(float _x, float _y, float _z): x(_x), y(_y), z(_z) {
+	// TODO : DEBUG
+	//if (!(std::isfinite(x) && std::isfinite(y) && std::isfinite(z)))
+	//	throw "Attempted to create vertex with bad data !";
+}
 
 float Vertex::norm() const { return std::sqrt(x*x + y*y + z*z); }
 

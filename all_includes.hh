@@ -47,6 +47,7 @@ class Chose;
 
 #include "rules/quartier/quartierquad.hh"
 #include "rules/quartier/quartierquadangle.hh"
+#include "rules/quartier/quartierquadconcave.hh"
 #include "rules/quartier/quartierquadcarre.hh"
 #include "rules/quartier/quartierquadrect.hh"
 #include "rules/quartier/quartiertri.hh"

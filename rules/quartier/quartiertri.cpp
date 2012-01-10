@@ -10,12 +10,13 @@ void QuartierTri::getBoundingBoxPoints() {
 }
 
 Chose* QuartierTri::factory(int seed, int n, Triangle c) {
-	bool small = c.minLength() < 2500;
+	bool small = c.minLength() < 3500;
 	bool big = c.maxLength() >= 6000;
-	bool verybig = c.maxLength() >= 20000;
-	if (small && !big) {
+	bool verybig = c.minLength() >= 10000;
+	bool anglesAcceptable = c.minAngle() > 30 && c.maxAngle() < 120;
+	if (small) {
 		return new RouteTrottoirTri(c);
-	} else if (verybig) {
+	} else if (verybig && anglesAcceptable) {
 		int choice = hash2(seed, n) % 3;
 		if (choice == 0) {
 			return new QuartierTriCentre(c);
@@ -24,7 +25,7 @@ Chose* QuartierTri::factory(int seed, int n, Triangle c) {
 		} else {
 			return new QuartierTriTrapeze(c);
 		}
-	} else if (big && c.maxAngle() < 75 && c.minAngle() > 45) {
+	} else if (big && !small && c.maxAngle() < 60+15 && c.minAngle() > 60-15) {
 		return new QuartierTriCentre(c);
 	} else if (big && !small) {
 		return new QuartierTriHauteur(c);
