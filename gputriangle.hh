@@ -14,11 +14,8 @@ class GPUTriangle {
 public :
 	GPUTriangle(Vertex left, Vertex top, Vertex right, unsigned char r, unsigned char g, unsigned char b);
 	GPUTriangle(Triangle c, unsigned char r, unsigned char g, unsigned char b);
-	void display();
-	void displayNormal();
-
-private :
-	Vertex normal(Vertex left, Vertex top, Vertex right);
+	void display() const;
+	void displayNormal() const;
 };
 
 #endif

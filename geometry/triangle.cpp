@@ -61,3 +61,12 @@ float Triangle::surface() const {
 	float base = Segment(c[LEFT], c[RIGHT]).length();
 	return (base * hauteur) / 2.f;
 }
+
+Vertex Triangle::normal() const {
+	return ((c[LEFT] - c[TOP]) * (c[RIGHT] - c[TOP]));
+}
+
+Vertex Triangle::normalizedNormal() const {
+	Vertex v = normal();
+	return v / v.norm();
+}

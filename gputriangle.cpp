@@ -1,19 +1,14 @@
 #include "all_includes.hh"
 
 GPUTriangle::GPUTriangle(Vertex left, Vertex top, Vertex right, unsigned char _r, unsigned char _g, unsigned char _b)
-	: c(left, top, right), r(_r), g(_g), b(_b), vnormal(normal(left,top,right)) {
+	: c(left, top, right), r(_r), g(_g), b(_b), vnormal(c.normalizedNormal()) {
 }
 
 GPUTriangle::GPUTriangle(Triangle _c, unsigned char _r, unsigned char _g, unsigned char _b)
-	: c(_c), r(_r), g(_g), b(_b), vnormal(normal(c[LEFT], c[TOP], c[RIGHT])) {
+	: c(_c), r(_r), g(_g), b(_b), vnormal(c.normalizedNormal()) {
 }
 
-Vertex GPUTriangle::normal(Vertex left, Vertex top, Vertex right) {
-	Vertex v = (left - top)*(right - top);
-	return v / v.norm();
-}
-
-void GPUTriangle::display() {
+void GPUTriangle::display() const {
 	View::setColor(r,g,b);
 	glNormal3d(vnormal.x,vnormal.y,vnormal.z);
 	glVertex3d(c[LEFT].x,c[LEFT].y,c[LEFT].z);
@@ -21,7 +16,7 @@ void GPUTriangle::display() {
 	glVertex3d(c[RIGHT].x,c[RIGHT].y,c[RIGHT].z);
 }
 
-void GPUTriangle::displayNormal() {
+void GPUTriangle::displayNormal() const {
 	glColor3ub(255,255,0);
 	// Vertex v = (c[0] + c[1] + c[2]) / 3;
 	// glVertex3d(v.x,v.y,v.z);

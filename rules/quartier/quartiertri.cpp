@@ -25,7 +25,7 @@ Chose* QuartierTri::factory(int seed, int n, Triangle c) {
 			return new QuartierTriTrapeze(c);
 		}
 	} else {
-		return new TerrainTriHerbe(c);
+		return new BatimentTri(c);
 	}
 }
 
