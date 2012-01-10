@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-TrottoirQuadNormal::TrottoirQuadNormal(Quad c, float height) : Chose(), c(c), height(height) {
+TrottoirQuadNormal::TrottoirQuadNormal(Quad _c, float _height) : Chose(), c(_c), height(_height) {
 }
 
 void TrottoirQuadNormal::getBoundingBoxPoints() {

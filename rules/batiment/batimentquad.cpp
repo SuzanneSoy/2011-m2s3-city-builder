@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-BatimentQuad::BatimentQuad(Quad c, Cardinal entry) : Chose(), c(c), entry(entry) {
+BatimentQuad::BatimentQuad(Quad _c, Cardinal _entry) : Chose(), c(_c), entry(_entry) {
 	addEntropy(c);
 	addEntropy(entry);
 }

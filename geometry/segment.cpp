@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-Segment::Segment(Vertex u, Vertex v): u(u), v(v) {}
+Segment::Segment(Vertex _u, Vertex _v): u(_u), v(_v) {}
 
 float Segment::length() {
 	return (u-v).norm();

@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-QuartierTri::QuartierTri(Triangle c) : Chose(), c(c) {
+QuartierTri::QuartierTri(Triangle _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 

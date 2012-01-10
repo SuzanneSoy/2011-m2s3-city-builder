@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-RouteQuadChaussee::RouteQuadChaussee(Quad c) : Chose(), c(c) {
+RouteQuadChaussee::RouteQuadChaussee(Quad _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 

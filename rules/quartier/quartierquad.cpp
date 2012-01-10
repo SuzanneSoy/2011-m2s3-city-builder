@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-QuartierQuad::QuartierQuad(Quad c) : Chose(), c(c) {
+QuartierQuad::QuartierQuad(Quad _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 

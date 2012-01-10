@@ -2,7 +2,7 @@
 
 Vertex::Vertex() {}
 
-Vertex::Vertex(float x, float y, float z): x(x), y(y), z(z) {}
+Vertex::Vertex(float _x, float _y, float _z): x(_x), y(_y), z(_z) {}
 
 float Vertex::norm() const { return std::sqrt(x*x + y*y + z*z); }
 

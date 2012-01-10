@@ -3,7 +3,7 @@ Heap::Heap()
 	  bucketArraySize(1), lastNode(-1) {
 }
 
-void Heap::init(int id, int factor) { this->id = id; this->factor = (float)factor; }
+void Heap::init(int _id, int _factor) { this->id = _id; this->factor = (float)_factor; }
 
 void Heap::insert(float key, Chose* value) {
 	++lastNode;

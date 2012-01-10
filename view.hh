@@ -17,7 +17,7 @@ class Camera {
 	private :
 	float xAngle;
 	float yAngle;
-	int moveDist;
+	int moveSensitivity;
 	float mouseSensitivity;
 	bool up;
 	bool down;

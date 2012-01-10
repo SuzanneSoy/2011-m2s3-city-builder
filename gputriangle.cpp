@@ -1,16 +1,16 @@
 #include "all_includes.hh"
 
-GPUTriangle::GPUTriangle(Vertex left, Vertex top, Vertex right, unsigned char r, unsigned char g, unsigned char b)
-	: c(left, top, right), r(r), g(g), b(b), vnormal(normal(left,top,right)) {
+GPUTriangle::GPUTriangle(Vertex left, Vertex top, Vertex right, unsigned char _r, unsigned char _g, unsigned char _b)
+	: c(left, top, right), r(_r), g(_g), b(_b), vnormal(normal(left,top,right)) {
 }
 
-GPUTriangle::GPUTriangle(Triangle c, unsigned char r, unsigned char g, unsigned char b)
-	: c(c), r(r), g(g), b(b), vnormal(normal(c[LEFT], c[TOP], c[RIGHT])) {
+GPUTriangle::GPUTriangle(Triangle _c, unsigned char _r, unsigned char _g, unsigned char _b)
+	: c(_c), r(_r), g(_g), b(_b), vnormal(normal(c[LEFT], c[TOP], c[RIGHT])) {
 }
 
 Vertex GPUTriangle::normal(Vertex left, Vertex top, Vertex right) {
-	Vertex normal = (left - top)*(right - top);
-	return normal / normal.norm();
+	Vertex v = (left - top)*(right - top);
+	return v / v.norm();
 }
 
 void GPUTriangle::display() {

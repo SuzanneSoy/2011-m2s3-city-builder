@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-TerrainQuadHerbe::TerrainQuadHerbe(Quad c) : Chose(), c(c) {
+TerrainQuadHerbe::TerrainQuadHerbe(Quad _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 

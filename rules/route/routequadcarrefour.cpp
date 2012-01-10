@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-RouteQuadCarrefour::RouteQuadCarrefour(Quad c) : Chose(), c(c) {
+RouteQuadCarrefour::RouteQuadCarrefour(Quad _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 

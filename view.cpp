@@ -1,9 +1,9 @@
 #include "all_includes.hh"
 
-View::View(Chose* root)
-	: root(root),
+View::View(Chose* _root)
+	: root(_root),
 	  camera(Camera(Vertex(9600,10000,15300),0,179,1000,0.6f)),
-	  lod(camera.cameraCenter, root) {
+	  lod(camera.cameraCenter, _root) {
 	initWindow();
 	mainLoop();
 }
@@ -145,13 +145,13 @@ void View::mainLoop() {
 	SDL_Quit();
 }
 
-Camera::Camera(Vertex pos, float xA, float yA, int moveSensitivity, float mouseSensitivity)
-	: cameraCenter(pos),
-	  cameraSight(cameraCenter + Vertex::fromSpherical(100,yA,xA)),
-	  xAngle(xA),
-	  yAngle(yA),
-	  moveDist(moveSensitivity),
-	  mouseSensitivity(mouseSensitivity),
+Camera::Camera(Vertex _cameraCenter, float _xAngle, float _yAngle, int _moveSensitivity, float _mouseSensitivity)
+	: cameraCenter(_cameraCenter),
+	  cameraSight(cameraCenter + Vertex::fromSpherical(100,_yAngle,_xAngle)),
+	  xAngle(_xAngle),
+	  yAngle(_yAngle),
+	  moveSensitivity(_moveSensitivity),
+	  mouseSensitivity(_mouseSensitivity),
 	  up(false), down(false), left(false), right(false),
 	  pageUp(false), pageDown(false)
 {
@@ -207,11 +207,11 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 					break;
 				case 's':
 					if (eventKey.type != SDL_KEYDOWN) break;
-					moveDist = std::min(50000,std::max(moveDist+1, moveDist*10/9));
+					moveSensitivity = std::min(50000,std::max(moveSensitivity+1, moveSensitivity*10/9));
 					break;
 				case 'x':
 					if (eventKey.type != SDL_KEYDOWN) break;
-					moveDist = std::max(10, moveDist*9/10);
+					moveSensitivity = std::max(10, moveSensitivity*9/10);
 					break;
 				case 'p': // _Print _Position
 					if (eventKey.type != SDL_KEYDOWN) break;
@@ -225,7 +225,7 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 }
 
 void Camera::animation(int elapsedTime) {
-	float diff = ((float)(elapsedTime+1)/1000.f)*(float)moveDist;
+	float diff = ((float)(elapsedTime+1)/1000.f)*(float)moveSensitivity;
 
 	if(up)
 		cameraCenter = cameraCenter + Vertex::fromSpherical(diff, yAngle, xAngle);

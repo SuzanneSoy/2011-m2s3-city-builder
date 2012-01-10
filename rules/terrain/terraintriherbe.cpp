@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-TerrainTriHerbe::TerrainTriHerbe(Triangle c) : Chose(), c(c) {
+TerrainTriHerbe::TerrainTriHerbe(Triangle _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 

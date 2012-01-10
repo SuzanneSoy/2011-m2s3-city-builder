@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-QuartierQuadCarre::QuartierQuadCarre(Quad c) : QuartierQuad(c) {
+QuartierQuadCarre::QuartierQuadCarre(Quad _c) : QuartierQuad(_c) {
 }
 
 bool QuartierQuadCarre::split() {

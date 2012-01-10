@@ -1,16 +1,16 @@
 #include "all_includes.hh"
 
-Lod::Lod(Vertex camera, Chose* root) {
+Lod::Lod(Vertex _camera, Chose* root) {
 	for (int i = 0; i < 6; i++) {
 		merge[i].init(i, (i & 1) ? 1 : -1);
 		splitIn[i].init(6+i, (i & 1) ? 1 : -1);
 		splitOut[i].init(12+i, (i & 1) ? -1 : 1);
 	}
-	this->camera[0] = camera.x;
-	this->camera[1] = camera.y;
-	this->camera[2] = camera.z;
+	this->camera[0] = _camera.x;
+	this->camera[1] = _camera.y;
+	this->camera[2] = _camera.z;
 	addSplitCube(root);
-	setCamera(camera);
+	setCamera(_camera);
 }
 
 void Lod::setCamera(Vertex newCamera) {

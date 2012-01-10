@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-BatimentQuadMur::BatimentQuadMur(Quad c, float height) : Chose(), c(c), height(height) {
+BatimentQuadMur::BatimentQuadMur(Quad _c, float _height) : Chose(), c(_c), height(_height) {
 	addEntropy(c);
 	this->window = false;
 }

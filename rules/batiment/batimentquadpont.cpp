@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-BatimentQuadPont::BatimentQuadPont(Quad c, float height) : Chose(), c(c), height(height) {
+BatimentQuadPont::BatimentQuadPont(Quad _c, float _height) : Chose(), c(_c), height(_height) {
 	addEntropy(c);
 }
 
@@ -9,12 +9,12 @@ void BatimentQuadPont::getBoundingBoxPoints() {
 	addBBPoints(c + Vertex(0,0,height)); // TODO
 }
 
-float ct(float x) {
+float BatimentQuadPont::ct(float x) {
     return (float)(1 - cosh(x / 1.f));
 }
 
-float nt(float x, float height) {
-    return (ct(x) + -ct(-1.7f))/(ct(0)+ -ct(-1.7f)) * height;
+float BatimentQuadPont::nt(float x, float _height) {
+    return (ct(x) + -ct(-1.7f))/(ct(0)+ -ct(-1.7f)) * _height;
 }
 
 void BatimentQuadPont::triangulation() {

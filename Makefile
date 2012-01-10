@@ -1,5 +1,6 @@
 CXX=g++
 # -ansi -pedantic -Wconversion
+# -Wformat=2 -Winit-self -Wmissing-include-dirs -Wswitch-default -Wsync-nand -Wunused -Wstrict-overflow=5 -Wfloat-equal -Wundef -Wno-endif-labels -Wshadow -Wunsafe-loop-optimizations -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Wlogical-op -Wmissing-declarations -Wnormalized=nfc -Wpacked -Wredundant-decls -Winline -Winvalid-pch -Wdisabled-optimization -Woverlength-strings
 CCWARN=-Wall -Wextra -Werror
 # TODO : -O3 -m32 ou -m64
 # -g -rdynamic uniquement pour le debug.

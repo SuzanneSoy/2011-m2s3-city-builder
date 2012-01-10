@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-BatimentTri::BatimentTri(Triangle c) : Chose(), c(c) {
+BatimentTri::BatimentTri(Triangle _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 

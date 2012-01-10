@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-QuartierTriTrapeze::QuartierTriTrapeze(Triangle c) : QuartierTri(c) {
+QuartierTriTrapeze::QuartierTriTrapeze(Triangle _c) : QuartierTri(_c) {
 }
 
 bool QuartierTriTrapeze::split() {

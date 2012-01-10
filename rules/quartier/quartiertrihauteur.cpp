@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-QuartierTriHauteur::QuartierTriHauteur(Triangle c) : QuartierTri(c) {
+QuartierTriHauteur::QuartierTriHauteur(Triangle _c) : QuartierTri(_c) {
 }
 
 bool QuartierTriHauteur::split() {

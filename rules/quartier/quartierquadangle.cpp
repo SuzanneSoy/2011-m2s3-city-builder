@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-QuartierQuadAngle::QuartierQuadAngle(Quad c) : QuartierQuad(c) {
+QuartierQuadAngle::QuartierQuadAngle(Quad _c) : QuartierQuad(_c) {
 }
 
 bool QuartierQuadAngle::split() {

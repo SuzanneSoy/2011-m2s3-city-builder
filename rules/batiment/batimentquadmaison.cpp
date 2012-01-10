@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-BatimentQuadMaison::BatimentQuadMaison(Quad c) : Chose(), c(c) {
+BatimentQuadMaison::BatimentQuadMaison(Quad _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 
