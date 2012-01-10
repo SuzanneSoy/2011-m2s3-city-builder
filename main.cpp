@@ -1,7 +1,6 @@
 #include "all_includes.hh"
 
 // TODO : créer les routes dans les bâtiments
-// TODO : faire des enum SetCoin, SetCardinal, SetSommetTriangle, SetCoteTriangle.
 
 int main() {
 	// Générer une tile de base

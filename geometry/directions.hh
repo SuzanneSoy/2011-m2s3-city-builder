@@ -1,63 +1,158 @@
 #ifndef _GEOMETRY_DIRECTIONS_HH_
 #define _GEOMETRY_DIRECTIONS_HH_
 
-enum Cardinal {
-	N = 0,
-	E = 1,
-	S = 2,
-	W = 3
+class EnsembleCardinaux {
+protected:
+	char v;
+	EnsembleCardinaux(char _v) : v(_v) {}
+public:
+	friend EnsembleCardinaux operator| (const EnsembleCardinaux ec1, const EnsembleCardinaux ec2) {
+		return EnsembleCardinaux(ec1.v | ec2.v);
+	}
+	friend EnsembleCardinaux operator& (const EnsembleCardinaux ec1, const EnsembleCardinaux ec2) {
+		return EnsembleCardinaux(ec1.v & ec2.v);
+	}
+	friend bool operator== (const EnsembleCardinaux ec1, const EnsembleCardinaux ec2) {
+		return (ec1.v == ec2.v);
+	}
+	friend bool operator!= (const EnsembleCardinaux ec1, const EnsembleCardinaux ec2) {
+		return (ec1.v != ec2.v);
+	}
 };
 
-inline Cardinal operator+(Cardinal c, int i) {
-	return Cardinal((int(c) + int(i)) & 3);
-	//int result = int(c) << (i & 3);
-	//result = result | result >> 4;
-	//return Cardinal (c & 15);
-}
-inline Cardinal operator-(Cardinal c, int i) {
-	return c + (-i);
-}
-
-enum Coin {
-	NE = 0,
-	SE = 1,
-	SW = 2,
-	NW = 3
+class Cardinal : public EnsembleCardinaux {
+private:
+	static const char rotationTable[9];
+public:
+	Cardinal(int x) : EnsembleCardinaux((char)(1 << (x & 3))) {}
+	operator int () const {
+		return rotationTable[(int)v];
+	}
+	friend Cardinal operator+ (const Cardinal c, const int n) {
+		return Cardinal(rotationTable[(int)c.v] + n);
+	}
+	friend Cardinal operator- (const Cardinal c, const int n) {
+		return Cardinal(rotationTable[(int)c.v] - n);
+	}
 };
 
-inline Coin operator+(Coin c, int i) {
-	return Coin((int(c) + int(i)) & 3);
-}
-inline Coin operator-(Coin c, int i) {
-	return c + (-i);
-}
+const Cardinal N = Cardinal(0);
+const Cardinal E = Cardinal(1);
+const Cardinal S = Cardinal(2);
+const Cardinal W = Cardinal(3);
 
+// Plus ou moins la même chose que Cardinal.
+class Coin {
+private:
+	char v;
+	static const char rotationTable[9];
+public:
+	Coin(int x) : v((char)(1 << (x & 3))) {}
+	operator int () const {
+		return (int)rotationTable[(int)v];
+	}
+	friend Coin operator+ (const Coin c, const int n) {
+		return Coin(rotationTable[(int)c.v] + n);
+	}
+	friend Coin operator- (const Coin c, const int n) {
+		return Coin(rotationTable[(int)c.v] - n);
+	}
+	friend bool operator== (const Coin c1, const Coin c2) {
+		return (c1.v == c2.v);
+	}
+	friend bool operator!= (const Coin c1, const Coin c2) {
+		return (c1.v != c2.v);
+	}
+};
+
+const Coin NE = Coin(0);
+const Coin SE = Coin(1);
+const Coin SW = Coin(2);
+const Coin NW = Coin(3);
+
+// Pour les triangles, c'est quasiment identique, il y a sûrement moyen de factoriser ça.
+
+class EnsembleCotesTriangle {
+protected:
+	char v;
+	EnsembleCotesTriangle(char _v) : v(_v) {}
+public:
+	friend EnsembleCotesTriangle operator| (const EnsembleCotesTriangle ec1, const EnsembleCotesTriangle ec2) {
+		return EnsembleCotesTriangle(ec1.v | ec2.v);
+	}
+	friend EnsembleCotesTriangle operator& (const EnsembleCotesTriangle ec1, const EnsembleCotesTriangle ec2) {
+		return EnsembleCotesTriangle(ec1.v & ec2.v);
+	}
+	friend bool operator== (const EnsembleCotesTriangle ec1, const EnsembleCotesTriangle ec2) {
+		return (ec1.v == ec2.v);
+	}
+	friend bool operator!= (const EnsembleCotesTriangle ec1, const EnsembleCotesTriangle ec2) {
+		return (ec1.v != ec2.v);
+	}
+};
+
+class CoteTriangle : public EnsembleCotesTriangle {
+private:
+	static const char rotationTable[5];
+public:
+	CoteTriangle(int x) : EnsembleCotesTriangle((char)(1 << (((x % 3) + 3) % 3))) {}
+	operator int () const {
+		return rotationTable[(int)v];
+	}
+	friend CoteTriangle operator+ (const CoteTriangle c, const int n) {
+		return CoteTriangle(rotationTable[(int)c.v] + n);
+	}
+	friend CoteTriangle operator- (const CoteTriangle c, const int n) {
+		return CoteTriangle(rotationTable[(int)c.v] - n);
+	}
+};
+
+const CoteTriangle LEFTSIDE = CoteTriangle(0);
+const CoteTriangle RIGHTSIDE = CoteTriangle(1);
+const CoteTriangle BASE = CoteTriangle(2);
+
+/*
 enum SommetTriangle {
-	LEFT = 0,
-	TOP = 1,
-	RIGHT = 2
+       LEFT = 0,
+       TOP = 1,
+       RIGHT = 2
 };
 
 inline SommetTriangle operator+(SommetTriangle c, int i) {
-	return SommetTriangle((((int(c) + int(i)) % 3 ) + 3) % 3);
+       return SommetTriangle((((int(c) + int(i)) % 3 ) + 3) % 3);
 }
 
 inline SommetTriangle operator-(SommetTriangle c, int i) {
-	return SommetTriangle((((int(c) - int(i)) % 3 ) + 3) % 3);
+       return SommetTriangle((((int(c) - int(i)) % 3 ) + 3) % 3);
 }
+*/
 
-enum CoteTriangle {
-	LEFTSIDE = 0,
-	RIGHTSIDE = 1,
-	BASE = 2
+// Plus ou moins la même chose que CoteTriangle.
+class SommetTriangle {
+private:
+	char v;
+	static const char rotationTable[5];
+public:
+	SommetTriangle(int x) : v((char)(1 << (((x % 3) + 3) % 3))) {}
+	operator int () const {
+		return (int)rotationTable[(int)v];
+	}
+	friend SommetTriangle operator+ (const SommetTriangle c, const int n) {
+		return SommetTriangle(rotationTable[(int)c.v] + n);
+	}
+	friend SommetTriangle operator- (const SommetTriangle c, const int n) {
+		return SommetTriangle(rotationTable[(int)c.v] - n);
+	}
+	friend bool operator== (const SommetTriangle c1, const SommetTriangle c2) {
+		return (c1.v == c2.v);
+	}
+	friend bool operator!= (const SommetTriangle c1, const SommetTriangle c2) {
+		return (c1.v != c2.v);
+	}
 };
 
-inline CoteTriangle operator+(CoteTriangle c, int i) {
-	return CoteTriangle((((int(c) + int(i)) % 3 ) + 3) % 3);
-}
-
-inline CoteTriangle operator-(CoteTriangle c, int i) {
-	return CoteTriangle((((int(c) - int(i)) % 3 ) + 3) % 3);
-}
+const SommetTriangle LEFT = SommetTriangle(0);
+const SommetTriangle TOP = SommetTriangle(1);
+const SommetTriangle RIGHT = SommetTriangle(2);
 
 #endif

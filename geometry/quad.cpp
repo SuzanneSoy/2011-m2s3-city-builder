@@ -3,20 +3,20 @@
 Quad::Quad() {}
 
 Quad::Quad(Vertex ne, Vertex se, Vertex sw, Vertex nw) {
-	c[NE] = ne;
-	c[SE] = se;
-	c[SW] = sw;
-	c[NW] = nw;
+	c[(int)NE] = ne;
+	c[(int)SE] = se;
+	c[(int)SW] = sw;
+	c[(int)NW] = nw;
 }
 
 Quad Quad::inset(Cardinal side, float offset) const {
-	Quad q = (*this) << side;
+	Quad q = (*this) << int(side);
 	Vertex offsetDirection = (q[NW]-q[NE]).perpendicularCw();
 	float distE = offset / offsetDirection.cosAngle(q[SE] - q[NE]);
 	float distW = offset / offsetDirection.cosAngle(q[SW] - q[NW]);
 	q[NE] = q[NE] + (q[SE] - q[NE]).setNorm(distE);
 	q[NW] = q[NW] + (q[SW] - q[NW]).setNorm(distW);
-	return q >> side;
+	return q >> int(side);
 }
 
 Quad Quad::insetNESW(float offsetN, float offsetE, float offsetS, float offsetW) const {
@@ -56,7 +56,7 @@ Quad Quad::makeParallelogram() const {
 }
 
 float Quad::length(Cardinal side) const {
-	return Segment(c[NW+side],c[NE+side]).length();
+	return Segment(c[NW+int(side)],c[NE+int(side)]).length();
 }
 
 float Quad::minLengthNS() const {

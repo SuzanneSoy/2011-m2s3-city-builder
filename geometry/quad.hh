@@ -18,10 +18,10 @@ class Quad {
 		return c[x];
 	}
 	inline Quad operator>> (int rot) const {
-			return Quad(c[NE - rot], c[SE - rot], c[SW - rot], c[NW - rot]);
+		return Quad(c[NE - rot], c[SE - rot], c[SW - rot], c[NW - rot]);
 	}
 	inline Quad operator<< (int rot) const {
-			return Quad(c[NE + rot], c[SE + rot], c[SW + rot], c[NW + rot]);
+		return Quad(c[NE + rot], c[SE + rot], c[SW + rot], c[NW + rot]);
 	}
 	friend Quad operator+(const Quad& t, const Vertex& v);
 	Quad inset(Cardinal side, float offset) const;
