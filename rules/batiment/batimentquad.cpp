@@ -1,8 +1,7 @@
 #include "all_includes.hh"
 
-BatimentQuad::BatimentQuad(Quad _c, Cardinal _entry) : Chose(), c(_c), entry(_entry) {
+BatimentQuad::BatimentQuad(Quad _c) : Chose(), c(_c) {
 	addEntropy(c);
-	addEntropy(entry);
 }
 
 void BatimentQuad::getBoundingBoxPoints() {
@@ -12,23 +11,21 @@ void BatimentQuad::getBoundingBoxPoints() {
 
 bool BatimentQuad::split() {
 	if(proba(seed, 0, 1, 10)) {
-        Quad q = Quad(c[NE],c[SE],c[SW],c[NW]);
-        // TODO ajouter une classe surface.
-        //addQuad(c[SE],c[SW],c[NW],c[NE],0xDD,0xDD,0xDD);
-        addChild(new BatimentQuadMaisonPont(q,800));
+        addChild(new BatimentQuadMaisonPont(c,800));
 	} else {
         float th = 20;        // Terrain height.
-        Quad q = Quad(c[NE],c[SE],c[SW],c[NW]).insetNESW(140);
+        Quad qtrottoir = c.insetNESW(250);
+        Quad qmaison = qtrottoir.insetNESW(140);
 
-        addChild(new TrottoirQuadNormal(Quad(c[NE],c[SE],q[SE],q[NE]),th));
-        addChild(new TrottoirQuadNormal(Quad(c[SE],c[SW],q[SW],q[SE]),th));
-        addChild(new TrottoirQuadNormal(Quad(c[SW],c[NW],q[NW],q[SW]),th));
-        addChild(new TrottoirQuadNormal(Quad(c[NW],c[NE],q[NE],q[NW]),th));
+        for (int i = 0; i <4; i++) {
+        	addChild(new RouteQuadChaussee(Quad(c[NE+i],c[SE+i],qtrottoir[SE+i],qtrottoir[NE+i])));
+        	addChild(new TrottoirQuadNormal(Quad(qtrottoir[NE+i],qtrottoir[SE+i],qmaison[SE+i],qmaison[NE+i]),th));
+        }
 
-        Quad qh = q + Vertex(0,0,th);
-        addChild(new BatimentQuadJardin(qh));
+        Quad qhmaison = qmaison + Vertex(0,0,th);
+        addChild(new BatimentQuadJardin(qhmaison));
 
-        addChild(new BatimentQuadMaison(qh.inset(this->entry,400)));
+        addChild(new BatimentQuadMaison(qhmaison.inset(N,400)));
 	}
 	return true;
 }

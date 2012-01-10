@@ -19,7 +19,7 @@ Chose* QuartierQuad::factory(int seed, int n, Quad c) {
 	if (!big && proba(seed, n, 1, 20)) {
 		return new TerrainQuadHerbe(c);
 	} else if (small && anglesAcceptable) {
-		return new BatimentQuad(c, N);
+		return new BatimentQuad(c);
 	} else if (!small && !anglesOk) {
 		return new QuartierQuadAngle(c);
 	} else if (!small && tooWideY) {

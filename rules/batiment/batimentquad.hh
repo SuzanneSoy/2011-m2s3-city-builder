@@ -7,13 +7,12 @@
 class BatimentQuad : public Chose {
     private :
 	Quad c;
-	Cardinal entry;
 
     public :
 	static const int minHeight = 400;
 	static const int maxHeight = 800;
 
-	BatimentQuad(Quad c, Cardinal entry);
+	BatimentQuad(Quad c);
 	virtual bool split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
