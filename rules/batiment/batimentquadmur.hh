@@ -6,13 +6,13 @@
 class BatimentQuadMur: public Chose {
     private :
 	Quad c;
-	float height;
+	Quad ch;
 	bool window;        // Contient une fenêtre ou non.
 	Quad windowPos;
 
     public :
 
-	BatimentQuadMur(Quad c, float height);
+	BatimentQuadMur(Quad c, Quad ch);
 	virtual void triangulation();
 	virtual bool split();
 	virtual void getBoundingBoxPoints();

@@ -14,6 +14,7 @@ class BatimentQuadMaison : public Chose {
 
 	BatimentQuadMaison(Quad c);
 	virtual void triangulation();
+	virtual bool split();
 	virtual void getBoundingBoxPoints();
 };
 

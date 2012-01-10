@@ -1,13 +1,14 @@
 #include "all_includes.hh"
 
-BatimentQuadMur::BatimentQuadMur(Quad _c, float _height) : Chose(), c(_c), height(_height) {
+BatimentQuadMur::BatimentQuadMur(Quad _c, Quad _ch) : Chose(), c(_c), ch(_ch) {
 	addEntropy(c);
+	addEntropy(ch);
 	this->window = false;
 }
 
 void BatimentQuadMur::getBoundingBoxPoints() {
 	addBBPoints(c);
-	addBBPoints(c + Vertex(0,0,height));
+	addBBPoints(ch);
 }
 
 void BatimentQuadMur::setWindow(Quad w) {
@@ -24,11 +25,11 @@ bool BatimentQuadMur::split() {
     Quad top = c;
     Quad bottom = c;
 
+    //addChild(BatimentQuadMur())
 
-    return true;
+    return false;
 }
 
 void BatimentQuadMur::triangulation() {
-    //addGPUOcto(c, c + Vertex(0,0,height), 0xF1, 0xE0, 0xE0);
-    addGPUOcto(c, c + Vertex(0,0,height), 0x60, 0x60, 0xFF);
+    addGPUOcto(c, ch, 0xf1,0xe3,0xad);
 }

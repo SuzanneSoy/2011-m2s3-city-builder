@@ -36,5 +36,5 @@ void BatimentQuad::triangulation() {
 	float h = floatInRange(seed,1,minHeight,maxHeight);
 	float htoit = floatInRange(seed,2,minHeight/2,maxHeight/2);
 
-    addGPUOcto(c, c + Vertex(0,0,h + htoit), 0xFF, 0xFF, 0x00);
+    addGPUOcto(c, c + Vertex(0,0,h + htoit), 0xFF, 0xFF, 0xFF);
 }

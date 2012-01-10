@@ -21,11 +21,11 @@ bool BatimentQuadMaisonPont::split() {
     Quad qh = q;
 
     addChild(new BatimentQuadJardin(c));
-    addChild(new BatimentQuadBlock(qa,partHeight));
-    addChild(new BatimentQuadBlock(qb,partHeight));
-    addChild(new BatimentQuadBlock((qh + Vertex(0,0,partHeight)),partHeight));
+    addChild(new BatimentQuadBlock(qa,qa + Vertex(0,0,partHeight)));
+    addChild(new BatimentQuadBlock(qb,qb + Vertex(0,0,partHeight)));
+    addChild(new BatimentQuadBlock((qh + Vertex(0,0,partHeight)),qh + Vertex(0,0,2*partHeight)));
     addChild(new BatimentQuadPont(qc,partHeight));
-    addChild(new BatimentQuadToit(qh + Vertex(0,0,2*partHeight),150));
+    addChild(new BatimentQuadToit(qh + Vertex(0,0,2*partHeight),160));
 
 	return true;
 }
