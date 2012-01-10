@@ -126,7 +126,5 @@ Vertex Quad::randomPoint(int seed, int n) const {
 float Quad::surface() const {
 	Triangle ne(c[NW], c[NE], c[SE]);
 	Triangle sw(c[SE], c[SW], c[NW]);
-	std::cout << sw[LEFT] << " " << sw[TOP] << " " << sw[RIGHT] << std::endl;
-	std::cout << "{" << ne.surface() << " " << sw.surface() << "}" << std::endl;
 	return ne.surface() + sw.surface();
 }

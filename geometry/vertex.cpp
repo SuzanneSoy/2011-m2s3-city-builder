@@ -19,12 +19,12 @@ Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d) {
 	);
 }
 
+// TODO : n'est qu'en 2D !
 Vertex Vertex::projectOn(Vertex v) const {
 	// http://www.developpez.net/forums/d202580/applications/developpement-2d-3d-jeux/contribuez/faq-mat-quat-ajout-calculs-vectoriels/
-	float scalaire = (this->x)*(v.x) + (this->y)*(v.y);
-	float normecarre = v.norm();
-	normecarre *= normecarre;
-	return Vertex(v.x * scalaire / normecarre, v.y * scalaire / normecarre, 0);
+	float scalaire = (this->x)*(v.x) + (this->y)*(v.y) + (this->z)*(v.z);
+	float norme = v.norm();
+	return Vertex(v.x, v.y, v.z) * scalaire / (norme * norme);
 }
 
 Vertex Vertex::setNorm(float n) const {

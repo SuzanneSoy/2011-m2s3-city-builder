@@ -14,9 +14,6 @@ int main() {
 	c->triangulation();
 	c->updateAABB();
 
-	//std::cout << Triangle(se, sw, nw).surface() << std::endl;
-	std::cout << Quad(Vertex(10,10,0), Vertex(10,0,0), Vertex(0,0,0), Vertex(0,10,0)).surface() << std::endl;
-
-	//new View(c);
+	new View(c);
 	return 0;
 }
