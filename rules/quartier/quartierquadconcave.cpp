@@ -11,6 +11,6 @@ bool QuartierQuadConcave::split() {
 			return true;
 		}
 	}
-	throw "ERREUR : Ne devait jamais arriver ici !";
+	std::cout << "ERREUR : Ne devait jamais arriver ici !" << std::endl;
 	return true;
 }
