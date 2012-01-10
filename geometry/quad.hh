@@ -42,6 +42,7 @@ class Quad {
 	//void cutCornerCorner(Coin from) const;
 	Quad makeParallelogram() const;
 	Quad offsetNormal(float offset) const;
+	Vertex normal() const;
 };
 
 

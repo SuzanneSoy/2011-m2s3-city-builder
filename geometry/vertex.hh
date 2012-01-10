@@ -15,7 +15,6 @@ class Vertex {
 	float norm() const;
 	Vertex projectOn(Vertex v) const;
 	Vertex setNorm(float n) const;
-	Vertex perpendicularCw() const; // Perpendiculaire 2D dans le sens contraire des aiguilles d'une montre (ClockWise).
 	float cosAngle(Vertex v) const; // cosinus de l'angle entre this et v.
 	float angle(Vertex v) const; // Angle entre this et v.
 	static Vertex fromSpherical(float r, float xAngle, float yAngle);

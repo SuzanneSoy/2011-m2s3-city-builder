@@ -38,8 +38,8 @@ bool BatimentQuadMur::split() {
     Quad bottom = c;
 
 
-    //addChild(new BatimentQuadMur(c,windowPos));
-    //addChild(new BatimentQuadMur(windowPos,ch));
+    addChild(new BatimentQuadMur(c,windowPos));
+    addChild(new BatimentQuadMur(windowPosh,ch));
 
     return true;
 }
