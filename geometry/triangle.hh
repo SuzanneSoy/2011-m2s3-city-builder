@@ -33,7 +33,8 @@ class Triangle {
 	Triangle inset(CoteTriangle side, float offset) const;
 	Triangle insetLTR(float offset) const;
 	Vertex randomPoint(int seed, int n) const;
-	void display();
+	Vertex normal() const;
+	Vertex normalizedNormal() const;
 };
 
 #endif

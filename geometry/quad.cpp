@@ -128,3 +128,7 @@ float Quad::surface() const {
 	Triangle sw(c[SE], c[SW], c[NW]);
 	return ne.surface() + sw.surface();
 }
+
+Quad Quad::offsetNormal(float offset) const {
+	return ((*this) + Triangle(c[NE], c[SE], c[SW]).normal().setNorm(offset));
+}

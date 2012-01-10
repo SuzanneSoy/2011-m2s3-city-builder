@@ -8,7 +8,7 @@ class RouteQuadChaussee : public Chose {
 	Quad c;
 
     public :
-	RouteQuadChaussee(Quad c);
+	RouteQuadChaussee(Quad _c);
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

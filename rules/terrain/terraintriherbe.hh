@@ -9,7 +9,7 @@ class TerrainTriHerbe : public Chose {
 	Triangle c;
 
     public :
-	TerrainTriHerbe(Triangle c);
+	TerrainTriHerbe(Triangle _c);
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

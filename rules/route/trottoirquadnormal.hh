@@ -9,7 +9,7 @@ class TrottoirQuadNormal : public Chose {
 	float height;
 
 	public :
-	TrottoirQuadNormal(Quad c, float height);
+	TrottoirQuadNormal(Quad _c, float _height);
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };
