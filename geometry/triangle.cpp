@@ -59,5 +59,7 @@ Vertex Triangle::randomPoint(int seed, int n) const {
 float Triangle::surface() const {
 	float hauteur = Segment(c[TOP], (c[TOP] - c[LEFT]).projectOn(c[RIGHT] - c[LEFT])).length();
 	float base = Segment(c[LEFT], c[RIGHT]).length();
+	std::cout << "Triangle = " << c[LEFT] << " " << c[TOP] << " " << c[RIGHT] << std::endl;
+	std::cout << "Triangle : b=" << base << " h=" << hauteur << " " << (c[TOP] - c[LEFT]).projectOn(c[RIGHT] - c[LEFT]) << std::endl;
 	return (base * hauteur) / 2.f;
 }

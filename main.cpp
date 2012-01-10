@@ -5,7 +5,7 @@
 int main() {
 	// Générer une tile de base
 	std::cout << "Initial seed = " << Chose::initialSeed << std::endl;
-	float size = 10;
+	float size = 20000;
 	Vertex ne(size, size, 0);
 	Vertex se(size, 0, 0);
 	Vertex sw(0, 0, 0);
@@ -14,6 +14,9 @@ int main() {
 	c->triangulation();
 	c->updateAABB();
 
-	new View(c);
+	//std::cout << Triangle(se, sw, nw).surface() << std::endl;
+	std::cout << Quad(Vertex(10,10,0), Vertex(10,0,0), Vertex(0,0,0), Vertex(0,10,0)).surface() << std::endl;
+
+	//new View(c);
 	return 0;
 }
