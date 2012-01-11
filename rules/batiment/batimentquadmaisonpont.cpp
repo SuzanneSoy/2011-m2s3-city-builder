@@ -24,7 +24,7 @@ bool BatimentQuadMaisonPont::split() {
     addChild(new BatimentQuadBlock(qa,qa + Vertex(0,0,partHeight)));
     addChild(new BatimentQuadBlock(qb,qb + Vertex(0,0,partHeight)));
     addChild(new BatimentQuadBlock((qh + Vertex(0,0,partHeight)),qh + Vertex(0,0,2*partHeight)));
-    addChild(new BatimentQuadPont(qc,partHeight));
+    //addChild(new BatimentQuadPont(qc,partHeight));
     addChild(new BatimentQuadToit(qh + Vertex(0,0,2*partHeight),160));
 
 	return true;
