@@ -16,7 +16,7 @@ void BatimentQuadMur::setWindow(bool val) {
     Quad q = Quad(ch[SE],c[SE],c[SW],ch[SW]);
     int lr = (q.length(S) - 100)/40;
     std::cout << q.inset(E,60).surface() << std::endl;
-    Quad wFront = q.insetNSEW(40,100,lr,lr);
+    Quad wFront = q.insetNESW(40,100,lr,lr);
     Quad wBack = wFront.offsetNormal(28);
     windowPos = Quad(wBack[SE],wFront[SE],wFront[SW],wBack[SW]);
     windowPosh = Quad(wBack[NE],wFront[NE],wFront[NW],wBack[NW]);
