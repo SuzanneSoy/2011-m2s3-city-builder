@@ -102,11 +102,21 @@ void Chose::addBBPoints(const Triangle t) {
 	addBBPoint(t[RIGHT]);
 }
 
+void Chose::addBBPoints(const Triangle t, float height) {
+	addBBPoints(t);
+	addBBPoints(t.offsetNormal(height));
+}
+
 void Chose::addBBPoints(const Quad q) {
 	addBBPoint(q[NE]);
 	addBBPoint(q[SE]);
 	addBBPoint(q[SW]);
 	addBBPoint(q[NW]);
+}
+
+void Chose::addBBPoints(const Quad q, float height) {
+	addBBPoints(q);
+	addBBPoints(q.offsetNormal(height));
 }
 
 void Chose::updateAABB() {

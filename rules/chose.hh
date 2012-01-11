@@ -24,7 +24,9 @@ class Chose {
     protected :
 	void addBBPoint(const Vertex v);
 	void addBBPoints(const Triangle t);
+	void addBBPoints(const Triangle t, float height);
 	void addBBPoints(const Quad q);
+	void addBBPoints(const Quad q, float height);
 	virtual void getBoundingBoxPoints() = 0;
 	Chose();
 	~Chose();
