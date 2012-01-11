@@ -76,3 +76,7 @@ Vertex Triangle::normalizedNormal() const {
 	Vertex v = normal();
 	return v / v.norm();
 }
+
+Triangle Triangle::offsetNormal(float offset) const {
+	return ((*this) + this->normal().setNorm(offset));
+}

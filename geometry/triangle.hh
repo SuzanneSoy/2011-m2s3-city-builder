@@ -4,10 +4,10 @@
 #include "all_includes.hh"
 
 class Triangle {
-	private :
+private :
 	Vertex c[3];
 
-	public :
+public :
 	Triangle();
 	Triangle(Vertex left, Vertex top, Vertex right);
 	inline Vertex& operator[] (SommetTriangle x) {
@@ -35,6 +35,7 @@ class Triangle {
 	Vertex randomPoint(int seed, int n) const;
 	Vertex normal() const;
 	Vertex normalizedNormal() const;
+	Triangle offsetNormal(float offset) const;
 };
 
 #endif
