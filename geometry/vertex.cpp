@@ -36,7 +36,7 @@ Vertex Vertex::setNorm(float n) const {
 
 float Vertex::cosAngle(Vertex v) const {
 	// http://www.developpez.net/forums/d202580/applications/developpement-2d-3d-jeux/contribuez/faq-mat-quat-ajout-calculs-vectoriels/
-	return ((this->x*v.x + this->y*v.y) / (norm()*v.norm()));
+	return ((this->x*v.x + this->y*v.y + this->z*v.z) / (norm()*v.norm()));
 }
 
 float Vertex::angle(Vertex v) const {
