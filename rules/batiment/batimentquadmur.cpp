@@ -12,7 +12,8 @@ void BatimentQuadMur::getBoundingBoxPoints() {
 }
 
 void BatimentQuadMur::setWindow(bool val) {
-    this->window = val;
+    val = val;
+    /*this->window = val;
     Quad q = Quad(ch[SE],c[SE],c[SW],ch[SW]);
     int lr = (q.length(S) - 100)/40;
     std::cout << q.inset(E,60).surface() << std::endl;
@@ -20,7 +21,7 @@ void BatimentQuadMur::setWindow(bool val) {
     Quad wBack = wFront.offsetNormal(28);
     windowPos = Quad(wBack[SE],wFront[SE],wFront[SW],wBack[SW]);
     windowPosh = Quad(wBack[NE],wFront[NE],wFront[NW],wBack[NW]);
-
+*/
     //std::cout << "lr" << lr << std::endl;
     //std::cout << wFront[NE] << std::endl;
     //std::cout << q[SE] << std::endl;
@@ -38,9 +39,9 @@ bool BatimentQuadMur::split() {
     Quad bottom = c;
 
 
-    addChild(new BatimentQuadMur(c,windowPos));
+    /*addChild(new BatimentQuadMur(c,windowPos));
     addChild(new BatimentQuadMur(windowPosh,ch));
-
+*/
     return true;
 }
 

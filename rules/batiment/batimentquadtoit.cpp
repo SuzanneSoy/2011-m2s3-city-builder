@@ -6,7 +6,7 @@ BatimentQuadToit::BatimentQuadToit(Quad _c, int _type) : Chose(), c(_c), type(_t
 
 void BatimentQuadToit::getBoundingBoxPoints() {
 	addBBPoints(c);
-	addBBPoints(c + Vertex(0,0,height)); // TODO
+	addBBPoints(c + Vertex(0,0,200)); // TODO
 }
 
 void BatimentQuadToit::triangulation() {
