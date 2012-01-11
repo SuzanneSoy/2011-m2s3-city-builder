@@ -22,6 +22,11 @@ void BatimentQuadMur::setWindow(bool val) {
     windowPos = Quad(wBack[SE],wFront[SE],wFront[SW],wBack[SW]);
     windowPosh = Quad(wBack[NE],wFront[NE],wFront[NW],wBack[NW]);
 
+    //addGPUQuad(wFront,0xFF,0xFF,0x00);
+    //addGPUQuad(wBack,0xFF,0xFF,0x00);
+    //addGPUQuad(windowPos,0x90,0x90,0xFF);
+    //addGPUQuad(windowPosh,0x90,0x90,0xFF);
+
     //std::cout << "lr" << lr << std::endl;
     //std::cout << windowPos[NE] << std::endl;
     //std::cout << windowPos[SE] << std::endl;
@@ -34,7 +39,7 @@ bool BatimentQuadMur::split() {
         return false;
 
     Quad left = Quad(windowPos[NW],windowPos[SW],c[SW],c[NW]);
-    Quad lefth = Quad(windowPosh[NW],windowPosh[SE],ch[SW],ch[NW]);
+    Quad lefth = Quad(windowPosh[NW],windowPosh[SW],ch[SW],ch[NW]);
     Quad right = Quad(c[NE],c[SE],windowPos[SE],windowPos[NE]);
     Quad righth = Quad(ch[NE],ch[SE],windowPosh[SE],windowPosh[NE]);
 
@@ -50,5 +55,6 @@ void BatimentQuadMur::triangulation() {
     if(!window)
         addGPUOcto(c, ch, 0xf1,0xe3,0xad);
     else
-        addGPUOcto(c, ch, 0xFF,0x10,0x00);
+        //addGPUOcto(c, ch, 0xFF,0x10,0x00);
+        addGPUQuad(windowPosh,0xFF,0xFF,0x00);
 }
