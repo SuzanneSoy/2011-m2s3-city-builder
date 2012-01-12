@@ -10,7 +10,8 @@ void QuartierQuad_::getBoundingBoxPoints() {
 
 bool QuartierQuad_::split() {
 	bool small = c.minLength() < 3500;
-	bool isConcave = c.maxAngle() > Angle::d2r(160);
+	bool isConcave = c.isConcave();
+	//bool isConcave = c.maxAngle() > Angle::d2r(160);
 	bool anglesOk = c.minAngle() > Angle::d2r(90-40) && c.maxAngle() < Angle::d2r(90+40);
 	bool tooWideX = c.minLengthEW() * 2 < c.maxLengthNS(); // trop allongé (côté E ou W deux fois plus petit que le côté N ou S).
 	bool tooWideY = c.minLengthNS() * 2 < c.maxLengthEW(); // trop allongé (côté N ou S deux fois plus petit que le côté E ou W).
@@ -39,7 +40,12 @@ void QuartierQuad_::triangulation() {
 }
 
 void QuartierQuad_::concave() {
-	// TODO
+	// TODO À vérifier.
+	Triangle t1(c[c.concaveCorner()], c[c.concaveCorner()+1], c[c.concaveCorner()+2]);
+	Triangle t2(c[c.concaveCorner()+2], c[c.concaveCorner()+3], c[c.concaveCorner()]);
+
+	addChild(new QuartierTri_(t1));
+	addChild(new QuartierTri_(t2));
 }
 
 void QuartierQuad_::angleCote() {
