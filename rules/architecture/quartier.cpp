@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-QuartierQuad_::QuartierQuad_(Quad _c) : c(_c) {
+QuartierQuad_::QuartierQuad_(Quad _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 
@@ -20,11 +20,9 @@ bool QuartierQuad_::split() {
 	else if (!big && proba(seed, -1, 1, 20))
 		batiments();
 	else if (!small && !anglesOk)
-		angleAngle(); // TODO
-	else if (!small && tooWideY)
-		rect(); // TODO : Quad(c[NW], c[NE], c[SE], c[SW])
-	else if (!small && tooWideX)
-		rect(); // TODO : fusion avec ci-dessus
+		angleAngle(); // TODO : mettre aussi angleCote
+	else if (!small && (tooWideX || tooWideY))
+		rect();
 	else if (!small)
 		carre();
 	else
@@ -67,11 +65,12 @@ void QuartierQuad_::angleAngle() {
 }
 
 void QuartierQuad_::rect() {
-	Vertex n = Segment(c[NW], c[NE]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
-	Vertex s = Segment(c[SE], c[SW]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
+	Quad q = c << c.maxLengthSide();
+	Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
+	Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
 
-	addChild(new QuartierQuad_(Quad(c[NE], c[SE], s, n)));
-	addChild(new QuartierQuad_(Quad(c[SW], c[NW], n, s)));
+	addChild(new QuartierQuad_(Quad(q[NE], q[SE], s, n)));
+	addChild(new QuartierQuad_(Quad(q[SW], q[NW], n, s)));
 }
 
 void QuartierQuad_::carre() {
@@ -111,7 +110,7 @@ void QuartierQuad_::batiments() {
 	}
 }
 
-QuartierTri_::QuartierTri_(Triangle _c) : c(_c) {
+QuartierTri_::QuartierTri_(Triangle _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 

@@ -5,8 +5,7 @@ Déjà fait
  * quad : point central, deux points, deux points verticalement au-dessus des murs, plat.
  * tri : point central, trois points, un points verticalement au-dessus des murs, deux points verticaux, plat.
 * arche
- * en berceau
- * d'ogive
+ * quad : en berceau, d'ogive
 * quartier
  * quad : concave, angleAngle angleCote, rectangle, carre, (contient route + trottoir)
  * tri : centre, hauteur, trapeze, batiments (contient route + trottoir)

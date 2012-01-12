@@ -35,6 +35,8 @@ class Quad {
 	float maxLengthEW() const;
 	float minLength() const;
 	float maxLength() const;
+	Cardinal minLengthSide() const;
+	Cardinal maxLengthSide() const;
 	float angle(Coin corner) const;
 	float minAngle() const;
 	float maxAngle() const;

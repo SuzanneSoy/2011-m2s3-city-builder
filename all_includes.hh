@@ -49,16 +49,6 @@ class Chose;
 #include "rules/batiment/batimentquadmur.hh"
 #include "rules/batiment/batimentquadfenetre.hh"
 
-#include "rules/quartier/quartierquad.hh"
-#include "rules/quartier/quartierquadangle.hh"
-#include "rules/quartier/quartierquadconcave.hh"
-#include "rules/quartier/quartierquadcarre.hh"
-#include "rules/quartier/quartierquadrect.hh"
-#include "rules/quartier/quartiertri.hh"
-#include "rules/quartier/quartiertrihauteur.hh"
-#include "rules/quartier/quartiertritrapeze.hh"
-#include "rules/quartier/quartiertricentre.hh"
-
 #include "rules/route/routetrottoirquad.hh"
 #include "rules/route/routetrottoirtri.hh"
 #include "rules/route/routequadchaussee.hh"

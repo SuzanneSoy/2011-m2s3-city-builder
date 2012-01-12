@@ -10,7 +10,7 @@ int main() {
 	Vertex se(size, 0, 0);
 	Vertex sw(0, 0, 0);
 	Vertex nw(0, size, 0);
-	Chose* c = QuartierQuad::factory(Chose::initialSeed, 0, Quad(ne, se, sw, nw));
+	Chose* c = new QuartierQuad_(Quad(ne, se, sw, nw));
 	c->triangulation();
 	c->updateAABB();
 

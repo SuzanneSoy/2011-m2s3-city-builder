@@ -93,6 +93,28 @@ float Quad::maxLength() const {
 	return std::max(maxLengthNS(), maxLengthEW());
 }
 
+Cardinal Quad::minLengthSide() const {
+	float ln = length(N);
+	float le = length(E);
+	float ls = length(S);
+	float lw = length(W);
+	if (ln < le && ln < ls && ln < lw) return N;
+	else if (le < ls && le < lw) return E;
+	else if (ls < lw) return S;
+	else return W;
+}
+
+Cardinal Quad::maxLengthSide() const {
+	float ln = length(N);
+	float le = length(E);
+	float ls = length(S);
+	float lw = length(W);
+	if (ln > le && ln > ls && ln > lw) return N;
+	else if (le > ls && le > lw) return E;
+	else if (ls > lw) return S;
+	else return W;
+}
+
 float Quad::angle(Coin corner) const {
 	return Triangle(c[NW+corner], c[NE+corner], c[SE+corner]).angle();
 }

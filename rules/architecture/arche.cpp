@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-ArcheQuad::ArcheQuad(Quad _c, float _height, float _start, float _end) : c(_c), height(_height), start(_start), end(_end) {
+ArcheQuad::ArcheQuad(Quad _c, float _height, float _start, float _end) : Chose(), c(_c), height(_height), start(_start), end(_end) {
 	addEntropy(c);
 	addEntropy(height);
 }
