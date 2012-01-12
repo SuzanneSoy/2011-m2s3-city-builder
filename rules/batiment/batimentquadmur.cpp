@@ -14,7 +14,7 @@ void BatimentQuadMur::getBoundingBoxPoints() {
 void BatimentQuadMur::setWindow(bool val) {
     val = val;
     this->window = val;
-    Quad q = Quad(ch[SE],c[SE],c[SW],ch[SW]);
+    Quad q = Quad(ch[NE],c[NE],c[NW],ch[NW]);
     int lr = (q.length(S) - 120)/2;
 
     Quad wFront = q.insetNESW(90,lr,120,lr);
