@@ -157,6 +157,20 @@ Coin Quad::maxAngleCorner() const {
 	else return NW;
 }
 
+Coin Quad::concaveCorner() {
+    Vertex nne = Triangle(c[NW], c[NE], c[SE]).normal();
+    Vertex nse = Triangle(c[NE], c[SE], c[SW]).normal();
+    Vertex nsw = Triangle(c[SE], c[SW], c[NW]).normal();
+    Vertex nnw = Triangle(c[SW], c[NW], c[NE]).normal();
+
+    nne = nne;
+    nnw = nnw;
+    nse = nse;
+    nsw = nsw;
+
+    return NW;
+}
+
 Quad operator+(const Quad& q, const Vertex& v) {
 	return Quad(q[NE] + v, q[SE] + v, q[SW] + v, q[NW] + v);
 }
