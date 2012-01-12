@@ -37,6 +37,8 @@ class Chose;
 #include "rules/architecture/arche.hh"
 #include "rules/architecture/toit.hh"
 #include "rules/architecture/quartier.hh"
+#include "rules/architecture/terrain.hh"
+#include "rules/architecture/routetrottoir.hh"
 
 #include "rules/batiment/batimentquad.hh"
 #include "rules/batiment/batimentquadmaison.hh"
@@ -48,13 +50,5 @@ class Chose;
 #include "rules/batiment/batimenttri.hh"
 #include "rules/batiment/batimentquadmur.hh"
 #include "rules/batiment/batimentquadfenetre.hh"
-
-#include "rules/route/routetrottoirquad.hh"
-#include "rules/route/routetrottoirtri.hh"
-#include "rules/route/routequadchaussee.hh"
-#include "rules/route/trottoirquadnormal.hh"
-
-#include "rules/terrain/terrainquadherbe.hh"
-#include "rules/terrain/terraintriherbe.hh"
 
 #endif
