@@ -10,17 +10,16 @@ void QuartierQuad_::getBoundingBoxPoints() {
 
 bool QuartierQuad_::split() {
 	bool small = c.minLength() < 3500;
-	bool big = c.maxLength() >= 6000;
 	bool isConcave = c.maxAngle() > Angle::d2r(160);
 	bool anglesOk = c.minAngle() > Angle::d2r(90-40) && c.maxAngle() < Angle::d2r(90+40);
 	bool tooWideX = c.minLengthEW() * 2 < c.maxLengthNS(); // trop allongé (côté E ou W deux fois plus petit que le côté N ou S).
 	bool tooWideY = c.minLengthNS() * 2 < c.maxLengthEW(); // trop allongé (côté N ou S deux fois plus petit que le côté E ou W).
 	if (isConcave)
 		concave();
-	else if (!big && proba(seed, -1, 1, 20))
-		batiments();
+	else if (!small && !anglesOk && proba(seed, -2, 1, 2))
+		angleAngle();
 	else if (!small && !anglesOk)
-		angleAngle(); // TODO : mettre aussi angleCote
+		angleCote();
 	else if (!small && (tooWideX || tooWideY))
 		rect();
 	else if (!small)
@@ -32,7 +31,7 @@ bool QuartierQuad_::split() {
 
 void QuartierQuad_::triangulation() {
 	Quad ci = c.insetNESW(250 + 140); // TODO : factoriser cette longueur (largeur route + largeur trottoir).
-	Quad cih = c.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+	Quad cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
 	addGPUQuad(c, 0x36, 0x36, 0x36); // TODO : factoriser cette couleur (couleur de la route).
 	addGPUQuad(cih, 0xF1, 0xE0, 0xE0); // TODO : factoriser cette couleur (couleur des toits).
 	for (int i = 0; i < 4; i++)
@@ -97,13 +96,9 @@ void QuartierQuad_::batiments() {
 
 	// TODO :
 
-	bool small = c.minLength() < 2500;
-	bool big = c.maxLength() >= 5000;
 	bool anglesAcceptable = c.minAngle() > Angle::d2r(90-60) && c.maxAngle() < Angle::d2r(90+60);
 
-	if (!big && proba(seed, 0, 1, 20)) {
-		addChild(new TerrainQuad(qbatiments));
-	} else if (small && anglesAcceptable) {
+	if (anglesAcceptable && proba(seed, 0, 19, 20)) {
 		addChild(new BatimentQuad(qbatiments));
 	} else {
 		addChild(new TerrainQuad(qbatiments));
