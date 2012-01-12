@@ -125,16 +125,15 @@ void Chose::updateAABB() {
 	float dx = lod.aabb[1] - lod.aabb[0];
 	float dy = lod.aabb[3] - lod.aabb[2];
 	float dz = lod.aabb[5] - lod.aabb[4];
-	float volume = dx*dy*dz;
-	float pseudoLength = std::max(1.f, std::pow(volume, 1.f/3.f) / 1000.f);
-	float splitFactor = 24 * pseudoLength;
-	float mergeFactor = 25 * pseudoLength;
+	// TODO pour la pseudoLength sur l'axe x, utiliser y*z, pseudolength_y = x*z, pseudolength_z = x*y.
+	float pseudoLength = std::sqrt(dx*dy + dy*dz + dx*dz);
+	float splitIncrement = 5 * pseudoLength;
+	float mergeIncrement = 6 * pseudoLength;
 	for (int i = 0; i < 3; i++) {
-		float center = (lod.aabb[2*i] + lod.aabb[2*i+1]) / 2;
-		lod.splitBox[2*i] = (lod.aabb[2*i] - center) * splitFactor + center;
-		lod.splitBox[2*i+1] = (lod.aabb[2*i+1] - center) * splitFactor + center;
-		lod.mergeBox[2*i] = (lod.aabb[2*i] - center) * mergeFactor + center;
-		lod.mergeBox[2*i+1] = (lod.aabb[2*i+1] - center) * mergeFactor + center;
+		lod.splitBox[2*i] = lod.aabb[2*i] - splitIncrement;
+		lod.splitBox[2*i+1] = lod.aabb[2*i+1] + splitIncrement;
+		lod.mergeBox[2*i] = lod.aabb[2*i] - mergeIncrement;
+		lod.mergeBox[2*i+1] = lod.aabb[2*i+1] + splitIncrement;
 	}
 }
 
