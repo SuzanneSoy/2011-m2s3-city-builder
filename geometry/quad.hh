@@ -35,8 +35,11 @@ class Quad {
 	float maxLengthEW() const;
 	float minLength() const;
 	float maxLength() const;
+	float angle(Coin corner) const;
 	float minAngle() const;
 	float maxAngle() const;
+	Coin minAngleCorner() const;
+	Coin maxAngleCorner() const;
 	Vertex randomPoint(int seed, int n) const;
 	float surface() const;
 	//void cutCornerCorner(Coin from) const;

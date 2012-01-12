@@ -93,20 +93,46 @@ float Quad::maxLength() const {
 	return std::max(maxLengthNS(), maxLengthEW());
 }
 
+float Quad::angle(Coin corner) const {
+	return Triangle(c[NW+corner], c[NE+corner], c[SE+corner]).angle();
+}
+
 float Quad::minAngle() const {
-	float a = 370; // > 360.
-	for (int i = 0; i < 4; i++) {
-		a = std::min(a, Triangle(c[NE+i], c[SE+i], c[SW+i]).angle());
-	}
-	return a;
+	float ane = angle(NE);
+	float ase = angle(SE);
+	float asw = angle(SW);
+	float anw = 2*Angle::Pi - (ane + ase + asw);
+	return std::min(std::min(ane, ase), std::min(asw, anw));
 }
 
 float Quad::maxAngle() const {
-	float a = 0;
-	for (int i = 0; i < 4; i++) {
-		a = std::max(a, Triangle(c[NE+i], c[SE+i], c[SW+i]).angle());
-	}
-	return a;
+	float ane = angle(NE);
+	float ase = angle(SE);
+	float asw = angle(SW);
+	float anw = 2*Angle::Pi - (ane + ase + asw);
+	return std::max(std::max(ane, ase), std::max(asw, anw));
+}
+
+Coin Quad::minAngleCorner() const {
+	float ane = angle(NE);
+	float ase = angle(SE);
+	float asw = angle(SW);
+	float anw = 2*Angle::Pi - (ane + ase + asw);
+	if (ane < ase && ane < asw && ane < anw) return NE;
+	else if (ase < asw && ase < anw) return SE;
+	else if (asw < anw) return SW;
+	else return NW;
+}
+
+Coin Quad::maxAngleCorner() const {
+	float ane = angle(NE);
+	float ase = angle(SE);
+	float asw = angle(SW);
+	float anw = 2*Angle::Pi - (ane + ase + asw);
+	if (ane > ase && ane > asw && ane > anw) return NE;
+	else if (ase > asw && ase > anw) return SE;
+	else if (asw > anw) return SW;
+	else return NW;
 }
 
 Quad operator+(const Quad& q, const Vertex& v) {

@@ -1,6 +1,6 @@
 #include "all_includes.hh"
 
-// TODO : les x.insetNESW_LTR(x.minLength() / 3.f) sont faux (on risque d'avoir un triangle plus petit qu'1/3), il faudrait une fonction inset qui prend un float entre 0 et 1.
+// TODO : les x.insetNESW_LTR(x.minLength() / 3.f) sont faux (on risque d'avoir un triangle plus petit qu'⅓), il faudrait une fonction inset qui prend un float entre 0 et 1.
 
 ToitQuad::ToitQuad(Quad _c, float _height) : Chose(), c(_c), height(_height) {
 	addEntropy(c);
@@ -15,7 +15,7 @@ void ToitQuad::triangulation() {
 	switch (hash2(seed, -1) % 4) {
 	case 0: pointCentral(); break;
 	case 1: deuxPoints(); break;
-	case 2: deuxPointsVerticaux();
+	case 2: deuxPointsVerticaux(); break;
 	case 3:
 	default: plat(); break;
 	}

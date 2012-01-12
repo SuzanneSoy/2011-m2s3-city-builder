@@ -28,6 +28,24 @@ float Triangle::maxAngle() const {
 	return std::max(std::max(al, at), ar);
 }
 
+SommetTriangle Triangle::maxAngleCorner() const {
+	float at = angle();
+	float ar = Triangle(c[TOP],c[RIGHT],c[LEFT]).angle();
+	float al = Angle::Pi - at - ar;
+	if (al > at && al > ar) return LEFT;
+	else if (at > ar) return TOP;
+	else return RIGHT;
+}
+
+SommetTriangle Triangle::minAngleCorner() const {
+	float at = angle();
+	float ar = Triangle(c[TOP],c[RIGHT],c[LEFT]).angle();
+	float al = Angle::Pi - at - ar;
+	if (al < at && al < ar) return LEFT;
+	else if (at < ar) return TOP;
+	else return RIGHT;
+}
+
 float Triangle::minLength() const {
 	return std::min(std::min((c[LEFT] - c[TOP]).norm(), (c[TOP] - c[RIGHT]).norm()), (c[RIGHT] - c[LEFT]).norm());
 }

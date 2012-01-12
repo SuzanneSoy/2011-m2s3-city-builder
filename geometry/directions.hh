@@ -111,22 +111,6 @@ const CoteTriangle LEFTSIDE = CoteTriangle(0);
 const CoteTriangle RIGHTSIDE = CoteTriangle(1);
 const CoteTriangle BASE = CoteTriangle(2);
 
-/*
-enum SommetTriangle {
-       LEFT = 0,
-       TOP = 1,
-       RIGHT = 2
-};
-
-inline SommetTriangle operator+(SommetTriangle c, int i) {
-       return SommetTriangle((((int(c) + int(i)) % 3 ) + 3) % 3);
-}
-
-inline SommetTriangle operator-(SommetTriangle c, int i) {
-       return SommetTriangle((((int(c) - int(i)) % 3 ) + 3) % 3);
-}
-*/
-
 // Plus ou moins la même chose que CoteTriangle.
 class SommetTriangle {
 private:

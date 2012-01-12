@@ -1,44 +1,41 @@
-Rules
-=====
+Déjà fait
+=========
 
-* chose
+* toit
+ * quad : point central, deux points, deux points verticalement au-dessus des murs, plat.
+ * tri : point central, trois points, un points verticalement au-dessus des murs, deux points verticaux, plat.
+* arche
+ * en berceau
+ * d'ogive
+* quartier
+ * quad : concave, angleAngle angleCote, rectangle, carre, (contient route + trottoir)
+ * tri : centre, hauteur, trapeze, batiments (contient route + trottoir)
+
+À faire
+=======
+
 * batiment
- * batimentquad (sorte de factory interne, fait un addChild : trottoirs (chosit le bon type), jardin (choisir le bon type, batimentquadmaison ou batimentquadimmeuble ou …)
- * batimentquadmaison
- * batimentquadimmeuble
- * etagequad (factory, représente un étage d'une maison ou d'un immeuble par ex).
- * piecequad (factory, représente une pièce d'un étage)
- * ouverturequad (factory, paramètre décide si porte ou fenêtre, génère 2 ou 3 modèles de portes ou fenêtre)
- * pareil pour les tri et penta
- * ponts, ponts avec maison au-dessus, …
+ * jardin
+ * cour intérieure
+ * 1 étage, 2 étages, immeuble
+ * étages
+ * découpage en pièces
+ * position des portes, fenêtres, escaliers
 * mobilier (intérieur et extérieur)
+ * murs
+ * portes
+ * fenêtres
  * escalier
  * table
- * statue
+ * chaises
  * banc
-* quartier
- * quartierquad (factory)
- * quartierquadangle
- * quartierquadcarre
- * quartierquadrect
- * quartiertri (factory)
- * quartiertrihauteur (coupe le triangle selon sa hauteur)
- * quartiertriverscarre (coupe un coin du triangle pour en faire un carré)
- * quartiertriverspenta (coupe un coin du triangle pour en faire un pentagone)
- * quartierpenta (factory)
- * quelques motifs quartierpenta*
- * quelques motifs qui prévoient des ponts
-* route
- * routequad (factory, paramètre indique si l'on veut un carrefour ou une chaussee ou …)
- * routequadcarrefour
- * routequadchaussee
- * routequadparking
- * trottoirquad (factory, paramètre indique s'il faut un bateau, …)
- * trottoirquadnormal
- * trottoirquadbas (la partie basse du bateau)
- * trottoirquadpente (la pente du bateau)
- * trottoirquadbateau (se subdivise en 3 trottoirquad* : pente + bas + pente)
- * un motif pour faire une place
+ * au moins une statue, fontaine ou autre.
+* quartiers spéciaux
+ * longue route bordée de deux enfilades de maisons (prévoir la place pour un / des bâtiment(s) avec arche dans le sens de la rue).
+ * longue enfilade de maisons bordée de deux routes (prévoir la place pour un / des bâtiment(s) avec arche qui fait un raccourci pour ne pas faire tout le tour).
+ * place (polygone de route d'une couleur différente, avec possiblement un petit bâtiment au milieu).
+ * canaux + ponts + bâtiment(s) avec arche au-dessus.
+* route + trottoir
 * terrain
- * terrainquadherbe
- * d'autres terrains…
+ * herbe
+ * mettre un peu de relief dans l'herbe

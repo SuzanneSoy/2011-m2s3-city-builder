@@ -32,12 +32,10 @@ float ArcheQuad::f(float x) {
 	}
 }
 
-// Fonction fausse
 float ArcheQuad::ogive(float x) {
 	return sin(acos(abs(x / 2.f) + 1.f/2.f));
 }
 
-// Fonction fausse
 float ArcheQuad::berceau(float x) {
 	return sin(acos(x));
 }

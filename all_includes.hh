@@ -36,6 +36,7 @@ class Chose;
 
 #include "rules/architecture/arche.hh"
 #include "rules/architecture/toit.hh"
+#include "rules/architecture/quartier.hh"
 
 #include "rules/batiment/batimentquad.hh"
 #include "rules/batiment/batimentquadmaison.hh"

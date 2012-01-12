@@ -24,9 +24,11 @@ public :
 	}
 	friend Triangle operator+(const Triangle& t, const Vertex& v);
 	float cosAngle() const; // cosinus de l'angle en c[1].
-	float angle() const; // angle en c[1], en degrés. TODO : le calcul ne donne que des angles entre 0 et 180 !
+	float angle() const; // angle en c[TOP], en degrés.
 	float minAngle() const; // angle minimum du triangle (en LEFT, TOP ou RIGHT).
 	float maxAngle() const; // angle maximum du triangle (en LEFT, TOP ou RIGHT).
+	SommetTriangle minAngleCorner() const;
+	SommetTriangle maxAngleCorner() const;
 	float minLength() const;
 	float maxLength() const;
 	float surface() const;
