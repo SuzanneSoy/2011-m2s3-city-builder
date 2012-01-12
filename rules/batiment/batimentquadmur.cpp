@@ -18,9 +18,9 @@ void BatimentQuadMur::setWindow(bool val) {
     int lr = (q.length(S) - 100)/2;
 
     Quad wFront = q.insetNESW(40,lr,110,lr);
-    Quad wBack = wFront.offsetNormal(28);
-    windowPos = Quad(wBack[SE],wFront[SE],wFront[SW],wBack[SW]);
-    windowPosh = Quad(wBack[NE],wFront[NE],wFront[NW],wBack[NW]);
+    Quad wBack = wFront.offsetNormal(280);
+    windowPos = Quad(wFront[SE],wBack[SE],wBack[SW],wFront[SW]);
+    windowPosh = Quad(wFront[NE],wBack[NE],wBack[NW],wFront[NW]);
 
     //addGPUQuad(wFront,0xFF,0xFF,0x00);
     //addGPUQuad(wBack,0xFF,0xFF,0x00);
@@ -38,11 +38,13 @@ bool BatimentQuadMur::split() {
     if(!window)
         return false;
 
-    Quad left = Quad(windowPos[NW],windowPos[SW],c[SW],c[NW]);
-    Quad lefth = Quad(windowPosh[NW],windowPosh[SW],ch[SW],ch[NW]);
-    Quad right = Quad(c[NE],c[SE],windowPos[SE],windowPos[NE]);
-    Quad righth = Quad(ch[NE],ch[SE],windowPosh[SE],windowPosh[NE]);
-
+    Quad right = Quad(windowPos[NW],windowPos[SW],c[SW],c[NW]);
+    Quad righth = Quad(windowPosh[NW],windowPosh[SW],ch[SW],ch[NW]);
+    Quad left = Quad(c[NE],c[SE],windowPos[SE],windowPos[NE]);
+    Quad lefth = Quad(ch[NE],ch[SE],windowPosh[SE],windowPosh[NE]);
+    Quad top = Quad(windowPosh[NE],windowPosh[NW],windowPosh[SW],windowPosh[SE]);
+//addGPUQuad(windowPosh[NE],top[NW],ch[NW],ch[NE],0xFF,0x90,0x90);
+//addGPUQuad(ch,0x80,0x80,0xFF);
     addChild(new BatimentQuadMur(c,windowPos));
     addChild(new BatimentQuadMur(windowPosh,ch));
     addChild(new BatimentQuadMur(left,lefth));
@@ -54,7 +56,7 @@ bool BatimentQuadMur::split() {
 void BatimentQuadMur::triangulation() {
     if(!window)
         addGPUOcto(c, ch, 0xf1,0xe3,0xad);
-    else
+    //else
         //addGPUOcto(c, ch, 0xFF,0x10,0x00);
-        addGPUQuad(windowPosh,0xFF,0xFF,0x00);
+        //addGPUQuad(windowPosh,0xFF,0xFF,0x00);
 }
