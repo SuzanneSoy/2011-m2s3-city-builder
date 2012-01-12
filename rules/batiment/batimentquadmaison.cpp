@@ -16,7 +16,7 @@ bool BatimentQuadMaison::split() {
 	Vertex toit = (ch[NE] + ch[SE] + ch[SW] + ch[NW]) / 4 + Vertex(0,0,htoit);
 
 	addChild(new BatimentQuadBlock(c,ch));
-	//addChild(new BatimentQuadToit(ch,1));
+	addChild(new BatimentQuadToit(ch,1));
     return true;
 }
 

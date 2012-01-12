@@ -43,7 +43,7 @@ void Chose::addGPUOcto(Vertex ne, Vertex se, Vertex sw, Vertex nw,
 }
 
 void Chose::addGPUOcto(Quad q, Quad qh, unsigned char r, unsigned char g, unsigned char b) {
-    this->addGPUQuad(q[NE], q[SE], q[SW], q[NW], r, g, b);
+    this->addGPUQuad(q[SE], q[NE], q[NW], q[SW], r, g, b);
     this->addGPUQuad(qh[NE], qh[SE], qh[SW], qh[NW], r, g, b);
     for (int i = 0; i < 4; i++)
     	this->addGPUQuad(q[NE+i], q[SE+i], qh[SE+i], qh[NE+i], r, g, b);
