@@ -5,7 +5,7 @@ QuartierQuad_::QuartierQuad_(Quad _c) : Chose(), c(_c) {
 }
 
 void QuartierQuad_::getBoundingBoxPoints() {
-	addBBPoints(c, 6000); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+	addBBPoints(c, 600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
 }
 
 bool QuartierQuad_::split() {
@@ -32,7 +32,7 @@ bool QuartierQuad_::split() {
 
 void QuartierQuad_::triangulation() {
 	Quad ci = c.insetNESW(250 + 140); // TODO : factoriser cette longueur (largeur route + largeur trottoir).
-	Quad cih = c.offsetNormal(6000); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+	Quad cih = c.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
 	addGPUQuad(c, 0x36, 0x36, 0x36); // TODO : factoriser cette couleur (couleur de la route).
 	addGPUQuad(cih, 0xF1, 0xE0, 0xE0); // TODO : factoriser cette couleur (couleur des toits).
 	for (int i = 0; i < 4; i++)
@@ -91,8 +91,8 @@ void QuartierQuad_::batiments() {
 	Quad qbatiments = qinterieur.offsetNormal(hauteurTrottoir);
 
 	for (int i = 0; i < 4; i++) {
-		addChild(new RouteQuadChaussee(Quad(c[NE+i],c[SE+i],qtrottoir[SE+i],qtrottoir[NE+i])));
-		addChild(new TrottoirQuadNormal(Quad(qtrottoir[NE+i],qtrottoir[SE+i],qinterieur[SE+i],qinterieur[NE+i]),hauteurTrottoir));
+		addChild(new RouteQuad(Quad(c[NE+i],c[SE+i],qtrottoir[SE+i],qtrottoir[NE+i])));
+		addChild(new TrottoirQuad(Quad(qtrottoir[NE+i],qtrottoir[SE+i],qinterieur[SE+i],qinterieur[NE+i]),hauteurTrottoir));
 	}
 
 	// TODO :
@@ -102,11 +102,11 @@ void QuartierQuad_::batiments() {
 	bool anglesAcceptable = c.minAngle() > Angle::d2r(90-60) && c.maxAngle() < Angle::d2r(90+60);
 
 	if (!big && proba(seed, 0, 1, 20)) {
-		addChild(new TerrainQuadHerbe(qbatiments));
+		addChild(new TerrainQuad(qbatiments));
 	} else if (small && anglesAcceptable) {
 		addChild(new BatimentQuad(qbatiments));
 	} else {
-		addChild(new TerrainQuadHerbe(qbatiments));
+		addChild(new TerrainQuad(qbatiments));
 	}
 }
 
@@ -115,7 +115,7 @@ QuartierTri_::QuartierTri_(Triangle _c) : Chose(), c(_c) {
 }
 
 void QuartierTri_::getBoundingBoxPoints() {
-	addBBPoints(c, 6000); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+	addBBPoints(c, 600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
 }
 
 bool QuartierTri_::split() {
@@ -150,7 +150,7 @@ bool QuartierTri_::split() {
 
 void QuartierTri_::triangulation() {
 	Triangle ci = c.insetLTR(250 + 140); // TODO : factoriser cette longueur (largeur route + largeur trottoir).
-	Triangle cih = c.offsetNormal(6000); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+	Triangle cih = c.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
 	addGPUTriangle(c, 0x36, 0x36, 0x36); // TODO : factoriser cette couleur (couleur de la route).
 	addGPUTriangle(cih, 0xF1, 0xE0, 0xE0); // TODO : factoriser cette couleur (couleur des toits).
 	for (int i = 0; i < 3; i++)
@@ -193,8 +193,8 @@ void QuartierTri_::batiments() {
 	Triangle tbatiments = tinterieur.offsetNormal(hauteurTrottoir);
 
 	for (int i = 0; i < 3; i++) {
-		addChild(new RouteQuadChaussee(Quad(c[LEFT+i],c[TOP+i],ttrottoir[TOP+i],ttrottoir[LEFT+i])));
-		addChild(new TrottoirQuadNormal(Quad(ttrottoir[LEFT+i],ttrottoir[TOP+i],tinterieur[TOP+i],tinterieur[LEFT+i]),hauteurTrottoir));
+		addChild(new RouteQuad(Quad(c[LEFT+i],c[TOP+i],ttrottoir[TOP+i],ttrottoir[LEFT+i])));
+		addChild(new TrottoirQuad(Quad(ttrottoir[LEFT+i],ttrottoir[TOP+i],tinterieur[TOP+i],tinterieur[LEFT+i]),hauteurTrottoir));
 	}
 
 	// TODO :
@@ -204,10 +204,10 @@ void QuartierTri_::batiments() {
 	bool anglesAcceptable = tbatiments.minAngle() > Angle::d2r(30) && tbatiments.maxAngle() < Angle::d2r(120);
 
 	if (!big && proba(seed, 0, 1, 20)) {
-		addChild(new TerrainTriHerbe(tbatiments));
+		addChild(new TerrainTri(tbatiments));
 	} else if (small && anglesAcceptable) {
 		addChild(new BatimentTri(tbatiments));
 	} else {
-		addChild(new TerrainTriHerbe(tbatiments));
+		addChild(new TerrainTri(tbatiments));
 	}
 }
