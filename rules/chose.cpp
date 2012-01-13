@@ -120,16 +120,20 @@ void Chose::addBBPoints(const Quad q, float height) {
 }
 
 void Chose::updateAABB() {
+	float splitFactor = 5.f;
+	float mergeFactor = 6.f;
 	lod.firstBBPoint = true;
 	getBoundingBoxPoints();
-	float dx = lod.aabb[1] - lod.aabb[0];
-	float dy = lod.aabb[3] - lod.aabb[2];
-	float dz = lod.aabb[5] - lod.aabb[4];
-	// TODO pour la pseudoLength sur l'axe x, utiliser y*z, pseudolength_y = x*z, pseudolength_z = x*y.
-	float pseudoLength = std::sqrt(dx*dy + dy*dz + dx*dz);
-	float splitIncrement = 5 * pseudoLength;
-	float mergeIncrement = 6 * pseudoLength;
+	float size[3];
+	for (int i = 0; i < 3; i++)
+		size[i] = lod.aabb[2*i+1] - lod.aabb[2*i];
+	float areaFacing[3];
+	for (int i = 0; i < 3; i++)
+		areaFacing[i] = size[(i+1)%3]*size[(i+1)%3];
 	for (int i = 0; i < 3; i++) {
+		float pseudoLength = std::max(1.f, std::sqrt(areaFacing[i] + areaFacing[(i+1)%3] / 2.f + areaFacing[(i+1)%3] / 2.f));
+		float splitIncrement = std::min((float)View::backFrustum, splitFactor * pseudoLength);
+		float mergeIncrement = std::min(View::backFrustum * mergeFactor/splitFactor, mergeFactor * pseudoLength);
 		lod.splitBox[2*i] = lod.aabb[2*i] - splitIncrement;
 		lod.splitBox[2*i+1] = lod.aabb[2*i+1] + splitIncrement;
 		lod.mergeBox[2*i] = lod.aabb[2*i] - mergeIncrement;

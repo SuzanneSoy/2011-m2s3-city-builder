@@ -24,7 +24,7 @@ void View::initWindow() {
 	SDL_SetVideoMode(windowWidth, windowHeight, 32, SDL_OPENGL);
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	gluPerspective(70,(double)windowWidth/windowHeight,1,100000); // back frustum : 1km
+	gluPerspective(70,(double)windowWidth/windowHeight,frontFrustum,backFrustum);
 	glEnable(GL_DEPTH_TEST);
 	glewInit();
 
