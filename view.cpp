@@ -9,7 +9,7 @@ View::View(Chose* _root)
 	fogColor[1] = 0.5;
 	fogColor[2] = 0.5;
 	fogColor[3] = 1.0;
-	density = 0.000015;
+	density = 0.00001;
 	initWindow();
 	mainLoop();
 }
