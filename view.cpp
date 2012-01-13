@@ -51,7 +51,7 @@ void View::initWindow() {
     glFogi (GL_FOG_MODE, GL_EXP2);
     glFogfv (GL_FOG_COLOR, fogColor);
     glFogf (GL_FOG_DENSITY, density);
-    glHint (GL_FOG_HINT, GL_NICEST);
+    //glHint (GL_FOG_HINT, GL_NICEST);
 }
 
 void View::setLight() {
@@ -104,31 +104,31 @@ void View::renderScene(int lastTime, int currentTime) {
 
 	setLight();
 	//displayAxes();
-	int x = 0;
-	int y = 0;
-	int z = 0;
-	int d = 40000;
+	int z = 40000;
+	int d = 70000;
     glDisable(GL_LIGHTING);
+    glPushMatrix();
+    glTranslated(camera.cameraCenter.x,camera.cameraCenter.y,0);
     for(int ii=0; ii<4;ii++) {
         glBegin(GL_QUADS);
             glColor3ub(128,128,255);
-            glVertex3f(x-d,y+d,z-d);
-            glVertex3f(x+d,y+d,z-d);
+            glVertex3f(-d,d,z-d);
+            glVertex3f(d,d,z-d);
             glColor3ub(60,20,255);
-            glVertex3f(x+d,y+d,z+d);
-            glVertex3f(x-d,y+d,z+d);
+            glVertex3f(d,d,z+d);
+            glVertex3f(-d,d,z+d);
         glEnd();
         glRotated(90,0,0,1);
     }
 
     glBegin(GL_QUADS);
         glColor3ub(60,20,255);
-        glVertex3f(x-d,y+d,z+d);
-        glVertex3f(x+d,y+d,z+d);
-        glVertex3f(x+d,y-d,z+d);
-        glVertex3f(x-d,y-d,z+d);
+        glVertex3f(-d,d,z+d);
+        glVertex3f(d,d,z+d);
+        glVertex3f(d,-d,z+d);
+        glVertex3f(-d,-d,z+d);
     glEnd();
-
+    glPopMatrix();
     glEnable(GL_LIGHTING);
 
 	glBegin(GL_TRIANGLES);

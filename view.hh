@@ -38,7 +38,7 @@ private :
 public :
 	Camera camera;
 	static const int frontFrustum = 1;
-	static const int backFrustum = 100000; // 1km
+	static const int backFrustum = 140000; // 1km
 private:
 	Lod lod;
     GLfloat fogColor[4];
