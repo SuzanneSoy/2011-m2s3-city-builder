@@ -92,6 +92,33 @@ void View::renderScene(int lastTime, int currentTime) {
 
 	setLight();
 	//displayAxes();
+	int x = 0;
+	int y = 0;
+	int z = 0;
+	int d = 40000;
+    glDisable(GL_LIGHTING);
+    for(int ii=0; ii<4;ii++) {
+        glBegin(GL_QUADS);
+            glColor3ub(128,128,255);
+            glVertex3f(x-d,y+d,z-d);
+            glVertex3f(x+d,y+d,z-d);
+            glColor3ub(60,20,255);
+            glVertex3f(x+d,y+d,z+d);
+            glVertex3f(x-d,y+d,z+d);
+        glEnd();
+        glRotated(90,0,0,1);
+    }
+
+    glBegin(GL_QUADS);
+        glColor(60,20,255);
+        glVertex3f(x-d,y+d,z+d);
+        glVertex3f(x+d,y+d,z+d);
+        glVertex3f(x+d,y-d,z+d);
+        glVertex3f(x-d,y-d,z+d);
+    glEnd();
+
+    glEnable(GL_LIGHTING);
+
 	glBegin(GL_TRIANGLES);
 	root->display();
 	glEnd();
