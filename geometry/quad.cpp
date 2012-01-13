@@ -157,6 +157,48 @@ Coin Quad::maxAngleCorner() const {
 	else return NW;
 }
 
+Coin Quad::concaveCorner() {
+    Vertex nne = Triangle(c[NW], c[NE], c[SE]).normalizedNormal();
+    Vertex nse = Triangle(c[NE], c[SE], c[SW]).normalizedNormal();
+    Vertex nsw = Triangle(c[SE], c[SW], c[NW]).normalizedNormal();
+    Vertex nnw = Triangle(c[SW], c[NW], c[NE]).normalizedNormal();
+
+    float dne1 = (nnw - nne).norm();
+    float dne2 = (nse - nne).norm();
+    float dse1 = (nne - nse).norm();
+    float dse2 = (nsw - nse).norm();
+    float dsw1 = (nse - nsw).norm();
+    float dsw2 = (nnw - nsw).norm();
+    //float dnw1 = (nsw - nnw).norm();
+    //float dnw2 = (nne - nnw).norm();
+
+    if(dne1 >= 1.5 && dne2 >= 1.5)
+        return NE;
+    else if(dse1 >= 1.5 && dse2 >= 1.5)
+        return SE;
+    else if(dsw1 >= 1.5 && dsw2 >= 1.5)
+        return SW;
+    else
+        return NW;
+}
+
+bool Quad::isConcave() {
+    Vertex nne = Triangle(c[NW], c[NE], c[SE]).normalizedNormal();
+    Vertex nse = Triangle(c[NE], c[SE], c[SW]).normalizedNormal();
+    Vertex nsw = Triangle(c[SE], c[SW], c[NW]).normalizedNormal();
+    Vertex nnw = Triangle(c[SW], c[NW], c[NE]).normalizedNormal();
+
+    float dne1 = (nnw - nne).norm();
+    float dse1 = (nne - nse).norm();
+    float dsw1 = (nse - nsw).norm();
+    float dnw1 = (nsw - nnw).norm();
+
+    if(dne1 >= 1.5 || dse1 >= 1.5 || dsw1 >= 1.5 || dnw1 >= 1.5)
+        return true;
+
+    return false;
+}
+
 Quad operator+(const Quad& q, const Vertex& v) {
 	return Quad(q[NE] + v, q[SE] + v, q[SW] + v, q[NW] + v);
 }
