@@ -43,8 +43,7 @@ void BatimentTri::triangulation() {
 	// float htoit = hashInRange(seed,2,minHeight/2,maxHeight/2);
 
 	Triangle ch = c + Vertex(0,0,h);
-	addGPUTriangle(c, 0xFF, 0xFF, 0x00);
-	addGPUTriangle(ch, 0xFF, 0xFF, 0x00);
+	addGPUTriangle(ch, Couleurs::toit);
 	for (int i = 0; i < 3; i++)
-		addGPUQuad(c[LEFT+i], c[TOP+i], ch[TOP+i], ch[LEFT+i], 0xFF, 0xFF, 0x00);
+		addGPUQuad(c[LEFT+i], c[TOP+i], ch[TOP+i], ch[LEFT+i], Couleurs::mur);
 }

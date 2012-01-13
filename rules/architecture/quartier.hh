@@ -3,11 +3,11 @@
 
 #include "all_includes.hh"
 
-class QuartierQuad_: public Chose {
+class QuartierQuad: public Chose {
 private:
 	Quad c;
 public:
-	QuartierQuad_(Quad _c);
+	QuartierQuad(Quad _c);
 	virtual void getBoundingBoxPoints();
 	virtual bool split();
 	virtual void triangulation();
@@ -20,11 +20,11 @@ private:
 	void batiments();
 };
 
-class QuartierTri_: public Chose {
+class QuartierTri: public Chose {
 private:
 	Triangle c;
 public:
-	QuartierTri_(Triangle _c);
+	QuartierTri(Triangle _c);
 	virtual void getBoundingBoxPoints();
 	virtual bool split();
 	virtual void triangulation();

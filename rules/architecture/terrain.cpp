@@ -12,7 +12,7 @@ void TerrainQuad::getBoundingBoxPoints() {
 }
 
 void TerrainQuad::triangulation() {
-	addGPUQuad(c, 0x11, 0xaa, 0x22);
+	addGPUQuad(c, Couleurs::herbe);
 }
 
 TerrainTri::TerrainTri(Triangle _c) : Chose(), c(_c) {
@@ -27,5 +27,5 @@ void TerrainTri::getBoundingBoxPoints() {
 }
 
 void TerrainTri::triangulation() {
-	addGPUTriangle(c, 0x11, 0xaa, 0x22);
+	addGPUTriangle(c, Couleurs::herbe);
 }

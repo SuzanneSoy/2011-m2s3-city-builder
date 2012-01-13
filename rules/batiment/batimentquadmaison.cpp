@@ -28,9 +28,9 @@ void BatimentQuadMaison::triangulation() {
 	Quad ch = c + Vertex(0,0,h);
 	Vertex toit = (ch[NE] + ch[SE] + ch[SW] + ch[NW]) / 4 + Vertex(0,0,htoit);
 
-    addGPUOcto(c,ch,0xf1,0xe3,0xad);
+    addGPUOcto(c,ch,Couleurs::mur);
 
 	for (int i = 0; i < 4; i++) {
-		addGPUTriangle(ch[SE+i],toit,ch[NE+i],0x96,0x16,0x18);
+		addGPUTriangle(ch[SE+i],toit,ch[NE+i],0x961618);
 	}
 }

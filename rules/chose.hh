@@ -62,14 +62,14 @@ class Chose {
 	}
 	void addChild(Chose* c);
 
-	void addGPUTriangle(Vertex left, Vertex top, Vertex right, unsigned char r, unsigned char g, unsigned char b);
-	void addGPUTriangle(Triangle t, unsigned char r, unsigned char g, unsigned char b);
-	void addGPUQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, unsigned char r, unsigned char g, unsigned char b);
-	void addGPUQuad(Quad q, unsigned char r, unsigned char g, unsigned char b);
+	void addGPUTriangle(Vertex left, Vertex top, Vertex right, unsigned int rgb);
+	void addGPUTriangle(Triangle t, unsigned int rgb);
+	void addGPUQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, unsigned int rgb);
+	void addGPUQuad(Quad q, unsigned int rgb);
 	void addGPUOcto(Vertex ne, Vertex se, Vertex sw, Vertex nw,
 			Vertex neh, Vertex seh, Vertex swh, Vertex nwh,
-			unsigned char r, unsigned char g, unsigned char b);
-	void addGPUOcto(Quad q, Quad qh, unsigned char r, unsigned char g, unsigned char b);
+			unsigned int rgb);
+	void addGPUOcto(Quad q, Quad qh, unsigned int rgb);
 };
 
 #endif

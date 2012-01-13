@@ -17,11 +17,6 @@ public:
 	float f(float x);
 	float ogive(float x);
 	float berceau(float x);
-private:
-	 // TODO : couleur de l'arche
-	static const char r = 0xF1; // TODO : factoriser cette couleur (couleur des murs des faux bâtiments).
-	static const char g = 0xE3;
-	static const char b = 0xAD;
 };
 
 #endif

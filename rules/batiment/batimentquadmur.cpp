@@ -43,7 +43,7 @@ bool BatimentQuadMur::split() {
 
 void BatimentQuadMur::triangulation() {
     if(!window)
-        addGPUOcto(c, ch, 0xf1,0xe3,0xad);
+        addGPUOcto(c, ch, Couleurs::mur);
     //else
         //addGPUOcto(c, ch, 0xFF,0x10,0x00);
         //addGPUQuad(windowPosh,0xFF,0xFF,0x00);

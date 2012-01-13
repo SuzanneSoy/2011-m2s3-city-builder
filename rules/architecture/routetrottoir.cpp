@@ -13,9 +13,9 @@ void TrottoirQuad::triangulation() {
 	Quad ch = c.offsetNormal(height);
 	Quad bordureh = ch.inset(E,15);
 
-	addGPUQuad(c[NE], c[SE], ch[SE], ch[NE], 0xAA, 0xAA, 0xAA);
-	addGPUQuad(ch[NE], ch[SE], bordureh[SE], bordureh[NE], 0xAA, 0xAA, 0xAA);
-	addGPUQuad(bordureh, 0x66, 0x66, 0x66);
+	addGPUQuad(c[NE], c[SE], ch[SE], ch[NE], Couleurs::bordureTrottoir);
+	addGPUQuad(ch[NE], ch[SE], bordureh[SE], bordureh[NE], Couleurs::bordureTrottoir);
+	addGPUQuad(bordureh, Couleurs::trottoir);
 }
 
 RouteQuad::RouteQuad(Quad _c) : Chose(), c(_c) {
@@ -30,5 +30,5 @@ void RouteQuad::getBoundingBoxPoints() {
 }
 
 void RouteQuad::triangulation() {
-	addGPUQuad(c, 0x36, 0x36, 0x36);
+	addGPUQuad(c, Couleurs::route);
 }

@@ -25,7 +25,7 @@ void ToitQuad::pointCentral() {
 	Quad qh = c.offsetNormal(height);
 	Vertex center = qh.insetNESW(qh.minLength() / 3.f).randomPoint(seed, 0);
 	for (int i = 0; i < 4; i++)
-		addGPUTriangle(c[NE+i], center, c[SE+i], r, g, b);
+		addGPUTriangle(c[NE+i], center, c[SE+i], Couleurs::toit);
 }
 
 void ToitQuad::deuxPoints() {
@@ -36,10 +36,10 @@ void ToitQuad::deuxPoints() {
 	Vertex e = Segment(qh[NE], qh[SE]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
 	Vertex centerE = Segment(e,w).randomPos(seed, 2, 0.6f, 0.8f);
 	Vertex centerW = Segment(e,w).randomPos(seed, 2, 0.2f, 0.4f);
-	addGPUTriangle(q[NE], centerE, q[SE], r, g, b);
-	addGPUTriangle(q[SW], centerW, q[NW], r, g, b);
-	addGPUQuad(q[SE], q[SW], centerW, centerE, r, g, b);
-	addGPUQuad(q[NW], q[NE], centerE, centerW, r, g, b);
+	addGPUTriangle(q[NE], centerE, q[SE], Couleurs::toit);
+	addGPUTriangle(q[SW], centerW, q[NW], Couleurs::toit);
+	addGPUQuad(q[SE], q[SW], centerW, centerE, Couleurs::toit);
+	addGPUQuad(q[NW], q[NE], centerE, centerW, Couleurs::toit);
 }
 
 void ToitQuad::deuxPointsVerticaux() {
@@ -48,14 +48,14 @@ void ToitQuad::deuxPointsVerticaux() {
 	Quad qh = q.offsetNormal(height);
 	Vertex w = Segment(qh[NW], qh[SW]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
 	Vertex e = Segment(qh[NE], qh[SE]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
-	addGPUTriangle(q[NE], e, q[SE], r, g, b); // TODO : devrait être couleur mur.
-	addGPUTriangle(q[SW], w, q[NW], r, g, b); // TODO : devrait être couleur mur.
-	addGPUQuad(q[SE], q[SW], w, e, r, g, b);
-	addGPUQuad(q[NW], q[NE], e, w, r, g, b);
+	addGPUTriangle(q[NE], e, q[SE], Couleurs::toit); // TODO : devrait être couleur mur.
+	addGPUTriangle(q[SW], w, q[NW], Couleurs::toit); // TODO : devrait être couleur mur.
+	addGPUQuad(q[SE], q[SW], w, e, Couleurs::toit);
+	addGPUQuad(q[NW], q[NE], e, w, Couleurs::toit);
 }
 
 void ToitQuad::plat() {
-	addGPUQuad(c, r, g, b);
+	addGPUQuad(c, Couleurs::toit);
 }
 
 ToitTri::ToitTri(Triangle _c, float _height) : Chose(), c(_c), height(_height) {
@@ -82,35 +82,35 @@ void ToitTri::pointCentral() {
 	Triangle th = c.offsetNormal(height);
 	Vertex center = th.insetLTR(th.minLength() / 3.f).randomPoint(seed, 0);
 	for (int i = 0; i < 3; i++)
-		addGPUTriangle(c[LEFT+i], center, c[TOP+i], r, g, b);
+		addGPUTriangle(c[LEFT+i], center, c[TOP+i], Couleurs::toit);
 }
 
 void ToitTri::troisPoints() {
 	Triangle th = c.offsetNormal(height).insetLTR(c.minLength() / 3.f);
-	addGPUTriangle(th, r, g, b);
+	addGPUTriangle(th, Couleurs::toit);
 	for (int i = 0; i < 3; i++)
-		addGPUQuad(c[LEFT], c[TOP], th[TOP], th[LEFT], r, g, b);
+		addGPUQuad(c[LEFT], c[TOP], th[TOP], th[LEFT], Couleurs::toit);
 }
 
 void ToitTri::unPointVertical() {
 	// Rotation aléatoire du triangle
 	Triangle t = c >> (hash2(seed, 0) % 3);
 	Triangle th = t.offsetNormal(height);
-	addGPUTriangle(t[LEFT], th[TOP], t[RIGHT], r, g, b);
-	addGPUTriangle(t[TOP], th[TOP], t[LEFT], r, g, b);
-	addGPUTriangle(t[RIGHT], th[TOP], t[TOP], r, g, b);
+	addGPUTriangle(t[LEFT], th[TOP], t[RIGHT], Couleurs::toit);
+	addGPUTriangle(t[TOP], th[TOP], t[LEFT], Couleurs::toit);
+	addGPUTriangle(t[RIGHT], th[TOP], t[TOP], Couleurs::toit);
 }
 
 void ToitTri::deuxPointsVerticaux() {
 	// Rotation aléatoire du triangle
 	Triangle t = c >> (hash2(seed, 0) % 3);
 	Triangle th = t.offsetNormal(height);
-	addGPUTriangle(th[LEFT], t[TOP], th[RIGHT], r, g, b);
-	addGPUTriangle(t[TOP], th[LEFT], t[LEFT], r, g, b);
-	addGPUTriangle(t[RIGHT], th[RIGHT], t[TOP], r, g, b);
+	addGPUTriangle(th[LEFT], t[TOP], th[RIGHT], Couleurs::toit);
+	addGPUTriangle(t[TOP], th[LEFT], t[LEFT], Couleurs::toit);
+	addGPUTriangle(t[RIGHT], th[RIGHT], t[TOP], Couleurs::toit);
 }
 
 void ToitTri::plat() {
-	addGPUTriangle(c, r, g, b);
+	addGPUTriangle(c, Couleurs::toit);
 }
 

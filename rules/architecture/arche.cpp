@@ -17,7 +17,7 @@ bool ArcheQuad::split() {
 void ArcheQuad::triangulation() {
 	Quad che = c.offsetNormal(f(end) * height);
 	Quad chw = c.offsetNormal(f(start) * height);
-	addGPUOcto(c, Quad(che[NE], che[SE], chw[SW], chw[NW]), r, g, b);
+	addGPUOcto(c, Quad(che[NE], che[SE], chw[SW], chw[NW]), Couleurs::mur);
 }
 
 void ArcheQuad::getBoundingBoxPoints() {

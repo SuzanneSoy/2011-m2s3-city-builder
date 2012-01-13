@@ -1,22 +1,24 @@
 #include "all_includes.hh"
 
-QuartierQuad_::QuartierQuad_(Quad _c) : Chose(), c(_c) {
+QuartierQuad::QuartierQuad(Quad _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 
-void QuartierQuad_::getBoundingBoxPoints() {
+void QuartierQuad::getBoundingBoxPoints() {
 	addBBPoints(c, 600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
 }
 
-bool QuartierQuad_::split() {
+bool QuartierQuad::split() {
 	bool small = c.minLength() < 3500;
 	bool isConcave = c.isConcave();
-	//bool isConcave = c.maxAngle() > Angle::d2r(160);
+	bool nearConcave = c.maxAngle() > Angle::d2r(160);
 	bool anglesOk = c.minAngle() > Angle::d2r(90-40) && c.maxAngle() < Angle::d2r(90+40);
 	bool tooWideX = c.minLengthEW() * 2 < c.maxLengthNS(); // trop allongé (côté E ou W deux fois plus petit que le côté N ou S).
 	bool tooWideY = c.minLengthNS() * 2 < c.maxLengthEW(); // trop allongé (côté N ou S deux fois plus petit que le côté E ou W).
 	if (isConcave)
 		concave();
+	else if (nearConcave)
+		angleAngle();
 	else if (!small && !anglesOk && proba(seed, -2, 1, 2))
 		angleAngle();
 	else if (!small && !anglesOk)
@@ -30,55 +32,59 @@ bool QuartierQuad_::split() {
 	return true;
 }
 
-void QuartierQuad_::triangulation() {
-	Quad ci = c.insetNESW(250 + 140); // TODO : factoriser cette longueur (largeur route + largeur trottoir).
-	Quad cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
-	addGPUQuad(c, 0x36, 0x36, 0x36); // TODO : factoriser cette couleur (couleur de la route).
-	addGPUQuad(cih, 0xF1, 0xE0, 0xE0); // TODO : factoriser cette couleur (couleur des toits).
-	for (int i = 0; i < 4; i++)
-		addGPUQuad(Quad(ci[NE+i], ci[SE+i], cih[SE+i], cih[NE+i]), 0xF1, 0xE3, 0xAD); // TODO : factoriser cette couleur (couleur des murs des faux bâtiments).
+void QuartierQuad::triangulation() {
+	if (c.isConcave()) {
+		// TODO
+		Quad q = c << c.concaveCorner();
+		addGPUTriangle(Triangle(q[NE], q[SE], q[SW]), Couleurs::route);
+		addGPUTriangle(Triangle(q[SW], q[NW], q[NE]), Couleurs::route);
+	} else {
+		Quad ci = c.insetNESW(250 + 140); // TODO : factoriser cette longueur (largeur route + largeur trottoir).
+		Quad cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+		addGPUQuad(c, Couleurs::route);
+		addGPUQuad(cih, Couleurs::toit);
+		for (int i = 0; i < 4; i++)
+			addGPUQuad(Quad(ci[NE+i], ci[SE+i], cih[SE+i], cih[NE+i]), Couleurs::mur);
+	}
 }
 
-void QuartierQuad_::concave() {
-	// TODO À vérifier.
-	Triangle t1(c[c.concaveCorner()], c[c.concaveCorner()+1], c[c.concaveCorner()+2]);
-	Triangle t2(c[c.concaveCorner()+2], c[c.concaveCorner()+3], c[c.concaveCorner()]);
-
-	addChild(new QuartierTri_(t1));
-	addChild(new QuartierTri_(t2));
+void QuartierQuad::concave() {
+	Quad q = c << c.concaveCorner();
+	addChild(new QuartierTri(Triangle(q[NE], q[SE], q[SW])));
+	addChild(new QuartierTri(Triangle(q[SW], q[NW], q[NE])));
 }
 
-void QuartierQuad_::angleCote() {
+void QuartierQuad::angleCote() {
 	Quad q = c << c.maxAngleCorner();
 	Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 0.4f, 0.6f);
 	Vertex w = Segment(q[SW], q[NW]).randomPos(seed, 0, 0.4f, 0.6f);
 	Triangle ts(q[SE], s, q[NE]);
 	Triangle tw(q[NE], w, q[NW]);
 	if (ts.minAngle() > tw.minAngle()) {
-		addChild(new QuartierTri_(ts));
-		addChild(new QuartierQuad_(Quad(q[NE], s, q[SW], q[NW])));
+		addChild(new QuartierTri(ts));
+		addChild(new QuartierQuad(Quad(q[NE], s, q[SW], q[NW])));
 	} else {
-		addChild(new QuartierTri_(tw));
-		addChild(new QuartierQuad_(Quad(q[NE], q[SE], q[SW], w)));
+		addChild(new QuartierTri(tw));
+		addChild(new QuartierQuad(Quad(q[NE], q[SE], q[SW], w)));
 	}
 }
 
-void QuartierQuad_::angleAngle() {
+void QuartierQuad::angleAngle() {
 	Quad q = c << c.maxAngleCorner();
-	addChild(new QuartierTri_(Triangle(q[NE], q[SE], q[SW])));
-	addChild(new QuartierTri_(Triangle(q[SW], q[NW], q[NE])));
+	addChild(new QuartierTri(Triangle(q[NE], q[SE], q[SW])));
+	addChild(new QuartierTri(Triangle(q[SW], q[NW], q[NE])));
 }
 
-void QuartierQuad_::rect() {
+void QuartierQuad::rect() {
 	Quad q = c << c.maxLengthSide();
 	Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
 	Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
 
-	addChild(new QuartierQuad_(Quad(q[NE], q[SE], s, n)));
-	addChild(new QuartierQuad_(Quad(q[SW], q[NW], n, s)));
+	addChild(new QuartierQuad(Quad(q[NE], q[SE], s, n)));
+	addChild(new QuartierQuad(Quad(q[SW], q[NW], n, s)));
 }
 
-void QuartierQuad_::carre() {
+void QuartierQuad::carre() {
 	// TODO : insetProportionnal();
 	Vertex center = c.insetNESW(c.minLength() / 4.f).randomPoint(seed, 0);
 	Vertex middle[4];
@@ -86,10 +92,10 @@ void QuartierQuad_::carre() {
 		middle[N+i] = Segment(c[NW+i], c[NE+i]).randomPos(seed, i + 1, 0.25, 0.75);
 
 	for (int i = 0; i < 4; i++)
-		addChild(new QuartierQuad_(Quad(c[NE+i], middle[E+i], center, middle[N+i])));
+		addChild(new QuartierQuad(Quad(c[NE+i], middle[E+i], center, middle[N+i])));
 }
 
-void QuartierQuad_::batiments() {
+void QuartierQuad::batiments() {
 	float hauteurTrottoir = 20; // TODO : factoriser + ajouter ça à la hauteur max d'un bâtiment dans les autres calculs.
 	Quad qtrottoir = c.insetNESW(250);
 	Quad qinterieur = qtrottoir.insetNESW(140);
@@ -111,15 +117,15 @@ void QuartierQuad_::batiments() {
 	}
 }
 
-QuartierTri_::QuartierTri_(Triangle _c) : Chose(), c(_c) {
+QuartierTri::QuartierTri(Triangle _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 
-void QuartierTri_::getBoundingBoxPoints() {
+void QuartierTri::getBoundingBoxPoints() {
 	addBBPoints(c, 600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
 }
 
-bool QuartierTri_::split() {
+bool QuartierTri::split() {
 	bool small = c.minLength() < 5000;
 	bool big = c.maxLength() >= 10000;
 	float minAngle = c.minAngle();
@@ -149,16 +155,16 @@ bool QuartierTri_::split() {
 	return true;
 }
 
-void QuartierTri_::triangulation() {
+void QuartierTri::triangulation() {
 	Triangle ci = c.insetLTR(250 + 140); // TODO : factoriser cette longueur (largeur route + largeur trottoir).
-	Triangle cih = c.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
-	addGPUTriangle(c, 0x36, 0x36, 0x36); // TODO : factoriser cette couleur (couleur de la route).
-	addGPUTriangle(cih, 0xF1, 0xE0, 0xE0); // TODO : factoriser cette couleur (couleur des toits).
+	Triangle cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+	addGPUTriangle(c, Couleurs::route);
+	addGPUTriangle(cih, Couleurs::toit);
 	for (int i = 0; i < 3; i++)
-		addGPUQuad(Quad(ci[LEFT+i], ci[TOP+i], cih[TOP+i], cih[LEFT+i]), 0xF1, 0xE3, 0xAD); // TODO : factoriser cette couleur (couleur des murs des faux bâtiments).
+		addGPUQuad(Quad(ci[LEFT+i], ci[TOP+i], cih[TOP+i], cih[LEFT+i]), Couleurs::mur);
 }
 
-void QuartierTri_::centre() {
+void QuartierTri::centre() {
 	// TODO : maxLength / 6 au lieu de 1000
 	// TODO : insetProportionnal();
 	Vertex center = c.insetLTR(c.maxLength() / 6).randomPoint(seed, 0);
@@ -167,27 +173,28 @@ void QuartierTri_::centre() {
 		edge[LEFTSIDE+i] = Segment(c[LEFT+i], c[TOP+i]).randomPos(seed, i+1, 1.f/3.f, 2.f/3.f);
 
 	for (int i = 0; i < 3; i++)
-		addChild(new QuartierQuad_(Quad(c[TOP+i], edge[RIGHTSIDE+i], center, edge[LEFTSIDE+i])));
+		addChild(new QuartierQuad(Quad(c[TOP+i], edge[RIGHTSIDE+i], center, edge[LEFTSIDE+i])));
 }
 
-void QuartierTri_::hauteur() {
+void QuartierTri::hauteur() {
 	Triangle t = c << c.maxAngleCorner();
 	Vertex opposite = Segment(t[TOP], t[RIGHT]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
 
-	addChild(new QuartierTri_(Triangle(t[TOP], opposite, t[LEFT])));
-	addChild(new QuartierTri_(Triangle(t[LEFT], opposite, t[RIGHT])));
+	addChild(new QuartierTri(Triangle(t[TOP], opposite, t[LEFT])));
+	addChild(new QuartierTri(Triangle(t[LEFT], opposite, t[RIGHT])));
 }
 
-void QuartierTri_::trapeze() {
+void QuartierTri::trapeze() {
 	Triangle t = c << c.minAngleCorner();
 	Vertex left = Segment(t[LEFT], t[TOP]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
 	Vertex base = Segment(t[RIGHT], t[LEFT]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
 
-	addChild(new QuartierTri_(Triangle(base, t[TOP], left)));
-	addChild(new QuartierQuad_(Quad(left, t[TOP], t[RIGHT], base)));
+	addChild(new QuartierTri(Triangle(base, t[LEFT], left)));
+	addChild(new QuartierQuad(Quad(base, left, t[TOP], t[RIGHT])));
 }
 
-void QuartierTri_::batiments() {
+void QuartierTri::batiments() {
+	return;
 	float hauteurTrottoir = 20; // TODO : factoriser + ajouter ça à la hauteur max d'un bâtiment dans les autres calculs.
 	Triangle ttrottoir = c.insetLTR(250);
 	Triangle tinterieur = ttrottoir.insetLTR(140);

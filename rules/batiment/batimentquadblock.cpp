@@ -36,5 +36,5 @@ bool BatimentQuadBlock::split() {
 }
 
 void BatimentQuadBlock::triangulation() {
-    addGPUOcto(c,ch, 0xF1, 0xE0, 0xE0);
+    addGPUOcto(c,ch, 0xF1E0E0);
 }

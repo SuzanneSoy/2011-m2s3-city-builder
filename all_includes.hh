@@ -33,12 +33,14 @@ class Chose;
 #include "view.hh"
 
 #include "rules/chose.hh"
+#include "rules/architecture/couleurs.hh"
 
 #include "rules/architecture/arche.hh"
-#include "rules/architecture/toit.hh"
+#include "rules/architecture/batiment.hh"
 #include "rules/architecture/quartier.hh"
-#include "rules/architecture/terrain.hh"
 #include "rules/architecture/routetrottoir.hh"
+#include "rules/architecture/terrain.hh"
+#include "rules/architecture/toit.hh"
 
 #include "rules/batiment/batimentquad.hh"
 #include "rules/batiment/batimentquadmaison.hh"

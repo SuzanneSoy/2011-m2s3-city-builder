@@ -36,35 +36,35 @@ void BatimentQuadPont::triangulation() {
     int middle = steps/2;
     int n;
 
-    addGPUTriangle(c[SW],pb,ch[SW],0xD0,0xD0,0xD0);
-    addGPUTriangle(pa,c[NW],ch[NW],0xD0,0xD0,0xD0);
+    addGPUTriangle(c[SW],pb,ch[SW],0xD0D0D0);
+    addGPUTriangle(pa,c[NW],ch[NW],0xD0D0D0);
 
     for(var=-1.7f, n=0; var <= 1.7f; var+=pas, n++) {
         q = q.inset(W,n2);
         a = q[NW] + Vertex(0,0,nt(var,height));
         b = q[SW] + Vertex(0,0,nt(var,height));
 
-        addGPUQuad(a,b,pb,pa,0xD0,0xD0,0xD0);
+        addGPUQuad(a,b,pb,pa,0xD0D0D0);
 
         if( n < middle) {
-            addGPUTriangle(pa,a,ch[NW],0xD0,0xD0,0xD0);
-            addGPUTriangle(b,pb,ch[SW],0xD0,0xD0,0xD0);
+            addGPUTriangle(pa,a,ch[NW],0xD0D0D0);
+            addGPUTriangle(b,pb,ch[SW],0xD0D0D0);
         }
         else if(n == middle) {
-            addGPUTriangle(pa,a,ch[NW],0xD0,0xD0,0xD0);
-            addGPUTriangle(b,pb,ch[SW],0xD0,0xD0,0xD0);
-            addGPUTriangle(a,ch[NE],ch[NW],0xD0,0xD0,0xD0);
-            addGPUTriangle(b,ch[SW],ch[SE],0xD0,0xD0,0xD0);
+            addGPUTriangle(pa,a,ch[NW],0xD0D0D0);
+            addGPUTriangle(b,pb,ch[SW],0xD0D0D0);
+            addGPUTriangle(a,ch[NE],ch[NW],0xD0D0D0);
+            addGPUTriangle(b,ch[SW],ch[SE],0xD0D0D0);
         }
         else {
-            addGPUTriangle(pa,a,ch[NE],0xD0,0xD0,0xD0);
-            addGPUTriangle(b,pb,ch[SE],0xD0,0xD0,0xD0);
+            addGPUTriangle(pa,a,ch[NE],0xD0D0D0);
+            addGPUTriangle(b,pb,ch[SE],0xD0D0D0);
         }
 
         pa = a;
         pb = b;
     }
 
-    addGPUTriangle(c[SE],pb,ch[SE],0xD0,0xD0,0xD0);
-    addGPUTriangle(c[NE],pa,ch[NE],0xD0,0xD0,0xD0);
+    addGPUTriangle(c[SE],pb,ch[SE],0xD0D0D0);
+    addGPUTriangle(c[NE],pa,ch[NE],0xD0D0D0);
 }
