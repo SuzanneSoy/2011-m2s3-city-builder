@@ -110,7 +110,7 @@ void View::renderScene(int lastTime, int currentTime) {
     }
 
     glBegin(GL_QUADS);
-        glColor(60,20,255);
+        glColor3ub(60,20,255);
         glVertex3f(x-d,y+d,z+d);
         glVertex3f(x+d,y+d,z+d);
         glVertex3f(x+d,y-d,z+d);
