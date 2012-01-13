@@ -4,6 +4,12 @@ View::View(Chose* _root)
 	: root(_root),
 	  camera(Camera(Vertex(9600,10000,15300),0,179,1000,0.6f)),
 	  lod(camera.cameraCenter, _root) {
+
+	fogColor[0] = 0.5;
+	fogColor[1] = 0.5;
+	fogColor[2] = 0.5;
+	fogColor[3] = 1.0;
+	density = 0.000015;
 	initWindow();
 	mainLoop();
 }
@@ -40,6 +46,12 @@ void View::initWindow() {
 
 	glEnable(GL_LIGHTING); 	// Active l'éclairage
   	glEnable(GL_LIGHT0);	// Active la lumière 0;
+
+  	glEnable (GL_FOG);
+    glFogi (GL_FOG_MODE, GL_EXP2);
+    glFogfv (GL_FOG_COLOR, fogColor);
+    glFogf (GL_FOG_DENSITY, density);
+    glHint (GL_FOG_HINT, GL_NICEST);
 }
 
 void View::setLight() {
