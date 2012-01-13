@@ -12,6 +12,7 @@ public:
 	virtual bool split();
 	virtual void triangulation();
 private:
+	void triangulationConcave(Triangle t);
 	void concave();
 	void angleAngle();
 	void angleCote();

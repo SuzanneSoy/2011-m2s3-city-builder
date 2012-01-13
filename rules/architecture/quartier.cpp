@@ -34,10 +34,9 @@ bool QuartierQuad::split() {
 
 void QuartierQuad::triangulation() {
 	if (c.isConcave()) {
-		// TODO
 		Quad q = c << c.concaveCorner();
-		addGPUTriangle(Triangle(q[NE], q[SE], q[SW]), Couleurs::route);
-		addGPUTriangle(Triangle(q[SW], q[NW], q[NE]), Couleurs::route);
+		triangulationConcave(Triangle(q[NE], q[SE], q[SW]));
+		triangulationConcave(Triangle(q[SW], q[NW], q[NE]));
 	} else {
 		Quad ci = c.insetNESW(250 + 140); // TODO : factoriser cette longueur (largeur route + largeur trottoir).
 		Quad cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
@@ -46,6 +45,16 @@ void QuartierQuad::triangulation() {
 		for (int i = 0; i < 4; i++)
 			addGPUQuad(Quad(ci[NE+i], ci[SE+i], cih[SE+i], cih[NE+i]), Couleurs::mur);
 	}
+}
+
+void QuartierQuad::triangulationConcave(Triangle t) {
+	// Même code que QuartierTri::triangulation.
+	Triangle ci = t.insetLTR(250 + 140); // TODO : factoriser cette longueur (largeur route + largeur trottoir).
+	Triangle cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+	addGPUTriangle(t, Couleurs::route);
+	addGPUTriangle(cih, Couleurs::toit);
+	for (int i = 0; i < 3; i++)
+		addGPUQuad(Quad(ci[LEFT+i], ci[TOP+i], cih[TOP+i], cih[LEFT+i]), Couleurs::mur);
 }
 
 void QuartierQuad::concave() {
