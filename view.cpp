@@ -128,6 +128,13 @@ void View::renderScene(int lastTime, int currentTime) {
         glVertex3f(d,-d,z+d);
         glVertex3f(-d,-d,z+d);
     glEnd();
+    glBegin(GL_QUADS);
+        glColor3ub(12,64,12);
+        glVertex3f(-d,d,z-d);
+        glVertex3f(d,d,z-d);
+        glVertex3f(d,-d,z-d);
+        glVertex3f(-d,-d,z-d);
+    glEnd();
     glPopMatrix();
     glEnable(GL_LIGHTING);
 
