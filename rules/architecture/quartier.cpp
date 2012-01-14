@@ -204,7 +204,7 @@ void QuartierTri::trapeze() {
 
 void QuartierTri::batiments() {
 	return;
-	float hauteurTrottoir = 20; // TODO : factoriser + ajouter ça à la hauteur max d'un bâtiment dans les autres calculs.
+	float hauteurTrottoir = 14; // TODO : factoriser + ajouter ça à la hauteur max d'un bâtiment dans les autres calculs.
 	Triangle ttrottoir = c.insetLTR(250);
 	Triangle tinterieur = ttrottoir.insetLTR(140);
 	Triangle tbatiments = tinterieur.offsetNormal(hauteurTrottoir);
