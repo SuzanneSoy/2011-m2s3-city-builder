@@ -38,7 +38,7 @@ private :
 public :
 	Camera camera;
 	static const int frontFrustum = 1;
-	static const int backFrustum = 160000; // 1km
+	static const int backFrustum = 400000; // 1km
 private:
 	Lod lod;
     GLfloat fogColor[4];
@@ -57,6 +57,7 @@ public :
 
 private :
 	void setLight();
+	void setSkybox();
 };
 
 #endif

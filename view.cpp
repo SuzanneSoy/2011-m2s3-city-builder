@@ -9,7 +9,7 @@ View::View(Chose* _root)
 	fogColor[1] = 0.5;
 	fogColor[2] = 0.5;
 	fogColor[3] = 1.0;
-	density = 0.00001;
+	density = 0.000015;
 	initWindow();
 	mainLoop();
 }
@@ -92,20 +92,10 @@ void View::displayAxes() {
 	glEnable(GL_LIGHTING);
 }
 
-void View::renderScene(int lastTime, int currentTime) {
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
-
-	camera.animation(currentTime-lastTime);
-	camera.setCamera();
-	lod.setCamera(camera.cameraCenter);
-
-	setLight();
-	//displayAxes();
-	int z = 40000;
-	int d = 70000;
+void View::setSkybox() {
+    int z = 40000;
+	int d = 160000;
+    glDisable(GL_FOG);
     glDisable(GL_LIGHTING);
     glPushMatrix();
     glTranslated(camera.cameraCenter.x,camera.cameraCenter.y,0);
@@ -137,6 +127,21 @@ void View::renderScene(int lastTime, int currentTime) {
     glEnd();
     glPopMatrix();
     glEnable(GL_LIGHTING);
+    glEnable(GL_FOG);
+}
+
+void View::renderScene(int lastTime, int currentTime) {
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
+
+	camera.animation(currentTime-lastTime);
+	camera.setCamera();
+	lod.setCamera(camera.cameraCenter);
+
+	setLight();
+	setSkybox();
 
 	glBegin(GL_TRIANGLES);
 	root->display();
