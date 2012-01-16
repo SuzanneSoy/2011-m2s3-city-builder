@@ -28,7 +28,7 @@ bool Chose::merge() {
 }
 
 void Chose::addGPUTriangle(Vertex left, Vertex top, Vertex right, unsigned int rgb) {
-	triangles.push_back(new GPUTriangle(left, top, right, (rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff));
+	triangles.push_back(new GPUTriangle(left, top, right, Couleurs::r(rgb), Couleurs::g(rgb), Couleurs::b(rgb)));
 }
 
 void Chose::addGPUTriangle(Triangle t, unsigned int rgb) {

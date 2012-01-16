@@ -2,14 +2,13 @@
 
 View::View(Chose* _root)
 	: root(_root),
-	  camera(Camera(Vertex(9600,10000,15300 + 80000),0,179,1000,0.6f)),
+	  camera(Camera(Vertex(2980,1567,16012), 45, 150, 1000, 0.6f)),
 	  lod(camera.cameraCenter, _root) {
 
-	fogColor[0] = 0.5;
-	fogColor[1] = 0.5;
-	fogColor[2] = 0.5;
+	fogColor[0] = Couleurs::r(Couleurs::fog) / 255.f;
+	fogColor[1] = Couleurs::g(Couleurs::fog) / 255.f;
+	fogColor[2] = Couleurs::b(Couleurs::fog) / 255.f;
 	fogColor[3] = 1.0;
-	density = 0.000015;
 	initWindow();
 	mainLoop();
 }
@@ -48,9 +47,10 @@ void View::initWindow() {
   	glEnable(GL_LIGHT0);	// Active la lumière 0;
 
   	glEnable (GL_FOG);
-    glFogi (GL_FOG_MODE, GL_EXP2);
+    glFogi (GL_FOG_MODE, GL_LINEAR);
     glFogfv (GL_FOG_COLOR, fogColor);
-    glFogf (GL_FOG_DENSITY, density);
+    glFogf (GL_FOG_START, backFrustum / sqrt(3) / 2.f);
+    glFogf (GL_FOG_END, backFrustum / sqrt(3));
     //glHint (GL_FOG_HINT, GL_NICEST);
 }
 
@@ -93,41 +93,47 @@ void View::displayAxes() {
 }
 
 void View::setSkybox() {
-    int z = 40000;
-	int d = 160000;
-    glDisable(GL_FOG);
-    glDisable(GL_LIGHTING);
-    glPushMatrix();
-    glTranslated(camera.cameraCenter.x,camera.cameraCenter.y,0);
-    for(int ii=0; ii<4;ii++) {
-        glBegin(GL_QUADS);
-            glColor3ub(128,128,255);
-            glVertex3f(-d,d,z-d);
-            glVertex3f(d,d,z-d);
-            glColor3ub(60,20,255);
-            glVertex3f(d,d,z+d);
-            glVertex3f(-d,d,z+d);
-        glEnd();
-        glRotated(90,0,0,1);
-    }
+	//int z = 40000;
+	float d = View::backFrustum / std::sqrt(3) * 0.9;
+	glDisable(GL_FOG);
+	glDisable(GL_LIGHTING);
+	glPushMatrix();
+	glTranslated(camera.cameraCenter.x,camera.cameraCenter.y,0);
+	for(int ii=0; ii<4;ii++) {
+		glBegin(GL_QUADS);
+		{
+			glColor3ub(Couleurs::r(Couleurs::skyBottom),Couleurs::g(Couleurs::skyBottom),Couleurs::b(Couleurs::skyBottom));
+			glVertex3f(-d,d,-d);
+			glVertex3f(d,d,-d);
+			glColor3ub(Couleurs::r(Couleurs::skyTop),Couleurs::g(Couleurs::skyTop),Couleurs::b(Couleurs::skyTop));
+			glVertex3f(d,d,d);
+			glVertex3f(-d,d,d);
+		}
+		glEnd();
+		glRotated(90,0,0,1);
+	}
 
-    glBegin(GL_QUADS);
-        glColor3ub(60,20,255);
-        glVertex3f(-d,d,z+d);
-        glVertex3f(d,d,z+d);
-        glVertex3f(d,-d,z+d);
-        glVertex3f(-d,-d,z+d);
-    glEnd();
-    glBegin(GL_QUADS);
-        glColor3ub(12,64,12);
-        glVertex3f(-d,d,z-d);
-        glVertex3f(d,d,z-d);
-        glVertex3f(d,-d,z-d);
-        glVertex3f(-d,-d,z-d);
-    glEnd();
-    glPopMatrix();
-    glEnable(GL_LIGHTING);
-    glEnable(GL_FOG);
+	glBegin(GL_QUADS);
+	{
+		glColor3ub(Couleurs::r(Couleurs::skyTop),Couleurs::g(Couleurs::skyTop),Couleurs::b(Couleurs::skyTop));
+		glVertex3f(-d,d,d);
+		glVertex3f(d,d,d);
+		glVertex3f(d,-d,d);
+		glVertex3f(-d,-d,d);
+	}
+	glEnd();
+	glBegin(GL_QUADS);
+	{
+		glColor3ub(Couleurs::r(Couleurs::herbe),Couleurs::g(Couleurs::herbe),Couleurs::b(Couleurs::herbe));
+		glVertex3f(-d,d,-d);
+		glVertex3f(d,d,-d);
+		glVertex3f(d,-d,-d);
+		glVertex3f(-d,-d,-d);
+	}
+	glEnd();
+	glPopMatrix();
+	glEnable(GL_LIGHTING);
+	glEnable(GL_FOG);
 }
 
 void View::renderScene(int lastTime, int currentTime) {
@@ -164,7 +170,7 @@ void View::mainLoop() {
 	short continuer = 1;
 	SDL_Event event;
 	SDL_EnableKeyRepeat(40,40);
-	SDL_WM_GrabInput(SDL_GRAB_OFF);
+	SDL_WM_GrabInput(SDL_GRAB_ON);
     SDL_ShowCursor(SDL_DISABLE);
 	while ( SDL_PollEvent(&event) ); // empty queue.
 

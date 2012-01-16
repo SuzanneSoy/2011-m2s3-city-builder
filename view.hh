@@ -37,12 +37,11 @@ private :
 
 public :
 	Camera camera;
-	static const int frontFrustum = 1;
-	static const int backFrustum = 400000; // 1km
+	static const float frontFrustum = 1;
+	static const float backFrustum = 400000; // 1km
 private:
 	Lod lod;
     GLfloat fogColor[4];
-    GLfloat density;
 	static const int windowWidth = 1024;
 	static const int windowHeight = 768;
 

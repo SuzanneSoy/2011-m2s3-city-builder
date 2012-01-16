@@ -10,7 +10,6 @@ class Chose;
 #include <cstdlib>
 #include <cmath>
 #include <vector>
-//#include <map>
 #include <set>
 
 #include <SDL/SDL.h>
