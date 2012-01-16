@@ -1,5 +1,5 @@
-#ifndef _RULES_ARCHITECTURE_COLORS_HH_
-#define _RULES_ARCHITECTURE_COLORS_HH_
+#ifndef _RULES_ARCHITECTURE_COLULEURSDIMENSIONS_HH_
+#define _RULES_ARCHITECTURE_COLULEURSDIMENSIONS_HH_
 
 #include "all_includes.hh"
 
@@ -25,9 +25,15 @@ public:
 	static const unsigned int trottoir = 0x666666;
 	static const unsigned int bordureTrottoir = 0xAAAAAA;
 	static const unsigned int herbe = 0x0c4010; // 11AA22
-	static const unsigned int skyTop = 0x3c14ff;
-	static const unsigned int skyBottom = 0x7F7FFF;
+	static const unsigned int cielHaut = 0x3c14ff;
+	static const unsigned int cielBas = 0x7F7FFF;
 	static const unsigned int fog; // définie dans couleurs.cpp .
+};
+
+class Dimensions {
+public:
+	static const unsigned int largeurRoute = 200;
+	static const unsigned int largeurTrottoir = 140;
 };
 
 #endif

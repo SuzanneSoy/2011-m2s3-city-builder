@@ -2,7 +2,7 @@
 
 View::View(Chose* _root)
 	: root(_root),
-	  camera(Camera(Vertex(2980,1567,16012), 45, 150, 1000, 0.6f)),
+	  camera(Camera(Vertex(2980,1567,16012), 45, 150, 10000, 0.6f)),
 	  lod(camera.cameraCenter, _root) {
 
 	fogColor[0] = Couleurs::r(Couleurs::fog) / 255.f;
@@ -50,7 +50,7 @@ void View::initWindow() {
     glFogi (GL_FOG_MODE, GL_LINEAR);
     glFogfv (GL_FOG_COLOR, fogColor);
     glFogf (GL_FOG_START, backFrustum / sqrt(3) / 2.f);
-    glFogf (GL_FOG_END, backFrustum / sqrt(3));
+    glFogf (GL_FOG_END, backFrustum / sqrt(3) * 0.9);
     //glHint (GL_FOG_HINT, GL_NICEST);
 }
 
@@ -102,10 +102,10 @@ void View::setSkybox() {
 	for(int ii=0; ii<4;ii++) {
 		glBegin(GL_QUADS);
 		{
-			glColor3ub(Couleurs::r(Couleurs::skyBottom),Couleurs::g(Couleurs::skyBottom),Couleurs::b(Couleurs::skyBottom));
+			glColor3ub(Couleurs::r(Couleurs::cielBas),Couleurs::g(Couleurs::cielBas),Couleurs::b(Couleurs::cielBas));
 			glVertex3f(-d,d,-d);
 			glVertex3f(d,d,-d);
-			glColor3ub(Couleurs::r(Couleurs::skyTop),Couleurs::g(Couleurs::skyTop),Couleurs::b(Couleurs::skyTop));
+			glColor3ub(Couleurs::r(Couleurs::cielHaut),Couleurs::g(Couleurs::cielHaut),Couleurs::b(Couleurs::cielHaut));
 			glVertex3f(d,d,d);
 			glVertex3f(-d,d,d);
 		}
@@ -115,7 +115,7 @@ void View::setSkybox() {
 
 	glBegin(GL_QUADS);
 	{
-		glColor3ub(Couleurs::r(Couleurs::skyTop),Couleurs::g(Couleurs::skyTop),Couleurs::b(Couleurs::skyTop));
+		glColor3ub(Couleurs::r(Couleurs::cielHaut),Couleurs::g(Couleurs::cielHaut),Couleurs::b(Couleurs::cielHaut));
 		glVertex3f(-d,d,d);
 		glVertex3f(d,d,d);
 		glVertex3f(d,-d,d);

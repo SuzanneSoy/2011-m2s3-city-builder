@@ -33,7 +33,7 @@ class Chose;
 #include "view.hh"
 
 #include "rules/chose.hh"
-#include "rules/architecture/couleurs.hh"
+#include "rules/architecture/couleursDimensions.hh"
 
 #include "rules/architecture/arche.hh"
 #include "rules/architecture/batiment.hh"

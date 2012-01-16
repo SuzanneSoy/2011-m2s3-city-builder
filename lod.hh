@@ -5,8 +5,6 @@
 
 class Lod {
 private :
-	// TODO : puisqu'on utilise *soit* la mergeBox, *soit* la
-	// splitBox, réutiliser le heap In pour merge.
 	Heap merge[6];    // {xMin, xMax, yMin, yMax, zMin, zMax}.
 	Heap splitIn[6];  // {xMinIn, xMaxIn, yMinIn, yMaxIn, zMinIn, zMaxIn}.
 	Heap splitOut[6]; // {xMinOut, xMaxOut, yMinOut, yMaxOut, zMinOut, zMaxOut}.

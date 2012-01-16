@@ -38,7 +38,7 @@ void QuartierQuad::triangulation() {
 		triangulationConcave(Triangle(q[NE], q[SE], q[SW]));
 		triangulationConcave(Triangle(q[SW], q[NW], q[NE]));
 	} else {
-		Quad ci = c.insetNESW(250 + 140); // TODO : factoriser cette longueur (largeur route + largeur trottoir).
+		Quad ci = c.insetNESW(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
 		Quad cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
 		addGPUQuad(c, Couleurs::route);
 		addGPUQuad(cih, Couleurs::toit);
@@ -49,7 +49,7 @@ void QuartierQuad::triangulation() {
 
 void QuartierQuad::triangulationConcave(Triangle t) {
 	// Même code que QuartierTri::triangulation.
-	Triangle ci = t.insetLTR(250 + 140); // TODO : factoriser cette longueur (largeur route + largeur trottoir).
+	Triangle ci = t.insetLTR(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
 	Triangle cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
 	addGPUTriangle(t, Couleurs::route);
 	addGPUTriangle(cih, Couleurs::toit);
@@ -106,8 +106,8 @@ void QuartierQuad::carre() {
 
 void QuartierQuad::batiments() {
 	float hauteurTrottoir = 20; // TODO : factoriser + ajouter ça à la hauteur max d'un bâtiment dans les autres calculs.
-	Quad qtrottoir = c.insetNESW(250);
-	Quad qinterieur = qtrottoir.insetNESW(140);
+	Quad qtrottoir = c.insetNESW(Dimensions::largeurRoute);
+	Quad qinterieur = qtrottoir.insetNESW(Dimensions::largeurTrottoir);
 	Quad qbatiments = qinterieur.offsetNormal(hauteurTrottoir);
 
 	for (int i = 0; i < 4; i++) {
@@ -144,7 +144,7 @@ bool QuartierTri::split() {
 	bool angleAigu = minAngle < Angle::d2r(30);
 	bool anglesAcceptable = !angleAigu && !angleObtus;
 	if (!big && proba(seed, -1, 1, 20)) {
-		batiments(); // TODO : RouteTrottoirTri(c);
+		batiments();
 	} else if (big && anglesAcceptable) {
 		switch (hash2(seed, -2) % 3) {
 		case 0: centre(); break;
@@ -165,7 +165,7 @@ bool QuartierTri::split() {
 }
 
 void QuartierTri::triangulation() {
-	Triangle ci = c.insetLTR(250 + 140); // TODO : factoriser cette longueur (largeur route + largeur trottoir).
+	Triangle ci = c.insetLTR(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
 	Triangle cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
 	addGPUTriangle(c, Couleurs::route);
 	addGPUTriangle(cih, Couleurs::toit);
@@ -205,8 +205,8 @@ void QuartierTri::trapeze() {
 void QuartierTri::batiments() {
 	return;
 	float hauteurTrottoir = 14; // TODO : factoriser + ajouter ça à la hauteur max d'un bâtiment dans les autres calculs.
-	Triangle ttrottoir = c.insetLTR(250);
-	Triangle tinterieur = ttrottoir.insetLTR(140);
+	Triangle ttrottoir = c.insetLTR(Dimensions::largeurRoute);
+	Triangle tinterieur = ttrottoir.insetLTR(Dimensions::largeurTrottoir);
 	Triangle tbatiments = tinterieur.offsetNormal(hauteurTrottoir);
 
 	for (int i = 0; i < 3; i++) {

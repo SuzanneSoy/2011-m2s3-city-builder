@@ -7,7 +7,6 @@ Chose::Chose() : seed(initialSeed), children() {
 void Chose::clearChildren() {
 	std::vector<Chose*>::iterator it;
 	for (it = children.begin(); it != children.end(); it++)
-		// TODO : d'abbord virer *it des arbres de LOD !
 		delete *it;
 	children.clear();
 }
@@ -163,4 +162,4 @@ void Chose::drawAABB() {
 	);
 }
 
-unsigned int Chose::initialSeed = 187001748;//random_seed();
+unsigned int Chose::initialSeed = random_seed();

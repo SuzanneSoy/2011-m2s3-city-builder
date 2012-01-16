@@ -19,10 +19,10 @@ bool BatimentTri::split() {
 	// } else {
 	// 	int th = 20;        // Terrain height.
 	// 	Quad q = Quad(c[NE],c[SE],c[SW],c[NW]);
-	// 	q.offset(N,-140);
-	// 	q.offset(E,-140);
-	// 	q.offset(S,-140);
-	// 	q.offset(W,-140);
+	// 	q.offset(N,-Dimensions::largeurTrottoir);
+	// 	q.offset(E,-Dimensions::largeurTrottoir);
+	// 	q.offset(S,-Dimensions::largeurTrottoir);
+	// 	q.offset(W,-Dimensions::largeurTrottoir);
 
 	// 	addChild(new TrottoirQuadNormal(Quad(c[NE],c[SE],q[SE],q[NE]),th,E));
 	// 	addChild(new TrottoirQuadNormal(Quad(c[SE],c[SW],q[SW],q[SE]),th,E));

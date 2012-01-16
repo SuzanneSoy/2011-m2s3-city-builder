@@ -11,6 +11,7 @@ float Triangle::cosAngle() const {
 }
 
 float Triangle::angle() const {
+	// TODO : gérer le cas d'un angle à 0 ou 180.
 	return std::acos(cosAngle());
 }
 

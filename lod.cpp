@@ -112,7 +112,6 @@ void Lod::addSplitCube(Chose* c) {
 			splitOut[i].insert(c->lod.splitBox[i], c);
 		}
 	}
-	// TODO : plutôt que d'ajouter puis enlever, précalculer puis enlever si nécessaire.
 	if (c->lod.inCounter == 6) {
 		for(int i = 0; i < 6; i++)
 			splitIn[i].remove(c->lod.splitBox[i], c);
