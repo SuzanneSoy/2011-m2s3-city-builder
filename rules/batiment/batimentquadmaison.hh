@@ -9,8 +9,8 @@ class BatimentQuadMaison : public Chose {
 	Quad c;
 
     public :
-	static const int minHeight = 400;
-	static const int maxHeight = 800;
+	static const int minHeight = 250;
+	static const int maxHeight = 350;
 
 	BatimentQuadMaison(Quad c);
 	virtual void triangulation();
