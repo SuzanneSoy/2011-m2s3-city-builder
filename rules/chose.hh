@@ -5,14 +5,14 @@
 
 // RectangleRoutes est un quadrilatère de routes avec des angles aux coins égaux à 90°.
 class Chose {
-    public :
+public :
 	static unsigned int initialSeed;
 	unsigned int seed;
 	std::vector<Chose*> children;
 	std::vector<GPUTriangle*> triangles;
 	LodNode lod;
 
-    public :
+public :
 	void display();
 	void displayNormals();
 	void drawAABB(); // DEBUG
@@ -21,7 +21,7 @@ class Chose {
 	virtual void triangulation() { triangles.clear(); };
 	virtual void updateAABB();
 
-    protected :
+protected :
 	void addBBPoint(const Vertex v);
 	void addBBPoints(const Triangle t);
 	void addBBPoints(const Triangle t, float height);
@@ -70,6 +70,8 @@ class Chose {
 			Vertex neh, Vertex seh, Vertex swh, Vertex nwh,
 			unsigned int rgb);
 	void addGPUOcto(Quad q, Quad qh, unsigned int rgb);
+private:
+	void clearChildren();
 };
 
 #endif

@@ -2,9 +2,9 @@
 
 Lod::Lod(Vertex _camera, Chose* root) {
 	for (int i = 0; i < 6; i++) {
-		merge[i].init(i, (i & 1) ? 1 : -1);
-		splitIn[i].init(6+i, (i & 1) ? 1 : -1);
-		splitOut[i].init(12+i, (i & 1) ? -1 : 1);
+		merge[i].init((i & 1) ? 1 : -1);
+		splitIn[i].init((i & 1) ? 1 : -1);
+		splitOut[i].init((i & 1) ? -1 : 1);
 	}
 	this->camera[0] = _camera.x;
 	this->camera[1] = _camera.y;
@@ -24,7 +24,7 @@ void Lod::setCamera(Vertex newCamera) {
 		while((c = merge[i].popIfLessThan(camera[i>>1]))) {
 			for(int j = 0; j < 6; j++) {
 				if(i == j) continue;
-				merge[j].remove(c);
+				merge[j].remove(c->lod.mergeBox[j], c);
 			}
 			doMerge(c);
 		}
@@ -36,7 +36,7 @@ void Lod::setCamera(Vertex newCamera) {
 			if(c->lod.inCounter == 5) {
 				for(int j = 0; j < 6; j++) {
 					if(i == j) continue;
-					splitIn[j].remove(c);
+					splitIn[j].remove(c->lod.splitBox[j], c);
 				}
 				doSplit(c);
 			}
@@ -58,7 +58,6 @@ void Lod::setCamera(Vertex newCamera) {
 }
 
 void Lod::doSplit(Chose* c) {
-	// TODO
 	if (c->split()) {
 		std::vector<Chose*>::iterator it;
 		for (it = c->children.begin(); it != c->children.end(); ++it) {
@@ -78,8 +77,21 @@ void Lod::doSplit(Chose* c) {
 }
 
 void Lod::doMerge(Chose* c) {
-	c->merge();
+	doSubMerge(c);
 	addSplitCube(c);
+}
+
+void Lod::doSubMerge(Chose* c) {
+	std::vector<Chose*>::iterator it;
+	for (it = c->children.begin(); it != c->children.end(); ++it) {
+		for(int j = 0; j < 6; j++) {
+			merge[j].remove((*it)->lod.mergeBox[j], (*it));
+			splitIn[j].remove((*it)->lod.splitBox[j], (*it));
+			splitOut[j].remove((*it)->lod.splitBox[j], (*it));
+		}
+		doSubMerge(*it);
+	}
+	c->merge();
 }
 
 void Lod::addMergeCube(Chose* chose) {
@@ -90,20 +102,20 @@ void Lod::addMergeCube(Chose* chose) {
 		merge[i].insert(chose->lod.mergeBox[i], chose);
 }
 
-void Lod::addSplitCube(Chose* chose) {
-	chose->lod.inCounter = 0;
+void Lod::addSplitCube(Chose* c) {
+	c->lod.inCounter = 0;
 	for(int i = 0; i < 6; i++) {
-		if(splitOut[i].lessThan(chose->lod.splitBox[i], camera[i>>1])) {
-			chose->lod.inCounter++;
-			splitIn[i].insert(chose->lod.splitBox[i], chose);
+		if(splitOut[i].lessThan(c->lod.splitBox[i], camera[i>>1])) {
+			c->lod.inCounter++;
+			splitIn[i].insert(c->lod.splitBox[i], c);
 		} else {
-			splitOut[i].insert(chose->lod.splitBox[i], chose);
+			splitOut[i].insert(c->lod.splitBox[i], c);
 		}
 	}
 	// TODO : plutôt que d'ajouter puis enlever, précalculer puis enlever si nécessaire.
-	if (chose->lod.inCounter == 6) {
+	if (c->lod.inCounter == 6) {
 		for(int i = 0; i < 6; i++)
-			splitIn[i].remove(chose);
-		doSplit(chose);
+			splitIn[i].remove(c->lod.splitBox[i], c);
+		doSplit(c);
 	}
 }

@@ -14,6 +14,7 @@ private :
 private:
 	void doSplit(Chose* c);
 	void doMerge(Chose* c);
+	void doSubMerge(Chose* c);
 public :
 	Lod(Vertex camera, Chose* root);
 	void addMergeCube(Chose* chose);
@@ -22,7 +23,6 @@ public :
 };
 
 struct LodNode {
-	int heaps[18];
 	float aabb[6];
 	float splitBox[6];
 	float mergeBox[6];

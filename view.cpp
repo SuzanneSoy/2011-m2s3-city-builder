@@ -2,7 +2,7 @@
 
 View::View(Chose* _root)
 	: root(_root),
-	  camera(Camera(Vertex(9600,10000,15300),0,179,1000,0.6f)),
+	  camera(Camera(Vertex(9600,10000,15300 + 80000),0,179,1000,0.6f)),
 	  lod(camera.cameraCenter, _root) {
 
 	fogColor[0] = 0.5;
@@ -152,7 +152,7 @@ void View::mainLoop() {
 	short continuer = 1;
 	SDL_Event event;
 	SDL_EnableKeyRepeat(40,40);
-	SDL_WM_GrabInput(SDL_GRAB_ON);
+	SDL_WM_GrabInput(SDL_GRAB_OFF);
     SDL_ShowCursor(SDL_DISABLE);
 	while ( SDL_PollEvent(&event) ); // empty queue.
 

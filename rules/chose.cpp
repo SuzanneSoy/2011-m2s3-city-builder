@@ -3,11 +3,18 @@
 Chose::Chose() : seed(initialSeed), children() {
 }
 
-// TODO : Le destructeur est-il vraiment nécessaire ?
-// TODO : Vu que children et triangles contiennent des pointeurs, le .clear() risque de ne pas les désallouer !
+
+void Chose::clearChildren() {
+	std::vector<Chose*>::iterator it;
+	for (it = children.begin(); it != children.end(); it++)
+		// TODO : d'abbord virer *it des arbres de LOD !
+		delete *it;
+	children.clear();
+}
+
 Chose::~Chose() {
-    children.clear();
-    triangles.clear();
+	clearChildren();
+	triangles.clear();
 }
 
 void Chose::addChild(Chose* c) {
@@ -15,9 +22,9 @@ void Chose::addChild(Chose* c) {
 }
 
 bool Chose::merge() {
-    children.clear();
+	clearChildren();
 	// triangles.clear();
-    return true;
+	return true;
 }
 
 void Chose::addGPUTriangle(Vertex left, Vertex top, Vertex right, unsigned int rgb) {
@@ -29,8 +36,8 @@ void Chose::addGPUTriangle(Triangle t, unsigned int rgb) {
 }
 
 void Chose::addGPUQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, unsigned int rgb) {
-    this->addGPUTriangle(nw, ne, se, rgb);
-    this->addGPUTriangle(se, sw, nw, rgb);
+	this->addGPUTriangle(nw, ne, se, rgb);
+	this->addGPUTriangle(se, sw, nw, rgb);
 }
 
 void Chose::addGPUQuad(Quad q, unsigned int rgb) {
@@ -38,15 +45,15 @@ void Chose::addGPUQuad(Quad q, unsigned int rgb) {
 }
 
 void Chose::addGPUOcto(Vertex ne, Vertex se, Vertex sw, Vertex nw,
-                    Vertex neh, Vertex seh, Vertex swh, Vertex nwh, unsigned int rgb) {
+		Vertex neh, Vertex seh, Vertex swh, Vertex nwh, unsigned int rgb) {
 	addGPUOcto(Quad(ne,se,sw,nw), Quad(neh,seh,swh,nwh), rgb);
 }
 
 void Chose::addGPUOcto(Quad q, Quad qh, unsigned int rgb) {
-    this->addGPUQuad(q[SE], q[NE], q[NW], q[SW], rgb);
-    this->addGPUQuad(qh[NE], qh[SE], qh[SW], qh[NW], rgb);
-    for (int i = 0; i < 4; i++)
-    	this->addGPUQuad(q[NE+i], q[SE+i], qh[SE+i], qh[NE+i], rgb);
+	this->addGPUQuad(q[SE], q[NE], q[NW], q[SW], rgb);
+	this->addGPUQuad(qh[NE], qh[SE], qh[SW], qh[NW], rgb);
+	for (int i = 0; i < 4; i++)
+		this->addGPUQuad(q[NE+i], q[SE+i], qh[SE+i], qh[NE+i], rgb);
 }
 
 void Chose::display() {
@@ -144,15 +151,15 @@ void Chose::updateAABB() {
 // DEBUG
 void Chose::drawAABB() {
 	addGPUOcto(
-		Vertex(lod.splitBox[0], lod.splitBox[2], lod.splitBox[4]),
-		Vertex(lod.splitBox[1], lod.splitBox[2], lod.splitBox[4]),
-		Vertex(lod.splitBox[1], lod.splitBox[3], lod.splitBox[4]),
-		Vertex(lod.splitBox[0], lod.splitBox[3], lod.splitBox[4]),
-		Vertex(lod.splitBox[0], lod.splitBox[2], lod.splitBox[5]),
-		Vertex(lod.splitBox[1], lod.splitBox[2], lod.splitBox[5]),
-		Vertex(lod.splitBox[1], lod.splitBox[3], lod.splitBox[5]),
-		Vertex(lod.splitBox[0], lod.splitBox[3], lod.splitBox[5]),
-		hash2(seed, 42) & 0xffffff
+			Vertex(lod.splitBox[0], lod.splitBox[2], lod.splitBox[4]),
+			Vertex(lod.splitBox[1], lod.splitBox[2], lod.splitBox[4]),
+			Vertex(lod.splitBox[1], lod.splitBox[3], lod.splitBox[4]),
+			Vertex(lod.splitBox[0], lod.splitBox[3], lod.splitBox[4]),
+			Vertex(lod.splitBox[0], lod.splitBox[2], lod.splitBox[5]),
+			Vertex(lod.splitBox[1], lod.splitBox[2], lod.splitBox[5]),
+			Vertex(lod.splitBox[1], lod.splitBox[3], lod.splitBox[5]),
+			Vertex(lod.splitBox[0], lod.splitBox[3], lod.splitBox[5]),
+			hash2(seed, 42) & 0xffffff
 	);
 }
 
