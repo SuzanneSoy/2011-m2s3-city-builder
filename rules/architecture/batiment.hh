@@ -42,6 +42,7 @@ private:
 	std::map<float, WallVertex*>::iterator it;
 	bool reverse;
 public:
+	MasterWallIterator() : it(), reverse(false) {};
 	MasterWallIterator(std::map<float, WallVertex*>::iterator mwit) : it(mwit), reverse(false) {};
 	MasterWallIterator(std::map<float, WallVertex*>::iterator mwit, bool _reverse) : it(mwit), reverse(_reverse) {};
 	MasterWallIterator(std::map<float, WallVertex*>::reverse_iterator mwrit) : it(--(mwrit.base())), reverse(false) {};
@@ -50,7 +51,7 @@ public:
 	bool operator!=(const MasterWallIterator& mwit) const { return it != mwit.it; };
 	WallVertex* operator*() { return (*it).second; };
 	WallVertex* operator->() { return (*it).second; };
-	virtual void operator++() { if (reverse) it--; else it++; }
+	virtual MasterWallIterator& operator++() { if (reverse) it--; else it++; return (*this); }
 };
 
 class MasterWall {
@@ -133,7 +134,7 @@ public:
 	};
 	typedef MasterWall::iterator iterator;
 	iterator begin() { return master->find(uPosOnMasterWall, (uPosOnMasterWall > vPosOnMasterWall)); };
-	iterator end() { return master->find(vPosOnMasterWall, (uPosOnMasterWall > vPosOnMasterWall)); };
+	iterator end() { return ++(master->find(vPosOnMasterWall, (uPosOnMasterWall > vPosOnMasterWall))); };
 };
 
 #endif
