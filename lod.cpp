@@ -71,7 +71,7 @@ void Lod::doSplit(Chose* c) {
 	// else {
 	// 	// Pour debug : quand on tente de split un objet qui ne peut
 	// 	// pas l'être, on vire le dessin de sa splitBox.
-	// 	c->triangles.clear();
+	// 	c->clearTriangles();
 	// 	c->triangulation();
 	// }
 }

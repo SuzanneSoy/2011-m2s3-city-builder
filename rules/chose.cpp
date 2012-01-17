@@ -3,7 +3,6 @@
 Chose::Chose() : seed(initialSeed), children() {
 }
 
-
 void Chose::clearChildren() {
 	std::vector<Chose*>::iterator it;
 	for (it = children.begin(); it != children.end(); it++)
@@ -11,9 +10,16 @@ void Chose::clearChildren() {
 	children.clear();
 }
 
+void Chose::clearTriangles() {
+	std::vector<GPUTriangle*>::iterator it;
+	for (it = triangles.begin(); it != triangles.end(); it++)
+		delete *it;
+	triangles.clear();
+}
+
 Chose::~Chose() {
 	clearChildren();
-	triangles.clear();
+	clearTriangles();
 }
 
 void Chose::addChild(Chose* c) {
@@ -22,7 +28,6 @@ void Chose::addChild(Chose* c) {
 
 bool Chose::merge() {
 	clearChildren();
-	// triangles.clear();
 	return true;
 }
 
@@ -128,6 +133,7 @@ void Chose::addBBPoints(const Quad q, float height) {
 void Chose::updateAABB() {
 	float splitFactor = 5.f;
 	float mergeFactor = 6.f;
+	float nonFacingFactor = 2.f/3.f;
 	lod.firstBBPoint = true;
 	getBoundingBoxPoints();
 	float size[3];
@@ -137,7 +143,7 @@ void Chose::updateAABB() {
 	for (int i = 0; i < 3; i++)
 		areaFacing[i] = size[(i+1)%3]*size[(i+1)%3];
 	for (int i = 0; i < 3; i++) {
-		float pseudoLength = std::max(1.f, std::sqrt(areaFacing[i] + areaFacing[(i+1)%3] / 2.f + areaFacing[(i+1)%3] / 2.f));
+		float pseudoLength = std::max(1.f, std::sqrt(areaFacing[i] + areaFacing[(i+1)%3] * nonFacingFactor + areaFacing[(i+1)%3] * nonFacingFactor));
 		float splitIncrement = std::min((float)View::backFrustum, splitFactor * pseudoLength);
 		float mergeIncrement = std::min(View::backFrustum * mergeFactor/splitFactor, mergeFactor * pseudoLength);
 		lod.splitBox[2*i] = lod.aabb[2*i] - splitIncrement;

@@ -18,7 +18,7 @@ public :
 	void drawAABB(); // DEBUG
 	virtual bool split() { return false; };
 	virtual bool merge();
-	virtual void triangulation() { triangles.clear(); };
+	virtual void triangulation() { clearTriangles(); };
 	virtual void updateAABB();
 
 protected :
@@ -72,6 +72,7 @@ protected :
 	void addGPUOcto(Quad q, Quad qh, unsigned int rgb);
 private:
 	void clearChildren();
+	void clearTriangles();
 };
 
 #endif

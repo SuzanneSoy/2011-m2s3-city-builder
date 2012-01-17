@@ -5,10 +5,7 @@ TerrainQuad::TerrainQuad(Quad _c) : Chose(), c(_c) {
 }
 
 void TerrainQuad::getBoundingBoxPoints() {
-	// TODO : quelle hauteur mettre pour le terrain plat ? Il faut mettre 0 et ajuster le
-	// calcul des splitBox et mergeBox pour prendre en compre la somme des surfaces
-	// potentiellement visibles de l'objet.
-	addBBPoints(c, 1000);
+	addBBPoints(c);
 }
 
 void TerrainQuad::triangulation() {
@@ -20,10 +17,7 @@ TerrainTri::TerrainTri(Triangle _c) : Chose(), c(_c) {
 }
 
 void TerrainTri::getBoundingBoxPoints() {
-	// TODO : quelle hauteur mettre pour le terrain plat ? Il faut mettre 0 et ajuster le
-	// calcul des splitBox et mergeBox pour prendre en compre la somme des surfaces
-	// potentiellement visibles de l'objet.
-	addBBPoints(c, 1000);
+	addBBPoints(c);
 }
 
 void TerrainTri::triangulation() {

@@ -17,7 +17,15 @@ bool ArcheQuad::split() {
 void ArcheQuad::triangulation() {
 	Quad che = c.offsetNormal(f(end) * height);
 	Quad chw = c.offsetNormal(f(start) * height);
-	addGPUOcto(c, Quad(che[NE], che[SE], chw[SW], chw[NW]), Couleurs::mur);
+	addGPUQuad(Quad(c[NW], c[NE], che[NE], chw[NW]), Couleurs::mur);
+	addGPUQuad(Quad(c[SE], c[SW], chw[SW], che[SE]), Couleurs::mur);
+	/*
+	// Doivent être dessiné par le bâtiment englobant.
+	if (start == 0)
+		addGPUQuad(Quad(c[SW], c[NW], chw[NW], chw[SW]), Couleurs::mur);
+	if (end == 1)
+		addGPUQuad(Quad(c[NE], c[SE], che[SE], che[NE]), Couleurs::mur);
+	*/
 }
 
 void ArcheQuad::getBoundingBoxPoints() {

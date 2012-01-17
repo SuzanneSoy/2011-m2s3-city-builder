@@ -6,10 +6,9 @@
 class TrottoirQuad : public Chose {
 	private :
 	Quad c;
-	float height;
 
 	public :
-	TrottoirQuad(Quad _c, float _height);
+	TrottoirQuad(Quad _c);
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

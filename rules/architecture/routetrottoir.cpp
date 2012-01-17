@@ -1,16 +1,15 @@
 #include "all_includes.hh"
 
-TrottoirQuad::TrottoirQuad(Quad _c, float _height) : Chose(), c(_c), height(_height) {
+TrottoirQuad::TrottoirQuad(Quad _c) : Chose(), c(_c) {
 	addEntropy(c);
-	addEntropy(height);
 }
 
 void TrottoirQuad::getBoundingBoxPoints() {
-	addBBPoints(c, height);
+	addBBPoints(c, Dimensions::hauteurTrottoir);
 }
 
 void TrottoirQuad::triangulation() {
-	Quad ch = c.offsetNormal(height);
+	Quad ch = c.offsetNormal(Dimensions::hauteurTrottoir);
 	Quad bordureh = ch.inset(E,15);
 
 	addGPUQuad(c[NE], c[SE], ch[SE], ch[NE], Couleurs::bordureTrottoir);
@@ -23,10 +22,7 @@ RouteQuad::RouteQuad(Quad _c) : Chose(), c(_c) {
 }
 
 void RouteQuad::getBoundingBoxPoints() {
-	// TODO : quelle hauteur mettre pour la route ? Il faut mettre 0 et ajuster le
-	// calcul des splitBox et mergeBox pour prendre en compre la somme des surfaces
-	// potentiellement visibles de l'objet.
-	addBBPoints(c, 1000);
+	addBBPoints(c);
 }
 
 void RouteQuad::triangulation() {

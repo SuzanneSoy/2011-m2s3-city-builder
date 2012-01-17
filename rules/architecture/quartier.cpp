@@ -5,7 +5,7 @@ QuartierQuad::QuartierQuad(Quad _c) : Chose(), c(_c) {
 }
 
 void QuartierQuad::getBoundingBoxPoints() {
-	addBBPoints(c, 600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+	addBBPoints(c, Dimensions::hauteurMaxBatiment);
 }
 
 bool QuartierQuad::split() {
@@ -39,7 +39,7 @@ void QuartierQuad::triangulation() {
 		triangulationConcave(Triangle(q[SW], q[NW], q[NE]));
 	} else {
 		Quad ci = c.insetNESW(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
-		Quad cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+		Quad cih = ci.offsetNormal(Dimensions::hauteurMaxBatiment);
 		addGPUQuad(c, Couleurs::route);
 		addGPUQuad(cih, Couleurs::toit);
 		for (int i = 0; i < 4; i++)
@@ -50,7 +50,7 @@ void QuartierQuad::triangulation() {
 void QuartierQuad::triangulationConcave(Triangle t) {
 	// Même code que QuartierTri::triangulation.
 	Triangle ci = t.insetLTR(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
-	Triangle cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+	Triangle cih = ci.offsetNormal(Dimensions::hauteurMaxBatiment);
 	addGPUTriangle(t, Couleurs::route);
 	addGPUTriangle(cih, Couleurs::toit);
 	for (int i = 0; i < 3; i++)
@@ -105,22 +105,19 @@ void QuartierQuad::carre() {
 }
 
 void QuartierQuad::batiments() {
-	float hauteurTrottoir = 20; // TODO : factoriser + ajouter ça à la hauteur max d'un bâtiment dans les autres calculs.
 	Quad qtrottoir = c.insetNESW(Dimensions::largeurRoute);
 	Quad qinterieur = qtrottoir.insetNESW(Dimensions::largeurTrottoir);
-	Quad qbatiments = qinterieur.offsetNormal(hauteurTrottoir);
+	Quad qbatiments = qinterieur.offsetNormal(Dimensions::hauteurTrottoir);
 
 	for (int i = 0; i < 4; i++) {
 		addChild(new RouteQuad(Quad(c[NE+i],c[SE+i],qtrottoir[SE+i],qtrottoir[NE+i])));
-		addChild(new TrottoirQuad(Quad(qtrottoir[NE+i],qtrottoir[SE+i],qinterieur[SE+i],qinterieur[NE+i]),hauteurTrottoir));
+		addChild(new TrottoirQuad(Quad(qtrottoir[NE+i],qtrottoir[SE+i],qinterieur[SE+i],qinterieur[NE+i])));
 	}
-
-	// TODO :
 
 	bool anglesAcceptable = c.minAngle() > Angle::d2r(90-60) && c.maxAngle() < Angle::d2r(90+60);
 
 	if (anglesAcceptable && proba(seed, 0, 19, 20)) {
-		addChild(new BatimentQuad(qbatiments));
+		addChild(new BatimentQuad_(qbatiments));
 	} else {
 		addChild(new TerrainQuad(qbatiments));
 	}
@@ -131,7 +128,7 @@ QuartierTri::QuartierTri(Triangle _c) : Chose(), c(_c) {
 }
 
 void QuartierTri::getBoundingBoxPoints() {
-	addBBPoints(c, 600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+	addBBPoints(c, Dimensions::hauteurMaxBatiment);
 }
 
 bool QuartierTri::split() {
@@ -166,7 +163,7 @@ bool QuartierTri::split() {
 
 void QuartierTri::triangulation() {
 	Triangle ci = c.insetLTR(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
-	Triangle cih = ci.offsetNormal(600); // TODO : factoriser cette longueur (hauteur max des bâtiments).
+	Triangle cih = ci.offsetNormal(Dimensions::hauteurMaxBatiment);
 	addGPUTriangle(c, Couleurs::route);
 	addGPUTriangle(cih, Couleurs::toit);
 	for (int i = 0; i < 3; i++)
@@ -203,18 +200,14 @@ void QuartierTri::trapeze() {
 }
 
 void QuartierTri::batiments() {
-	return;
-	float hauteurTrottoir = 14; // TODO : factoriser + ajouter ça à la hauteur max d'un bâtiment dans les autres calculs.
 	Triangle ttrottoir = c.insetLTR(Dimensions::largeurRoute);
 	Triangle tinterieur = ttrottoir.insetLTR(Dimensions::largeurTrottoir);
-	Triangle tbatiments = tinterieur.offsetNormal(hauteurTrottoir);
+	Triangle tbatiments = tinterieur.offsetNormal(Dimensions::hauteurTrottoir);
 
 	for (int i = 0; i < 3; i++) {
 		addChild(new RouteQuad(Quad(c[LEFT+i],c[TOP+i],ttrottoir[TOP+i],ttrottoir[LEFT+i])));
-		addChild(new TrottoirQuad(Quad(ttrottoir[LEFT+i],ttrottoir[TOP+i],tinterieur[TOP+i],tinterieur[LEFT+i]),hauteurTrottoir));
+		addChild(new TrottoirQuad(Quad(ttrottoir[LEFT+i],ttrottoir[TOP+i],tinterieur[TOP+i],tinterieur[LEFT+i])));
 	}
-
-	// TODO :
 
 	bool small = tbatiments.minLength() < 3000;
 	bool big = tbatiments.maxLength() >= 5000;
@@ -223,7 +216,7 @@ void QuartierTri::batiments() {
 	if (!big && proba(seed, 0, 1, 20)) {
 		addChild(new TerrainTri(tbatiments));
 	} else if (small && anglesAcceptable) {
-		addChild(new BatimentTri(tbatiments));
+		addChild(new BatimentTri_(tbatiments));
 	} else {
 		addChild(new TerrainTri(tbatiments));
 	}
