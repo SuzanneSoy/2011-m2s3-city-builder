@@ -5,7 +5,8 @@ BatimentQuad_::BatimentQuad_(Quad _c) : Chose(), c(_c) {
 }
 
 bool BatimentQuad_::split() {
-	//addChild()
+	Quad ch = c.offsetNormal(Dimensions::hauteurEtage);
+	//addChild(new ToitQuad(ch, Dimensions::hauteurToit));
 	return true;
 }
 

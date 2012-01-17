@@ -11,6 +11,8 @@ class Chose;
 #include <cmath>
 #include <vector>
 #include <set>
+#include <map>
+#include <list>
 
 #include <SDL/SDL.h>
 #include <GL/glew.h>
