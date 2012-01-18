@@ -9,7 +9,8 @@ void QuartierQuad::getBoundingBoxPoints() {
 }
 
 bool QuartierQuad::split() {
-	bool small = c.minLength() < 3500;
+	bool small = c.minLength() < 35 * 100;
+	bool big = (c.minLengthNS() > 100 * 100 || c.minLengthEW() > 100 * 100) && c.minLength() > 40*100 && c.maxLength() < 300*100;
 	bool isConcave = c.isConcave();
 	bool nearConcave = c.maxAngle() > Angle::d2r(160);
 	bool anglesOk = c.minAngle() > Angle::d2r(90-40) && c.maxAngle() < Angle::d2r(90+40);
@@ -19,7 +20,9 @@ bool QuartierQuad::split() {
 		concave();
 	else if (nearConcave)
 		angleAngle();
-	else if (!small && !anglesOk && proba(seed, -2, 1, 2))
+	else if (big && anglesOk && proba(seed, -2, 1, 4))
+		longueRue();
+	else if (!small && !anglesOk && proba(seed, -3, 1, 2))
 		angleAngle();
 	else if (!small && !anglesOk)
 		angleCote();
@@ -102,6 +105,18 @@ void QuartierQuad::carre() {
 
 	for (int i = 0; i < 4; i++)
 		addChild(new QuartierQuad(Quad(c[NE+i], middle[E+i], center, middle[N+i])));
+}
+
+void QuartierQuad::longueRue() {
+	Quad q = c << c.maxLengthSide();
+	Vertex e = Segment(q[NE], q[SE]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
+	Vertex w = Segment(q[SW], q[NW]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
+	Quad qn = Quad(q[NE], e, w, q[NW]).inset(S, 7*100);
+	Quad qs = Quad(q[SW], w, e, q[SE]).inset(S, 7*100);
+
+	addChild(new QuartierQuad(qn));
+	addChild(new QuartierQuad(qs));
+	addChild(new BatimentQuad_(Quad(qn[SE], qs[SW], qs[SE], qn[SW]))); // TODO
 }
 
 void QuartierQuad::batiments() {
