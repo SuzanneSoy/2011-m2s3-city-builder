@@ -18,7 +18,6 @@ class Vertex {
 	float cosAngle(Vertex v) const; // cosinus de l'angle entre this et v.
 	float angle(Vertex v) const; // Angle entre this et v.
 	static Vertex fromSpherical(float r, float xAngle, float yAngle);
-	friend Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d); // Intersection entre (a,b) et (c,d).
 
 	public :
 	friend std::ostream& operator<<(std::ostream& os, const Vertex& v);

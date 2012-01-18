@@ -10,19 +10,6 @@ Vertex::Vertex(float _x, float _y, float _z): x(_x), y(_y), z(_z) {
 
 float Vertex::norm() const { return std::sqrt(x*x + y*y + z*z); }
 
-// TODO : Ce code ne marche qu'en 2D !
-Vertex intersection(Vertex a, Vertex b, Vertex c, Vertex d) {
-	// Note : si les deux lignes sont parallèles, on risque fort
-	// d'avoir une division par zéro.
-	// http://en.wikipedia.org/wiki/Line-line_intersection
-	float denominator =  ((a.x-b.x)*(c.y-d.y) - (a.y-b.y)*(c.x-d.x));
-	return Vertex(
-		((a.x*b.y-a.y*b.x)*(c.x-d.x) - (a.x-b.x)*(c.x*d.y-c.y*d.x)) / denominator,
-		((a.x*b.y-a.y*b.x)*(c.y-d.y) - (a.y-b.y)*(c.x*d.y-c.y*d.x)) / denominator,
-		0
-	);
-}
-
 Vertex Vertex::projectOn(Vertex v) const {
 	// http://www.developpez.net/forums/d202580/applications/developpement-2d-3d-jeux/contribuez/faq-mat-quat-ajout-calculs-vectoriels/
 	float scalaire = (this->x)*(v.x) + (this->y)*(v.y) + (this->z)*(v.z);
