@@ -60,8 +60,8 @@ void ToitQuad::deuxPointsVerticaux() {
 
 
 
-	addGPUTriangle(q[SE], e, q[NE], Couleurs::toit);
-	addGPUTriangle(q[NW], w, q[SW], Couleurs::toit);
+	addGPUTriangle(q[SE], e, q[NE], Couleurs::mur);
+	addGPUTriangle(q[NW], w, q[SW], Couleurs::mur);
 	addGPUQuad(q[SE], q[SW], w, e, Couleurs::toit);
 	addGPUQuad(q[NW], q[NE], e, w, Couleurs::toit);
 }
