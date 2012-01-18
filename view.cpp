@@ -147,7 +147,7 @@ void View::renderScene(int lastTime, int currentTime) {
 	lod.setCamera(camera.cameraCenter);
 
 	setLight();
-	//setSkybox();
+	setSkybox();
 
 	glBegin(GL_TRIANGLES);
 	root->display();
