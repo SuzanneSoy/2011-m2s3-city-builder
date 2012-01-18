@@ -46,11 +46,22 @@ void ToitQuad::deuxPoints() {
 void ToitQuad::deuxPointsVerticaux() {
 	// Orienter c dans le sens de la longueur d'est en ouest.
 	Quad q = c >> ((c.maxLengthNS() > c.maxLengthEW()) ? 1 : 0);
-	Quad qh = q.offsetNormal(height);
+    Quad qh = q.offsetNormal(height);
+
+
+	float coef = height / Segment(q[NW],q[SW]).length();
+    float eLength = Segment(q[NE],q[SE]).length();
+    qh[NE] = q[NE] + Vertex(qh[NE]-q[NE]).setNorm(coef*eLength);
+    qh[SE] = q[SE] + Vertex(qh[SE]-q[SE]).setNorm(coef*eLength);
+
 	Vertex w = Segment(qh[NW], qh[SW]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
 	Vertex e = Segment(qh[NE], qh[SE]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
-	addGPUTriangle(q[SE], e, q[NE], Couleurs::mur);
-	addGPUTriangle(q[NW], w, q[SW], Couleurs::mur);
+
+
+
+
+	addGPUTriangle(q[SE], e, q[NE], Couleurs::toit);
+	addGPUTriangle(q[NW], w, q[SW], Couleurs::toit);
 	addGPUQuad(q[SE], q[SW], w, e, Couleurs::toit);
 	addGPUQuad(q[NW], q[NE], e, w, Couleurs::toit);
 }
