@@ -8,8 +8,7 @@ class BatimentQuad_ : public Chose {
     bool isSub;
 
     public:
-	BatimentQuad_(Quad _c);
-	BatimentQuad_(Quad _c, bool _isSub);
+	BatimentQuad_(Quad _c, bool _isSub = false);
 	virtual bool split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();

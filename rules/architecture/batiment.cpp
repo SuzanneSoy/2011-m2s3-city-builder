@@ -1,9 +1,5 @@
 #include "all_includes.hh"
 
-BatimentQuad_::BatimentQuad_(Quad _c) : Chose(), c(_c) {
-	addEntropy(c);
-}
-
 BatimentQuad_::BatimentQuad_(Quad _c, bool _isSub) : Chose(), c(_c), isSub(_isSub) {
 	addEntropy(c);
 }
