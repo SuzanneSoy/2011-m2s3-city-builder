@@ -15,7 +15,7 @@ void ToitQuad::triangulation() {
 	switch (hash2(seed, -1) % 4) {
 	case 0: pointCentral(); break;
 	// TODO : deuxPoints() et deuxPointsVerticaux() ne génèrent pas des quad où les 4 points sont sur le même plan.
-	case 1: deuxPoints(); break;
+	case 1: deuxPointsVerticaux(); break;
 	case 2: deuxPointsVerticaux(); break;
 	case 3:
 	default: plat(); break;
@@ -54,8 +54,10 @@ void ToitQuad::deuxPointsVerticaux() {
     qh[NE] = q[NE] + Vertex(qh[NE]-q[NE]).setNorm(coef*eLength);
     qh[SE] = q[SE] + Vertex(qh[SE]-q[SE]).setNorm(coef*eLength);
 
-	Vertex w = Segment(qh[NW], qh[SW]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
-	Vertex e = Segment(qh[NE], qh[SE]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
+	//Vertex w = Segment(qh[NW], qh[SW]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
+	//Vertex e = Segment(qh[NE], qh[SE]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
+	Vertex w = qh[SW] + Vertex(qh[NW] - qh[SW])/2;
+	Vertex e = qh[SE] + Vertex(qh[NE] - qh[SE])/2;
 
 
 
