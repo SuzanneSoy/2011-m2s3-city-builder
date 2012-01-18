@@ -13,6 +13,7 @@ class Chose;
 #include <set>
 #include <map>
 #include <list>
+#include <queue>
 
 #include <SDL/SDL.h>
 #include <GL/glew.h>

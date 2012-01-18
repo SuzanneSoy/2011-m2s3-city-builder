@@ -3,8 +3,28 @@
 
 #include "all_includes.hh"
 
+class Mur {
+private:
+	std::map<float,Segment> objets;
+	Segment s;
+public:
+	Mur(Segment _s);
+	void addSplitPoint(float position);
+	bool addDoor(float start, float end);
+	bool addWindow(float start, float end);
+};
+
+class Piece {
+public:
+	Quad c;
+	Mur* murs[4];
+	Piece(Quad _c, Mur* n, Mur* e, Mur* s, Mur* w);
+};
+
 class BatimentQuad_ : public Chose {
 	Quad c;
+	std::vector<Piece*> pieces;
+	std::vector<Mur*> murs;
 public:
 	BatimentQuad_(Quad _c);
 	virtual bool split();
