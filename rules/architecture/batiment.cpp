@@ -5,9 +5,35 @@ BatimentQuad_::BatimentQuad_(Quad _c) : Chose(), c(_c) {
 }
 
 bool BatimentQuad_::split() {
-	Quad ch = c.offsetNormal(Dimensions::hauteurEtage);
-	addChild(new ToitQuad(ch, Dimensions::hauteurToit));
+    Quad q;
+
+    if(!isSub)
+        q = c >> ((c.maxLengthNS() < c.maxLengthEW()) ? 1 : 0);
+    else
+        q = c;
+
+    int minSurface = 1000000;
+
+    if(q.surface() > 2* minSurface) {
+        Vertex c1 = q[NW] + Vertex(q[NE] - q[NW])/2;
+        Vertex c2 = q[SW] + Vertex(q[SE] - q[SW])/2;
+        Quad q1 = Quad(c1,c2,q[SW],q[NW]).inset(E,30);
+        Quad q2 = Quad(q[NE],q[SE],c2,c1).inset(W,30);
+
+        addChild((new BatimentQuad_(q1))->isSubdivision(true));
+        addChild((new BatimentQuad_(q2))->isSubdivision(true));
+    }
+    else {
+        Quad ch = c.offsetNormal(Dimensions::hauteurEtage);
+        addChild(new ToitQuad(ch, Dimensions::hauteurToit));
+    }
+
 	return true;
+}
+
+BatimentQuad_* BatimentQuad_::isSubdivision(bool val) {
+    this->isSub  = val;
+    return this;
 }
 
 void BatimentQuad_::triangulation() {
