@@ -18,6 +18,7 @@ private:
 	void angleCote();
 	void rect();
 	void carre();
+	void longueRue();
 	void batiments();
 };
 
