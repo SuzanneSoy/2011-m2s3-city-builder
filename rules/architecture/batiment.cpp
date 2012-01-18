@@ -15,16 +15,16 @@ bool BatimentQuad_::split() {
         we = ws; ws = ww; ww = wn; wn = t;
 	}
 
-    std::cout << "w : " << we << " " << ws << " " << ww << " " << wn << std::endl;
+    //std::cout << "w : " << we << " " << ws << " " << ww << " " << wn << std::endl;
 	if((we || ws || ww || wn) && q.surface() > 2 * minSurface) {
-		Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 1.f/2.f, 1.f/2.f);
-		Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 1.f/2.f, 1.f/2.f);
+		Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 1.f/3.f, 1.f/2.f);
+		Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 1.f/3.f, 1.f/2.f);
 
         addChild(new BatimentQuad_(Quad(q[NE], q[SE], s, n), true,we&&true,ws&&true,false,wn&&true));
         addChild(new BatimentQuad_(Quad(n, s,q[SW],q[NW]), true,false,ws&&true,ww&&true,wn&&true));
 	} else {
 		Quad ch = c.offsetNormal(Dimensions::hauteurEtage);
-		ch = ch.insetNESW(80);
+		ch = ch.insetNESW(30);
 		if(we || ws || ww || wn)
             addChild(new ToitQuad(ch, Dimensions::hauteurToit));
         else
