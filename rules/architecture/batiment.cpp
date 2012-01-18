@@ -4,36 +4,25 @@ BatimentQuad_::BatimentQuad_(Quad _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 
-bool BatimentQuad_::split() {
-    Quad q;
-
-    if(!isSub)
-        q = c >> ((c.maxLengthNS() < c.maxLengthEW()) ? 1 : 0);
-    else
-        q = c;
-
-    int minSurface = 1000000;
-
-    if(q.surface() > 2* minSurface) {
-        Vertex c1 = q[NW] + Vertex(q[NE] - q[NW])/2;
-        Vertex c2 = q[SW] + Vertex(q[SE] - q[SW])/2;
-        Quad q1 = Quad(c1,c2,q[SW],q[NW]).inset(E,30);
-        Quad q2 = Quad(q[NE],q[SE],c2,c1).inset(W,30);
-
-        addChild((new BatimentQuad_(q1))->isSubdivision(true));
-        addChild((new BatimentQuad_(q2))->isSubdivision(true));
-    }
-    else {
-        Quad ch = c.offsetNormal(Dimensions::hauteurEtage);
-        addChild(new ToitQuad(ch, Dimensions::hauteurToit));
-    }
-
-	return true;
+BatimentQuad_::BatimentQuad_(Quad _c, bool _isSub) : Chose(), c(_c), isSub(_isSub) {
+	addEntropy(c);
 }
 
-BatimentQuad_* BatimentQuad_::isSubdivision(bool val) {
-    this->isSub  = val;
-    return this;
+bool BatimentQuad_::split() {
+	int minSurface = 100 * 100 * 100;
+	Quad q = c << c.maxLengthSide();
+	if(q.surface() > 2 * minSurface) {
+		Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 3.f/8.f, 5.f/8.f);
+		Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 3.f/8.f, 5.f/8.f);
+
+		addChild(new BatimentQuad_(Quad(q[NE], q[SE], s, n), true));
+		addChild(new BatimentQuad_(Quad(q[SW], q[NW], n, s), true));
+	} else {
+		Quad ch = c.offsetNormal(Dimensions::hauteurEtage);
+		addChild(new ToitQuad(ch, Dimensions::hauteurToit));
+	}
+
+	return true;
 }
 
 void BatimentQuad_::triangulation() {

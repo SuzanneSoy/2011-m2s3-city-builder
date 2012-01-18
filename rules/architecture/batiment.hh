@@ -9,6 +9,7 @@ class BatimentQuad_ : public Chose {
 
     public:
 	BatimentQuad_(Quad _c);
+	BatimentQuad_(Quad _c, bool _isSub);
 	virtual bool split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
