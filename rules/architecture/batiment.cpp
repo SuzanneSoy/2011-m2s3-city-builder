@@ -6,26 +6,29 @@ BatimentQuad_::BatimentQuad_(Quad _c, bool _isSub, bool _we, bool _ws, bool _ww,
 }
 
 bool BatimentQuad_::split() {
-	int minSurface = 100 * 100 * 100;
+	int minSurface = 100 * 100 * 10;
 	Quad q = c;
 	//Quad q = c << c.maxLengthSide();
 	if(c.maxLengthNS() < c.maxLengthEW()) {
         q = c >> 1;
         bool t = we;
-        we = wn; wn = ww; ww = ws; ws = t;
+        we = ws; ws = ww; ww = wn; wn = t;
 	}
 
     std::cout << "w : " << we << " " << ws << " " << ww << " " << wn << std::endl;
 	if((we || ws || ww || wn) && q.surface() > 2 * minSurface) {
-		Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 3.f/8.f, 5.f/8.f);
-		Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 3.f/8.f, 5.f/8.f);
+		Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 1.f/2.f, 1.f/2.f);
+		Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 1.f/2.f, 1.f/2.f);
 
         addChild(new BatimentQuad_(Quad(q[NE], q[SE], s, n), true,we&&true,ws&&true,false,wn&&true));
-        addChild(new BatimentQuad_(Quad(q[SW], q[NW], n, s), true,false,ws&&true,ww&&true,wn&&true));
+        addChild(new BatimentQuad_(Quad(n, s,q[SW],q[NW]), true,false,ws&&true,ww&&true,wn&&true));
 	} else {
 		Quad ch = c.offsetNormal(Dimensions::hauteurEtage);
 		ch = ch.insetNESW(80);
-		addChild(new ToitQuad(ch, Dimensions::hauteurToit));
+		if(we || ws || ww || wn)
+            addChild(new ToitQuad(ch, Dimensions::hauteurToit));
+        else
+            addChild(new BatimentQuadJardin(ch));
 	}
 
 	return true;
