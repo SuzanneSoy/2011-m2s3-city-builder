@@ -38,6 +38,7 @@ public :
 	Vertex normal() const;
 	Vertex normalizedNormal() const;
 	Triangle offsetNormal(float offset) const;
+	Triangle insetProportionnal(float prop);
 };
 
 #endif

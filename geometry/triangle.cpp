@@ -99,3 +99,21 @@ Vertex Triangle::normalizedNormal() const {
 Triangle Triangle::offsetNormal(float offset) const {
 	return ((*this) + this->normal().setNorm(offset));
 }
+
+Triangle Triangle::insetProportionnal(float prop) {
+    Triangle rTriangle = *this;
+    //ibc : isobarycentre.
+    Vertex ibc = Segment(c[TOP],Segment(c[LEFT],c[RIGHT]).center()).at(2./3.);
+    prop = prop;
+
+    rTriangle[TOP] = Segment(ibc,c[TOP]).at(prop);
+    rTriangle[LEFT] = Segment(ibc,c[LEFT]).at(prop);
+    rTriangle[RIGHT] = Segment(ibc,c[RIGHT]).at(prop);
+    return rTriangle;
+}
+
+
+
+
+
+

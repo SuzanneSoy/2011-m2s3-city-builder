@@ -223,6 +223,19 @@ float Quad::surface() const {
 	return ne.surface() + sw.surface();
 }
 
+Quad Quad::insetProportionnal(float prop) {
+    Quad rQuad= *this;
+
+    Vertex bc = Segment(Segment(c[NW],c[NE]).center(),Segment(c[SW],c[SE]).center()).center();
+    prop = prop;
+
+    rQuad[NW] = Segment(bc,c[NW]).at(prop);
+    rQuad[NE] = Segment(bc,c[NE]).at(prop);
+    rQuad[SE] = Segment(bc,c[SE]).at(prop);
+    rQuad[SW] = Segment(bc,c[SW]).at(prop);
+    return rQuad;
+}
+
 Quad Quad::offsetNormal(float offset) const {
 	return ((*this) + Triangle(c[NE], c[SE], c[SW]).normal().setNorm(offset));
 }

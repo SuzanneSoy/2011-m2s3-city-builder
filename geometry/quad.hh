@@ -48,6 +48,7 @@ class Quad {
 	float surface() const;
 	//void cutCornerCorner(Coin from) const;
 	Quad makeParallelogram() const;
+	Quad insetProportionnal(float prop);
 	Quad offsetNormal(float offset) const;
 	Vertex normal() const;
 	Vertex normalizedNormal() const;
