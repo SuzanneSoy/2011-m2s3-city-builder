@@ -135,10 +135,18 @@ void QuartierQuad::batiments() {
 		addChild(new BatimentQuad_(qbatiments));
 	} else {
 		addChild(new TerrainQuad(qbatiments));
-		Vertex h = qbatiments.normalizedNormal();
-		Vertex l = (qbatiments[NE] - qbatiments[SE]).normalize();
-		Vertex u = h * l;
-		addChild(new Arbre(qbatiments.moyenne(), Angle3D(h, l, u), 3*100));
+		Vertex p1 = qbatiments.insetProportionnal(0.7).randomPoint(seed, 1);
+		Vertex p2 = qbatiments.insetProportionnal(0.7).randomPoint(seed, 2);
+		Vertex p3 = qbatiments.insetProportionnal(0.7).randomPoint(seed, 3);
+		if (proba(seed, 4, 3, 4)) {
+			addChild(new Arbre(p1, Triangle(qbatiments[NE], qbatiments[SE], qbatiments[SW])));
+			if (proba(seed, 5, 3, 4) && Segment(p1,p2).length() > 3 * 100) {
+				addChild(new Arbre(p2, Triangle(qbatiments[NE], qbatiments[SE], qbatiments[SW])));
+				if (proba(seed, 6, 3, 4) && Segment(p2,p3).length() > 3 * 100 && Segment(p1,p3).length() > 3 * 100) {
+					addChild(new Arbre(p3, Triangle(qbatiments[NE], qbatiments[SE], qbatiments[SW])));
+				}
+			}
+		}
 	}
 }
 

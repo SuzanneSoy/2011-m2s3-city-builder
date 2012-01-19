@@ -20,6 +20,8 @@ private:
 	static float calcLimitLengthFactor();
 	static const float limitLengthFactor;
 public:
+	static float maxRadius(float length);
+	Arbre(Vertex _start, Triangle plane);
 	Arbre(Vertex _start, Angle3D _rotation, float _length, Type _type = ARBRE);
 	virtual bool split();
 	virtual void triangulation();

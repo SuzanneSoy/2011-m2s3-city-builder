@@ -1,5 +1,19 @@
 #include "all_includes.hh"
 
+Arbre::Arbre(Vertex _start, Triangle plane) : start(_start), type(ARBRE) {
+	addEntropy(start);
+	addEntropy(plane);
+
+	Vertex h = plane.normalizedNormal();
+	Vertex l = (plane[TOP] - plane[LEFT]).normalize();
+	Vertex u = h * l;
+
+	rotation = Angle3D(h, l, u);
+	rotation = rotation.rotateH(floatInRange(seed, -3, 0, 2*Angle::Pi));
+	rotation = rotation.rotateU(floatInRange(seed, -4, Angle::d2r(-10), Angle::d2r(10)));
+	length = floatInRange(seed, -5, 3*100, 4*100);
+}
+
 Arbre::Arbre(Vertex _start, Angle3D _rotation, float _length, Type _type) : start(_start), rotation(_rotation), length(_length), type(_type) {
 	addEntropy(start, rotation.h, rotation.l, rotation.u);
 	addEntropy(length);
@@ -56,6 +70,10 @@ float Arbre::calcLimitLengthFactor() {
 
 float Arbre::limitLength() const {
 	return length * limitLengthFactor;
+}
+
+float Arbre::maxRadius(float length) {
+	return length * (1+limitLengthFactor);
 }
 
 void Arbre::tronc() {
