@@ -1,37 +1,33 @@
 #include "all_includes.hh"
 
-BatimentQuad_::BatimentQuad_(Quad _c, bool _isSub, bool _we, bool _ws, bool _ww, bool _wn)
-        : Chose(), c(_c), isSub(_isSub), we(_we), ws(_ws), ww(_ww), wn(_wn) {
+BatimentQuad_::BatimentQuad_(Quad _c, bool _isSub, QuadBool _w)
+        : Chose(), c(_c), isSub(_isSub), w(_w) {
 	addEntropy(c);
+	for (int i = 0; i < 4; i++)
+		addEntropy(w[N+i] ? 0 : 1);
 }
 
 bool BatimentQuad_::split() {
 	int minSurface = 100 * 100 * 100;
-	Quad q = c;
-	//Quad q = c << c.maxLengthSide();
-	if(c.maxLengthNS() < c.maxLengthEW()) {
-        q = c >> 1;
-        bool t = we;
-        we = ws; ws = ww; ww = wn; wn = t;
-	}
+	Quad q = c << c.maxLengthSide();
+	QuadBool qb = w << c.maxLengthSide();
 
-    //std::cout << "w : " << we << " " << ws << " " << ww << " " << wn << std::endl;
-	if((we || ws || ww || wn) && q.surface() > 2 * minSurface) {
-		Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 1.f/3.f, 1.f/2.f);
-		Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 1.f/3.f, 1.f/2.f);
+	if (qb[N] || qb[E] || qb[S] || qb[W]) {
+		if (q.surface() > 2 * minSurface) {
+			Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 1.f/3.f, 1.f/2.f);
+			Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 1.f/3.f, 1.f/2.f);
 
-        addChild(new BatimentQuad_(Quad(q[NE], q[SE], s, n), true,we&&true,ws&&true,false,wn&&true));
-        addChild(new BatimentQuad_(Quad(n, s,q[SW],q[NW]), true,false,ws&&true,ww&&true,wn&&true));
-	} else {
-		Quad ch = c.offsetNormal(Dimensions::hauteurEtage);
-		ch = ch.insetNESW(30);
-		c = c.insetNESW(30);
-		if(we || ws || ww || wn) {
+			addChild(new BatimentQuad_(Quad(q[SE], s, n, q[NE]), true, QuadBool(qb[E],qb[S],false,qb[N])));
+			addChild(new BatimentQuad_(Quad(q[NW], n, s, q[SW]), true, QuadBool(qb[W],qb[N],false,qb[S])));
+		} else {
+			Quad ch = c.offsetNormal(Dimensions::hauteurEtage);
+			ch = ch.insetNESW(30);
+			c = c.insetNESW(30);
             addChild(new ToitQuad(ch, Dimensions::hauteurToit));
-            addChild(new EtageQuad(c,ch));
+            //addChild(new EtageQuad(c,ch));
 		}
-        else
-            addChild(new BatimentQuadJardin(ch));
+	} else {
+		addChild(new TerrainQuad(c));
 	}
 
 	return true;

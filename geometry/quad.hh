@@ -55,5 +55,30 @@ class Quad {
 	Vertex moyenne() const;
 };
 
+class QuadBool {
+    private:
+	bool c[4];
+
+    public :
+	QuadBool();
+	QuadBool(bool n, bool e, bool s, bool w) {
+		c[N] = n;
+		c[E] = e;
+		c[S] = s;
+		c[W] = w;
+	};
+	inline bool& operator[] (Cardinal x) {
+		return c[x];
+	}
+	inline const bool& operator[] (Cardinal x) const {
+		return c[x];
+	}
+	inline QuadBool operator>> (int rot) const {
+		return QuadBool(c[N - rot], c[E - rot], c[S - rot], c[N - rot]);
+	}
+	inline QuadBool operator<< (int rot) const {
+		return QuadBool(c[N + rot], c[E + rot], c[S + rot], c[W + rot]);
+	}
+};
 
 #endif

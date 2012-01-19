@@ -9,7 +9,7 @@ bool TerrainQuad::split() {
 
 	addChild(new TerrainQuad(c, false));
 
-	int maxNArbres = 10;
+	int maxNArbres = std::min(10, (int)(c.surface() / (7.f*7.f*100.f*100.f)));
 	Vertex p[maxNArbres];
 	int pi = 0;
 	int nArbres = hash2(seed, -1) % (maxNArbres + 1);

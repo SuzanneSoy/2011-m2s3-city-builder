@@ -25,12 +25,10 @@ bool EtageQuad::split() {
     MurQuad *mmn = new MurQuad(mn,mnh,wn);
     MurQuad *mmw = new MurQuad(mw >> 1,mwh >> 1,ww);
     MurQuad *mms = new MurQuad(ms >> 2,msh >> 2,ws);
-mmw=mmw;
-mms=mms;
     addChild(mme);
-    //addChild(mmw);
+    addChild(mmw);
     addChild(mmn);
-    //addChild(mms);
+    addChild(mms);
     return true;
 }
 

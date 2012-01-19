@@ -6,10 +6,10 @@
 class BatimentQuad_ : public Chose {
 	Quad c;
     bool isSub;
-    bool we, ws, ww, wn;
+    QuadBool w;
 
     public:
-	BatimentQuad_(Quad _c, bool _isSub=false, bool _we=true, bool _ws=true, bool _ww=true, bool _wn=true);
+	BatimentQuad_(Quad _c, bool _isSub=false, QuadBool _w = QuadBool(true, true, true, true));
 	virtual bool split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
