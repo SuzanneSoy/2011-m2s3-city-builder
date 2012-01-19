@@ -12,12 +12,12 @@ void ToitQuad::getBoundingBoxPoints() {
 }
 
 void ToitQuad::triangulation() {
-	switch (hash2(seed, -1) % 4) {
+	switch (hash2(seed, -1) % 5) {
 	case 0: pointCentral(); break;
-	// TODO : deuxPoints() et deuxPointsVerticaux() ne génèrent pas des quad où les 4 points sont sur le même plan.
-	case 1: deuxPoints(); break;
-	case 2: deuxPointsVerticaux(); break;
-	case 3:
+	case 1: quatrePoints(); break;
+	case 2: deuxPoints(); break;
+	case 3: deuxPointsVerticaux(); break;
+	case 4:
 	default: plat(); break;
 	}
 }
@@ -27,6 +27,13 @@ void ToitQuad::pointCentral() {
 	Vertex center = qh.insetNESW(qh.minLength() / 3.f).randomPoint(seed, 0);
 	for (int i = 0; i < 4; i++)
 		addGPUTriangle(c[SE+i], center, c[NE+i], Couleurs::toit);
+}
+
+void ToitQuad::quatrePoints() {
+	Quad ch = c.offsetNormal(height).insetNESW(c.minLength() / 3.f); // TODO : insetProportional
+	addGPUQuad(ch, Couleurs::toit);
+	for (int i = 0; i < 4; i++)
+		addGPUQuad(ch[NE+i], c[NE+i], c[SE+i], ch[SE+i], Couleurs::toit);
 }
 
 void ToitQuad::deuxPoints() {
@@ -111,7 +118,7 @@ void ToitTri::troisPoints() {
 	Triangle th = c.offsetNormal(height).insetLTR(c.minLength() / 3.f);
 	addGPUTriangle(th, Couleurs::toit);
 	for (int i = 0; i < 3; i++)
-		addGPUQuad(c[LEFT], c[TOP], th[TOP], th[LEFT], Couleurs::toit);
+		addGPUQuad(c[LEFT+i], c[TOP+i], th[TOP+i], th[LEFT+i], Couleurs::toit);
 }
 
 void ToitTri::unPointVertical() {
