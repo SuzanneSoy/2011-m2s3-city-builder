@@ -20,6 +20,8 @@ public:
 		);
 	};
 	static const unsigned int mur = 0xF1E3AD;
+	static const unsigned int plafond = mur;
+	static const unsigned int plancher = mur;
 	static const unsigned int toit = 0x961618;
 	static const unsigned int route = 0x363636;
 	static const unsigned int trottoir = 0x666666;
