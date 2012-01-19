@@ -13,6 +13,7 @@ public:
 	virtual void getBoundingBoxPoints();
 private:
 	void pointCentral();
+	void quatrePoints();
 	void deuxPoints();
 	void deuxPointsVerticaux();
 	void plat();

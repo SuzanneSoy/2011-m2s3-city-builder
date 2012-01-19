@@ -48,6 +48,11 @@ void Chose::addGPUQuad(Quad q, unsigned int rgb) {
 	addGPUQuad(q[NE], q[SE], q[SW], q[NW], rgb);
 }
 
+void Chose::addGPUFourQuads(Quad q, Quad qh, unsigned int rgb) {
+	for (int i = 0; i < 4; i++)
+		addGPUQuad(Quad(qh[NE+i], q[NE+i], q[SE+i], qh[SE+i]), rgb);
+}
+
 void Chose::addGPUOcto(Vertex ne, Vertex se, Vertex sw, Vertex nw,
 		Vertex neh, Vertex seh, Vertex swh, Vertex nwh, unsigned int rgb) {
 	addGPUOcto(Quad(ne,se,sw,nw), Quad(neh,seh,swh,nwh), rgb);
@@ -131,8 +136,8 @@ void Chose::addBBPoints(const Quad q, float height) {
 }
 
 void Chose::updateAABB() {
-	float splitFactor = 5.f;
-	float mergeFactor = 6.f;
+	float splitFactor = 5.f * LODFactor();
+	float mergeFactor = 6.f * LODFactor();
 	float nonFacingFactor = 2.f/3.f;
 	lod.firstBBPoint = true;
 	getBoundingBoxPoints();
@@ -151,6 +156,10 @@ void Chose::updateAABB() {
 		lod.mergeBox[2*i] = lod.aabb[2*i] - mergeIncrement;
 		lod.mergeBox[2*i+1] = lod.aabb[2*i+1] + splitIncrement;
 	}
+}
+
+float Chose::LODFactor() {
+	return 1.f;
 }
 
 // DEBUG

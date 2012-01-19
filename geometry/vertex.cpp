@@ -21,6 +21,10 @@ Vertex Vertex::setNorm(float n) const {
 	return (*this * n / norm());
 }
 
+Vertex Vertex::normalize() const {
+	return (*this / norm());
+}
+
 float Vertex::cosAngle(Vertex v) const {
 	// http://www.developpez.net/forums/d202580/applications/developpement-2d-3d-jeux/contribuez/faq-mat-quat-ajout-calculs-vectoriels/
 	return ((this->x*v.x + this->y*v.y + this->z*v.z) / (norm()*v.norm()));

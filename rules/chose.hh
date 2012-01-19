@@ -28,6 +28,7 @@ protected :
 	void addBBPoints(const Quad q);
 	void addBBPoints(const Quad q, float height);
 	virtual void getBoundingBoxPoints() = 0;
+	virtual float LODFactor();
 	Chose();
 	~Chose();
 	inline void addEntropy(unsigned int x1) {
@@ -66,6 +67,7 @@ protected :
 	void addGPUTriangle(Triangle t, unsigned int rgb);
 	void addGPUQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, unsigned int rgb);
 	void addGPUQuad(Quad q, unsigned int rgb);
+	void addGPUFourQuads(Quad q, Quad qh, unsigned int rgb);
 	void addGPUOcto(Vertex ne, Vertex se, Vertex sw, Vertex nw,
 			Vertex neh, Vertex seh, Vertex swh, Vertex nwh,
 			unsigned int rgb);

@@ -243,3 +243,11 @@ Quad Quad::offsetNormal(float offset) const {
 Vertex Quad::normal() const {
 	return Triangle(c[NE], c[SE], c[SW]).normal();
 }
+
+Vertex Quad::normalizedNormal() const {
+	return Triangle(c[NE], c[SE], c[SW]).normalizedNormal();
+}
+
+Vertex Quad::moyenne() const {
+	return ((c[NE] + c[SE] + c[SW] + c[NW]) / 4.f);
+}

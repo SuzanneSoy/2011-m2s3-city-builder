@@ -6,7 +6,7 @@ BatimentQuad_::BatimentQuad_(Quad _c, bool _isSub, bool _we, bool _ws, bool _ww,
 }
 
 bool BatimentQuad_::split() {
-	int minSurface = 100 * 100 * 10;
+	int minSurface = 100 * 100 * 100;
 	Quad q = c;
 	//Quad q = c << c.maxLengthSide();
 	if(c.maxLengthNS() < c.maxLengthEW()) {

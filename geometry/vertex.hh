@@ -15,6 +15,7 @@ class Vertex {
 	float norm() const;
 	Vertex projectOn(Vertex v) const;
 	Vertex setNorm(float n) const;
+	Vertex normalize() const;
 	float cosAngle(Vertex v) const; // cosinus de l'angle entre this et v.
 	float angle(Vertex v) const; // Angle entre this et v.
 	static Vertex fromSpherical(float r, float xAngle, float yAngle);
@@ -24,7 +25,7 @@ class Vertex {
 	friend Vertex operator+(const Vertex& u, const Vertex& v);
 	friend Vertex operator-(const Vertex& u, const Vertex& v);
 	friend Vertex operator-(const Vertex& v);
-	friend Vertex operator*(const Vertex& v, const float n);
+	friend Vertex operator*(const Vertex& v, const float n); // Cross product
 	friend Vertex operator*(const Vertex& u, const Vertex& v);
 	friend Vertex operator/(const Vertex& v, const float f);
 };

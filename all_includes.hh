@@ -20,9 +20,9 @@ class Chose;
 #include <GL/glu.h>
 #include <GL/gl.h>
 
-#include "geometry/angle.hh"
 #include "geometry/directions.hh"
 #include "geometry/vertex.hh"
+#include "geometry/angle.hh"
 #include "geometry/segment.hh"
 #include "geometry/triangle.hh"
 #include "geometry/quad.hh"
@@ -38,6 +38,7 @@ class Chose;
 #include "rules/chose.hh"
 #include "rules/architecture/couleursDimensions.hh"
 
+#include "rules/architecture/arbre.hh"
 #include "rules/architecture/arche.hh"
 #include "rules/architecture/batiment.hh"
 #include "rules/architecture/quartier.hh"

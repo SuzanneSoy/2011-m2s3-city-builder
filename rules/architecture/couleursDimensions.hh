@@ -24,7 +24,9 @@ public:
 	static const unsigned int route = 0x363636;
 	static const unsigned int trottoir = 0x666666;
 	static const unsigned int bordureTrottoir = 0xAAAAAA;
-	static const unsigned int herbe = 0x0c4010; // 11AA22
+	static const unsigned int herbe = 0x0c4010;
+	static const unsigned int feuillage = 0x11AA22;
+	static const unsigned int tronc = 0x906050;
 	static const unsigned int cielHaut = 0x3c14ff;
 	static const unsigned int cielBas = 0x7F7FFF;
 	static const unsigned int fog; // définie dans couleurs.cpp .
