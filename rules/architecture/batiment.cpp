@@ -21,8 +21,7 @@ bool BatimentQuad_::split() {
 			addChild(new BatimentQuad_(Quad(q[NW], n, s, q[SW]), true, QuadBool(qb[W],qb[N],false,qb[S])));
 		} else {
 			float randEtages = floatInRange(seed, 2, 0.f, 1.f);
-			int maxEtages = 5;
-			int nbEtages = 1 + (int)(randEtages * randEtages * (maxEtages - 1));
+			int nbEtages = 1 + (int)(randEtages * randEtages * (Dimensions::maxEtages - 1));
 			Quad q = c;
 			//ch = ch.insetNESW(30);
 			Quad qh;

@@ -39,6 +39,7 @@ public:
 	static const unsigned int largeurRoute = 200;
 	static const unsigned int largeurTrottoir = 140;
 	static const unsigned int hauteurEtage = 300;
+	static const unsigned int maxEtages = 5;
 	static const unsigned int hauteurToit = 200;
 	static const unsigned int hauteurTrottoir = 20;
 	static const unsigned int hauteurMaxBatiment = hauteurTrottoir + hauteurEtage + hauteurToit;
