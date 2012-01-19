@@ -45,6 +45,8 @@ class Chose;
 #include "rules/architecture/routetrottoir.hh"
 #include "rules/architecture/terrain.hh"
 #include "rules/architecture/toit.hh"
+#include "rules/architecture/etage.hh"
+#include "rules/architecture/mur.hh"
 
 #include "rules/batiment/batimentquad.hh"
 #include "rules/batiment/batimentquadmaison.hh"
