@@ -11,6 +11,14 @@ Segment Segment::reduce(float value) {
     return Segment(u,u+((v - u) / reduc));
 }
 
+Vertex Segment::at(float proportiannalDist) {
+    return Segment(u,u+((v-u)*proportiannalDist)).v;
+}
+
+Vertex Segment::center() {
+    return at(1./2.);
+}
+
 float Segment::width() {
 	return std::abs(u.x - v.x);
 }
