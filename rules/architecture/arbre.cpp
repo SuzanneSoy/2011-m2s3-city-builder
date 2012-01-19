@@ -1,6 +1,8 @@
 #include "all_includes.hh"
 
-Arbre::Arbre(Vertex _start, Triangle plane) : start(_start), type(ARBRE) {
+void Arbre::initPlane(Vertex _start, Triangle plane) {
+	start = _start;
+	type = ARBRE;
 	addEntropy(start);
 	addEntropy(plane);
 
@@ -12,6 +14,14 @@ Arbre::Arbre(Vertex _start, Triangle plane) : start(_start), type(ARBRE) {
 	rotation = rotation.rotateH(floatInRange(seed, -3, 0, 2*Angle::Pi));
 	rotation = rotation.rotateU(floatInRange(seed, -4, Angle::d2r(-10), Angle::d2r(10)));
 	length = floatInRange(seed, -5, 3*100, 4*100);
+}
+
+Arbre::Arbre(Vertex _start, Triangle plane) {
+	initPlane(_start, plane);
+}
+
+Arbre::Arbre(Vertex _start, Quad plane) {
+	initPlane(_start, Triangle(plane[NE], plane[SE], plane[SW]));
 }
 
 Arbre::Arbre(Vertex _start, Angle3D _rotation, float _length, Type _type) : start(_start), rotation(_rotation), length(_length), type(_type) {

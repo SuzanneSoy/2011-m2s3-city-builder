@@ -30,11 +30,9 @@ Quad Quad::insetNESW(float offset) const {
 }
 
 Quad Quad::insetOpp(Cardinal side, float offset) const {
-    Quad q = (*this) << int(side);
-    Quad qb = (*this) << int(side);
-
-    qb = qb.inset(N,offset);
-    return Quad(q[NE],qb[NE],qb[NW],q[NW]);
+    Quad q = (*this) << side;
+    Quad qi = q.inset(N,offset);
+    return (Quad(q[NE],qi[NE],qi[NW],q[NW]) >> side);
 }
 
 Quad Quad::makeParallelogram() const {

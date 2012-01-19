@@ -1,7 +1,33 @@
 #include "all_includes.hh"
 
-TerrainQuad::TerrainQuad(Quad _c) : Chose(), c(_c) {
+TerrainQuad::TerrainQuad(Quad _c, bool _addTrees) : Chose(), c(_c), addTrees(_addTrees) {
 	addEntropy(c);
+}
+
+bool TerrainQuad::split() {
+	if (!addTrees) return false;
+
+	addChild(new TerrainQuad(c, false));
+
+	int maxNArbres = 10;
+	Vertex p[maxNArbres];
+	int pi = 0;
+	int nArbres = hash2(seed, -1) % (maxNArbres + 1);
+	for (int essai = 0; essai < nArbres * 2 && pi < nArbres; essai++) {
+		p[pi] = c.insetProportionnal(0.7).randomPoint(seed, essai);
+		bool success = true;
+		for (int j = 0; j < pi; j++) {
+			if (Segment(p[j], p[pi]).length() < 3 * 100) {
+				success = false;
+				break;
+			}
+		}
+		if (success) pi++;
+	}
+	for (int i = 0; i < pi; i++) {
+		addChild(new Arbre(p[i], c));
+	}
+	return true;
 }
 
 void TerrainQuad::getBoundingBoxPoints() {

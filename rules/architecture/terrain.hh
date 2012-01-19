@@ -16,9 +16,11 @@ class TerrainTri : public Chose {
 class TerrainQuad : public Chose {
     private :
 	Quad c;
+	bool addTrees;
 
     public :
-	TerrainQuad(Quad _c);
+	TerrainQuad(Quad _c, bool _addTrees = true);
+	virtual bool split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

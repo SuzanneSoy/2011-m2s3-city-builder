@@ -19,8 +19,10 @@ private:
 	static float tauxMax();
 	static float calcLimitLengthFactor();
 	static const float limitLengthFactor;
+	void initPlane(Vertex _start, Triangle plane);
 public:
 	static float maxRadius(float length);
+	Arbre(Vertex _start, Quad plane);
 	Arbre(Vertex _start, Triangle plane);
 	Arbre(Vertex _start, Angle3D _rotation, float _length, Type _type = ARBRE);
 	virtual bool split();
