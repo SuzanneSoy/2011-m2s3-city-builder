@@ -135,6 +135,10 @@ void QuartierQuad::batiments() {
 		addChild(new BatimentQuad_(qbatiments));
 	} else {
 		addChild(new TerrainQuad(qbatiments));
+		Vertex h = qbatiments.normalizedNormal();
+		Vertex l = (qbatiments[NE] - qbatiments[SE]).normalize();
+		Vertex u = h * l;
+		addChild(new Arbre(qbatiments.moyenne(), Angle3D(h, l, u), 3*100));
 	}
 }
 

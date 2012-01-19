@@ -50,6 +50,8 @@ class Quad {
 	Quad makeParallelogram() const;
 	Quad offsetNormal(float offset) const;
 	Vertex normal() const;
+	Vertex normalizedNormal() const;
+	Vertex moyenne() const;
 };
 
 
