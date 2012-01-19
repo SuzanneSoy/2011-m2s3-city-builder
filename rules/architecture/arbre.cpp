@@ -102,6 +102,10 @@ void Arbre::feuille() {
 	Vertex lFeuillage = rotation.l * limitLength() / 2.f;
 	Vertex startFeuillage = end(1.f);
 
+	unsigned int c = Couleurs::feuillage;
+	if (length < 20 && proba(seed, 12345, 0.04))
+		c = Couleurs::pomme;
+
 	Quad cFeuillage(startFeuillage +uFeuillage +lFeuillage, startFeuillage -uFeuillage +lFeuillage, startFeuillage -uFeuillage -lFeuillage, startFeuillage +uFeuillage -lFeuillage);
-	addGPUOcto(cFeuillage, cFeuillage + hFeuillage, Couleurs::feuillage);
+	addGPUOcto(cFeuillage, cFeuillage + hFeuillage, c);
 }

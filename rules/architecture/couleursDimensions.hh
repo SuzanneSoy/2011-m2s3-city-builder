@@ -28,6 +28,7 @@ public:
 	static const unsigned int bordureTrottoir = 0xAAAAAA;
 	static const unsigned int herbe = 0x0c4010;
 	static const unsigned int feuillage = 0x11AA22;
+	static const unsigned int pomme = 0xAA2211;
 	static const unsigned int tronc = 0x906050;
 	static const unsigned int cielHaut = 0x3c14ff;
 	static const unsigned int cielBas = 0x7F7FFF;
@@ -43,6 +44,7 @@ public:
 	static const unsigned int hauteurToit = 200;
 	static const unsigned int hauteurTrottoir = 20;
 	static const unsigned int hauteurMaxBatiment = hauteurTrottoir + hauteurEtage + hauteurToit;
+	static const unsigned int minSurfaceSousBatiment = 100 * 100*100; // 100 m²
 
 	// Qualité
 	// TODO : devrait être 5.f et 6.f

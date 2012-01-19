@@ -4,12 +4,16 @@
 #include "all_includes.hh"
 
 class BatimentQuad_ : public Chose {
+private:
 	Quad c;
-    bool isSub;
-    QuadBool w;
+	bool isSub;
+	QuadBool w;
+	void bordureRouteTrottoir();
+	void sousBatiments();
+	void etages();
 
-    public:
-	BatimentQuad_(Quad _c, bool _isSub=false, QuadBool _w = QuadBool(true, true, true, true));
+public:
+	BatimentQuad_(Quad _c, bool _isSub = false, QuadBool _w = QuadBool(true, true, true, true));
 	virtual bool split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
@@ -19,7 +23,7 @@ class BatimentQuad_ : public Chose {
 class BatimentTri_ : public Chose {
 	Triangle c;
 
-    public:
+public:
 	BatimentTri_(Triangle _c);
 	virtual bool split();
 	virtual void triangulation();

@@ -31,7 +31,7 @@ bool QuartierQuad::split() {
 	else if (!small)
 		carre();
 	else
-		batiments();
+		addChild(new BatimentQuad_(c));
 	return true;
 }
 
@@ -119,25 +119,6 @@ void QuartierQuad::longueRue() {
 	addChild(new BatimentQuad_(Quad(qn[SE], qs[SW], qs[SE], qn[SW]))); // TODO
 }
 
-void QuartierQuad::batiments() {
-	Quad qtrottoir = c.insetNESW(Dimensions::largeurRoute);
-	Quad qinterieur = qtrottoir.insetNESW(Dimensions::largeurTrottoir);
-	Quad qbatiments = qinterieur.offsetNormal(Dimensions::hauteurTrottoir);
-
-	for (int i = 0; i < 4; i++) {
-		addChild(new RouteQuad(Quad(c[NE+i],c[SE+i],qtrottoir[SE+i],qtrottoir[NE+i])));
-		addChild(new TrottoirQuad(Quad(qtrottoir[NE+i],qtrottoir[SE+i],qinterieur[SE+i],qinterieur[NE+i])));
-	}
-
-	bool anglesAcceptable = c.minAngle() > Angle::d2r(90-60) && c.maxAngle() < Angle::d2r(90+60);
-
-	if (anglesAcceptable && proba(seed, 0, 0.95f)) {
-		addChild(new BatimentQuad_(qbatiments));
-	} else {
-		addChild(new TerrainQuad(qbatiments));
-	}
-}
-
 QuartierTri::QuartierTri(Triangle _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
@@ -156,7 +137,7 @@ bool QuartierTri::split() {
 	bool angleAigu = minAngle < Angle::d2r(30);
 	bool anglesAcceptable = !angleAigu && !angleObtus;
 	if (!big && proba(seed, -1, 0.05f)) {
-		batiments();
+		batiments(); // TODO : addChild(new BatimentTri_(c));
 	} else if (big && anglesAcceptable) {
 		switch (hash2(seed, -2) % 3) {
 		case 0: centre(); break;
@@ -171,7 +152,7 @@ bool QuartierTri::split() {
 	} else if (!small) {
 		trapeze();
 	} else {
-		batiments();
+		batiments(); // TODO : addChild(new BatimentTri_(c));
 	}
 	return true;
 }
