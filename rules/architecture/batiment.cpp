@@ -25,8 +25,10 @@ bool BatimentQuad_::split() {
 	} else {
 		Quad ch = c.offsetNormal(Dimensions::hauteurEtage);
 		ch = ch.insetNESW(30);
-		if(we || ws || ww || wn)
+		if(we || ws || ww || wn) {
             addChild(new ToitQuad(ch, Dimensions::hauteurToit));
+            addChild(new BatimentQuadBlock(c,ch));
+		}
         else
             addChild(new BatimentQuadJardin(ch));
 	}
