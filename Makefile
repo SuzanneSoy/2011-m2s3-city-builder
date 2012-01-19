@@ -6,8 +6,8 @@ CCWARN=-Wall -Wextra -Werror
 # -g -rdynamic uniquement pour le debug.
 CFLAGS=-O0 -g -rdynamic -I. $(CCWARN)
 
-SOURCES = $(shell echo *.cpp geometry/*.cpp rules/*.cpp rules/*/*.cpp)
-HEADERS = $(shell echo *.hh  geometry/*.hh  rules/*.hh  rules/*/*.hh)
+SOURCES = $(shell echo *.cpp geometry/*.cpp rules/*.cpp)
+HEADERS = $(shell echo *.hh  geometry/*.hh rules/*.hh)
 LIBS = -lm -lGL -lGLU -lSDL -lGLEW
 EXECUTABLE = city
 

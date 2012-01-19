@@ -1,5 +1,5 @@
-#ifndef _RULES_BATIMENT_EtageQuad_HH_
-#define _RULES_BATIMENT_EtageQuad_HH_
+#ifndef _RULES_ETAGE_HH_
+#define _RULES_ETAGE_HH_
 
 #include "all_includes.hh"
 

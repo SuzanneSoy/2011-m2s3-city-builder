@@ -1,5 +1,5 @@
-#ifndef _RULES_ARCHITECTURE_ARBRE_HH_
-#define _RULES_ARCHITECTURE_ARBRE_HH_
+#ifndef _RULES_ARBRE_HH_
+#define _RULES_ARBRE_HH_
 
 #include "all_includes.hh"
 

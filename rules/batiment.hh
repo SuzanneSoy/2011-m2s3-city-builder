@@ -1,5 +1,5 @@
-#ifndef _RULES_ARCHITECTURE_BATIMENT_HH_
-#define _RULES_ARCHITECTURE_BATIMENT_HH_
+#ifndef _RULES_BATIMENT_HH_
+#define _RULES_BATIMENT_HH_
 
 #include "all_includes.hh"
 

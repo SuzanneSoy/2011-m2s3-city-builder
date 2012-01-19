@@ -1,5 +1,5 @@
-#ifndef _RULES_ARCHITECTURE_TOIT_HH_
-#define _RULES_ARCHITECTURE_TOIT_HH_
+#ifndef _RULES_TOIT_HH_
+#define _RULES_TOIT_HH_
 
 #include "all_includes.hh"
 
