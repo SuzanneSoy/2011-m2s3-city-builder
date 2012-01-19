@@ -1,18 +1,28 @@
 #include "all_includes.hh"
 
-ArcheQuad::ArcheQuad(Quad _c, float _height, float _start, float _end) : Chose(), c(_c), height(_height), start(_start), end(_end) {
-	addEntropy(c);
-	addEntropy(height);
+ArcheQuad::ArcheQuad(Quad _c, float _height, float _start, float _end, Type _type) : Chose(), c(_c), height(_height), start(_start), end(_end), type(_type) {
+	if (type == RANDOM) {
+		addEntropy(c);
+		addEntropy(height);
+		switch (hash2(seed, 0) % 3) {
+		case 0: type = OGIVE; break;
+		case 1: type = BERCEAU; break;
+		case 2:
+		default: type = PLAT; break;
+		}
+	}
 }
 
 bool ArcheQuad::split() {
+	if (type == PLAT)
+		return false;
 	if (std::abs(end - start) < 0.1 && std::abs(f(end) - f(start)) < 0.05)
 		return false;
 	float mid = (start + end) / 2;
 	Vertex n = (c[NW] + c[NE]) / 2.f;
 	Vertex s = (c[SE] + c[SW]) / 2.f;
-	addChild(new ArcheQuad(Quad(n, s, c[SW], c[NW]), height, start, mid));
-	addChild(new ArcheQuad(Quad(c[NE], c[SE], s, n), height, mid, end));
+	addChild(new ArcheQuad(Quad(n, s, c[SW], c[NW]), height, start, mid, type));
+	addChild(new ArcheQuad(Quad(c[NE], c[SE], s, n), height, mid, end, type));
 	return true;
 }
 
@@ -22,14 +32,7 @@ void ArcheQuad::triangulation() {
 	Quad chw = c.offsetNormal(f(start) * height * 0.9);
 	addGPUQuad(Quad(ch[NW], chw[NW], che[NE], ch[NE]), Couleurs::mur);
 	addGPUQuad(Quad(ch[SE], che[SE], chw[SW], ch[SW]), Couleurs::mur);
-	addGPUQuad(Quad(che[SE], che[NE], chw[NW], chw[SW]), Couleurs::cielHaut);
-	/*
-	// Doivent être dessiné par le bâtiment englobant.
-	if (start == 0)
-		addGPUQuad(Quad(c[SW], c[NW], chw[NW], chw[SW]), Couleurs::mur);
-	if (end == 1)
-		addGPUQuad(Quad(c[NE], c[SE], che[SE], che[NE]), Couleurs::mur);
-	*/
+	addGPUQuad(Quad(che[SE], che[NE], chw[NW], chw[SW]), Couleurs::mur);
 }
 
 void ArcheQuad::getBoundingBoxPoints() {
@@ -37,19 +40,10 @@ void ArcheQuad::getBoundingBoxPoints() {
 }
 
 float ArcheQuad::f(float x) {
-	return berceau(x);
-	switch(hash2(seed, 0) % 2){
-	case 0: return ogive(x);
-	case 1:
-	default: return berceau(x);
+	switch(type){
+	case OGIVE: return std::sin(std::acos(std::abs(x - 0.5f) + 0.5f)) / std::sin(std::acos(0.5f));
+	case BERCEAU: return std::sin(std::acos(2*x-1));
+	case PLAT:
+	default: return 1;
 	}
-}
-
-float ArcheQuad::ogive(float x) {
-	// TODO : mettre x à l'échelle
-	return sin(acos(abs(x / 2.f) + 1.f/2.f));
-}
-
-float ArcheQuad::berceau(float x) {
-	return sin(acos(2*x-1));
 }

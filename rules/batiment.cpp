@@ -72,10 +72,12 @@ void BatimentQuad_::etages() {
 	Quad q = c; // c.insetNESW(30)
 	Quad qh;
 	for (int i = 0; i < nbEtages; i++) {
-		qh = q.offsetNormal(floatInRange(seed, 1+i, Dimensions::hauteurEtage*0.9f, Dimensions::hauteurEtage*1.1f));
-		if (i == 0 && w[N] && w[S]) {
-			addChild(new ArcheQuad(q, Segment(qh[NE],q[NE]).length()));
+		if (nbEtages > 1 && i == 0 && w[N] && w[S]) {
+			float h = floatInRange(seed, 1+i, Dimensions::hauteurEtage*1.4f, Dimensions::hauteurEtage*1.6f);
+			qh = q.offsetNormal(h);
+			addChild(new ArcheQuad(q, h));
 		} else {
+			qh = q.offsetNormal(floatInRange(seed, 1+i, Dimensions::hauteurEtage*0.9f, Dimensions::hauteurEtage*1.1f));
 			addChild(new EtageQuad(q,qh));
 		}
 		q = qh;
