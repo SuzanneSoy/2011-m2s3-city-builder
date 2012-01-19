@@ -48,8 +48,9 @@ void BatimentQuad_::sousBatiments() {
 	Quad q = c << c.maxLengthSide();
 	QuadBool qb = w << c.maxLengthSide();
 
-	Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 1.f/3.f, 1.f/2.f);
-	Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 1.f/3.f, 1.f/2.f);
+	float posDelta = std::min(1.f/6.f, q.minLengthEW() / q.length(N) * 0.2f);
+	Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 0.5f - posDelta, 0.5f + posDelta);
+	Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 0.5f - posDelta, 0.5f + posDelta);
 
 	bool small = q.surface() < 4 * Dimensions::minSurfaceSousBatiment;
 
@@ -78,7 +79,7 @@ void BatimentQuad_::etages() {
 			addChild(new ArcheQuad(q, h));
 		} else {
 			qh = q.offsetNormal(floatInRange(seed, 1+i, Dimensions::hauteurEtage*0.9f, Dimensions::hauteurEtage*1.1f));
-			addChild(new EtageQuad(q,qh));
+			addChild(new EtageQuad(q, qh, w));
 		}
 		q = qh;
 	}
@@ -86,14 +87,18 @@ void BatimentQuad_::etages() {
 }
 
 void BatimentQuad_::triangulation() {
-	Quad ch = c.offsetNormal(Dimensions::hauteurEtage + Dimensions::hauteurToit);
-	addGPUQuad(ch, Couleurs::toit);
-	for (int i = 0; i < 4; i++)
-		addGPUQuad(Quad(c[NE+i], c[SE+i], ch[SE+i], ch[NE+i]), Couleurs::mur);
+	if (w[N] || w[E] || w[S] || w[W]) {
+		Quad ch = c.offsetNormal(Dimensions::hauteurEtage * 2 + Dimensions::hauteurToit);
+		addGPUQuad(ch, Couleurs::toit);
+		for (int i = 0; i < 4; i++)
+			addGPUQuad(Quad(c[NE+i], c[SE+i], ch[SE+i], ch[NE+i]), Couleurs::mur);
+	} else {
+		addGPUQuad(c, Couleurs::herbe);
+	}
 }
 
 void BatimentQuad_::getBoundingBoxPoints() {
-	addBBPoints(c, Dimensions::hauteurEtage + Dimensions::hauteurToit);
+	addBBPoints(c, Dimensions::hauteurEtage * 2 + Dimensions::hauteurToit);
 }
 
 BatimentTri_::BatimentTri_(Triangle _c) : Chose(), c(_c) {
@@ -105,12 +110,12 @@ bool BatimentTri_::split() {
 }
 
 void BatimentTri_::triangulation() {
-	Triangle th = c.offsetNormal(Dimensions::hauteurEtage + Dimensions::hauteurToit);
+	Triangle th = c.offsetNormal(Dimensions::hauteurEtage * 2 + Dimensions::hauteurToit);
 	addGPUTriangle(th, Couleurs::toit);
 	for (int i = 0; i < 3; i++)
 		addGPUQuad(Quad(c[LEFT+i], c[TOP+i], th[TOP+i], th[LEFT+i]), Couleurs::mur);
 }
 
 void BatimentTri_::getBoundingBoxPoints() {
-	addBBPoints(c, Dimensions::hauteurEtage + Dimensions::hauteurToit);
+	addBBPoints(c, Dimensions::hauteurEtage * 2 + Dimensions::hauteurToit);
 }

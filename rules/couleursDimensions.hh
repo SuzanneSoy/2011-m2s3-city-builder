@@ -43,7 +43,7 @@ public:
 	static const unsigned int maxEtages = 5;
 	static const unsigned int hauteurToit = 200;
 	static const unsigned int hauteurTrottoir = 20;
-	static const unsigned int hauteurMaxBatiment = hauteurTrottoir + hauteurEtage + hauteurToit;
+	static const unsigned int hauteurMaxBatiment = hauteurTrottoir + hauteurEtage * 2 + hauteurToit;
 	static const unsigned int minSurfaceSousBatiment = 100 * 100*100; // 100 m²
 
 	// Qualité
