@@ -142,7 +142,7 @@ void View::renderScene(int lastTime, int currentTime) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) ;
 
-	camera.animation(currentTime-lastTime);
+	camera.animation(std::min(100, currentTime-lastTime));
 	camera.setCamera();
 	lod.setCamera(camera.cameraCenter);
 
