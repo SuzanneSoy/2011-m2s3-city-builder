@@ -10,7 +10,7 @@ void BatimentQuad::getBoundingBoxPoints() {
 }
 
 bool BatimentQuad::split() {
-	if(proba(seed, 0, 1, 10)) {
+	if(proba(seed, 0, 0.1f)) {
         addChild(new BatimentQuadMaisonPont(c,3));
 	} else {
         addChild(new BatimentQuadJardin(c));

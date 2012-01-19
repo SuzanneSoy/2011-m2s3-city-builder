@@ -43,6 +43,15 @@ public:
 	static const unsigned int hauteurToit = 200;
 	static const unsigned int hauteurTrottoir = 20;
 	static const unsigned int hauteurMaxBatiment = hauteurTrottoir + hauteurEtage + hauteurToit;
+
+	// Qualité
+	// TODO : devrait être 5.f et 6.f
+	static const unsigned int splitFactor = 2.f;
+	static const unsigned int mergeFactor = 3.f;
+	static const unsigned int windowWidth = 1024;
+	static const unsigned int windowHeight = 768;
+	static const float frontFrustum;
+	static const float backFrustum;
 };
 
 #endif

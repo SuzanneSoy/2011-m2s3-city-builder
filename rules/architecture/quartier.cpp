@@ -20,9 +20,9 @@ bool QuartierQuad::split() {
 		concave();
 	else if (nearConcave)
 		angleAngle();
-	else if (big && anglesOk && proba(seed, -2, 1, 4))
+	else if (big && anglesOk && proba(seed, -2, 0.25f))
 		longueRue();
-	else if (!small && !anglesOk && proba(seed, -3, 1, 2))
+	else if (!small && !anglesOk && proba(seed, -3, 0.5f))
 		angleAngle();
 	else if (!small && !anglesOk)
 		angleCote();
@@ -131,7 +131,7 @@ void QuartierQuad::batiments() {
 
 	bool anglesAcceptable = c.minAngle() > Angle::d2r(90-60) && c.maxAngle() < Angle::d2r(90+60);
 
-	if (anglesAcceptable && proba(seed, 0, 19, 20)) {
+	if (anglesAcceptable && proba(seed, 0, 0.95f)) {
 		addChild(new BatimentQuad_(qbatiments));
 	} else {
 		addChild(new TerrainQuad(qbatiments));
@@ -155,7 +155,7 @@ bool QuartierTri::split() {
 	bool angleObtus = maxAngle > Angle::d2r(120);
 	bool angleAigu = minAngle < Angle::d2r(30);
 	bool anglesAcceptable = !angleAigu && !angleObtus;
-	if (!big && proba(seed, -1, 1, 20)) {
+	if (!big && proba(seed, -1, 0.05f)) {
 		batiments();
 	} else if (big && anglesAcceptable) {
 		switch (hash2(seed, -2) % 3) {
@@ -228,7 +228,7 @@ void QuartierTri::batiments() {
 	bool big = tbatiments.maxLength() >= 5000;
 	bool anglesAcceptable = tbatiments.minAngle() > Angle::d2r(30) && tbatiments.maxAngle() < Angle::d2r(120);
 
-	if (!big && proba(seed, 0, 1, 20)) {
+	if (!big && proba(seed, 0, 0.05f)) {
 		addChild(new TerrainTri(tbatiments));
 	} else if (small && anglesAcceptable) {
 		addChild(new BatimentTri_(tbatiments));

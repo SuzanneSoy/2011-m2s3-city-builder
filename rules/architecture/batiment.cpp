@@ -17,16 +17,23 @@ bool BatimentQuad_::split() {
 			Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 1.f/3.f, 1.f/2.f);
 			Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 1.f/3.f, 1.f/2.f);
 
-			addChild(new BatimentQuad_(Quad(q[SE], s, n, q[NE]), true, QuadBool(qb[E],qb[S],false,qb[N])));
-			addChild(new BatimentQuad_(Quad(q[NW], n, s, q[SW]), true, QuadBool(qb[W],qb[N],false,qb[S])));
+			if (qb[E] && proba(seed, 2, 0.3f)) {
+				addChild(new TerrainQuad(Quad(q[SE], s, n, q[NE])));
+				addChild(new BatimentQuad_(Quad(q[NW], n, s, q[SW]), true, QuadBool(qb[W],qb[N],true,qb[S])));
+			} else if (qb[W] && proba(seed, 2, 0.5f)) {
+				addChild(new BatimentQuad_(Quad(q[SE], s, n, q[NE]), true, QuadBool(qb[E],qb[S],true,qb[N])));
+				addChild(new TerrainQuad(Quad(q[NW], n, s, q[SW])));
+			} else {
+				addChild(new BatimentQuad_(Quad(q[SE], s, n, q[NE]), true, QuadBool(qb[E],qb[S],false,qb[N])));
+				addChild(new BatimentQuad_(Quad(q[NW], n, s, q[SW]), true, QuadBool(qb[W],qb[N],false,qb[S])));
+			}
 		} else {
-			float randEtages = floatInRange(seed, 2, 0.f, 1.f);
+			float randEtages = floatInRange(seed, 0, 0.f, 1.f);
 			int nbEtages = 1 + (int)(randEtages * randEtages * (Dimensions::maxEtages - 1));
-			Quad q = c;
-			//ch = ch.insetNESW(30);
+			Quad q = c; // c.insetNESW(30)
 			Quad qh;
 			for (int i = 0; i < nbEtages; i++) {
-				qh = q.offsetNormal(floatInRange(seed, 3+i, Dimensions::hauteurEtage*0.9f, Dimensions::hauteurEtage*1.1f));
+				qh = q.offsetNormal(floatInRange(seed, 1+i, Dimensions::hauteurEtage*0.9f, Dimensions::hauteurEtage*1.1f));
 				addChild(new EtageQuad(q,qh));
 				q = qh;
 			}

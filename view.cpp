@@ -26,10 +26,10 @@ void View::setColor(unsigned char r, unsigned char g, unsigned char b) {
 void View::initWindow() {
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_WM_SetCaption("Sortie terrain OpenGL",NULL);
-	SDL_SetVideoMode(windowWidth, windowHeight, 32, SDL_OPENGL);
+	SDL_SetVideoMode(Dimensions::windowWidth, Dimensions::windowHeight, 32, SDL_OPENGL);
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	gluPerspective(70,(double)windowWidth/windowHeight,frontFrustum,backFrustum);
+	gluPerspective(70,Dimensions::windowWidth/Dimensions::windowHeight,Dimensions::frontFrustum,Dimensions::backFrustum);
 	glEnable(GL_DEPTH_TEST);
 	glewInit();
 
@@ -49,8 +49,8 @@ void View::initWindow() {
   	glEnable (GL_FOG);
     glFogi (GL_FOG_MODE, GL_LINEAR);
     glFogfv (GL_FOG_COLOR, fogColor);
-    glFogf (GL_FOG_START, backFrustum / sqrt(3) / 2.f);
-    glFogf (GL_FOG_END, backFrustum / sqrt(3) * 0.9);
+    glFogf (GL_FOG_START, Dimensions::backFrustum / sqrt(3) / 2.f);
+    glFogf (GL_FOG_END, Dimensions::backFrustum / sqrt(3) * 0.9);
     //glHint (GL_FOG_HINT, GL_NICEST);
 }
 
@@ -94,7 +94,7 @@ void View::displayAxes() {
 
 void View::setSkybox() {
 	//int z = 40000;
-	float d = View::backFrustum / std::sqrt(3) * 0.9;
+	float d = Dimensions::backFrustum / std::sqrt(3) * 0.9;
 	glDisable(GL_FOG);
 	glDisable(GL_LIGHTING);
 	glPushMatrix();

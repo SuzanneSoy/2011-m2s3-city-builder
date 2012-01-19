@@ -208,7 +208,7 @@ Vertex Quad::randomPoint(int seed, int n) const {
 	Triangle sw(c[SE], c[SW], c[NW]);
 	float surfacene = ne.surface();
 	float surfacesw = sw.surface();
-	if (proba(seed, n, surfacene, surfacene + surfacesw)) {
+	if (proba(seed, n, surfacene / (surfacene + surfacesw))) {
 		return ne.randomPoint(seed, hash2(n, 42));
 	} else {
 		return sw.randomPoint(seed, hash2(n, 42));

@@ -141,9 +141,8 @@ void Chose::addBBPoints(const Quad q, float height) {
 }
 
 void Chose::updateAABB() {
-	// TODO : Debug : devrait être 5.f, 6.f
-	float splitFactor = 2.f * LODFactor();
-	float mergeFactor = 3.f * LODFactor();
+	float splitFactor = Dimensions::splitFactor * LODFactor();
+	float mergeFactor = Dimensions::mergeFactor * LODFactor();
 	float nonFacingFactor = 2.f/3.f;
 	lod.firstBBPoint = true;
 	getBoundingBoxPoints();
@@ -155,8 +154,8 @@ void Chose::updateAABB() {
 		areaFacing[i] = size[(i+1)%3]*size[(i+1)%3];
 	for (int i = 0; i < 3; i++) {
 		float pseudoLength = std::max(1.f, std::sqrt(areaFacing[i] + areaFacing[(i+1)%3] * nonFacingFactor + areaFacing[(i+1)%3] * nonFacingFactor));
-		float splitIncrement = std::min((float)View::backFrustum, splitFactor * pseudoLength);
-		float mergeIncrement = std::min(View::backFrustum * mergeFactor/splitFactor, mergeFactor * pseudoLength);
+		float splitIncrement = std::min(Dimensions::backFrustum, splitFactor * pseudoLength);
+		float mergeIncrement = std::min(Dimensions::backFrustum * mergeFactor/splitFactor, mergeFactor * pseudoLength);
 		lod.splitBox[2*i] = lod.aabb[2*i] - splitIncrement;
 		lod.splitBox[2*i+1] = lod.aabb[2*i+1] + splitIncrement;
 		lod.mergeBox[2*i] = lod.aabb[2*i] - mergeIncrement;
@@ -183,4 +182,4 @@ void Chose::drawAABB() {
 	);
 }
 
-unsigned int Chose::initialSeed = 1896509207;//random_seed();
+unsigned int Chose::initialSeed = random_seed();
