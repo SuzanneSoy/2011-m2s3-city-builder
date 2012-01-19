@@ -68,6 +68,7 @@ protected :
 	void addGPUQuad(Vertex ne, Vertex se, Vertex sw, Vertex nw, unsigned int rgb);
 	void addGPUQuad(Quad q, unsigned int rgb);
 	void addGPUFourQuads(Quad q, Quad qh, unsigned int rgb);
+	void addGPUThreeQuads(Triangle t, Triangle th, unsigned int rgb);
 	void addGPUOcto(Vertex ne, Vertex se, Vertex sw, Vertex nw,
 			Vertex neh, Vertex seh, Vertex swh, Vertex nwh,
 			unsigned int rgb);

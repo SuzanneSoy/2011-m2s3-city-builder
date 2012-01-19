@@ -13,7 +13,7 @@ class MurQuad: public Chose {
 
     public :
 
-	MurQuad(Quad c, Quad ch, bool _windows=false);
+	MurQuad(Quad c, Quad ch, bool _window=false);
 	virtual void triangulation();
 	virtual bool split();
 	virtual void getBoundingBoxPoints();

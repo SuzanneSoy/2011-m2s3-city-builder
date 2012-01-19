@@ -53,6 +53,11 @@ void Chose::addGPUFourQuads(Quad q, Quad qh, unsigned int rgb) {
 		addGPUQuad(Quad(qh[NE+i], q[NE+i], q[SE+i], qh[SE+i]), rgb);
 }
 
+void Chose::addGPUThreeQuads(Triangle t, Triangle th, unsigned int rgb) {
+	for (int i = 0; i < 3; i++)
+		addGPUQuad(Quad(th[LEFT+i], t[LEFT+i], t[TOP+i], th[TOP+i]), rgb);
+}
+
 void Chose::addGPUOcto(Vertex ne, Vertex se, Vertex sw, Vertex nw,
 		Vertex neh, Vertex seh, Vertex swh, Vertex nwh, unsigned int rgb) {
 	addGPUOcto(Quad(ne,se,sw,nw), Quad(neh,seh,swh,nwh), rgb);

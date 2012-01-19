@@ -43,7 +43,7 @@ void QuartierQuad::triangulation() {
 	} else {
 		Quad ci = c.insetNESW(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
 		Quad cih = ci.offsetNormal(Dimensions::hauteurMaxBatiment);
-		addGPUQuad(c, Couleurs::route);
+		addGPUFourQuads(c, ci, Couleurs::route);
 		addGPUQuad(cih, Couleurs::toit);
 		for (int i = 0; i < 4; i++)
 			addGPUQuad(Quad(ci[NE+i], ci[SE+i], cih[SE+i], cih[NE+i]), Couleurs::mur);
@@ -54,7 +54,7 @@ void QuartierQuad::triangulationConcave(Triangle t) {
 	// Même code que QuartierTri::triangulation.
 	Triangle ci = t.insetLTR(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
 	Triangle cih = ci.offsetNormal(Dimensions::hauteurMaxBatiment);
-	addGPUTriangle(t, Couleurs::route);
+	addGPUThreeQuads(t, ci, Couleurs::route);
 	addGPUTriangle(cih, Couleurs::toit);
 	for (int i = 0; i < 3; i++)
 		addGPUQuad(Quad(ci[LEFT+i], ci[TOP+i], cih[TOP+i], cih[LEFT+i]), Couleurs::mur);
@@ -179,7 +179,7 @@ bool QuartierTri::split() {
 void QuartierTri::triangulation() {
 	Triangle ci = c.insetLTR(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
 	Triangle cih = ci.offsetNormal(Dimensions::hauteurMaxBatiment);
-	addGPUTriangle(c, Couleurs::route);
+	addGPUThreeQuads(c, ci, Couleurs::route);
 	addGPUTriangle(cih, Couleurs::toit);
 	for (int i = 0; i < 3; i++)
 		addGPUQuad(Quad(ci[LEFT+i], ci[TOP+i], cih[TOP+i], cih[LEFT+i]), Couleurs::mur);

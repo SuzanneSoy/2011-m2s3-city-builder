@@ -54,9 +54,5 @@ bool MurQuad::split() {
 }
 
 void MurQuad::triangulation() {
-    if(!window)
-        addGPUOcto(c, ch, Couleurs::mur);
-    //else
-        //addGPUOcto(c, ch, 0xFF,0x10,0x00);
-        //addGPUQuad(windowPosh,0xFF,0xFF,0x00);
+    addGPUOcto(c, ch, Couleurs::mur);
 }
