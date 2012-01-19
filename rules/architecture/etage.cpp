@@ -30,5 +30,7 @@ bool EtageQuad::split() {
 }
 
 void EtageQuad::triangulation() {
-    addGPUOcto(c,ch, 0xF1E0E0);
+    addGPUFourQuads(c,ch, Couleurs::mur);
+    addGPUQuad(ch.offsetNormal(-30), Couleurs::plafond);
+    addGPUQuad(c, Couleurs::plancher);
 }

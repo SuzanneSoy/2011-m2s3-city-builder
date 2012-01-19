@@ -141,8 +141,9 @@ void Chose::addBBPoints(const Quad q, float height) {
 }
 
 void Chose::updateAABB() {
-	float splitFactor = 5.f * LODFactor();
-	float mergeFactor = 6.f * LODFactor();
+	// TODO : Debug : devrait être 5.f, 6.f
+	float splitFactor = 2.f * LODFactor();
+	float mergeFactor = 3.f * LODFactor();
 	float nonFacingFactor = 2.f/3.f;
 	lod.firstBBPoint = true;
 	getBoundingBoxPoints();

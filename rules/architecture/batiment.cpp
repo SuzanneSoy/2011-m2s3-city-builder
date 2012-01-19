@@ -20,11 +20,17 @@ bool BatimentQuad_::split() {
 			addChild(new BatimentQuad_(Quad(q[SE], s, n, q[NE]), true, QuadBool(qb[E],qb[S],false,qb[N])));
 			addChild(new BatimentQuad_(Quad(q[NW], n, s, q[SW]), true, QuadBool(qb[W],qb[N],false,qb[S])));
 		} else {
-			Quad ch = c.offsetNormal(Dimensions::hauteurEtage);
-			ch = ch.insetNESW(30);
-			c = c.insetNESW(30);
-            addChild(new ToitQuad(ch, Dimensions::hauteurToit));
-            addChild(new EtageQuad(c,ch));
+			float randEtages = floatInRange(seed, 2, 0.f, 1.f);
+			int nbEtages = 1 + (int)(randEtages * randEtages * (Dimensions::maxEtages - 1));
+			Quad q = c;
+			//ch = ch.insetNESW(30);
+			Quad qh;
+			for (int i = 0; i < nbEtages; i++) {
+				qh = q.offsetNormal(floatInRange(seed, 3+i, Dimensions::hauteurEtage*0.9f, Dimensions::hauteurEtage*1.1f));
+				addChild(new EtageQuad(q,qh));
+				q = qh;
+			}
+            addChild(new ToitQuad(qh, Dimensions::hauteurToit));
 		}
 	} else {
 		addChild(new TerrainQuad(c));

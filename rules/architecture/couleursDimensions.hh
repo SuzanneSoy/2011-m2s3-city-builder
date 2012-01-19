@@ -20,6 +20,8 @@ public:
 		);
 	};
 	static const unsigned int mur = 0xF1E3AD;
+	static const unsigned int plafond = mur;
+	static const unsigned int plancher = mur;
 	static const unsigned int toit = 0x961618;
 	static const unsigned int route = 0x363636;
 	static const unsigned int trottoir = 0x666666;
@@ -37,6 +39,7 @@ public:
 	static const unsigned int largeurRoute = 200;
 	static const unsigned int largeurTrottoir = 140;
 	static const unsigned int hauteurEtage = 300;
+	static const unsigned int maxEtages = 5;
 	static const unsigned int hauteurToit = 200;
 	static const unsigned int hauteurTrottoir = 20;
 	static const unsigned int hauteurMaxBatiment = hauteurTrottoir + hauteurEtage + hauteurToit;
