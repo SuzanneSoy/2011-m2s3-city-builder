@@ -170,7 +170,7 @@ void View::mainLoop() {
 	short continuer = 1;
 	SDL_Event event;
 	SDL_EnableKeyRepeat(40,40);
-	SDL_WM_GrabInput(SDL_GRAB_ON);
+	SDL_WM_GrabInput(SDL_GRAB_OFF);
     SDL_ShowCursor(SDL_DISABLE);
 	while ( SDL_PollEvent(&event) ); // empty queue.
 

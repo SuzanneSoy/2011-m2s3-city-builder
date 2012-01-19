@@ -3,6 +3,7 @@
 
 #include "all_includes.hh"
 
+// Arche du nord au sud
 class ArcheQuad : public Chose {
 private:
 	Quad c;

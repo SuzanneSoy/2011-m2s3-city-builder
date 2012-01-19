@@ -73,7 +73,11 @@ void BatimentQuad_::etages() {
 	Quad qh;
 	for (int i = 0; i < nbEtages; i++) {
 		qh = q.offsetNormal(floatInRange(seed, 1+i, Dimensions::hauteurEtage*0.9f, Dimensions::hauteurEtage*1.1f));
-		addChild(new EtageQuad(q,qh));
+		if (i == 0 && w[N] && w[S]) {
+			addChild(new ArcheQuad(q, Segment(qh[NE],q[NE]).length()));
+		} else {
+			addChild(new EtageQuad(q,qh));
+		}
 		q = qh;
 	}
     addChild(new ToitQuad(qh, Dimensions::hauteurToit));

@@ -31,3 +31,7 @@ Vertex Segment::randomPos(int seed, int n, float a, float b) {
 	float pos = floatInRange(seed, n, a, b);
 	return (u * pos + v * (1-pos));
 }
+
+Segment operator+(const Segment& s, const Vertex& voff) {
+	return Segment(s.u + voff, s.v + voff);
+}

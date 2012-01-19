@@ -17,6 +17,7 @@ class Segment {
 	Vertex at(float);
 	Segment reduce(float value);
 	Vertex randomPos(int seed, int n, float a, float b); // Renvoie un vertex sur le segment [u,v], à une position entre a et b.
+	friend Segment operator+(const Segment& t, const Vertex& v);
 };
 
 #endif
