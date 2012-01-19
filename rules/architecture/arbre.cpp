@@ -1,40 +1,79 @@
 #include "all_includes.hh"
 
-Arbre::Arbre(Vertex _start, Angle3D _rotation, float _length) : start(_start), rotation(_rotation), length(_length) {}
+Arbre::Arbre(Vertex _start, Angle3D _rotation, float _length, Type _type) : start(_start), rotation(_rotation), length(_length), type(_type) {
+	addEntropy(start, rotation.h, rotation.l, rotation.u);
+	addEntropy(length);
+	addEntropy((int)(type));
+}
 
 bool Arbre::split() {
-	if (length < 5) return false;
-	return false;
+	if (type == ARBRE && length > floatInRange(seed, -1, 10, 20)) {
+		int nbBranches = 2 + (hash2(seed, -2) % 3);
+		for (int i = 0; i < nbBranches; i++) {
+			Vertex bStart = end(floatInRange(seed, 4*i, 0.7f, 0.9f));
+			Angle3D rot = rotation;
+			rot = rot.rotateH(Angle::d2r(floatInRange(seed, 4*i+1, 25.f, 37.f) + i*(360.f / (float)nbBranches)));
+			rot = rot.rotateU(Angle::d2r(floatInRange(seed, 4*i+2, 35.f, 55.f)));
+			float len = length * floatInRange(seed, 4*i+3, tauxMax()*2.f/3.f, tauxMax());
+			addChild(new Arbre(bStart, rot, len, ARBRE));
+		}
+		addChild(new Arbre(start, rotation, length, TRONC));
+	}
+	return true;
 }
 
 void Arbre::triangulation() {
-	float radius = length/16;
-	float limitLength = length;
-	Vertex hTronc = rotation.h * length;
-	Vertex uTronc = rotation.u * radius;
-	Vertex lTronc = rotation.l * radius;
-	Vertex hFeuillage = rotation.h * limitLength;
-	Vertex uFeuillage = rotation.u * limitLength / 2;
-	Vertex lFeuillage = rotation.l * limitLength / 2;
-	Quad cTronc(start +uTronc +lTronc, start +uTronc -lTronc, start -uTronc -lTronc, start -uTronc +lTronc);
-	addGPUOcto(cTronc, cTronc + hTronc, Couleurs::tronc);
-
-	Quad cFeuillage(start +uFeuillage +lFeuillage, start +uFeuillage -lFeuillage, start -uFeuillage -lFeuillage, start -uFeuillage +lFeuillage);
-	addGPUOcto(cFeuillage + hTronc, cFeuillage + hTronc + hFeuillage, Couleurs::feuillage);
+	if (type == ARBRE || type == TRONC) tronc();
+	if (type == ARBRE) feuille();
 }
 
 void Arbre::getBoundingBoxPoints() {
 	// TODO
-	Vertex u = rotation.u * 100;
-	Vertex l = rotation.l * 100;
-	Quad c(start +u +l, start +u -l, start -u -l, start -u +l);
-	addBBPoints(c);
+	Vertex u = rotation.u * limitLength() / 2.f;
+	Vertex l = rotation.l * limitLength() / 2.f;
+	Quad c(start +u +l, start -u +l, start -u -l, start +u -l);
+	addBBPoints(c, length + limitLength());
 }
 
-void Arbre::branche() {
+float Arbre::LODFactor() {
+	return 4.f;
+}
 
+Vertex Arbre::end(float position) const {
+	return (start + rotation.h * length * position);
+}
+
+float Arbre::tauxMax() {
+	return 0.6f;
+}
+const float Arbre::limitLengthFactor = calcLimitLengthFactor();
+float Arbre::calcLimitLengthFactor() {
+	float limit = 0;
+	for (float i = 1; i > 0.001; i = i * tauxMax())
+		limit += i;
+	return limit - 1;
+}
+
+float Arbre::limitLength() const {
+	return length * limitLengthFactor;
+}
+
+void Arbre::tronc() {
+	float radius = length/16;
+	Vertex hTronc = end(1.f) - start;
+	Vertex uTronc = rotation.u * radius;
+	Vertex lTronc = rotation.l * radius;
+	Quad cTronc(start +uTronc +lTronc, start -uTronc +lTronc, start -uTronc -lTronc, start +uTronc -lTronc);
+	addGPUQuad(cTronc + hTronc, Couleurs::tronc);
+	addGPUFourQuads(cTronc, cTronc + hTronc, Couleurs::tronc);
 }
 
 void Arbre::feuille() {
+	Vertex hFeuillage = rotation.h * limitLength();
+	Vertex uFeuillage = rotation.u * limitLength() / 2.f;
+	Vertex lFeuillage = rotation.l * limitLength() / 2.f;
+	Vertex startFeuillage = end(1.f);
 
+	Quad cFeuillage(startFeuillage +uFeuillage +lFeuillage, startFeuillage -uFeuillage +lFeuillage, startFeuillage -uFeuillage -lFeuillage, startFeuillage +uFeuillage -lFeuillage);
+	addGPUOcto(cFeuillage, cFeuillage + hFeuillage, Couleurs::feuillage);
 }
