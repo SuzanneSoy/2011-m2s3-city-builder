@@ -28,7 +28,8 @@ bool MurQuad::split() {
 
     float length = c.maxLengthNS();
 
-    if(length > 660) {
+    //if(length > 660) {
+    if(false) {
         Quad qa = c.insetOpp(W,length/2);
         Quad qb = c.insetOpp(E,length-(length/2));
         Quad qah = ch.insetOpp(W,length/2);
