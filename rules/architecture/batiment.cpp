@@ -24,7 +24,7 @@ bool BatimentQuad_::split() {
 			ch = ch.insetNESW(30);
 			c = c.insetNESW(30);
             addChild(new ToitQuad(ch, Dimensions::hauteurToit));
-            //addChild(new EtageQuad(c,ch));
+            addChild(new EtageQuad(c,ch));
 		}
 	} else {
 		addChild(new TerrainQuad(c));

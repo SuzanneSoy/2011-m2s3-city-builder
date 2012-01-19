@@ -21,14 +21,11 @@ bool EtageQuad::split() {
     Quad mwh = ch.insetOpp(W,28);
     Quad mnh = ch.inset(E,28).inset(W,28).insetOpp(N,28);
 
-    MurQuad *mme = new MurQuad(me << 1,meh << 1,we);
-    MurQuad *mmn = new MurQuad(mn,mnh,wn);
-    MurQuad *mmw = new MurQuad(mw >> 1,mwh >> 1,ww);
-    MurQuad *mms = new MurQuad(ms >> 2,msh >> 2,ws);
-    addChild(mme);
-    addChild(mmw);
-    addChild(mmn);
-    addChild(mms);
+    addChild(new MurQuad(me << 1,meh << 1,we));
+    addChild(new MurQuad(mw >> 1,mwh >> 1,ww));
+    addChild(new MurQuad(mn,mnh,wn));
+    addChild(new MurQuad(ms >> 2,msh >> 2,ws));
+
     return true;
 }
 

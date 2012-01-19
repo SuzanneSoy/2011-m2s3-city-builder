@@ -20,36 +20,22 @@ void MurQuad::setWindow() {
     Quad wBack = wFront.offsetNormal(28);
     windowPos = Quad(wFront[SE],wBack[SE],wBack[SW],wFront[SW]);
     windowPosh = Quad(wFront[NE],wBack[NE],wBack[NW],wFront[NW]);
-
-//addGPUQuad(q,0xFFFF00);
-//addGPUQuad(ch,0xFFFF00);
-//addGPUQuad(windowPos,0xFFFF00);
 }
 
 bool MurQuad::split() {
     if(!window)
         return false;
 
-    /*if(c.maxLengthNS() < c.maxLengthEW()) {
-        c = c >> 1;
-        ch = ch >> 1;
-    }*/
     float length = c.maxLengthNS();
 
-    if(length > 500) {
-//addGPUTriangle(c[NW],c[NE],c[SE],0xFF0000);
+    if(length > 660) {
         Quad qa = c.insetOpp(W,length/2);
         Quad qb = c.insetOpp(E,length-(length/2));
         Quad qah = ch.insetOpp(W,length/2);
         Quad qbh = ch.insetOpp(E,length-(length/2));
 
-addGPUQuad(qa,0x0000FF);
-addGPUQuad(qb,0x00FF00);
-addGPUQuad(qah,0x0000FF);
-addGPUQuad(qbh,0x00FF00);
-//addGPUQuad(qa,0xFFFF00);
-        //addChild(new MurQuad(qa,qah,window));
-        //addChild(new MurQuad(qb,qbh,window));
+        addChild(new MurQuad(qa,qah,window));
+        addChild(new MurQuad(qb,qbh,window));
     } else {
         Quad right = Quad(windowPos[NW],windowPos[SW],c[SW],c[NW]);
         Quad righth = Quad(windowPosh[NW],windowPosh[SW],ch[SW],ch[NW]);
