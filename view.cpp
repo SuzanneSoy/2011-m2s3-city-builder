@@ -268,50 +268,26 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 		break;
 	default :
 		switch(SDL_GetKeyName(eventKey.keysym.sym)[0]) {
-		case 'q':
-		exit(0);
-		break;
-		case 's':
-			if (eventKey.type != SDL_KEYDOWN) break;
-			moveSensitivity = std::min(50000,std::max(moveSensitivity+1, moveSensitivity*10/9));
-			break;
-		case 'x':
-			if (eventKey.type != SDL_KEYDOWN) break;
-			moveSensitivity = std::max(10, moveSensitivity*9/10);
-			break;
-		case 'p': // _Print _Position
-			if (eventKey.type != SDL_KEYDOWN) break;
-			std::cout << *this << std::endl;
-			break;
-		case SDLK_PAGEDOWN:
-			pageDown = (eventKey.type == SDL_KEYDOWN);
-			break;
-		case SDLK_ESCAPE:
-			exit(0);
-			break;
-		default :
-			switch(SDL_GetKeyName(eventKey.keysym.sym)[0]) {
-				case 'q':
-					exit(0);
-					break;
-				case 's':
-					if (eventKey.type != SDL_KEYDOWN) break;
-					moveSensitivity = std::min(50000,std::max(moveSensitivity+1, moveSensitivity*10/9));
-					break;
-				case 'x':
-					if (eventKey.type != SDL_KEYDOWN) break;
-					moveSensitivity = std::max(10, moveSensitivity*9/10);
-					break;
-				case 'p': // _Print _Position
-					if (eventKey.type != SDL_KEYDOWN) break;
-					std::cout << *this << std::endl;
-					break;
-                case 't':
-                    takeScreenshot("123.bmp");
-                    break;
-				default:
-					break;
-			}
+			case 'q':
+				exit(0);
+				break;
+			case 's':
+				if (eventKey.type != SDL_KEYDOWN) break;
+				moveSensitivity = std::min(50000,std::max(moveSensitivity+1, moveSensitivity*10/9));
+				break;
+			case 'x':
+				if (eventKey.type != SDL_KEYDOWN) break;
+				moveSensitivity = std::max(10, moveSensitivity*9/10);
+				break;
+			case 'p': // _Print _Position
+				if (eventKey.type != SDL_KEYDOWN) break;
+				std::cout << *this << std::endl;
+				break;
+			case 't':
+				takeScreenshot("123.bmp");
+				break;
+			default:
+				break;
 		}
 		break;
 	}
