@@ -12,6 +12,8 @@ void ToitQuad::getBoundingBoxPoints() {
 }
 
 void ToitQuad::triangulation() {
+	// TODO : si angles pas acceptables, plat().
+	// TODO : toit plat : surélever.
 	switch (hash2(seed, -1) % 5) {
 	case 0: pointCentral(); break;
 	case 1: quatrePoints(); break;
@@ -97,6 +99,7 @@ void ToitTri::getBoundingBoxPoints() {
 }
 
 void ToitTri::triangulation() {
+	plat(); return;
 	switch (hash2(seed, -1) % 5) {
 	case 0: pointCentral(); break;
 	case 1: troisPoints(); break;

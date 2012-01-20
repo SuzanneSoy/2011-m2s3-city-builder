@@ -300,6 +300,7 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
                 up = true;
                 break;
             case 'e' :
+        		moveSensitivity = 1500;
                 autoPilot = true;
                 break;
             case 'z' :
@@ -350,7 +351,6 @@ void Camera::animation(int elapsedTime) {
 	float diff = ((float)(elapsedTime+1)/1000.f)*(float)moveSensitivity;
 
 	if (autoPilot) {
-		moveSensitivity = 1500;
 		float dx = floatInRange(frame/16, 42, -0.5, 0.5);
 		float olddx = floatInRange(frame/16 - 1, 42, -0.5, 0.5);
 		float mix = ((float)(frame % 16) / 16.f);
@@ -359,7 +359,6 @@ void Camera::animation(int elapsedTime) {
 		cameraCenter = cameraCenter + Vertex::fromSpherical(diff, yAngle, xAngle);
 		cameraCenter.z = oldz;
 		cameraCenter.z += std::min(20.f, std::max(-20.f, 1750 - cameraCenter.z));
-		return;
 	}
 
 	if(up)

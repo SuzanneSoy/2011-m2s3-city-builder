@@ -75,3 +75,19 @@ void PlancherPlafond::triangulation() {
 void PlancherPlafond::getBoundingBoxPoints() {
 	addBBPoints(c);
 }
+
+PlancherPlafondTri::PlancherPlafondTri(Triangle _c, Type _type) : Chose(), c(_c), type(_type) {
+	addEntropy(c);
+	addEntropy((int)type);
+}
+
+void PlancherPlafondTri::triangulation() {
+	unsigned int clr = Couleurs::plancher;
+	if (type == PLAFOND)
+		clr = Couleurs::plafond;
+	addGPUTriangle(c, clr);
+}
+
+void PlancherPlafondTri::getBoundingBoxPoints() {
+	addBBPoints(c);
+}

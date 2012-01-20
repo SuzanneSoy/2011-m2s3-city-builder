@@ -39,5 +39,21 @@ public:
 	virtual void getBoundingBoxPoints();
 };
 
+class PlancherPlafondTri: public Chose {
+public:
+	enum Type {
+		PLANCHER,
+		PLAFOND
+	};
+private:
+	Triangle c;
+	Type type;
+
+public:
+	PlancherPlafondTri(Triangle _c, Type _type);
+	virtual void triangulation();
+	virtual void getBoundingBoxPoints();
+};
+
 #endif
 

@@ -63,7 +63,6 @@ void BatimentQuad::sousBatiments() {
 }
 
 void BatimentQuad::etages() {
-	// TODO : indiquer aux bâtiments où est-ce qu'ils peuvent faire des fenêtres.
 	float randEtages = floatInRange(seed, 0, 0.f, 1.f);
 	int nbEtages = 1 + (int)(randEtages * randEtages * (Dimensions::maxEtages - 1));
 	Quad q = c; // c.insetNESW(30)
@@ -91,21 +90,92 @@ void BatimentQuad::getBoundingBoxPoints() {
 	addBBPoints(c, Dimensions::hauteurEtage * 2 + Dimensions::hauteurToit);
 }
 
-BatimentTri_::BatimentTri_(Triangle _c) : Chose(), c(_c) {
+BatimentTri::BatimentTri(Triangle _c, bool _isSub, TriBool _w)
+        : Chose(), c(_c), isSub(_isSub), w(_w) {
 	addEntropy(c);
+	for (int i = 0; i < 3; i++)
+		addEntropy(w[LEFTSIDE+i] ? 0 : 1);
 }
 
-void BatimentTri_::split() {
-	// TODO : BatimentTri::split()
+void BatimentTri::split() {
+	if (!isSub) {
+		bordureRouteTrottoir();
+	} else {
+		if (w[LEFTSIDE] || w[RIGHTSIDE] || w[BASE]) {
+			if (c.surface() > 2 * Dimensions::minSurfaceSousBatiment) {
+				sousBatiments();
+			} else {
+				etages();
+			}
+		} else {
+			addChild(new TerrainTri(c));
+		}
+	}
 }
 
-void BatimentTri_::triangulation() {
+void BatimentTri::triangulation() {
 	Triangle th = c.offsetNormal(Dimensions::hauteurEtage * 2 + Dimensions::hauteurToit);
 	addGPUTriangle(th, Couleurs::toit);
 	for (int i = 0; i < 3; i++)
 		addGPUQuad(Quad(c[LEFT+i], c[TOP+i], th[TOP+i], th[LEFT+i]), Couleurs::mur);
 }
 
-void BatimentTri_::getBoundingBoxPoints() {
+void BatimentTri::getBoundingBoxPoints() {
 	addBBPoints(c, Dimensions::hauteurEtage * 2 + Dimensions::hauteurToit);
+}
+
+void BatimentTri::bordureRouteTrottoir() {
+	Triangle tinterieur = c.insetLTR(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
+	Triangle tbatiments = tinterieur.offsetNormal(Dimensions::hauteurTrottoir);
+
+	for (int i = 0; i < 4; i++) {
+		addChild(new RouteTrottoirQuad(Quad(c[LEFT+i],c[TOP+i],tinterieur[TOP+i],tinterieur[LEFT+i])));
+	}
+
+	bool anglesAcceptable = c.minAngle() > Angle::d2r(90-60) && c.maxAngle() < Angle::d2r(90+60);
+
+	if (anglesAcceptable && proba(seed, 0, 0.95f)) {
+		addChild(new BatimentTri(tbatiments, true));
+	} else {
+		addChild(new TerrainTri(tbatiments));
+	}
+}
+
+void BatimentTri::sousBatiments() {
+	Triangle t = c << c.minAngleCorner();
+	TriBool tb = w << c.minAngleCorner();
+
+	// TODO : ajuster pour que la distance c[LEFT] -- left et c[LEFT] -- base soit similaire.
+	Vertex left = Segment(t[LEFT], t[TOP]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
+	float dLeft = Segment(t[LEFT], left).length();
+	float posBase = dLeft / Segment(t[LEFT], t[RIGHT]).length();
+	if (posBase < 0.3f) posBase = 0.2f;
+	else if (posBase > 0.7f) posBase = 0.8f;
+	Vertex base = Segment(t[RIGHT], t[LEFT]).randomPos(seed, 1, posBase - 0.1f, posBase + 0.1f);
+
+	bool small = t.surface() < 4 * Dimensions::minSurfaceSousBatiment;
+
+	if (small && (tb[LEFTSIDE] || tb[RIGHTSIDE]) && proba(seed, 2, 0.3f)) {
+		addChild(new TerrainTri(Triangle(base, t[LEFT], left)));
+		addChild(new BatimentQuad(Quad(base, left, t[TOP], t[RIGHT]), true, QuadBool(true, w[LEFTSIDE], w[RIGHTSIDE], w[BASE])));
+	} else if (small && (tb[LEFTSIDE] || tb[RIGHTSIDE] || tb[BASE]) && proba(seed, 2, 0.3f)) {
+		addChild(new BatimentTri(Triangle(base, t[LEFT], left), true, TriBool(w[BASE], w[LEFTSIDE], true)));
+		addChild(new TerrainQuad(Quad(base, left, t[TOP], t[RIGHT])));
+	} else {
+		addChild(new BatimentTri(Triangle(base, t[LEFT], left), true, TriBool(w[BASE], w[LEFTSIDE], false)));
+		addChild(new BatimentQuad(Quad(base, left, t[TOP], t[RIGHT]), true, QuadBool(false, w[LEFTSIDE], w[RIGHTSIDE], w[BASE])));
+	}
+}
+
+void BatimentTri::etages() {
+	float randEtages = floatInRange(seed, 0, 0.f, 1.f);
+	int nbEtages = 1 + (int)(randEtages * randEtages * (Dimensions::maxEtages - 1));
+	Triangle t = c; // c.insetNESW(30)
+	Triangle th;
+	for (int i = 0; i < nbEtages; i++) {
+		th = t.offsetNormal(floatInRange(seed, 1+i, Dimensions::hauteurEtage*0.9f, Dimensions::hauteurEtage*1.1f));
+		addChild(new EtageTri(t, th, w, i, nbEtages));
+		t = th;
+	}
+    addChild(new ToitTri(th, Dimensions::hauteurToit));
 }

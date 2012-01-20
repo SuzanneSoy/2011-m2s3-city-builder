@@ -3,16 +3,6 @@
 
 #include "all_includes.hh"
 
-class TerrainTri : public Chose {
-    private :
-	Triangle c;
-
-    public :
-	TerrainTri(Triangle _c);
-	virtual void triangulation();
-	virtual void getBoundingBoxPoints();
-};
-
 class TerrainQuad : public Chose {
     private :
 	Quad c;
@@ -20,6 +10,18 @@ class TerrainQuad : public Chose {
 
     public :
 	TerrainQuad(Quad _c, bool _addTrees = true);
+	virtual void split();
+	virtual void triangulation();
+	virtual void getBoundingBoxPoints();
+};
+
+class TerrainTri : public Chose {
+    private :
+	Triangle c;
+	bool addTrees;
+
+    public :
+	TerrainTri(Triangle _c, bool _addTrees = true);
 	virtual void split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();

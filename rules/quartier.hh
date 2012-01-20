@@ -34,7 +34,6 @@ private:
 	void centre();
 	void hauteur();
 	void trapeze();
-	void batiments();
 };
 
 #endif

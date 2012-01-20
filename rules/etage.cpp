@@ -68,3 +68,43 @@ void EtageQuad::triangulation() {
     addGPUQuad(ch.offsetNormal(-30), Couleurs::plafond);
     addGPUQuad(c, Couleurs::plancher);
 }
+
+EtageTri::EtageTri(Triangle _c, Triangle _ch, TriBool _w, int _etage, int _nbEtages) : Chose(), c(_c), ch(_ch), w(_w), etage(_etage), nbEtages(_nbEtages) {
+	addEntropy(c);
+	addEntropy(ch);
+	for (int i = 0; i < 3; i++)
+		addEntropy(w[LEFTSIDE+i] ? 0 : 1);
+}
+
+void EtageTri::getBoundingBoxPoints() {
+	addBBPoints(c);
+	addBBPoints(ch);
+}
+
+void EtageTri::split() {
+	Triangle small = c.insetLTR(28);
+	Triangle smallh = ch.insetLTR(28);
+
+	TriBool d(false,false,false);
+
+	if(etage == 0) {
+		if(w[LEFTSIDE])       d[LEFTSIDE] = true;
+		else if(w[RIGHTSIDE]) d[RIGHTSIDE] = true;
+		else if(w[BASE])      d[BASE] = true;
+	}
+
+	for (int i = 0; i < 3; i++) {
+		Quad q = Quad(c[TOP+i], small[TOP+i], small[LEFT+i], c[LEFT+i]);
+		Quad qh = Quad(ch[TOP+i], smallh[TOP+i], smallh[LEFT+i], ch[LEFT+i]);
+		addChild(new MurQuad(q, qh, w[LEFTSIDE+i]^d[LEFTSIDE+i],false,false,d[LEFTSIDE+i]));
+	}
+
+	addChild(new PlancherPlafondTri(c, PlancherPlafondTri::PLANCHER));
+	addChild(new PlancherPlafondTri(ch.offsetNormal(-10), PlancherPlafondTri::PLAFOND));
+}
+
+void EtageTri::triangulation() {
+    addGPUThreeQuads(c,ch, Couleurs::mur);
+    addGPUTriangle(ch.offsetNormal(-30), Couleurs::plafond);
+    addGPUTriangle(c, Couleurs::plancher);
+}

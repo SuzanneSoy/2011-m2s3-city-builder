@@ -163,8 +163,8 @@ void QuartierTri::getBoundingBoxPoints() {
 }
 
 void QuartierTri::split() {
-	bool small = c.minLength() < 6000;
-	bool big = c.maxLength() >= 10000;
+	bool small = c.minLength() < 80 * 100;
+	bool big = c.maxLength() >= 150 * 100;
 	float minAngle = c.minAngle();
 	float maxAngle = c.maxAngle();
 	bool equilateral = maxAngle < Angle::d2r(60+15) && minAngle > Angle::d2r(60-15);
@@ -172,7 +172,7 @@ void QuartierTri::split() {
 	bool angleAigu = minAngle < Angle::d2r(30);
 	bool anglesAcceptable = !angleAigu && !angleObtus;
 	if (!big && proba(seed, -1, 0.05f)) {
-		batiments(); // TODO : addChild(new BatimentTri_(c));
+		addChild(new BatimentTri(c));
 	} else if (big && anglesAcceptable) {
 		switch (hash2(seed, -2) % 3) {
 		case 0: centre(); break;
@@ -187,7 +187,7 @@ void QuartierTri::split() {
 	} else if (!small) {
 		trapeze();
 	} else {
-		batiments(); // TODO : addChild(new BatimentTri_(c));
+		addChild(new BatimentTri(c));
 	}
 }
 
@@ -227,25 +227,4 @@ void QuartierTri::trapeze() {
 
 	addChild(new QuartierTri(Triangle(base, t[LEFT], left)));
 	addChild(new QuartierQuad(Quad(base, left, t[TOP], t[RIGHT])));
-}
-
-void QuartierTri::batiments() {
-	Triangle tinterieur = c.insetLTR(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
-	Triangle tbatiments = tinterieur.offsetNormal(Dimensions::hauteurTrottoir);
-
-	for (int i = 0; i < 3; i++) {
-		addChild(new RouteTrottoirQuad(Quad(c[LEFT+i],c[TOP+i],tinterieur[TOP+i],tinterieur[LEFT+i])));
-	}
-
-	bool small = tbatiments.minLength() < 3000;
-	bool big = tbatiments.maxLength() >= 5000;
-	bool anglesAcceptable = tbatiments.minAngle() > Angle::d2r(30) && tbatiments.maxAngle() < Angle::d2r(120);
-
-	if (!big && proba(seed, 0, 0.05f)) {
-		addChild(new TerrainTri(tbatiments));
-	} else if (small && anglesAcceptable) {
-		addChild(new BatimentTri_(tbatiments));
-	} else {
-		addChild(new TerrainTri(tbatiments));
-	}
 }

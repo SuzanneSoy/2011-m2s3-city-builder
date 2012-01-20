@@ -41,4 +41,29 @@ public :
 	Triangle insetProportionnal(float prop);
 };
 
+class TriBool {
+    private:
+	bool c[3];
+
+    public :
+	TriBool();
+	TriBool(bool leftside, bool rightside, bool base) {
+		c[LEFTSIDE] = leftside;
+		c[RIGHTSIDE] = rightside;
+		c[BASE] = base;
+	};
+	inline bool& operator[] (CoteTriangle x) {
+		return c[x];
+	}
+	inline const bool& operator[] (CoteTriangle x) const {
+		return c[x];
+	}
+	inline TriBool operator>> (int rot) const {
+		return TriBool(c[LEFTSIDE - rot], c[RIGHTSIDE - rot], c[BASE - rot]);
+	}
+	inline TriBool operator<< (int rot) const {
+		return TriBool(c[LEFTSIDE + rot], c[RIGHTSIDE + rot], c[BASE + rot]);
+	}
+};
+
 #endif

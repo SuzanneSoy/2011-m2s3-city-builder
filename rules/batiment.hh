@@ -20,11 +20,17 @@ public:
 	BatimentQuad* isSubdivision(bool val);
 };
 
-class BatimentTri_ : public Chose {
+class BatimentTri : public Chose {
+private:
 	Triangle c;
+	bool isSub;
+	TriBool w;
+	void bordureRouteTrottoir();
+	void sousBatiments();
+	void etages();
 
 public:
-	BatimentTri_(Triangle _c);
+	BatimentTri(Triangle _c, bool _isSub = false, TriBool _w = TriBool(true, true, true));
 	virtual void split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
