@@ -26,9 +26,8 @@ void Chose::addChild(Chose* c) {
 	children.push_back(c);
 }
 
-bool Chose::merge() {
+void Chose::merge() {
 	clearChildren();
-	return true;
 }
 
 void Chose::addGPUTriangle(Vertex left, Vertex top, Vertex right, unsigned int rgb) {

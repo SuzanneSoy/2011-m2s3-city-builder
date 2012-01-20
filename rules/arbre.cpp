@@ -30,7 +30,7 @@ Arbre::Arbre(Vertex _start, Angle3D _rotation, float _length, Type _type) : star
 	addEntropy((int)(type));
 }
 
-bool Arbre::split() {
+void Arbre::split() {
 	if (type == ARBRE && length > floatInRange(seed, -1, 10, 20)) {
 		int nbBranches = 2 + (hash2(seed, -2) % 3);
 		for (int i = 0; i < nbBranches; i++) {
@@ -43,7 +43,6 @@ bool Arbre::split() {
 		}
 		addChild(new Arbre(start, rotation, length, TRONC));
 	}
-	return true;
 }
 
 void Arbre::triangulation() {

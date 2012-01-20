@@ -13,17 +13,16 @@ ArcheQuad::ArcheQuad(Quad _c, float _height, float _start, float _end, Type _typ
 	}
 }
 
-bool ArcheQuad::split() {
+void ArcheQuad::split() {
 	if (type == PLAT)
-		return false;
+		return;
 	if (std::abs(end - start) < 0.1 && std::abs(f(end) - f(start)) < 0.05)
-		return false;
+		return;
 	float mid = (start + end) / 2;
 	Vertex n = (c[NW] + c[NE]) / 2.f;
 	Vertex s = (c[SE] + c[SW]) / 2.f;
 	addChild(new ArcheQuad(Quad(n, s, c[SW], c[NW]), height, start, mid, type));
 	addChild(new ArcheQuad(Quad(c[NE], c[SE], s, n), height, mid, end, type));
-	return true;
 }
 
 void ArcheQuad::triangulation() {

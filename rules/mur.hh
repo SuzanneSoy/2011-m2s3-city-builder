@@ -18,7 +18,7 @@ public :
 
 	MurQuad(Quad c, Quad ch, bool _window=false, bool _top=false, bool _bottom=false, bool _door=false);
 	virtual void triangulation();
-	virtual bool split();
+	virtual void split();
 	virtual void getBoundingBoxPoints();
 	void setWindowOrDoor();
 };

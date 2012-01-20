@@ -4,8 +4,8 @@ TerrainQuad::TerrainQuad(Quad _c, bool _addTrees) : Chose(), c(_c), addTrees(_ad
 	addEntropy(c);
 }
 
-bool TerrainQuad::split() {
-	if (!addTrees) return false;
+void TerrainQuad::split() {
+	if (!addTrees) return;
 
 	addChild(new TerrainQuad(c, false));
 
@@ -27,7 +27,6 @@ bool TerrainQuad::split() {
 	for (int i = 0; i < pi; i++) {
 		addChild(new Arbre(p[i], c));
 	}
-	return true;
 }
 
 void TerrainQuad::getBoundingBoxPoints() {

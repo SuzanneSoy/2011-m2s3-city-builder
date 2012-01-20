@@ -8,7 +8,7 @@ void QuartierQuad::getBoundingBoxPoints() {
 	addBBPoints(c, Dimensions::hauteurMaxBatiment);
 }
 
-bool QuartierQuad::split() {
+void QuartierQuad::split() {
 	bool small = c.minLength() < 35 * 100;
 	bool big = (c.minLengthNS() > 100 * 100 || c.minLengthEW() > 100 * 100) && c.minLength() > 40*100 && c.maxLength() < 300*100;
 	bool isConcave = c.isConcave();
@@ -36,7 +36,6 @@ bool QuartierQuad::split() {
 		carre();
 	else
 		addChild(new BatimentQuad(c));
-	return true;
 }
 
 void QuartierQuad::triangulation() {
@@ -163,7 +162,7 @@ void QuartierTri::getBoundingBoxPoints() {
 	addBBPoints(c, Dimensions::hauteurMaxBatiment);
 }
 
-bool QuartierTri::split() {
+void QuartierTri::split() {
 	bool small = c.minLength() < 6000;
 	bool big = c.maxLength() >= 10000;
 	float minAngle = c.minAngle();
@@ -190,7 +189,6 @@ bool QuartierTri::split() {
 	} else {
 		batiments(); // TODO : addChild(new BatimentTri_(c));
 	}
-	return true;
 }
 
 void QuartierTri::triangulation() {

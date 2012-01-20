@@ -19,7 +19,7 @@ private:
 	Type type;
 public:
 	ArcheQuad(Quad _c, float _height, float _start = 0, float _end = 1, Type _type = RANDOM);
-	virtual bool split();
+	virtual void split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 	float f(float x);

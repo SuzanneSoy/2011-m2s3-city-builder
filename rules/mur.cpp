@@ -25,9 +25,9 @@ void MurQuad::setWindowOrDoor() {
     windowPosh = Quad(wFront[NE],wBack[NE],wBack[NW],wFront[NW]);
 }
 
-bool MurQuad::split() {
+void MurQuad::split() {
     if(!(window || door))
-        return false;
+        return;
 
     float length = c.maxLengthNS();
 
@@ -52,8 +52,6 @@ bool MurQuad::split() {
         addChild(new MurQuad(left,lefth,false));
         addChild(new MurQuad(right,righth,false));
     }
-
-    return true;
 }
 
 void MurQuad::triangulation() {

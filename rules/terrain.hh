@@ -20,7 +20,7 @@ class TerrainQuad : public Chose {
 
     public :
 	TerrainQuad(Quad _c, bool _addTrees = true);
-	virtual bool split();
+	virtual void split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

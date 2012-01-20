@@ -16,8 +16,8 @@ public :
 	void display();
 	void displayNormals();
 	void drawAABB(); // DEBUG
-	virtual bool split() { return false; };
-	virtual bool merge();
+	virtual void split() {};
+	virtual void merge();
 	virtual void triangulation() { clearTriangles(); };
 	virtual void updateAABB();
 

@@ -14,7 +14,7 @@ class EtageQuad : public Chose {
 
     public :
 	EtageQuad(Quad c, Quad ch, QuadBool _w, int _etage, int _nbEtages);
-	virtual bool split();
+	virtual void split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

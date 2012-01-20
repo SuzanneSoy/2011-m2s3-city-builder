@@ -14,7 +14,7 @@ private:
 
 public:
 	BatimentQuad(Quad _c, bool _isSub = false, QuadBool _w = QuadBool(true, true, true, true));
-	virtual bool split();
+	virtual void split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 	BatimentQuad* isSubdivision(bool val);
@@ -25,7 +25,7 @@ class BatimentTri_ : public Chose {
 
 public:
 	BatimentTri_(Triangle _c);
-	virtual bool split();
+	virtual void split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

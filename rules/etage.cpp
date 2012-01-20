@@ -12,7 +12,7 @@ void EtageQuad::getBoundingBoxPoints() {
 	addBBPoints(ch);
 }
 
-bool EtageQuad::split() {
+void EtageQuad::split() {
 	if (nbEtages > 1 && etage == 0 && ((w[N] && w[S]) || (w[E] && w[W])) && c.minLengthEW() > 800 && proba(seed, 0, 0.8)) {
 		Quad q = c << ((w[N] && w[S]) ? 0 : 1);
 		Quad qh = ch << ((w[N] && w[S]) ? 0 : 1);
@@ -61,7 +61,6 @@ bool EtageQuad::split() {
 	}
 	addChild(new PlancherPlafond(c, PlancherPlafond::PLANCHER));
 	addChild(new PlancherPlafond(ch.offsetNormal(-10), PlancherPlafond::PLAFOND));
-    return true;
 }
 
 void EtageQuad::triangulation() {

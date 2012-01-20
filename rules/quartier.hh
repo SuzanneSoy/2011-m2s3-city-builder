@@ -9,7 +9,7 @@ private:
 public:
 	QuartierQuad(Quad _c);
 	virtual void getBoundingBoxPoints();
-	virtual bool split();
+	virtual void split();
 	virtual void triangulation();
 private:
 	void triangulationConcave(Triangle t);
@@ -28,7 +28,7 @@ private:
 public:
 	QuartierTri(Triangle _c);
 	virtual void getBoundingBoxPoints();
-	virtual bool split();
+	virtual void split();
 	virtual void triangulation();
 private:
 	void centre();

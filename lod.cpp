@@ -58,16 +58,17 @@ void Lod::setCamera(Vertex newCamera) {
 }
 
 void Lod::doSplit(Chose* c) {
-	if (c->split()) {
-		std::vector<Chose*>::iterator it;
-		for (it = c->children.begin(); it != c->children.end(); ++it) {
-			(*it)->triangulation();
-			(*it)->updateAABB();
-			// (*it)->drawAABB();
-			addSplitCube((*it));
-		}
-		addMergeCube(c);
+	c->split();
+	std::vector<Chose*>::iterator it;
+	bool mergeCube = false;
+	for (it = c->children.begin(); it != c->children.end(); ++it) {
+		mergeCube = true;
+		(*it)->triangulation();
+		(*it)->updateAABB();
+		// (*it)->drawAABB();
+		addSplitCube((*it));
 	}
+	addMergeCube(c);
 	// else {
 	// 	// Pour debug : quand on tente de split un objet qui ne peut
 	// 	// pas l'être, on vire le dessin de sa splitBox.

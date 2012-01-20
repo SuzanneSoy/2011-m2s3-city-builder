@@ -7,7 +7,7 @@ BatimentQuad::BatimentQuad(Quad _c, bool _isSub, QuadBool _w)
 		addEntropy(w[N+i] ? 0 : 1);
 }
 
-bool BatimentQuad::split() {
+void BatimentQuad::split() {
 	if (!isSub) {
 		bordureRouteTrottoir();
 	} else {
@@ -21,8 +21,6 @@ bool BatimentQuad::split() {
 			addChild(new TerrainQuad(c));
 		}
 	}
-
-	return true;
 }
 
 void BatimentQuad::bordureRouteTrottoir() {
@@ -97,8 +95,8 @@ BatimentTri_::BatimentTri_(Triangle _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 
-bool BatimentTri_::split() {
-	return false;
+void BatimentTri_::split() {
+	// TODO : BatimentTri::split()
 }
 
 void BatimentTri_::triangulation() {

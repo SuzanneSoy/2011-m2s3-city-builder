@@ -25,7 +25,7 @@ public:
 	Arbre(Vertex _start, Quad plane);
 	Arbre(Vertex _start, Triangle plane);
 	Arbre(Vertex _start, Angle3D _rotation, float _length, Type _type = ARBRE);
-	virtual bool split();
+	virtual void split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 	virtual float LODFactor();
