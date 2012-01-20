@@ -165,11 +165,15 @@ void View::renderScene(int lastTime, int currentTime) {
 	float fps = (int)(1000/(currentTime-lastTime));
 	char text[100];	//	Text
 	snprintf(&(text[0]), 100, "FPS: %4.2f", fps);
+	std::cout << "\r" << fps << "    ";
+	std::cout.flush();
+	/*
 	glLoadIdentity ();
 	glDisable(GL_LIGHTING);
 	glColor3f(0.0f, 0.0f, 0.0f);
 	//glRasterPos3f (0, 0, 0);
 	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)(&(text[0])));
+	*/
 
 	glFlush();
 	SDL_GL_SwapBuffers();
