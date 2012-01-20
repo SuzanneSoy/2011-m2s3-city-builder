@@ -246,6 +246,18 @@ void Camera::mouseMotion(const SDL_MouseMotionEvent &event) {
 void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 	switch(eventKey.keysym.sym) {
 	case SDLK_UP:
+	case SDLK_DOWN:
+	case SDLK_LEFT:
+	case SDLK_RIGHT:
+	case SDLK_PAGEUP:
+	case SDLK_PAGEDOWN:
+		if (moveSensitivity == 0) moveSensitivity = 300;
+		break;
+	default:
+		break;
+	}
+	switch(eventKey.keysym.sym) {
+	case SDLK_UP:
 		up = (eventKey.type == SDL_KEYDOWN);
 		break;
 	case SDLK_DOWN:
@@ -284,6 +296,7 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 				exit(0);
 				break;
             case 'a' :
+            	if (moveSensitivity == 0) moveSensitivity = 300;
                 up = true;
                 break;
             case 'z' :

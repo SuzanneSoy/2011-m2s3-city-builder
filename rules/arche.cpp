@@ -27,12 +27,22 @@ bool ArcheQuad::split() {
 }
 
 void ArcheQuad::triangulation() {
-	Quad ch = c.offsetNormal(height);
-	Quad che = c.offsetNormal(f(end) * height * 0.9f);
-	Quad chw = c.offsetNormal(f(start) * height * 0.9f);
-	addGPUQuad(Quad(ch[NW], chw[NW], che[NE], ch[NE]), Couleurs::mur);
-	addGPUQuad(Quad(ch[SE], che[SE], chw[SW], ch[SW]), Couleurs::mur);
-	addGPUQuad(Quad(che[SE], che[NE], chw[NW], chw[SW]), Couleurs::mur);
+	if (type == PLAT) {
+		Quad chh = c.offsetNormal(height);
+		Quad ch = c.offsetNormal(height * 0.9);
+		addGPUQuad(ch, Couleurs::mur);
+		addGPUQuad(Quad(chh[NW], ch[NW], ch[NE], chh[NE]), Couleurs::mur);
+		addGPUQuad(Quad(chh[SE], ch[SE], ch[SW], chh[SW]), Couleurs::mur);
+		addGPUQuad(Quad(ch[NW], c[NW], c[SW], ch[SW]), Couleurs::mur);
+		addGPUQuad(Quad(ch[SE], c[SE], c[NE], ch[NE]), Couleurs::mur);
+	} else {
+		Quad ch = c.offsetNormal(height);
+		Quad che = c.offsetNormal(f(end) * height * 0.9f);
+		Quad chw = c.offsetNormal(f(start) * height * 0.9f);
+		addGPUQuad(Quad(ch[NW], chw[NW], che[NE], ch[NE]), Couleurs::mur);
+		addGPUQuad(Quad(ch[SE], che[SE], chw[SW], ch[SW]), Couleurs::mur);
+		addGPUQuad(Quad(che[SE], che[NE], chw[NW], chw[SW]), Couleurs::mur);
+	}
 }
 
 void ArcheQuad::getBoundingBoxPoints() {
