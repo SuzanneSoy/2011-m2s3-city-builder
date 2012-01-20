@@ -10,10 +10,12 @@ private :
 	bool window;        // Contient une fenêtre ou non.
 	Quad windowPos;
 	Quad windowPosh;
+	bool top;
+	bool bottom;
 
 public :
 
-	MurQuad(Quad c, Quad ch, bool _window=false);
+	MurQuad(Quad c, Quad ch, bool _window=false, bool _top=false, bool _bottom=false);
 	virtual void triangulation();
 	virtual bool split();
 	virtual void getBoundingBoxPoints();

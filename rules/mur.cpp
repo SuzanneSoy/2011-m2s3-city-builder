@@ -1,8 +1,10 @@
 #include "all_includes.hh"
 
-MurQuad::MurQuad(Quad _c, Quad _ch, bool _window) : Chose(), c(_c), ch(_ch), window(_window) {
+MurQuad::MurQuad(Quad _c, Quad _ch, bool _window, bool _top, bool _bottom) : Chose(), c(_c), ch(_ch), window(_window), top(_top), bottom(_bottom) {
 	addEntropy(c);
 	addEntropy(ch);
+	addEntropy((int)top);
+	addEntropy((int)bottom);
 	if(_window)
         setWindow();
 }
@@ -44,8 +46,8 @@ bool MurQuad::split() {
         Quad lefth = Quad(ch[NE],ch[SE],windowPosh[SE],windowPosh[NE]);
         Quad top = Quad(windowPosh[NE],windowPosh[NW],windowPosh[SW],windowPosh[SE]);
 
-        addChild(new MurQuad(c,windowPos,false));
-        addChild(new MurQuad(windowPosh,ch, false));
+        addChild(new MurQuad(c,windowPos,false, true, false));
+        addChild(new MurQuad(windowPosh,ch, false, false, true));
         addChild(new MurQuad(left,lefth,false));
         addChild(new MurQuad(right,righth,false));
     }
@@ -54,6 +56,8 @@ bool MurQuad::split() {
 }
 
 void MurQuad::triangulation() {
+	if (bottom) addGPUQuad(c, Couleurs::mur);
+	if (top) addGPUQuad(ch, Couleurs::mur);
     addGPUFourQuads(c, ch, Couleurs::mur);
 }
 
