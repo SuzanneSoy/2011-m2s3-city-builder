@@ -1,9 +1,9 @@
 #include "all_includes.hh"
 
 View::View(Chose* _root)
-	: root(_root),
-	  camera(Camera(Vertex(0,0,5000), 45, 100, 10000, 0.6f)),
-	  lod(camera.cameraCenter, _root) {
+: root(_root),
+  camera(Camera(Vertex(0,0,5000), 45, 100, 10000, 0.6f)),
+  lod(camera.cameraCenter, _root) {
 
 	fogColor[0] = Couleurs::r(Couleurs::fog) / 255.f;
 	fogColor[1] = Couleurs::g(Couleurs::fog) / 255.f;
@@ -44,14 +44,14 @@ void View::initWindow() {
 	glMaterialfv(GL_FRONT,GL_SHININESS,&shininess);
 
 	glEnable(GL_LIGHTING); 	// Active l'éclairage
-  	glEnable(GL_LIGHT0);	// Active la lumière 0;
+	glEnable(GL_LIGHT0);	// Active la lumière 0;
 
-  	glEnable (GL_FOG);
-    glFogi (GL_FOG_MODE, GL_LINEAR);
-    glFogfv (GL_FOG_COLOR, fogColor);
-    glFogf (GL_FOG_START, Dimensions::backFrustum / std::sqrt(3.f) / 2.f);
-    glFogf (GL_FOG_END, Dimensions::backFrustum / std::sqrt(3.f) * 0.9f);
-    //glHint (GL_FOG_HINT, GL_NICEST);
+	glEnable (GL_FOG);
+	glFogi (GL_FOG_MODE, GL_LINEAR);
+	glFogfv (GL_FOG_COLOR, fogColor);
+	glFogf (GL_FOG_START, Dimensions::backFrustum / std::sqrt(3.f) / 2.f);
+	glFogf (GL_FOG_END, Dimensions::backFrustum / std::sqrt(3.f) * 0.9f);
+	//glHint (GL_FOG_HINT, GL_NICEST);
 }
 
 void View::setLight() {
@@ -70,7 +70,7 @@ void View::displayAxes() {
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
 	glEnable(GL_LINE_SMOOTH);
-    glLineWidth(2);
+	glLineWidth(2);
 	glBegin(GL_LINES);
 	glColor3ub(255,0,0);
 	glVertex3f(0.0f, 0.0f, 0.0f); // origin of the line
@@ -162,6 +162,15 @@ void View::renderScene(int lastTime, int currentTime) {
 		glEnable(GL_TEXTURE_2D);
 	}
 
+	float fps = (int)(1000/(currentTime-lastTime));
+	char text[100];	//	Text
+	snprintf(&(text[0]), 100, "FPS: %4.2f", fps);
+	glLoadIdentity ();
+	glDisable(GL_LIGHTING);
+	glColor3f(0.0f, 0.0f, 0.0f);
+	//glRasterPos3f (0, 0, 0);
+	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)(&(text[0])));
+
 	glFlush();
 	SDL_GL_SwapBuffers();
 }
@@ -171,7 +180,7 @@ void View::mainLoop() {
 	SDL_Event event;
 	SDL_EnableKeyRepeat(40,40);
 	SDL_WM_GrabInput(SDL_GRAB_ON);
-    SDL_ShowCursor(SDL_DISABLE);
+	SDL_ShowCursor(SDL_DISABLE);
 	while ( SDL_PollEvent(&event) ); // empty queue.
 
 	int lastTime = SDL_GetTicks() - 30;
@@ -182,18 +191,18 @@ void View::mainLoop() {
 		currentTime = SDL_GetTicks();
 		while ( SDL_PollEvent(&event) ) {
 			switch(event.type) {
-				case SDL_QUIT:
-					continuer = 0;
-					break;
-				case SDL_KEYDOWN:
-				case SDL_KEYUP:
-					camera.keyboard(event.key);
-					break;
-				case SDL_MOUSEMOTION:
-					camera.mouseMotion(event.motion);
-					break;
-				default:
-					break;
+			case SDL_QUIT:
+				continuer = 0;
+				break;
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+				camera.keyboard(event.key);
+				break;
+			case SDL_MOUSEMOTION:
+				camera.mouseMotion(event.motion);
+				break;
+			default:
+				break;
 			}
 		}
 		renderScene(lastTime,currentTime);
@@ -203,20 +212,20 @@ void View::mainLoop() {
 }
 
 Camera::Camera(Vertex _cameraCenter, float _xAngle, float _yAngle, int _moveSensitivity, float _mouseSensitivity)
-	: cameraCenter(_cameraCenter),
-	  cameraSight(cameraCenter + Vertex::fromSpherical(100,_yAngle,_xAngle)),
-	  xAngle(_xAngle),
-	  yAngle(_yAngle),
-	  moveSensitivity(_moveSensitivity),
-	  mouseSensitivity(_mouseSensitivity),
-	  up(false), down(false), left(false), right(false),
-	  pageUp(false), pageDown(false)
+: cameraCenter(_cameraCenter),
+  cameraSight(cameraCenter + Vertex::fromSpherical(100,_yAngle,_xAngle)),
+  xAngle(_xAngle),
+  yAngle(_yAngle),
+  moveSensitivity(_moveSensitivity),
+  mouseSensitivity(_mouseSensitivity),
+  up(false), down(false), left(false), right(false),
+  pageUp(false), pageDown(false)
 {
 }
 
 std::ostream& Camera::print(std::ostream& os) const {
 	return os << "Camera = " << cameraCenter << " xAngle = "
-			  << xAngle << " yAngle = " << yAngle;
+			<< xAngle << " yAngle = " << yAngle;
 }
 
 void Camera::setCamera() {
@@ -236,20 +245,43 @@ void Camera::mouseMotion(const SDL_MouseMotionEvent &event) {
 
 void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 	switch(eventKey.keysym.sym) {
-		case SDLK_UP:
-			up = up ^ (eventKey.type == SDL_KEYDOWN);
+	case SDLK_UP:
+		up = up ^ (eventKey.type == SDL_KEYDOWN);
+		break;
+	case SDLK_DOWN:
+		down = (eventKey.type == SDL_KEYDOWN);
+		break;
+	case SDLK_LEFT:
+		left = (eventKey.type == SDL_KEYDOWN);
+		break;
+	case SDLK_RIGHT:
+		right = (eventKey.type == SDL_KEYDOWN);
+		break;
+	case SDLK_PAGEUP:
+		pageUp = (eventKey.type == SDL_KEYDOWN);
+		break;
+	case SDLK_PAGEDOWN:
+		pageDown = (eventKey.type == SDL_KEYDOWN);
+		break;
+	case SDLK_ESCAPE:
+		exit(0);
+		break;
+	default :
+		switch(SDL_GetKeyName(eventKey.keysym.sym)[0]) {
+		case 'q':
+		exit(0);
+		break;
+		case 's':
+			if (eventKey.type != SDL_KEYDOWN) break;
+			moveSensitivity = std::min(50000,std::max(moveSensitivity+1, moveSensitivity*10/9));
 			break;
-		case SDLK_DOWN:
-			down = (eventKey.type == SDL_KEYDOWN);
+		case 'x':
+			if (eventKey.type != SDL_KEYDOWN) break;
+			moveSensitivity = std::max(10, moveSensitivity*9/10);
 			break;
-		case SDLK_LEFT:
-			left = (eventKey.type == SDL_KEYDOWN);
-			break;
-		case SDLK_RIGHT:
-			right = (eventKey.type == SDL_KEYDOWN);
-			break;
-		case SDLK_PAGEUP:
-			pageUp = (eventKey.type == SDL_KEYDOWN);
+		case 'p': // _Print _Position
+			if (eventKey.type != SDL_KEYDOWN) break;
+			std::cout << *this << std::endl;
 			break;
 		case SDLK_PAGEDOWN:
 			pageDown = (eventKey.type == SDL_KEYDOWN);
@@ -280,7 +312,8 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 				default:
 					break;
 			}
-			break;
+		}
+		break;
 	}
 }
 
