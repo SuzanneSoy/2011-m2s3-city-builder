@@ -3,22 +3,12 @@
 
 #include "all_includes.hh"
 
-class TrottoirQuad : public Chose {
+class RouteTrottoirQuad : public Chose {
 	private :
 	Quad c;
 
 	public :
-	TrottoirQuad(Quad _c);
-	virtual void triangulation();
-	virtual void getBoundingBoxPoints();
-};
-
-class RouteQuad : public Chose {
-    private :
-	Quad c;
-
-    public :
-	RouteQuad(Quad _c);
+	RouteTrottoirQuad(Quad _c);
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
 };

@@ -65,14 +65,12 @@ void QuartierQuad::triangulationConcave(Triangle t) {
 }
 
 void QuartierQuad::concave() {
-	std::cout << "concave" << std::endl;
 	Quad q = c << c.concaveCorner();
 	addChild(new QuartierTri(Triangle(q[NE], q[SE], q[SW])));
 	addChild(new QuartierTri(Triangle(q[SW], q[NW], q[NE])));
 }
 
 void QuartierQuad::angleCote() {
-	std::cout << "angleCote" << std::endl;
 	Quad q = c << c.maxAngleCorner();
 	Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 0.4f, 0.6f);
 	Vertex w = Segment(q[SW], q[NW]).randomPos(seed, 0, 0.4f, 0.6f);
@@ -88,14 +86,12 @@ void QuartierQuad::angleCote() {
 }
 
 void QuartierQuad::angleAngle() {
-	std::cout << "angleAngle" << std::endl;
 	Quad q = c << c.maxAngleCorner();
 	addChild(new QuartierTri(Triangle(q[NE], q[SE], q[SW])));
 	addChild(new QuartierTri(Triangle(q[SW], q[NW], q[NE])));
 }
 
 void QuartierQuad::rect() {
-	std::cout << "rect" << std::endl;
 	Quad q = c << c.maxLengthSide();
 	Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
 	Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
@@ -105,7 +101,6 @@ void QuartierQuad::rect() {
 }
 
 void QuartierQuad::carre() {
-	std::cout << "carre" << std::endl;
 	Vertex center = c.insetProportionnal(0.33f).randomPoint(seed, 0);
 	Vertex middle[4];
 	for (int i = 0; i < 4; i++)
@@ -116,13 +111,13 @@ void QuartierQuad::carre() {
 }
 
 void QuartierQuad::place() {
-	std::cout << "place" << std::endl;
 	Vertex center = c.insetProportionnal(0.25f).randomPoint(seed, 0);
 	Vertex middle[4];
 	for (int i = 0; i < 4; i++)
 		middle[N+i] = Segment(c[NW+i], c[NE+i]).randomPos(seed, i + 1, 0.45f, 0.55f);
 
 	Vertex smallOcto[8];
+	Vertex interieur[8];
 	Vertex bigOcto[8];
 	float r = floatInRange(seed, 12345, Dimensions::minRayonPlace, Dimensions::maxRayonPlace);
 	float shift = std::tan(Angle::Pi/8.f) * r;
@@ -132,17 +127,23 @@ void QuartierQuad::place() {
 		smallOcto[2*i+1] = q.inset(S, shift).inset(W, r)[SW];
 		bigOcto[2*i]     = q.inset(W, shift).inset(S, r)[NW];
 		bigOcto[2*i+1]   = q.inset(S, shift).inset(W, r)[SE];
+		Triangle t = Triangle(smallOcto[2*i+1], center, smallOcto[2*i]).inset(BASE, Dimensions::largeurRoute + Dimensions::largeurTrottoir);
+		interieur[2*i] = t[RIGHT];
+		interieur[2*i+1] = t[LEFT];
 	}
 
 	for (int i = 0; i < 4; i++) {
 		addChild(new QuartierQuad(Quad(bigOcto[2*i], smallOcto[2*i], smallOcto[((2*i-1) + 8) % 8], bigOcto[((2*i-1) + 8) % 8])));
-		addChild(new QuartierQuad(Quad(c[NE+i], (smallOcto[2*i] + smallOcto[2*i+1]) / 2.f, smallOcto[2*i], bigOcto[2*i])));
-		addChild(new QuartierQuad(Quad(c[NE+i], bigOcto[2*i+1], smallOcto[2*i+1], (smallOcto[2*i] + smallOcto[2*i+1]) / 2.f)));
+		addChild(new QuartierQuad(Quad(smallOcto[2*i+1], smallOcto[2*i], bigOcto[2*i], bigOcto[2*i+1])));
+		addChild(new QuartierTri(Triangle(bigOcto[2*i], c[NE+i], bigOcto[2*i+1])));
+	}
+	for (int i = 0; i < 8; i++) {
+		addChild(new RouteTrottoirQuad(Quad(smallOcto[i], smallOcto[(i+1)%8], interieur[(i+1)%8], interieur[i])));
+		addChild(new TerrainTri(Triangle(interieur[(i+1)%8], center, interieur[i])));
 	}
 }
 
 void QuartierQuad::longueRue() {
-	std::cout << "longueRue" << std::endl;
 	Quad q = c << c.maxLengthSide();
 	Vertex e = Segment(q[NE], q[SE]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
 	Vertex w = Segment(q[SW], q[NW]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
@@ -231,13 +232,11 @@ void QuartierTri::trapeze() {
 }
 
 void QuartierTri::batiments() {
-	Triangle ttrottoir = c.insetLTR(Dimensions::largeurRoute);
-	Triangle tinterieur = ttrottoir.insetLTR(Dimensions::largeurTrottoir);
+	Triangle tinterieur = c.insetLTR(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
 	Triangle tbatiments = tinterieur.offsetNormal(Dimensions::hauteurTrottoir);
 
 	for (int i = 0; i < 3; i++) {
-		addChild(new RouteQuad(Quad(c[LEFT+i],c[TOP+i],ttrottoir[TOP+i],ttrottoir[LEFT+i])));
-		addChild(new TrottoirQuad(Quad(ttrottoir[LEFT+i],ttrottoir[TOP+i],tinterieur[TOP+i],tinterieur[LEFT+i])));
+		addChild(new RouteTrottoirQuad(Quad(c[LEFT+i],c[TOP+i],tinterieur[TOP+i],tinterieur[LEFT+i])));
 	}
 
 	bool small = tbatiments.minLength() < 3000;

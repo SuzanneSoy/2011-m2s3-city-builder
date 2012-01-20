@@ -1,30 +1,20 @@
 #include "all_includes.hh"
 
-TrottoirQuad::TrottoirQuad(Quad _c) : Chose(), c(_c) {
+RouteTrottoirQuad::RouteTrottoirQuad(Quad _c) : Chose(), c(_c) {
 	addEntropy(c);
 }
 
-void TrottoirQuad::getBoundingBoxPoints() {
+void RouteTrottoirQuad::getBoundingBoxPoints() {
 	addBBPoints(c, Dimensions::hauteurTrottoir);
 }
 
-void TrottoirQuad::triangulation() {
-	Quad ch = c.offsetNormal(Dimensions::hauteurTrottoir);
-	Quad bordureh = ch.inset(E,15);
+void RouteTrottoirQuad::triangulation() {
+	Quad qtrottoir = c.inset(E, Dimensions::largeurRoute);
+	Quad qtrottoirh = qtrottoir.offsetNormal(Dimensions::hauteurTrottoir);
+	Quad qbordureh = qtrottoirh.inset(E,15);
 
-	addGPUQuad(c[NE], c[SE], ch[SE], ch[NE], Couleurs::bordureTrottoir);
-	addGPUQuad(ch[NE], ch[SE], bordureh[SE], bordureh[NE], Couleurs::bordureTrottoir);
-	addGPUQuad(bordureh, Couleurs::trottoir);
-}
-
-RouteQuad::RouteQuad(Quad _c) : Chose(), c(_c) {
-	addEntropy(c);
-}
-
-void RouteQuad::getBoundingBoxPoints() {
-	addBBPoints(c);
-}
-
-void RouteQuad::triangulation() {
-	addGPUQuad(c, Couleurs::route);
+	addGPUQuad(Quad(c[SE], qtrottoir[SE], qtrottoir[NE], c[NE]), Couleurs::route);
+	addGPUQuad(qtrottoir[NE], qtrottoir[SE], qtrottoirh[SE], qtrottoirh[NE], Couleurs::bordureTrottoir);
+	addGPUQuad(qtrottoirh[NE], qtrottoirh[SE], qbordureh[SE], qbordureh[NE], Couleurs::bordureTrottoir);
+	addGPUQuad(qbordureh, Couleurs::trottoir);
 }

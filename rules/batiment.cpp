@@ -26,13 +26,11 @@ bool BatimentQuad::split() {
 }
 
 void BatimentQuad::bordureRouteTrottoir() {
-	Quad qtrottoir = c.insetNESW(Dimensions::largeurRoute);
-	Quad qinterieur = qtrottoir.insetNESW(Dimensions::largeurTrottoir);
+	Quad qinterieur = c.insetNESW(Dimensions::largeurRoute + Dimensions::largeurTrottoir);
 	Quad qbatiments = qinterieur.offsetNormal(Dimensions::hauteurTrottoir);
 
 	for (int i = 0; i < 4; i++) {
-		addChild(new RouteQuad(Quad(c[NE+i],c[SE+i],qtrottoir[SE+i],qtrottoir[NE+i])));
-		addChild(new TrottoirQuad(Quad(qtrottoir[NE+i],qtrottoir[SE+i],qinterieur[SE+i],qinterieur[NE+i])));
+		addChild(new RouteTrottoirQuad(Quad(c[NE+i],c[SE+i],qinterieur[SE+i],qinterieur[NE+i])));
 	}
 
 	bool anglesAcceptable = c.minAngle() > Angle::d2r(90-60) && c.maxAngle() < Angle::d2r(90+60);
