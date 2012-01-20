@@ -8,7 +8,7 @@ CFLAGS=-O0 -g -rdynamic -I. $(CCWARN)
 
 SOURCES = $(shell echo *.cpp geometry/*.cpp rules/*.cpp)
 HEADERS = $(shell echo *.hh  geometry/*.hh rules/*.hh)
-LIBS = -lm -lGL -lGLU -lSDL -lGLEW
+LIBS = -lm -lGL -lGLU -lSDL -lGLEW -lglut
 EXECUTABLE = city
 
 .PHONY: all

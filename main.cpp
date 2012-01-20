@@ -1,6 +1,7 @@
 #include "all_includes.hh"
 
 int main(int argc, char* argv[]) {
+	glutInit(&argc, argv);
 	// Générer une tile de base
 	if(argc > 1)
         Chose::initialSeed = (unsigned int) atoi(argv[1]);

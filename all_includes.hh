@@ -20,6 +20,12 @@ class Chose;
 #include <GL/glu.h>
 #include <GL/gl.h>
 
+// Affichage du FPS
+#include <GL/freeglut.h>
+//#include <openglut.h>
+#include <stdio.h>
+
+
 #include "geometry/directions.hh"
 #include "geometry/vertex.hh"
 #include "geometry/angle.hh"
