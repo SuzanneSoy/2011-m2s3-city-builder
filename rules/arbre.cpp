@@ -51,7 +51,6 @@ void Arbre::triangulation() {
 }
 
 void Arbre::getBoundingBoxPoints() {
-	// TODO
 	Vertex u = rotation.u * limitLength() / 2.f;
 	Vertex l = rotation.l * limitLength() / 2.f;
 	Quad c(start +u +l, start -u +l, start -u -l, start +u -l);

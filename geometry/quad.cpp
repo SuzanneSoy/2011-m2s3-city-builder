@@ -225,7 +225,6 @@ Quad Quad::insetProportionnal(float prop) {
     Quad rQuad= *this;
 
     Vertex bc = Segment(Segment(c[NW],c[NE]).center(),Segment(c[SW],c[SE]).center()).center();
-    prop = prop;
 
     rQuad[NW] = Segment(bc,c[NW]).at(prop);
     rQuad[NE] = Segment(bc,c[NE]).at(prop);

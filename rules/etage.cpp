@@ -28,7 +28,7 @@ void EtageQuad::split() {
 		Quad wi = w.insetNESW(28, 0, 28, 28);
 		Quad eih = eh.insetNESW(28, 28, 28, 0);
 		Quad wih = wh.insetNESW(28, 0, 28, 28);
-		// TODO : ArcheQuad(q, q);
+		// TODO : ArcheQuad(Quad, Quad);
 		addChild(new ArcheQuad(Quad(e[NW], e[SW], w[SE], w[NE]), Segment(qh[NE], q[NE]).length()));
 		// Mur sur e[N], e[E], e[S], w[S], w[W], w[N];
 		for (int i = 0; i < 3; i++) {

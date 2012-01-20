@@ -3,9 +3,8 @@
 Vertex::Vertex() {}
 
 Vertex::Vertex(float _x, float _y, float _z): x(_x), y(_y), z(_z) {
-	// TODO : DEBUG
-	if (!(std::isfinite(x) && std::isfinite(y) && std::isfinite(z)))
-		std::cout << "Attempted to create vertex with bad data !" << std::endl;
+	/* if (!(std::isfinite(x) && std::isfinite(y) && std::isfinite(z)))
+		std::cerr << "Attempted to create vertex with bad data !" << std::endl; */
 }
 
 float Vertex::norm() const { return std::sqrt(x*x + y*y + z*z); }

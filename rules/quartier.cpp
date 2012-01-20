@@ -151,7 +151,7 @@ void QuartierQuad::longueRue() {
 
 	addChild(new QuartierQuad(qn));
 	addChild(new QuartierQuad(qs));
-	addChild(new BatimentQuad(Quad(qn[SE], qs[SW], qs[SE], qn[SW]))); // TODO
+	addChild(new BatimentQuad(Quad(qn[SE], qs[SW], qs[SE], qn[SW])));
 }
 
 QuartierTri::QuartierTri(Triangle _c) : Chose(), c(_c) {
@@ -201,9 +201,7 @@ void QuartierTri::triangulation() {
 }
 
 void QuartierTri::centre() {
-	// TODO : maxLength / 6 au lieu de 1000
-	// TODO : insetProportionnal();
-	Vertex center = c.insetLTR(c.maxLength() / 6).randomPoint(seed, 0);
+	Vertex center = c.insetProportionnal(0.3f).randomPoint(seed, 0);
 	Vertex edge[3];
 	for (int i = 0; i < 3; i++)
 		edge[LEFTSIDE+i] = Segment(c[LEFT+i], c[TOP+i]).randomPos(seed, i+1, 1.f/3.f, 2.f/3.f);

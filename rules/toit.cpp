@@ -1,7 +1,5 @@
 #include "all_includes.hh"
 
-// TODO : les x.insetNESW_LTR(x.minLength() / 3.f) sont faux (on risque d'avoir un triangle plus petit qu'⅓), il faudrait une fonction inset qui prend un float entre 0 et 1.
-
 ToitQuad::ToitQuad(Quad _c, float _height) : Chose(), c(_c), height(_height) {
 	addEntropy(c);
 }
@@ -28,13 +26,13 @@ void ToitQuad::triangulation() {
 
 void ToitQuad::pointCentral() {
 	Quad qh = c.offsetNormal(height);
-	Vertex center = qh.insetNESW(qh.minLength() / 3.f).randomPoint(seed, 0);
+	Vertex center = qh.insetProportionnal(0.3f).randomPoint(seed, 0);
 	for (int i = 0; i < 4; i++)
 		addGPUTriangle(c[SE+i], center, c[NE+i], Couleurs::toit);
 }
 
 void ToitQuad::quatrePoints() {
-	Quad ch = c.offsetNormal(height).insetNESW(c.minLength() / 3.f); // TODO : insetProportional
+	Quad ch = c.offsetNormal(height).insetProportionnal(0.6f);
 	addGPUQuad(ch, Couleurs::toit);
 	for (int i = 0; i < 4; i++)
 		addGPUQuad(ch[NE+i], c[NE+i], c[SE+i], ch[SE+i], Couleurs::toit);
@@ -120,13 +118,13 @@ void ToitTri::triangulation() {
 
 void ToitTri::pointCentral() {
 	Triangle th = c.offsetNormal(height);
-	Vertex center = th.insetLTR(th.minLength() / 3.f).randomPoint(seed, 0);
+	Vertex center = th.insetProportionnal(0.3f).randomPoint(seed, 0);
 	for (int i = 0; i < 3; i++)
 		addGPUTriangle(c[LEFT+i], center, c[TOP+i], Couleurs::toit);
 }
 
 void ToitTri::troisPoints() {
-	Triangle th = c.offsetNormal(height).insetLTR(c.minLength() / 3.f);
+	Triangle th = c.offsetNormal(height).insetProportionnal(0.6f);
 	addGPUTriangle(th, Couleurs::toit);
 	for (int i = 0; i < 3; i++)
 		addGPUQuad(c[LEFT+i], c[TOP+i], th[TOP+i], th[LEFT+i], Couleurs::toit);
@@ -153,5 +151,5 @@ void ToitTri::deuxPointsVerticaux() {
 void ToitTri::plat() {
 	Triangle ch = c.offsetNormal(Dimensions::hauteurToit * 0.6f);
 	addGPUThreeQuads(c, ch, Couleurs::toit);
-	addGPUTriangle(c, Couleurs::toit);
+	addGPUTriangle(ch, Couleurs::toit);
 }
