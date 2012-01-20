@@ -283,9 +283,13 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 				if (eventKey.type != SDL_KEYDOWN) break;
 				std::cout << *this << std::endl;
 				break;
-			case 't':
-				takeScreenshot("123.bmp");
+			case 't': {
+                char* file = new char[256];
+                memset(file,'\n',256);
+                sprintf(file,"city-builder_%d_%d.bmp",Chose::initialSeed,(int)time(NULL));
+				takeScreenshot(file);
 				break;
+				}
 			default:
 				break;
 		}
