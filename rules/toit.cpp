@@ -10,17 +10,14 @@ void ToitQuad::getBoundingBoxPoints() {
 }
 
 void ToitQuad::triangulation() {
-	if (c.maxAngle() > Angle::d2r(90+40) || c.minAngle() < Angle::d2r(90-40)) {
-		plat();
-		return;
-	}
+	bool anglesOk = (c.maxAngle() <= Angle::d2r(90+40) && c.minAngle() < Angle::d2r(90-40));
 	switch (hash2(seed, -1) % 5) {
-	case 0: pointCentral(); break;
-	case 1: quatrePoints(); break;
-	case 2: deuxPoints(); break;
-	case 3: deuxPointsVerticaux(); break;
+	case 0: plat(); break;
+	case 1: if (anglesOk) { quatrePoints(); break; }
+	case 2: if (anglesOk) { deuxPoints(); break; }
+	case 3: if (anglesOk) { deuxPointsVerticaux(); break; }
 	case 4:
-	default: plat(); break;
+	default: pointCentral(); break;
 	}
 }
 
@@ -101,16 +98,12 @@ void ToitTri::getBoundingBoxPoints() {
 }
 
 void ToitTri::triangulation() {
-	if (c.maxAngle() > Angle::d2r(120) || c.minAngle() < Angle::d2r(30)) {
-		plat();
-		return;
-	}
-	plat(); return;
+	bool anglesOk = (c.maxAngle() <= Angle::d2r(120) && c.minAngle() >= Angle::d2r(30));
 	switch (hash2(seed, -1) % 5) {
 	case 0: pointCentral(); break;
-	case 1: troisPoints(); break;
+	case 1: if (anglesOk) { troisPoints(); break; }
 	case 2: unPointVertical(); break;
-	case 3: deuxPointsVerticaux(); break;
+	case 3: if (anglesOk) { deuxPointsVerticaux(); break; }
 	case 4:
 	default: plat(); break;
 	}
