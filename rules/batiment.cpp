@@ -145,7 +145,6 @@ void BatimentTri::sousBatiments() {
 	Triangle t = c << c.minAngleCorner();
 	TriBool tb = w << c.minAngleCorner();
 
-	// TODO : ajuster pour que la distance c[LEFT] -- left et c[LEFT] -- base soit similaire.
 	Vertex left = Segment(t[LEFT], t[TOP]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
 	float dLeft = Segment(t[LEFT], left).length();
 	float posBase = dLeft / Segment(t[LEFT], t[RIGHT]).length();

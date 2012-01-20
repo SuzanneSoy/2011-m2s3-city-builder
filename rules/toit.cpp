@@ -12,8 +12,10 @@ void ToitQuad::getBoundingBoxPoints() {
 }
 
 void ToitQuad::triangulation() {
-	// TODO : si angles pas acceptables, plat().
-	// TODO : toit plat : surélever.
+	if (c.maxAngle() > Angle::d2r(90+40) || c.minAngle() < Angle::d2r(90-40)) {
+		plat();
+		return;
+	}
 	switch (hash2(seed, -1) % 5) {
 	case 0: pointCentral(); break;
 	case 1: quatrePoints(); break;
@@ -86,7 +88,9 @@ void ToitQuad::deuxPointsVerticaux() {
 }
 
 void ToitQuad::plat() {
-	addGPUQuad(c, Couleurs::toit);
+	Quad ch = c.offsetNormal(Dimensions::hauteurToit * 0.6f);
+	addGPUFourQuads(c, ch, Couleurs::toit);
+	addGPUQuad(ch, Couleurs::toit);
 }
 
 ToitTri::ToitTri(Triangle _c, float _height) : Chose(), c(_c), height(_height) {
@@ -99,6 +103,10 @@ void ToitTri::getBoundingBoxPoints() {
 }
 
 void ToitTri::triangulation() {
+	if (c.maxAngle() > Angle::d2r(120) || c.minAngle() < Angle::d2r(30)) {
+		plat();
+		return;
+	}
 	plat(); return;
 	switch (hash2(seed, -1) % 5) {
 	case 0: pointCentral(); break;
@@ -143,6 +151,7 @@ void ToitTri::deuxPointsVerticaux() {
 }
 
 void ToitTri::plat() {
+	Triangle ch = c.offsetNormal(Dimensions::hauteurToit * 0.6f);
+	addGPUThreeQuads(c, ch, Couleurs::toit);
 	addGPUTriangle(c, Couleurs::toit);
 }
-
