@@ -12,14 +12,15 @@ private :
 	Quad windowPosh;
 	bool top;
 	bool bottom;
+	bool door;
 
 public :
 
-	MurQuad(Quad c, Quad ch, bool _window=false, bool _top=false, bool _bottom=false);
+	MurQuad(Quad c, Quad ch, bool _window=false, bool _top=false, bool _bottom=false, bool _door=false);
 	virtual void triangulation();
 	virtual bool split();
 	virtual void getBoundingBoxPoints();
-	void setWindow();
+	void setWindowOrDoor();
 };
 
 class PlancherPlafond: public Chose {

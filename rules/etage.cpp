@@ -45,10 +45,19 @@ bool EtageQuad::split() {
 		Quad mwh = ch.insetOpp(W,28);
 		Quad mnh = ch.inset(E,28).inset(W,28).insetOpp(N,28);
 
-		addChild(new MurQuad(me << 1,meh << 1,w[E]));
-		addChild(new MurQuad(mw >> 1,mwh >> 1,w[W]));
-		addChild(new MurQuad(mn,mnh,w[N]));
-		addChild(new MurQuad(ms >> 2,msh >> 2,w[S]));
+        QuadBool d = QuadBool(false,false,false,false);
+
+        if(etage == 0) {
+            if(w[E])        d[E] = true;
+            else if(w[W])   d[W] = true;
+            else if(w[N])   d[N] = true;
+            else if(w[S])   d[S] = true;
+        }
+
+		addChild(new MurQuad(me << 1,meh << 1,w[E]^d[E],false,false,d[E]));
+		addChild(new MurQuad(mw >> 1,mwh >> 1,w[W]^d[W],false,false,d[W]));
+		addChild(new MurQuad(mn,mnh,w[N]^d[N],false,false,d[N]));
+		addChild(new MurQuad(ms >> 2,msh >> 2,w[S]^d[S],false,false,d[S]));
 	}
 	addChild(new PlancherPlafond(c, PlancherPlafond::PLANCHER));
 	addChild(new PlancherPlafond(ch.offsetNormal(-10), PlancherPlafond::PLAFOND));

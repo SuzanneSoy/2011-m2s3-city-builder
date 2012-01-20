@@ -1,12 +1,13 @@
 #include "all_includes.hh"
 
-MurQuad::MurQuad(Quad _c, Quad _ch, bool _window, bool _top, bool _bottom) : Chose(), c(_c), ch(_ch), window(_window), top(_top), bottom(_bottom) {
+MurQuad::MurQuad(Quad _c, Quad _ch, bool _window, bool _top, bool _bottom, bool _door)
+        : Chose(), c(_c), ch(_ch), window(_window), top(_top), bottom(_bottom), door(_door) {
 	addEntropy(c);
 	addEntropy(ch);
 	addEntropy((int)top);
 	addEntropy((int)bottom);
-	if(_window)
-        setWindow();
+	if(_window || _door)
+        setWindowOrDoor();
 }
 
 void MurQuad::getBoundingBoxPoints() {
@@ -14,18 +15,18 @@ void MurQuad::getBoundingBoxPoints() {
 	addBBPoints(ch);
 }
 
-void MurQuad::setWindow() {
+void MurQuad::setWindowOrDoor() {
     Quad q = Quad(ch[NE],c[NE],c[NW],ch[NW]);
     float lr = (q.length(S) - 120)/2.f;
 
-    Quad wFront = q.insetNESW(40,lr,120,lr);
+    Quad wFront = q.insetNESW(40,lr,(window ? 120 : 0),lr);
     Quad wBack = wFront.offsetNormal(28);
     windowPos = Quad(wFront[SE],wBack[SE],wBack[SW],wFront[SW]);
     windowPosh = Quad(wFront[NE],wBack[NE],wBack[NW],wFront[NW]);
 }
 
 bool MurQuad::split() {
-    if(!window)
+    if(!(window || door))
         return false;
 
     float length = c.maxLengthNS();
