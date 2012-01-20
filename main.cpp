@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 	Vertex ne(+size/2.f, +size/2.f, 0);
 	Vertex se(+size/2.f, -size/2.f, 0);
 	Vertex sw(-size/2.f, -size/2.f, 0);
-	Vertex nw(-size/2.f, +size/2.f, 0);
+	Vertex nw(+size/2.f - size/8.f, +size/2.f, 0);
 
 	Chose* c = new QuartierQuad(Quad(ne, se, sw, nw));
 	c->triangulation();

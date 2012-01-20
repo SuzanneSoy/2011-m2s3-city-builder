@@ -16,6 +16,8 @@ bool QuartierQuad::split() {
 	bool anglesOk = c.minAngle() > Angle::d2r(90-40) && c.maxAngle() < Angle::d2r(90+40);
 	bool tooWideX = c.minLengthEW() * 2 < c.maxLengthNS(); // trop allongé (côté E ou W deux fois plus petit que le côté N ou S).
 	bool tooWideY = c.minLengthNS() * 2 < c.maxLengthEW(); // trop allongé (côté N ou S deux fois plus petit que le côté E ou W).
+	bool bigPlace = c.maxLength() > Dimensions::maxRayonPlace * 4;
+	bool tooBigPlace = c.maxLength() > Dimensions::maxRayonPlace * 8;
 	if (isConcave)
 		concave();
 	else if (nearConcave)
@@ -28,6 +30,8 @@ bool QuartierQuad::split() {
 		angleCote();
 	else if (!small && (tooWideX || tooWideY))
 		rect();
+	else if (bigPlace && !tooBigPlace && proba(seed, -4, 0.4))
+		place();
 	else if (!small)
 		carre();
 	else
@@ -61,12 +65,14 @@ void QuartierQuad::triangulationConcave(Triangle t) {
 }
 
 void QuartierQuad::concave() {
+	std::cout << "concave" << std::endl;
 	Quad q = c << c.concaveCorner();
 	addChild(new QuartierTri(Triangle(q[NE], q[SE], q[SW])));
 	addChild(new QuartierTri(Triangle(q[SW], q[NW], q[NE])));
 }
 
 void QuartierQuad::angleCote() {
+	std::cout << "angleCote" << std::endl;
 	Quad q = c << c.maxAngleCorner();
 	Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 0.4f, 0.6f);
 	Vertex w = Segment(q[SW], q[NW]).randomPos(seed, 0, 0.4f, 0.6f);
@@ -82,12 +88,14 @@ void QuartierQuad::angleCote() {
 }
 
 void QuartierQuad::angleAngle() {
+	std::cout << "angleAngle" << std::endl;
 	Quad q = c << c.maxAngleCorner();
 	addChild(new QuartierTri(Triangle(q[NE], q[SE], q[SW])));
 	addChild(new QuartierTri(Triangle(q[SW], q[NW], q[NE])));
 }
 
 void QuartierQuad::rect() {
+	std::cout << "rect" << std::endl;
 	Quad q = c << c.maxLengthSide();
 	Vertex n = Segment(q[NW], q[NE]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
 	Vertex s = Segment(q[SE], q[SW]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);
@@ -97,17 +105,44 @@ void QuartierQuad::rect() {
 }
 
 void QuartierQuad::carre() {
-	// TODO : insetProportionnal();
-	Vertex center = c.insetNESW(c.minLength() / 4.f).randomPoint(seed, 0);
+	std::cout << "carre" << std::endl;
+	Vertex center = c.insetProportionnal(0.33f).randomPoint(seed, 0);
 	Vertex middle[4];
 	for (int i = 0; i < 4; i++)
-		middle[N+i] = Segment(c[NW+i], c[NE+i]).randomPos(seed, i + 1, 0.25, 0.75);
+		middle[N+i] = Segment(c[NW+i], c[NE+i]).randomPos(seed, i + 1, 0.25f, 0.75f);
 
 	for (int i = 0; i < 4; i++)
 		addChild(new QuartierQuad(Quad(c[NE+i], middle[E+i], center, middle[N+i])));
 }
 
+void QuartierQuad::place() {
+	std::cout << "place" << std::endl;
+	Vertex center = c.insetProportionnal(0.25f).randomPoint(seed, 0);
+	Vertex middle[4];
+	for (int i = 0; i < 4; i++)
+		middle[N+i] = Segment(c[NW+i], c[NE+i]).randomPos(seed, i + 1, 0.45f, 0.55f);
+
+	Vertex smallOcto[8];
+	Vertex bigOcto[8];
+	float r = floatInRange(seed, 12345, Dimensions::minRayonPlace, Dimensions::maxRayonPlace);
+	float shift = std::tan(Angle::Pi/8.f) * r;
+	for (int i = 0; i < 4; i++) {
+		Quad q(c[NE+i], middle[E+i], center, middle[N+i]);
+		smallOcto[2*i]   = q.inset(W, shift).inset(S, r)[SW];
+		smallOcto[2*i+1] = q.inset(S, shift).inset(W, r)[SW];
+		bigOcto[2*i]     = q.inset(W, shift).inset(S, r)[NW];
+		bigOcto[2*i+1]   = q.inset(S, shift).inset(W, r)[SE];
+	}
+
+	for (int i = 0; i < 4; i++) {
+		addChild(new QuartierQuad(Quad(bigOcto[2*i], smallOcto[2*i], smallOcto[((2*i-1) + 8) % 8], bigOcto[((2*i-1) + 8) % 8])));
+		addChild(new QuartierQuad(Quad(c[NE+i], (smallOcto[2*i] + smallOcto[2*i+1]) / 2.f, smallOcto[2*i], bigOcto[2*i])));
+		addChild(new QuartierQuad(Quad(c[NE+i], bigOcto[2*i+1], smallOcto[2*i+1], (smallOcto[2*i] + smallOcto[2*i+1]) / 2.f)));
+	}
+}
+
 void QuartierQuad::longueRue() {
+	std::cout << "longueRue" << std::endl;
 	Quad q = c << c.maxLengthSide();
 	Vertex e = Segment(q[NE], q[SE]).randomPos(seed, 0, 1.f/3.f, 2.f/3.f);
 	Vertex w = Segment(q[SW], q[NW]).randomPos(seed, 1, 1.f/3.f, 2.f/3.f);

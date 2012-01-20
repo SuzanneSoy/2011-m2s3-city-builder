@@ -19,6 +19,7 @@ private:
 	void rect();
 	void carre();
 	void longueRue();
+	void place();
 };
 
 class QuartierTri: public Chose {
