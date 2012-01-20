@@ -47,7 +47,7 @@ bool MurQuad::split() {
         Quad lefth = Quad(ch[NE],ch[SE],windowPosh[SE],windowPosh[NE]);
         Quad top = Quad(windowPosh[NE],windowPosh[NW],windowPosh[SW],windowPosh[SE]);
 
-        addChild(new MurQuad(c,windowPos,false, true, false));
+        addChild(new MurQuad(c,windowPos,false, !door, false));
         addChild(new MurQuad(windowPosh,ch, false, false, true));
         addChild(new MurQuad(left,lefth,false));
         addChild(new MurQuad(right,righth,false));
