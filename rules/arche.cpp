@@ -3,7 +3,7 @@
 ArcheQuad::ArcheQuad(Quad _c, float _height, float _start, float _end, Type _type) : Chose(), c(_c), height(_height), start(_start), end(_end), type(_type) {
 	if (type == RANDOM) {
 		addEntropy(c);
-		addEntropy(height);
+		addEntropyf(height);
 		switch (hash2(seed, 0) % 3) {
 		case 0: type = OGIVE; break;
 		case 1: type = BERCEAU; break;
@@ -28,8 +28,8 @@ bool ArcheQuad::split() {
 
 void ArcheQuad::triangulation() {
 	Quad ch = c.offsetNormal(height);
-	Quad che = c.offsetNormal(f(end) * height * 0.9);
-	Quad chw = c.offsetNormal(f(start) * height * 0.9);
+	Quad che = c.offsetNormal(f(end) * height * 0.9f);
+	Quad chw = c.offsetNormal(f(start) * height * 0.9f);
 	addGPUQuad(Quad(ch[NW], chw[NW], che[NE], ch[NE]), Couleurs::mur);
 	addGPUQuad(Quad(ch[SE], che[SE], chw[SW], ch[SW]), Couleurs::mur);
 	addGPUQuad(Quad(che[SE], che[NE], chw[NW], chw[SW]), Couleurs::mur);

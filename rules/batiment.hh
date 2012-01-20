@@ -3,7 +3,7 @@
 
 #include "all_includes.hh"
 
-class BatimentQuad_ : public Chose {
+class BatimentQuad : public Chose {
 private:
 	Quad c;
 	bool isSub;
@@ -13,11 +13,11 @@ private:
 	void etages();
 
 public:
-	BatimentQuad_(Quad _c, bool _isSub = false, QuadBool _w = QuadBool(true, true, true, true));
+	BatimentQuad(Quad _c, bool _isSub = false, QuadBool _w = QuadBool(true, true, true, true));
 	virtual bool split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();
-	BatimentQuad_* isSubdivision(bool val);
+	BatimentQuad* isSubdivision(bool val);
 };
 
 class BatimentTri_ : public Chose {

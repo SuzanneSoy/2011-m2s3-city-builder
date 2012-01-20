@@ -17,9 +17,6 @@ private:
 	void deuxPoints();
 	void deuxPointsVerticaux();
 	void plat();
-	static const char r = 0xF1;
-	static const char g = 0xE0;
-	static const char b = 0xE0;
 };
 
 class ToitTri : public Chose {

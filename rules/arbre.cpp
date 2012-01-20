@@ -26,7 +26,7 @@ Arbre::Arbre(Vertex _start, Quad plane) {
 
 Arbre::Arbre(Vertex _start, Angle3D _rotation, float _length, Type _type) : start(_start), rotation(_rotation), length(_length), type(_type) {
 	addEntropy(start, rotation.h, rotation.l, rotation.u);
-	addEntropy(length);
+	addEntropyf(length);
 	addEntropy((int)(type));
 }
 
@@ -36,7 +36,7 @@ bool Arbre::split() {
 		for (int i = 0; i < nbBranches; i++) {
 			Vertex bStart = end(floatInRange(seed, 4*i, 0.7f, 0.9f));
 			Angle3D rot = rotation;
-			rot = rot.rotateH(Angle::d2r(floatInRange(seed, 4*i+1, 25.f, 37.f) + i*(360.f / (float)nbBranches)));
+			rot = rot.rotateH(Angle::d2r(floatInRange(seed, 4*i+1, 25.f, 37.f) + (float)i*(360.f / (float)nbBranches)));
 			rot = rot.rotateU(Angle::d2r(floatInRange(seed, 4*i+2, 35.f, 55.f)));
 			float len = length * floatInRange(seed, 4*i+3, tauxMax()*2.f/3.f, tauxMax());
 			addChild(new Arbre(bStart, rot, len, ARBRE));
@@ -103,7 +103,7 @@ void Arbre::feuille() {
 	Vertex startFeuillage = end(1.f);
 
 	unsigned int c = Couleurs::feuillage;
-	if (length < 20 && proba(seed, 12345, 0.04))
+	if (length < 20 && proba(seed, 12345, 0.04f))
 		c = Couleurs::pomme;
 
 	Quad cFeuillage(startFeuillage +uFeuillage +lFeuillage, startFeuillage -uFeuillage +lFeuillage, startFeuillage -uFeuillage -lFeuillage, startFeuillage +uFeuillage -lFeuillage);

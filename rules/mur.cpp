@@ -14,7 +14,7 @@ void MurQuad::getBoundingBoxPoints() {
 
 void MurQuad::setWindow() {
     Quad q = Quad(ch[NE],c[NE],c[NW],ch[NW]);
-    int lr = (q.length(S) - 120)/2;
+    float lr = (q.length(S) - 120)/2.f;
 
     Quad wFront = q.insetNESW(40,lr,120,lr);
     Quad wBack = wFront.offsetNormal(28);
@@ -54,5 +54,21 @@ bool MurQuad::split() {
 }
 
 void MurQuad::triangulation() {
-    addGPUOcto(c, ch, Couleurs::mur);
+    addGPUFourQuads(c, ch, Couleurs::mur);
+}
+
+PlancherPlafond::PlancherPlafond(Quad _c, Type _type) : Chose(), c(_c), type(_type) {
+	addEntropy(c);
+	addEntropy((int)type);
+}
+
+void PlancherPlafond::triangulation() {
+	unsigned int clr = Couleurs::plancher;
+	if (type == PLAFOND)
+		clr = Couleurs::plafond;
+	addGPUQuad(c, clr);
+}
+
+void PlancherPlafond::getBoundingBoxPoints() {
+	addBBPoints(c);
 }

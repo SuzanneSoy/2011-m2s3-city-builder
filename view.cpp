@@ -2,7 +2,7 @@
 
 View::View(Chose* _root)
 	: root(_root),
-	  camera(Camera(Vertex(2980,1567,16012), 45, 150, 10000, 0.6f)),
+	  camera(Camera(Vertex(0,0,5000), 45, 100, 10000, 0.6f)),
 	  lod(camera.cameraCenter, _root) {
 
 	fogColor[0] = Couleurs::r(Couleurs::fog) / 255.f;
@@ -49,8 +49,8 @@ void View::initWindow() {
   	glEnable (GL_FOG);
     glFogi (GL_FOG_MODE, GL_LINEAR);
     glFogfv (GL_FOG_COLOR, fogColor);
-    glFogf (GL_FOG_START, Dimensions::backFrustum / sqrt(3) / 2.f);
-    glFogf (GL_FOG_END, Dimensions::backFrustum / sqrt(3) * 0.9);
+    glFogf (GL_FOG_START, Dimensions::backFrustum / std::sqrt(3.f) / 2.f);
+    glFogf (GL_FOG_END, Dimensions::backFrustum / std::sqrt(3.f) * 0.9f);
     //glHint (GL_FOG_HINT, GL_NICEST);
 }
 
@@ -94,7 +94,7 @@ void View::displayAxes() {
 
 void View::setSkybox() {
 	//int z = 40000;
-	float d = Dimensions::backFrustum / std::sqrt(3) * 0.9;
+	float d = Dimensions::backFrustum / std::sqrt(3.f) * 0.9f;
 	glDisable(GL_FOG);
 	glDisable(GL_LIGHTING);
 	glPushMatrix();

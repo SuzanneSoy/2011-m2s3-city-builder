@@ -1,13 +1,13 @@
 #include "all_includes.hh"
 
-BatimentQuad_::BatimentQuad_(Quad _c, bool _isSub, QuadBool _w)
+BatimentQuad::BatimentQuad(Quad _c, bool _isSub, QuadBool _w)
         : Chose(), c(_c), isSub(_isSub), w(_w) {
 	addEntropy(c);
 	for (int i = 0; i < 4; i++)
 		addEntropy(w[N+i] ? 0 : 1);
 }
 
-bool BatimentQuad_::split() {
+bool BatimentQuad::split() {
 	if (!isSub) {
 		bordureRouteTrottoir();
 	} else {
@@ -25,7 +25,7 @@ bool BatimentQuad_::split() {
 	return true;
 }
 
-void BatimentQuad_::bordureRouteTrottoir() {
+void BatimentQuad::bordureRouteTrottoir() {
 	Quad qtrottoir = c.insetNESW(Dimensions::largeurRoute);
 	Quad qinterieur = qtrottoir.insetNESW(Dimensions::largeurTrottoir);
 	Quad qbatiments = qinterieur.offsetNormal(Dimensions::hauteurTrottoir);
@@ -38,13 +38,13 @@ void BatimentQuad_::bordureRouteTrottoir() {
 	bool anglesAcceptable = c.minAngle() > Angle::d2r(90-60) && c.maxAngle() < Angle::d2r(90+60);
 
 	if (anglesAcceptable && proba(seed, 0, 0.95f)) {
-		addChild(new BatimentQuad_(qbatiments, true));
+		addChild(new BatimentQuad(qbatiments, true));
 	} else {
 		addChild(new TerrainQuad(qbatiments));
 	}
 }
 
-void BatimentQuad_::sousBatiments() {
+void BatimentQuad::sousBatiments() {
 	Quad q = c << c.maxLengthSide();
 	QuadBool qb = w << c.maxLengthSide();
 
@@ -56,37 +56,31 @@ void BatimentQuad_::sousBatiments() {
 
 	if (small && qb[E] && proba(seed, 2, 0.3f)) {
 		addChild(new TerrainQuad(Quad(q[SE], s, n, q[NE])));
-		addChild(new BatimentQuad_(Quad(q[NW], n, s, q[SW]), true, QuadBool(qb[W],qb[N],true,qb[S])));
+		addChild(new BatimentQuad(Quad(q[NW], n, s, q[SW]), true, QuadBool(qb[W],qb[N],true,qb[S])));
 	} else if (small && qb[W] && proba(seed, 2, 0.5f)) {
-		addChild(new BatimentQuad_(Quad(q[SE], s, n, q[NE]), true, QuadBool(qb[E],qb[S],true,qb[N])));
+		addChild(new BatimentQuad(Quad(q[SE], s, n, q[NE]), true, QuadBool(qb[E],qb[S],true,qb[N])));
 		addChild(new TerrainQuad(Quad(q[NW], n, s, q[SW])));
 	} else {
-		addChild(new BatimentQuad_(Quad(q[SE], s, n, q[NE]), true, QuadBool(qb[E],qb[S],false,qb[N])));
-		addChild(new BatimentQuad_(Quad(q[NW], n, s, q[SW]), true, QuadBool(qb[W],qb[N],false,qb[S])));
+		addChild(new BatimentQuad(Quad(q[SE], s, n, q[NE]), true, QuadBool(qb[E],qb[S],false,qb[N])));
+		addChild(new BatimentQuad(Quad(q[NW], n, s, q[SW]), true, QuadBool(qb[W],qb[N],false,qb[S])));
 	}
 }
 
-void BatimentQuad_::etages() {
+void BatimentQuad::etages() {
 	// TODO : indiquer aux bâtiments où est-ce qu'ils peuvent faire des fenêtres.
 	float randEtages = floatInRange(seed, 0, 0.f, 1.f);
 	int nbEtages = 1 + (int)(randEtages * randEtages * (Dimensions::maxEtages - 1));
 	Quad q = c; // c.insetNESW(30)
 	Quad qh;
 	for (int i = 0; i < nbEtages; i++) {
-		if (nbEtages > 1 && i == 0 && w[N] && w[S]) {
-			float h = floatInRange(seed, 1+i, Dimensions::hauteurEtage*1.4f, Dimensions::hauteurEtage*1.6f);
-			qh = q.offsetNormal(h);
-			addChild(new ArcheQuad(q, h));
-		} else {
-			qh = q.offsetNormal(floatInRange(seed, 1+i, Dimensions::hauteurEtage*0.9f, Dimensions::hauteurEtage*1.1f));
-			addChild(new EtageQuad(q, qh, w));
-		}
+		qh = q.offsetNormal(floatInRange(seed, 1+i, Dimensions::hauteurEtage*0.9f, Dimensions::hauteurEtage*1.1f));
+		addChild(new EtageQuad(q, qh, w, i, nbEtages));
 		q = qh;
 	}
     addChild(new ToitQuad(qh, Dimensions::hauteurToit));
 }
 
-void BatimentQuad_::triangulation() {
+void BatimentQuad::triangulation() {
 	if (w[N] || w[E] || w[S] || w[W]) {
 		Quad ch = c.offsetNormal(Dimensions::hauteurEtage * 2 + Dimensions::hauteurToit);
 		addGPUQuad(ch, Couleurs::toit);
@@ -97,7 +91,7 @@ void BatimentQuad_::triangulation() {
 	}
 }
 
-void BatimentQuad_::getBoundingBoxPoints() {
+void BatimentQuad::getBoundingBoxPoints() {
 	addBBPoints(c, Dimensions::hauteurEtage * 2 + Dimensions::hauteurToit);
 }
 

@@ -14,14 +14,14 @@ public:
 	static unsigned int mix(unsigned int colorA, unsigned int colorB, float mixA) {
 		float mixB = 1 - mixA;
 		return rgb(
-				r(colorA) * mixA + r(colorB) * mixB,
-				g(colorA) * mixA + g(colorB) * mixB,
-				b(colorA) * mixA + b(colorB) * mixB
+				(unsigned char)(r(colorA) * mixA + r(colorB) * mixB),
+				(unsigned char)(g(colorA) * mixA + g(colorB) * mixB),
+				(unsigned char)(b(colorA) * mixA + b(colorB) * mixB)
 		);
 	};
 	static const unsigned int mur = 0xF1E3AD;
-	static const unsigned int plafond = mur;
-	static const unsigned int plancher = mur;
+	static const unsigned int plafond = 0xA39E8B;
+	static const unsigned int plancher = 0xA5A079;
 	static const unsigned int toit = 0x961618;
 	static const unsigned int route = 0x363636;
 	static const unsigned int trottoir = 0x666666;
@@ -47,9 +47,8 @@ public:
 	static const unsigned int minSurfaceSousBatiment = 100 * 100*100; // 100 m²
 
 	// Qualité
-	// TODO : devrait être 5.f et 6.f
-	static const unsigned int splitFactor = 2.f;
-	static const unsigned int mergeFactor = 3.f;
+	static const float splitFactor;
+	static const float mergeFactor;
 	static const unsigned int windowWidth = 1024;
 	static const unsigned int windowHeight = 768;
 	static const float frontFrustum;

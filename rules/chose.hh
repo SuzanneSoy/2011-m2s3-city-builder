@@ -34,6 +34,9 @@ protected :
 	inline void addEntropy(unsigned int x1) {
 		seed = hash2(seed, x1);
 	}
+	inline void addEntropyf(float f) {
+		addEntropy(float2uint(f));
+	}
 	inline void addEntropy(unsigned int x1, unsigned int x2) {
 		addEntropy(x1); addEntropy(x2);
 	}

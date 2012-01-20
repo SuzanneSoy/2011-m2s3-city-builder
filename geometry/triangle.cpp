@@ -103,7 +103,7 @@ Triangle Triangle::offsetNormal(float offset) const {
 Triangle Triangle::insetProportionnal(float prop) {
     Triangle rTriangle = *this;
     //ibc : isobarycentre.
-    Vertex ibc = Segment(c[TOP],Segment(c[LEFT],c[RIGHT]).center()).at(2./3.);
+    Vertex ibc = Segment(c[TOP],Segment(c[LEFT],c[RIGHT]).center()).at(2.f/3.f);
     prop = prop;
 
     rTriangle[TOP] = Segment(ibc,c[TOP]).at(prop);

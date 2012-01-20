@@ -9,9 +9,11 @@ class EtageQuad : public Chose {
 	Quad c;
 	Quad ch;
 	QuadBool w;
+	int etage;
+	int nbEtages;
 
     public :
-	EtageQuad(Quad c, Quad ch, QuadBool _w);
+	EtageQuad(Quad c, Quad ch, QuadBool _w, int _etage, int _nbEtages);
 	virtual bool split();
 	virtual void triangulation();
 	virtual void getBoundingBoxPoints();

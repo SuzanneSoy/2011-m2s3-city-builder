@@ -9,7 +9,7 @@ public:
 	float key;
 	Chose* value;
 	friend bool operator< (const HeapNode &a, const HeapNode &b) {
-		return (a.key < b.key || (a.key == b.key && a.value < b.value));
+		return (a.key < b.key || (a.key >= b.key && a.key <= b.key && a.value < b.value));
 	}
 };
 

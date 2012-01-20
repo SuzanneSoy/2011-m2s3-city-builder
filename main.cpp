@@ -7,10 +7,10 @@ int main(int argc, char* argv[]) {
 
 	std::cout << "Initial seed = " << Chose::initialSeed << std::endl;
 	float size = 200 * 100;
-	Vertex ne(size, size, 0);
-	Vertex se(size, 0, 0);
-	Vertex sw(0, 0, 0);
-	Vertex nw(0, size, 0);
+	Vertex ne(+size/2.f, +size/2.f, 0);
+	Vertex se(+size/2.f, -size/2.f, 0);
+	Vertex sw(-size/2.f, -size/2.f, 0);
+	Vertex nw(-size/2.f, +size/2.f, 0);
 
 	Chose* c = new QuartierQuad(Quad(ne, se, sw, nw));
 	c->triangulation();

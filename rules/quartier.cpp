@@ -31,7 +31,7 @@ bool QuartierQuad::split() {
 	else if (!small)
 		carre();
 	else
-		addChild(new BatimentQuad_(c));
+		addChild(new BatimentQuad(c));
 	return true;
 }
 
@@ -116,7 +116,7 @@ void QuartierQuad::longueRue() {
 
 	addChild(new QuartierQuad(qn));
 	addChild(new QuartierQuad(qs));
-	addChild(new BatimentQuad_(Quad(qn[SE], qs[SW], qs[SE], qn[SW]))); // TODO
+	addChild(new BatimentQuad(Quad(qn[SE], qs[SW], qs[SE], qn[SW]))); // TODO
 }
 
 QuartierTri::QuartierTri(Triangle _c) : Chose(), c(_c) {
