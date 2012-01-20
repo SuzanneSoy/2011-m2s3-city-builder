@@ -280,6 +280,7 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 		pageDown = (eventKey.type == SDL_KEYDOWN);
 		break;
 	case SDLK_ESCAPE:
+		std::cout << std::endl;
 		exit(0);
 		break;
     case SDLK_KP0:
@@ -297,6 +298,7 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 	default :
 		switch(SDL_GetKeyName(eventKey.keysym.sym)[0]) {
 			case 'q':
+				std::cout << std::endl;
 				exit(0);
 				break;
             case 'a' :
@@ -439,6 +441,7 @@ int Camera::takeScreenshot(const char * filename) {
     finalpicture = flipSurface(picture);
 
     if (SDL_SaveBMP(finalpicture, filename)) {
+	std::cout << std::endl;
         exit(1);
     }
     SDL_FreeSurface(finalpicture);
