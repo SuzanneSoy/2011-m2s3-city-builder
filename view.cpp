@@ -246,7 +246,7 @@ void Camera::mouseMotion(const SDL_MouseMotionEvent &event) {
 void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 	switch(eventKey.keysym.sym) {
 	case SDLK_UP:
-		up = up ^ (eventKey.type == SDL_KEYDOWN);
+		up = (eventKey.type == SDL_KEYDOWN);
 		break;
 	case SDLK_DOWN:
 		down = (eventKey.type == SDL_KEYDOWN);
@@ -266,11 +266,29 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 	case SDLK_ESCAPE:
 		exit(0);
 		break;
+    case SDLK_KP0:
+        moveSensitivity = 0;
+        break;
+    case SDLK_KP1:
+        moveSensitivity = 300;
+        break;
+    case SDLK_KP2:
+        moveSensitivity = 1000;
+        break;
+    case SDLK_KP3:
+        moveSensitivity = 6000;
+        break;
 	default :
 		switch(SDL_GetKeyName(eventKey.keysym.sym)[0]) {
 			case 'q':
 				exit(0);
 				break;
+            case 'a' :
+                up = true;
+                break;
+            case 'z' :
+                up = false;
+                break;
 			case 's':
 				if (eventKey.type != SDL_KEYDOWN) break;
 				moveSensitivity = std::min(50000,std::max(moveSensitivity+1, moveSensitivity*10/9));
@@ -283,9 +301,13 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 				if (eventKey.type != SDL_KEYDOWN) break;
 				std::cout << *this << std::endl;
 				break;
-			case 't':
-				takeScreenshot("123.bmp");
+			case 't': {
+                char* file = new char[256];
+                memset(file,'\n',256);
+                sprintf(file,"city-builder_%d_%d.bmp",Chose::initialSeed,(int)time(NULL));
+				takeScreenshot(file);
 				break;
+				}
 			default:
 				break;
 		}
