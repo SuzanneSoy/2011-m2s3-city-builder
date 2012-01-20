@@ -219,7 +219,7 @@ Camera::Camera(Vertex _cameraCenter, float _xAngle, float _yAngle, int _moveSens
   moveSensitivity(_moveSensitivity),
   mouseSensitivity(_mouseSensitivity),
   up(false), down(false), left(false), right(false),
-  pageUp(false), pageDown(false)
+  pageUp(false), pageDown(false), autoPilot(false)
 {
 }
 
@@ -299,7 +299,11 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
             	if (moveSensitivity == 0) moveSensitivity = 300;
                 up = true;
                 break;
+            case 'e' :
+                autoPilot = true;
+                break;
             case 'z' :
+            	autoPilot = false;
                 up = false;
                 break;
 			case 's':
@@ -341,7 +345,22 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 }
 
 void Camera::animation(int elapsedTime) {
+	static unsigned int frame = 0;
+	frame++;
 	float diff = ((float)(elapsedTime+1)/1000.f)*(float)moveSensitivity;
+
+	if (autoPilot) {
+		moveSensitivity = 1500;
+		float dx = floatInRange(frame/16, 42, -0.5, 0.5);
+		float olddx = floatInRange(frame/16 - 1, 42, -0.5, 0.5);
+		float mix = ((float)(frame % 16) / 16.f);
+		xAngle += dx * mix + olddx * (1-mix);
+		float oldz = cameraCenter.z;
+		cameraCenter = cameraCenter + Vertex::fromSpherical(diff, yAngle, xAngle);
+		cameraCenter.z = oldz;
+		cameraCenter.z += std::min(20.f, std::max(-20.f, 1750 - cameraCenter.z));
+		return;
+	}
 
 	if(up)
 		cameraCenter = cameraCenter + Vertex::fromSpherical(diff, yAngle, xAngle);

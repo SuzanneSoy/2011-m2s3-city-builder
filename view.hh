@@ -19,6 +19,7 @@ private :
 	bool right;
 	bool pageUp;
 	bool pageDown;
+	bool autoPilot;
 
 public :
 	Camera(Vertex pos, float xA, float yA, int moveSensitivity, float mouseSensitivity);

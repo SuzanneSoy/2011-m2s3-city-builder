@@ -164,7 +164,7 @@ void QuartierTri::getBoundingBoxPoints() {
 }
 
 bool QuartierTri::split() {
-	bool small = c.minLength() < 5000;
+	bool small = c.minLength() < 6000;
 	bool big = c.maxLength() >= 10000;
 	float minAngle = c.minAngle();
 	float maxAngle = c.maxAngle();
