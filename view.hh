@@ -28,6 +28,9 @@ public :
 	void animation(int elapsedTime);
 	std::ostream& print(std::ostream& os) const;
 	friend std::ostream& operator<<(std::ostream& os, const Camera& c) { return c.print(os); }
+
+    private :
+    int takeScreenshot(const char * filename);
 };
 
 
