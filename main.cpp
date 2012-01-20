@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
         Chose::initialSeed = (unsigned int) atoi(argv[1]);
 
 	std::cout << "Initial seed = " << Chose::initialSeed << std::endl;
-	float size = 200 * 100;
+	float size = 20000 * 100;
 	Vertex ne(+size/2.f, +size/2.f, 0);
 	Vertex se(+size/2.f, -size/2.f, 0);
 	Vertex sw(-size/2.f, -size/2.f, 0);

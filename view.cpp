@@ -147,7 +147,7 @@ void View::renderScene(int lastTime, int currentTime) {
 	lod.setCamera(camera.cameraCenter);
 
 	setLight();
-	//setSkybox();
+	setSkybox();
 
 	glBegin(GL_TRIANGLES);
 	root->display();
@@ -237,7 +237,7 @@ void Camera::mouseMotion(const SDL_MouseMotionEvent &event) {
 void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 	switch(eventKey.keysym.sym) {
 		case SDLK_UP:
-			up = (eventKey.type == SDL_KEYDOWN);
+			up = up ^ (eventKey.type == SDL_KEYDOWN);
 			break;
 		case SDLK_DOWN:
 			down = (eventKey.type == SDL_KEYDOWN);
