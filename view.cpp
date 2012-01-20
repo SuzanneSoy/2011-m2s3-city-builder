@@ -308,6 +308,18 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 				takeScreenshot(file);
 				break;
 				}
+			case 'c':
+		        moveSensitivity = 0;
+		        break;
+		    case 'v':
+		        moveSensitivity = 300;
+		        break;
+		    case 'b':
+		        moveSensitivity = 1000;
+		        break;
+		    case 'n':
+		        moveSensitivity = 6000;
+		        break;
 			default:
 				break;
 		}
