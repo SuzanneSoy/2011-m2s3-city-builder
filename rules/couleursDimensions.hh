@@ -28,6 +28,7 @@ public:
 	static const unsigned int bordureTrottoir = 0xAAAAAA;
 	static const unsigned int herbe = 0x0c4010;
 	static const unsigned int feuillage = 0x11AA22;
+	static const unsigned int papillon = 0xaa88cc;
 	static const unsigned int pomme = 0xAA2211;
 	static const unsigned int tronc = 0x906050;
 	static const unsigned int cielHaut = 0x3c14ff;

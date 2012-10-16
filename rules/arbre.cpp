@@ -106,4 +106,10 @@ void Arbre::feuille() {
 
 	Quad cFeuillage(startFeuillage +uFeuillage +lFeuillage, startFeuillage -uFeuillage +lFeuillage, startFeuillage -uFeuillage -lFeuillage, startFeuillage +uFeuillage -lFeuillage);
 	addGPUOcto(cFeuillage, cFeuillage + hFeuillage, c);
+	if (length < 20 && proba(seed, 12346, 0.1f)) {
+		Triangle tPapillon1(startFeuillage +uFeuillage +lFeuillage, startFeuillage -uFeuillage +lFeuillage, startFeuillage + hFeuillage * floatInRange(seed, 23448, -1, 0.3));
+		Triangle tPapillon2(startFeuillage -uFeuillage -lFeuillage, startFeuillage +uFeuillage -lFeuillage, startFeuillage + hFeuillage * floatInRange(seed, 23448, -1, 0.3));
+		addGPUTriangle(tPapillon1 + (hFeuillage * floatInRange(seed, 12347, 3, 6)), Couleurs::papillon);
+		addGPUTriangle(tPapillon2 + (hFeuillage * floatInRange(seed, 12347, 3, 6)), Couleurs::papillon);
+	}
 }
