@@ -165,8 +165,8 @@ void View::renderScene(int lastTime, int currentTime) {
 	float fps = (int)(1000/(currentTime-lastTime));
 	char text[100];	//	Text
 	snprintf(&(text[0]), 100, "FPS: %4.2f", fps);
-	std::cout << "\r" << fps << "    ";
-	std::cout.flush();
+	std::cerr << "\r" << fps << "    ";
+	std::cerr.flush();
 	/*
 	glLoadIdentity ();
 	glDisable(GL_LIGHTING);

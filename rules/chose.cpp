@@ -140,8 +140,9 @@ void Chose::addBBPoints(const Quad q, float height) {
 }
 
 void Chose::updateAABB() {
-	float splitFactor = Dimensions::splitFactor * LODFactor();
-	float mergeFactor = Dimensions::mergeFactor * LODFactor();
+	float thisSplitFactor = Dimensions::splitFactor * LODFactor();
+	// TODO : adapt mergeFactor to Camera::moveSensitivity
+	float thisMergeFactor = thisSplitFactor * std::max(1.01f, Dimensions::mergeFactor);
 	float nonFacingFactor = 2.f/3.f;
 	lod.firstBBPoint = true;
 	getBoundingBoxPoints();
@@ -152,13 +153,13 @@ void Chose::updateAABB() {
 	for (int i = 0; i < 3; i++)
 		areaFacing[i] = size[(i+1)%3]*size[(i+1)%3];
 	for (int i = 0; i < 3; i++) {
-		float pseudoLength = std::max(1.f, std::sqrt(areaFacing[i] + areaFacing[(i+1)%3] * nonFacingFactor + areaFacing[(i+1)%3] * nonFacingFactor));
-		float splitIncrement = std::min(Dimensions::backFrustum, splitFactor * pseudoLength);
-		float mergeIncrement = std::min(Dimensions::backFrustum * mergeFactor/splitFactor, mergeFactor * pseudoLength);
-		lod.splitBox[2*i] = lod.aabb[2*i] - splitIncrement;
-		lod.splitBox[2*i+1] = lod.aabb[2*i+1] + splitIncrement;
-		lod.mergeBox[2*i] = lod.aabb[2*i] - mergeIncrement;
-		lod.mergeBox[2*i+1] = lod.aabb[2*i+1] + splitIncrement;
+		float pseudoLength = std::max(size[i]/2.f, std::sqrt(areaFacing[i] + areaFacing[(i+1)%3] * nonFacingFactor + areaFacing[(i+1)%3] * nonFacingFactor));
+		float splitDistance = thisSplitFactor * pseudoLength;
+		float mergeDistance = thisMergeFactor * pseudoLength;
+		lod.splitBox[2*i]   = center[i] - splitDistance;
+		lod.splitBox[2*i+1] = center[i] + splitDistance;
+		lod.mergeBox[2*i]   = center[i] - mergeDistance;
+		lod.mergeBox[2*i+1] = center[i] + mergeDistance;
 	}
 }
 
