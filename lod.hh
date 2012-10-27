@@ -26,6 +26,8 @@ struct LodNode {
 	float mergeBox[6];
     int inCounter;
 	bool firstBBPoint;
+	float splitDistance[3];
+	float center[3];
 };
 
 #endif

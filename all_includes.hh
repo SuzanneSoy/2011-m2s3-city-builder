@@ -7,6 +7,7 @@ class Chose;
 #include <typeinfo>
 
 #include <iostream>
+#include <iomanip> // DEBUG
 #include <cstdlib>
 #include <cmath>
 #include <vector>

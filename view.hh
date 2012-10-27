@@ -22,6 +22,7 @@ private :
 	bool autoPilot;
 
 public :
+	static int debug_frame;
 	Camera(Vertex pos, float xA, float yA, int moveSensitivity, float mouseSensitivity);
 	void setCamera();
 	void mouseMotion(const SDL_MouseMotionEvent &event);

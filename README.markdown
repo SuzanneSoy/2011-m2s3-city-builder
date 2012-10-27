@@ -15,3 +15,8 @@ How to run this program ?
 =========================
 
     make
+
+How to run the statistics ?
+===========================
+
+    mkdir -p png && make city && ./city > statistics.plt && pv statistics.plt | tail -n +2 | gnuplot

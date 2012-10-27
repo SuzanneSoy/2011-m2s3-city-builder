@@ -24,6 +24,7 @@ public:
 	Chose* popIfLessThan(float key);
 	bool lessThan(float a, float b); // Renvoie true ssi a < b dans l'ordre du tas.
 	void init(int factor); // factor = -1 pour tas Min, 1 pour tas max
+	friend std::ostream& operator<<(std::ostream& os, const Heap& v);
 };
 
 #endif

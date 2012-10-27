@@ -144,6 +144,7 @@ void View::renderScene(int lastTime, int currentTime) {
 
 	camera.animation(std::min(100, currentTime-lastTime));
 	camera.setCamera();
+	// std::cout << std::endl << "lod.setCamera(" << camera.cameraCenter << ")" << std::endl;
 	lod.setCamera(camera.cameraCenter);
 
 	setLight();
@@ -351,9 +352,11 @@ void Camera::keyboard(const SDL_KeyboardEvent &eventKey) {
 	}
 }
 
+int Camera::debug_frame = 0;
 void Camera::animation(int elapsedTime) {
 	static unsigned int frame = 0;
 	frame++;
+	Camera::debug_frame = frame;
 	float diff = ((float)(elapsedTime+1)/1000.f)*(float)moveSensitivity;
 
 	if (autoPilot) {

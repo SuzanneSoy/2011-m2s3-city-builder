@@ -26,3 +26,14 @@ Chose* Heap::popIfLessThan(float key) {
 	}
 	return NULL;
 }
+
+extern int debug_printlod_axis;
+
+std::ostream& operator<<(std::ostream& os, const Heap& h) {
+	for (std::set<HeapNode>::iterator it = h.bst.begin(); it != h.bst.end(); ++it) {
+		int i = debug_printlod_axis;
+		// TODO : put a color instead of "1"
+		os << it->value->lod.center[i] << ", " << (it->value->lod.splitDistance[i])/(Dimensions::splitFactor) << ", " << 1 << std::endl;
+	}
+	return os;
+}

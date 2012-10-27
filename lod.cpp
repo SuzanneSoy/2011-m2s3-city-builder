@@ -13,6 +13,8 @@ Lod::Lod(Vertex _camera, Chose* root) {
 	setCamera(_camera);
 }
 
+int debug_printlod_axis;
+
 void Lod::setCamera(Vertex newCamera) {
 	this->camera[0] = newCamera.x;
 	this->camera[1] = newCamera.y;
@@ -54,6 +56,32 @@ void Lod::setCamera(Vertex newCamera) {
 			c->lod.inCounter--;
 			splitOut[i].insert(c->lod.splitBox[i], c);
 		}
+	}
+	// Statistics
+	Heap* heaps[3] = { merge, splitIn, splitOut };
+	const char* heapNames[3] = { "merge", "splitIn", "splitOut" };
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 3; j++) {
+			debug_printlod_axis = i/2;
+			std::cout << "set term png" << std::endl
+					  << "set output 'png/"
+					  << heapNames[j] << " " << ((i & 1) ? '+' : '-') << (char)('x' + debug_printlod_axis) << " frame " << std::setfill('0') << std::setw(5) << Camera::debug_frame
+					  << ".png'" << std::endl
+					  << "unset arrow" << std::endl
+					  << "set arrow from "
+					  << camera[debug_printlod_axis] << "," << 0 <<" to "
+					  << (camera[debug_printlod_axis] + 10000000*((i & 1) ? -1 : 1)) << "," << 10000000*(Dimensions::splitFactor)
+					  << " nohead linecolor rgb 'blue'" << std::endl
+					  << "plot '-' title '"
+					  << heapNames[j] << " " << ((i & 1) ? '+' : '-') << (char)('x' + debug_printlod_axis) << " frame " << std::setfill('0') << std::setw(5) << Camera::debug_frame
+					  << "' with dots linecolor variable" << std::endl
+					  << "0, 0, 0" << std::endl
+					  << heaps[j][i]
+					  << "end" << std::endl;
+		}
+		// std::cout << "merge[" << i << "] = {" << merge[i] << "}" << std::endl;
+		// std::cout << "splitIn[" << i << "] = {" << splitIn[i] << "}" << std::endl;
+		// std::cout << "splitOut[" << i << "] = {" << splitOut[i] << "}" << std::endl;
 	}
 }
 
