@@ -147,8 +147,11 @@ void Chose::updateAABB() {
 	lod.firstBBPoint = true;
 	getBoundingBoxPoints();
 	float size[3];
-	for (int i = 0; i < 3; i++)
+	float center[3];
+	for (int i = 0; i < 3; i++) {
 		size[i] = lod.aabb[2*i+1] - lod.aabb[2*i];
+		center[i] = (lod.aabb[2*i] + lod.aabb[2*i+1])/2.f;
+	}
 	float areaFacing[3];
 	for (int i = 0; i < 3; i++)
 		areaFacing[i] = size[(i+1)%3]*size[(i+1)%3];
