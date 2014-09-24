@@ -60,9 +60,9 @@ void Lod::setCamera(Vertex newCamera) {
 void Lod::doSplit(Chose* c) {
 	c->split();
 	std::vector<Chose*>::iterator it;
-	bool mergeCube = false;
+	////bool mergeCube = false; // Started to work again on the project, a new warning detected this.
 	for (it = c->children.begin(); it != c->children.end(); ++it) {
-		mergeCube = true;
+		////mergeCube = true; // Started to work again on the project, a new warning detected this.
 		(*it)->triangulation();
 		(*it)->updateAABB();
 		// (*it)->drawAABB();

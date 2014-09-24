@@ -45,7 +45,7 @@ void MurQuad::split() {
         Quad righth = Quad(windowPosh[NW],windowPosh[SW],ch[SW],ch[NW]);
         Quad left = Quad(c[NE],c[SE],windowPos[SE],windowPos[NE]);
         Quad lefth = Quad(ch[NE],ch[SE],windowPosh[SE],windowPosh[NE]);
-        Quad top = Quad(windowPosh[NE],windowPosh[NW],windowPosh[SW],windowPosh[SE]);
+        ////Quad top = Quad(windowPosh[NE],windowPosh[NW],windowPosh[SW],windowPosh[SE]); // Started to work again on the project, a new warning detected this.
 
         if (!door) addChild(new MurQuad(c,windowPos,false, true, false));
         addChild(new MurQuad(windowPosh,ch, false, false, true));

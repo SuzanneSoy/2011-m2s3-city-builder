@@ -30,7 +30,7 @@ protected :
 	virtual void getBoundingBoxPoints() = 0;
 	virtual float LODFactor();
 	Chose();
-	~Chose();
+	virtual ~Chose();
 	inline void addEntropy(unsigned int x1) {
 		seed = hash2(seed, x1);
 	}

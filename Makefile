@@ -24,7 +24,7 @@ $(EXECUTABLE): $(SOURCES) all_includes.hh.gch Makefile
 	@echo "#define _ALL_CPP_">> all.cpp
 	@$(foreach FILE,$(SOURCES),echo '#include "'"$(FILE)"'"' >> all.cpp;)
 	@echo "#endif">> all.cpp
-	$(CXX) $(LIBS) $(CFLAGS) all.cpp -o $@
+	$(CXX) all.cpp $(LIBS) $(CFLAGS) -o $@
 	@rm all.cpp
 
 all_includes.hh.gch: $(HEADERS) Makefile
